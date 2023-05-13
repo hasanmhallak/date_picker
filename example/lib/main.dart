@@ -1,5 +1,7 @@
 import 'package:datePicker/date_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: Locale('en'),
+      locale: Locale('en', 'GB'),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -74,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //   borderRadius: BorderRadius.circular(10),
               // ),
               child: SwiftDatePicker(
-                initialDate: DateTime.now().add(Duration(days: 30 * 2)),
+                initialDate: DateTime.now(),
                 maxDate: DateTime.now().add(const Duration(days: 365)),
                 minDate: DateTime.now().subtract(const Duration(days: 365)),
               ),
@@ -104,19 +106,79 @@ class SwiftDatePicker extends StatefulWidget {
 class _SwiftDatePickerState extends State<SwiftDatePicker> {
   DateTime? _displayedMonth;
   DateTime? _selectedDate;
+  final GlobalKey _pageViewKey = GlobalKey();
+  late final PageController _pageController;
+  double maxHeight = 52 * 6; // A 31 day month that starts on Saturday.
 
   @override
   void initState() {
     _displayedMonth = widget.initialDate;
+    _pageController = PageController(
+      initialPage: DateUtils.monthDelta(widget.minDate, widget.initialDate),
+    );
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant SwiftDatePicker oldWidget) {
-    if (widget.initialDate != oldWidget.initialDate) {
-      _displayedMonth = widget.initialDate;
+    // there is no need to check for the displayed month because it changes via
+    // page view and not the initial date.
+    // but for makeing debuging easy, we will navigate to the initial date again
+    // if it changes.
+    if (DateUtils.dateOnly(oldWidget.initialDate) !=
+        DateUtils.dateOnly(widget.initialDate)) {
+      _pageController.jumpToPage(
+        DateUtils.monthDelta(widget.minDate, widget.initialDate),
+      );
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildItems(BuildContext context, int index) {
+    final DateTime month =
+        DateUtils.addMonthsToMonthDate(widget.minDate, index);
+
+    return DaysView(
+      key: ValueKey<DateTime>(month),
+      currentDate: DateTime.now(),
+      minDate: widget.minDate,
+      maxDate: widget.maxDate,
+      displayedMonth: month,
+      selectedDate: _selectedDate,
+      onChanged: (value) {
+        setState(() {
+          _selectedDate = value;
+        });
+      },
+    );
+  }
+
+  void _handleMonthPageChanged(int monthPage) {
+    final DateTime monthDate =
+        DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+
+    setState(() {
+      _displayedMonth = monthDate;
+      if (isSevenRows(monthDate.year, monthDate.month, monthDate.weekday)) {
+        maxHeight = 52 * 7;
+      } else {
+        maxHeight = 52 * 6;
+      }
+    });
+  }
+
+  bool isSevenRows(int year, int month, int weekday) {
+    if (DateUtils.getDaysInMonth(year, month) == 31 &&
+        weekday == DateTime.saturday) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -125,19 +187,24 @@ class _SwiftDatePickerState extends State<SwiftDatePicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const _Header(),
-        const SizedBox(height: 10),
-        DaysView(
-          currentDate: DateTime.now(),
-          minDate: DateTime.now().subtract(const Duration(days: 365)),
-          maxDate: DateTime.now().add(const Duration(days: 90)),
+        _Header(
+          onLeadingTap: () {},
           displayedMonth: _displayedMonth!,
-          selectedDate: _selectedDate,
-          onChanged: (value) {
-            setState(() {
-              _selectedDate = value;
-            });
-          },
+          onNextMonth: () {},
+          onPreviousMonth: () {},
+        ),
+        const SizedBox(height: 10),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: maxHeight,
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            key: _pageViewKey,
+            controller: _pageController,
+            itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+            itemBuilder: _buildItems,
+            onPageChanged: _handleMonthPageChanged,
+          ),
         ),
       ],
     );
@@ -145,8 +212,16 @@ class _SwiftDatePickerState extends State<SwiftDatePicker> {
 }
 
 class _Header extends StatelessWidget {
+  final DateTime displayedMonth;
+  final VoidCallback onLeadingTap;
+  final VoidCallback onNextMonth;
+  final VoidCallback onPreviousMonth;
   const _Header({
     super.key,
+    required this.displayedMonth,
+    required this.onLeadingTap,
+    required this.onNextMonth,
+    required this.onPreviousMonth,
   });
 
   @override
@@ -154,189 +229,16 @@ class _Header extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const _Year(),
-        const _MonthsSlider(),
+        LeadingDate(
+          onTap: onLeadingTap,
+          displayedText:
+              MaterialLocalizations.of(context).formatMonthYear(displayedMonth),
+        ),
+        PageSliders(
+          onBackward: onPreviousMonth,
+          onForward: onNextMonth,
+        ),
       ],
-    );
-  }
-}
-
-class _MonthsSlider extends StatelessWidget {
-  final VoidCallback? onForward;
-  final VoidCallback? onBackward;
-  final Color? color;
-  const _MonthsSlider({
-    Key? key,
-    this.onForward,
-    this.onBackward,
-    this.color,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onTap: onBackward,
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 28,
-                  color: color ?? Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          GestureDetector(
-            onTap: () {
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now().subtract(Duration(days: 654)),
-                lastDate: DateTime.now().add(Duration(days: 654)),
-              );
-            },
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 28,
-                  color: color ?? Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Year extends StatefulWidget {
-  final DateTime? date;
-  final TextStyle? yearTextStyle;
-  final Color? focusedColor;
-  final Color? unFocusedColor;
-  final VoidCallback? onTap;
-  const _Year({
-    super.key,
-    this.date,
-    this.focusedColor,
-    this.unFocusedColor,
-    this.yearTextStyle,
-    this.onTap,
-  });
-
-  @override
-  State<_Year> createState() => _YearState();
-}
-
-class _YearState extends State<_Year> with SingleTickerProviderStateMixin {
-  late final AnimationController arrowController;
-  late final Animation<double> arrowAnimation;
-
-  DateTime? _dateTime;
-  TextStyle? _yearTextStyle;
-  Color? _focusedColor;
-  Color? _unFocusedColor;
-
-  @override
-  void initState() {
-    arrowController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    arrowAnimation = CurvedAnimation(
-      parent: arrowController,
-      curve: Curves.ease,
-    ).drive(Tween<double>(begin: 0.0, end: 0.25));
-    //
-    _dateTime ??= DateTime.now();
-    _yearTextStyle ??=
-        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
-
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant _Year oldWidget) {
-    if (oldWidget.date != widget.date) {
-      _dateTime = widget.date;
-    }
-    if (oldWidget.yearTextStyle != widget.yearTextStyle) {
-      _yearTextStyle = widget.yearTextStyle;
-    }
-
-    if (oldWidget.focusedColor != widget.focusedColor) {
-      _focusedColor = widget.focusedColor;
-    }
-
-    if (oldWidget.unFocusedColor != widget.unFocusedColor) {
-      _unFocusedColor = widget.unFocusedColor;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    arrowController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _focusedColor ??= Theme.of(context).colorScheme.primary;
-    _unFocusedColor ??= Theme.of(context).colorScheme.onBackground;
-    return GestureDetector(
-      onTap: () {
-        widget.onTap?.call();
-        if (arrowController.isDismissed) {
-          arrowController.forward();
-        } else {
-          arrowController.reverse();
-        }
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            MaterialLocalizations.of(context).formatMonthYear(_dateTime!),
-            style: _yearTextStyle,
-          ),
-          const SizedBox(width: 2),
-          AnimatedBuilder(
-            animation: arrowAnimation,
-            builder: (context, child) {
-              return RotationTransition(
-                turns: arrowAnimation,
-                child: child,
-              );
-            },
-            child: Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-              color: _focusedColor,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

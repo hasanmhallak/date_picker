@@ -1,12 +1,9 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:intl/intl.dart' as intl;
 
 const double _dayPickerRowHeight = 52.0;
-const int _maxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
 
 /// Displays the days of a given month and allows choosing a day.
 ///
@@ -35,6 +32,7 @@ class DaysView extends StatelessWidget {
   final DateTime? selectedDate;
 
   /// The current date at the time the picker is displayed.
+  /// In other words, the day to be considered as today.
   final DateTime currentDate;
 
   /// Called when the user picks a day.
@@ -278,10 +276,7 @@ class DayPickerGridDelegate extends SliverGridDelegate {
   SliverGridLayout getLayout(SliverConstraints constraints) {
     const int columnCount = DateTime.daysPerWeek;
     final double tileWidth = constraints.crossAxisExtent / columnCount;
-    final double tileHeight = math.min(
-      _dayPickerRowHeight,
-      constraints.viewportMainAxisExtent / (_maxDayPickerRowCount),
-    );
+    final double tileHeight = _dayPickerRowHeight;
     return SliverGridRegularTileLayout(
       // to add padding between cells.
       childCrossAxisExtent: tileWidth - 4,
