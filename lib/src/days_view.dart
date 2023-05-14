@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 
 import 'package:intl/intl.dart' as intl;
 
+import 'picker_grid_delegate.dart';
+
 const double _dayPickerRowHeight = 52.0;
 
 /// Displays the days of a given month and allows choosing a day.
@@ -260,34 +262,15 @@ class DaysView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
-      gridDelegate: const DayPickerGridDelegate(),
+      gridDelegate: const PickerGridDelegate(
+        columnCount: DateTime.daysPerWeek,
+        columnPadding: 4,
+        rowHeight: _dayPickerRowHeight,
+      ),
       childrenDelegate: SliverChildListDelegate(
         dayItems,
         addRepaintBoundaries: false,
       ),
     );
   }
-}
-
-class DayPickerGridDelegate extends SliverGridDelegate {
-  const DayPickerGridDelegate();
-
-  @override
-  SliverGridLayout getLayout(SliverConstraints constraints) {
-    const int columnCount = DateTime.daysPerWeek;
-    final double tileWidth = constraints.crossAxisExtent / columnCount;
-    final double tileHeight = _dayPickerRowHeight;
-    return SliverGridRegularTileLayout(
-      // to add padding between cells.
-      childCrossAxisExtent: tileWidth - 4,
-      childMainAxisExtent: tileHeight - 4,
-      crossAxisCount: columnCount,
-      crossAxisStride: tileWidth,
-      mainAxisStride: tileHeight,
-      reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
-    );
-  }
-
-  @override
-  bool shouldRelayout(DayPickerGridDelegate oldDelegate) => false;
 }
