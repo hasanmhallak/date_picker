@@ -4,7 +4,7 @@ import 'leading_date.dart';
 import 'page_sliders.dart';
 
 class Header extends StatelessWidget {
-  final DateTime displayedDate;
+  final String displayedDate;
   final VoidCallback onDateTap;
   final VoidCallback onNextPage;
   final VoidCallback onPreviousPage;
@@ -23,8 +23,7 @@ class Header extends StatelessWidget {
       children: [
         LeadingDate(
           onTap: onDateTap,
-          displayedText:
-              MaterialLocalizations.of(context).formatMonthYear(displayedDate),
+          displayedText: displayedDate,
         ),
         PageSliders(
           onBackward: onPreviousPage,
