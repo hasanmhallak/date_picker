@@ -1,13 +1,21 @@
 import 'package:flutter/rendering.dart';
 
 class PickerGridDelegate extends SliverGridDelegate {
+  const PickerGridDelegate({
+    required this.columnCount,
+    required this.rowExtent,
+    required this.rowStride,
+    this.columnPadding = 0,
+  });
+
   final int columnCount;
   final double columnPadding;
-  final double rowHeight;
-  const PickerGridDelegate(
-      {required this.columnCount,
-      required this.rowHeight,
-      this.columnPadding = 0});
+
+  /// The number of pixels from the leading edge of one tile to the trailing edge of the same tile in the main axis.
+  final double rowExtent;
+
+  /// The number of pixels from the leading edge of one tile to the leading edge of the next tile in the main axis.
+  final double rowStride;
 
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
@@ -16,10 +24,10 @@ class PickerGridDelegate extends SliverGridDelegate {
     return SliverGridRegularTileLayout(
       // to add padding between cells.
       childCrossAxisExtent: tileWidth - columnPadding,
-      childMainAxisExtent: rowHeight - columnPadding,
+      childMainAxisExtent: rowExtent - columnPadding,
       crossAxisCount: columnCount,
       crossAxisStride: tileWidth,
-      mainAxisStride: rowHeight,
+      mainAxisStride: rowStride,
       reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
     );
   }
