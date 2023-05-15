@@ -3,20 +3,48 @@ import 'package:flutter/material.dart';
 import 'days_view.dart';
 import 'header.dart';
 
+/// A scrollable grid of months to allow picking a month.
+///
+/// The month picker widget is rarely used directly. Instead, consider using
+/// [DatePicker] which create full date picker.
+///
+/// See also:
+///
+///  * [DatePicker], which provides a Material Design date picker
+///    interface.
+///
 class DaysPicker extends StatefulWidget {
-  final DateTime initialDate;
-  final DateTime maxDate;
-  final DateTime minDate;
-  final VoidCallback? onLeadingDateTap;
-  final ValueChanged<DateTime>? onChange;
-  const DaysPicker({
+  /// Creates a month picker.
+  ///
+  /// The [maxDate], [minDate], [initialDate] arguments
+  /// must be non-null. The [minDate] must be after the [maxDate].
+  DaysPicker({
     super.key,
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
     this.onLeadingDateTap,
     this.onChange,
-  });
+  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+
+  /// Called when the user picks a month.
+  final ValueChanged<DateTime>? onChange;
+
+  /// The earliest date the user is permitted to pick.
+  ///
+  /// This date must be on or before the [maxDate].
+  final DateTime minDate;
+
+  /// The latest date the user is permitted to pick.
+  ///
+  /// This date must be on or after the [minDate].
+  final DateTime maxDate;
+
+  /// The date which will be displayed on first opening.
+  final DateTime initialDate;
+
+  /// Called when the user tap on the leading date.
+  final VoidCallback? onLeadingDateTap;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -94,10 +122,22 @@ class _DaysPickerState extends State<DaysPicker> {
   }
 
   bool isSevenRows(int year, int month, int weekday) {
-    if (DateUtils.getDaysInMonth(year, month) == 31 &&
-        weekday == DateTime.saturday) {
+    final offset = DateUtils.firstDayOffset(
+        year, month, MaterialLocalizations.of(context));
+    final daysCount = DateUtils.getDaysInMonth(year, month);
+
+    // 30 & 5 => false
+    // 31 & 5 => true
+    // 30 & 6 => true
+    // 31 & 6 => true
+    if (offset == 5 && daysCount == 30) {
+      return false;
+    }
+
+    if (offset >= 5 && daysCount >= 30) {
       return true;
     }
+
     return false;
   }
 
