@@ -14,10 +14,18 @@ class MonthView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYear,
+    required this.selectedMonth,
     this.enabledMonthsColor,
     this.disbaledMonthsColor,
     this.currentMonthColor,
+    this.selectedMonthColor,
+    this.selectedMonthFillColor,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+
+  /// The currently selected month.
+  ///
+  /// This date is highlighted in the picker.
+  final DateTime? selectedMonth;
 
   /// The current date at the time the picker is displayed.
   /// In other words, the day to be considered as today.
@@ -54,6 +62,16 @@ class MonthView extends StatelessWidget {
   /// defaults to [ColorScheme.primary].
   final Color? currentMonthColor;
 
+  /// The color of the selected month.
+  ///
+  /// defaults to [ColorScheme.onPrimary].
+  final Color? selectedMonthColor;
+
+  /// The fill color of the selected month.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? selectedMonthFillColor;
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -71,6 +89,11 @@ class MonthView extends StatelessWidget {
         disbaledMonthsColor ?? colorScheme.onSurface.withOpacity(0.30);
 
     //
+    final Color selectedMonthColor =
+        this.selectedMonthColor ?? colorScheme.onPrimary;
+
+    final Color selectedMonthBackground =
+        selectedMonthFillColor ?? colorScheme.primary;
     //
     final TextStyle monthStyle = textTheme.titleLarge!.copyWith(
       fontWeight: FontWeight.normal,
@@ -94,6 +117,8 @@ class MonthView extends StatelessWidget {
 
       final bool isCurrentMonth =
           monthToBuild == DateTime(currentDate.year, currentDate.month, 1);
+
+      final bool isSelected = monthToBuild == selectedMonth;
       //
       //
       BoxDecoration? decoration;
@@ -105,6 +130,13 @@ class MonthView extends StatelessWidget {
         monthColor = currentMonthColor;
         decoration = BoxDecoration(
           border: Border.all(color: currentMonthBorderColor),
+          shape: BoxShape.circle,
+        );
+      }
+      if (isSelected) {
+        monthColor = selectedMonthColor;
+        decoration = BoxDecoration(
+          color: selectedMonthBackground,
           shape: BoxShape.circle,
         );
       }
