@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:intl/intl.dart' as intl;
 
@@ -265,7 +264,8 @@ class DaysView extends StatelessWidget {
       gridDelegate: const PickerGridDelegate(
         columnCount: DateTime.daysPerWeek,
         columnPadding: 4,
-        rowHeight: _dayPickerRowHeight,
+        rowExtent: _dayPickerRowHeight,
+        rowStride: _dayPickerRowHeight,
       ),
       childrenDelegate: SliverChildListDelegate(
         dayItems,
