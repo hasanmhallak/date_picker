@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'days_picker.dart';
-import 'header.dart';
 import 'month_picker.dart';
 import 'year_picker.dart';
 
+/// Initial display of a calendar date picker.
+///
+/// Either a grid of available years or a monthly calendar.
+///
+/// See also:
+///
+///  * [showPicker], which shows a dialog that contains a Material Design
+///    date picker.
+///  * [DatePicker], widget which implements the Material Design date picker.
+///
 enum PickerType {
+  /// Choosing a day.
   days,
+
+  /// Choosing a month.
   months,
+
+  /// Choosing a year.
   years,
 }
 
@@ -20,16 +33,13 @@ enum PickerType {
 /// showing.
 ///
 /// The date picker widget is rarely used directly. Instead, consider using
-/// [showDatePicker], which will create a dialog that uses this as well as
+/// [showPicker], which will create a dialog that uses this as well as
 /// provides a text entry option.
 ///
 /// See also:
 ///
-///  * [showDatePicker], which creates a Dialog that contains a
-///    [CalendarDatePicker] and provides an optional compact view where the
-///    user can enter a date as a line of text.
-///  * [showTimePicker], which shows a dialog that contains a Material Design
-///    time picker.
+///  * [showPicker], which creates a Dialog that contains a
+///    [DatePicker] and provides an optional compact view where the
 ///
 class DatePicker extends StatefulWidget {
   /// Creates a calendar date picker.
@@ -58,6 +68,12 @@ class DatePicker extends StatefulWidget {
     required this.onDateChanged,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
+    this.daysNameColor,
+    this.enabledCellsColor,
+    this.disbaledCellsColor,
+    this.todayColor,
+    this.selectedCellColor,
+    this.selectedCellFillColor,
   }) {
     assert(
       !maxDate.isBefore(minDate),
@@ -73,12 +89,57 @@ class DatePicker extends StatefulWidget {
     );
   }
 
+  /// The date which will be displayed on first opening.
   final DateTime initialDate;
-  final DateTime maxDate;
-  final DateTime minDate;
-  final PickerType initialPickerType;
+
+  /// Called when the user picks a month.
   final ValueChanged<DateTime> onDateChanged;
+
+  /// The earliest date the user is permitted to pick.
+  ///
+  /// This date must be on or before the [maxDate].
+  final DateTime minDate;
+
+  /// The latest date the user is permitted to pick.
+  ///
+  /// This date must be on or after the [minDate].
+  final DateTime maxDate;
+
+  /// The initial display of the calendar picker.
+  final PickerType initialPickerType;
+
+  /// The amount of padding to be added around the [DatePicker].
   final EdgeInsets padding;
+
+  /// The color of the days name.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? daysNameColor;
+
+  /// The color of enabled cells which are selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface].
+  final Color? enabledCellsColor;
+
+  /// The color of disabled cells which are not selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? disbaledCellsColor;
+
+  /// The color of the current day.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? todayColor;
+
+  /// The color of the selected cell.
+  ///
+  /// defaults to [ColorScheme.onPrimary].
+  final Color? selectedCellColor;
+
+  /// The fill color of the selected cell.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? selectedCellFillColor;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -112,6 +173,12 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
+            daysNameColor: widget.daysNameColor,
+            disbaledDaysColor: widget.disbaledCellsColor,
+            enabledDaysColor: widget.enabledCellsColor,
+            selectedDayColor: widget.selectedCellColor,
+            selectedDayFillColor: widget.selectedCellFillColor,
+            todayColor: widget.todayColor,
             onChange: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
@@ -133,6 +200,11 @@ class _DatePickerState extends State<DatePicker> {
             maxDate: widget.maxDate,
             minDate: widget.minDate,
             selectedDate: _displayedDate,
+            currentMonthColor: widget.todayColor,
+            disbaledMonthsColor: widget.disbaledCellsColor,
+            enabledMonthsColor: widget.enabledCellsColor,
+            selectedMonthColor: widget.selectedCellColor,
+            selectedMonthFillColor: widget.selectedCellFillColor,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -154,6 +226,11 @@ class _DatePickerState extends State<DatePicker> {
             maxDate: widget.maxDate,
             minDate: widget.minDate,
             selectedDate: _displayedDate,
+            currentYearColor: widget.todayColor,
+            disbaledYearColor: widget.disbaledCellsColor,
+            enabledYearColor: widget.enabledCellsColor,
+            selectedYearColor: widget.selectedCellColor,
+            selectedYearFillColor: widget.selectedCellFillColor,
             onChange: (selectedYear) {
               setState(() {
                 _displayedDate = selectedYear;

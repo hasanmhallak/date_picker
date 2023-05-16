@@ -6,12 +6,13 @@ import 'header.dart';
 /// A scrollable grid of years to allow picking a year.
 ///
 /// The year picker widget is rarely used directly. Instead, consider using
-/// [DatePicker] which create full date picker.
+/// [showPicker], which will create a dialog that uses this as well as
+/// provides a text entry option.
 ///
 /// See also:
 ///
-///  * [DatePicker], which provides a Material Design date picker
-///    interface.
+///  * [showPicker], which creates a Dialog that contains a
+///    [DatePicker] and provides an optional compact view where the
 ///
 class YearsPicker extends StatefulWidget {
   /// Creates a year picker.
