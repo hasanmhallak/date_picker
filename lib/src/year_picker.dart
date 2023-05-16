@@ -23,7 +23,13 @@ class YearsPicker extends StatefulWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
+    this.selectedDate,
     this.onChange,
+    this.enabledYearColor,
+    this.disbaledYearColor,
+    this.currentYearColor,
+    this.selectedYearColor,
+    this.selectedYearFillColor,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a year.
@@ -41,6 +47,34 @@ class YearsPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
+
+  /// The date currently selected date.
+  final DateTime? selectedDate;
+
+  /// The color of enabled month which are selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface].
+  final Color? enabledYearColor;
+
+  /// The color of disabled months which are not selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? disbaledYearColor;
+
+  /// The color of the current month.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? currentYearColor;
+
+  /// The color of the selected month.
+  ///
+  /// defaults to [ColorScheme.onPrimary].
+  final Color? selectedYearColor;
+
+  /// The fill color of the selected month.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? selectedYearFillColor;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -82,6 +116,7 @@ class _YearsPickerState extends State<YearsPicker> {
       start: DateTime(widget.minDate.year + initialPageNumber * 12),
       end: DateTime(widget.minDate.year + initialPageNumber * 12 - 1 + 12),
     );
+    _selectedYear = widget.selectedDate;
     super.initState();
   }
 
@@ -116,6 +151,11 @@ class _YearsPickerState extends State<YearsPicker> {
       maxDate: widget.maxDate,
       displayedYearRange: calculateDateRange(index),
       selectedYear: _selectedYear,
+      currentYearColor: widget.currentYearColor,
+      disbaledYearColor: widget.disbaledYearColor,
+      enabledYearColor: widget.enabledYearColor,
+      selectedYearColor: widget.selectedYearColor,
+      selectedYearFillColor: widget.selectedYearFillColor,
       onChanged: (value) {
         widget.onChange?.call(value);
         setState(() {
