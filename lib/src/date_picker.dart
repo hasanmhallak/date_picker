@@ -132,6 +132,7 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
+            selectedDate: _displayedDate,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -152,9 +153,10 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            onChange: (selectedMonth) {
+            selectedDate: _displayedDate,
+            onChange: (selectedYear) {
               setState(() {
-                _displayedDate = selectedMonth;
+                _displayedDate = selectedYear;
                 _pickerType = PickerType.months;
               });
             },

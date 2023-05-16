@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'header.dart';
 import 'month_view.dart';
@@ -21,11 +20,17 @@ class MonthPicker extends StatefulWidget {
   /// must be non-null. The [minDate] must be after the [maxDate].
   MonthPicker({
     super.key,
-    required this.initialDate,
-    required this.maxDate,
-    required this.minDate,
-    this.onLeadingDateTap,
     this.onChange,
+    required this.minDate,
+    required this.maxDate,
+    required this.initialDate,
+    this.selectedDate,
+    this.onLeadingDateTap,
+    this.enabledMonthsColor,
+    this.disbaledMonthsColor,
+    this.currentMonthColor,
+    this.selectedMonthColor,
+    this.selectedMonthFillColor,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -44,8 +49,36 @@ class MonthPicker extends StatefulWidget {
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
 
+  /// The date currently selected date.
+  final DateTime? selectedDate;
+
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
+
+  /// The color of enabled month which are selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface].
+  final Color? enabledMonthsColor;
+
+  /// The color of disabled months which are not selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? disbaledMonthsColor;
+
+  /// The color of the current month.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? currentMonthColor;
+
+  /// The color of the selected month.
+  ///
+  /// defaults to [ColorScheme.onPrimary].
+  final Color? selectedMonthColor;
+
+  /// The fill color of the selected month.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? selectedMonthFillColor;
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
@@ -63,6 +96,7 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   void initState() {
     _displayedYear = widget.initialDate;
+    _selectedMonth = widget.selectedDate;
     _pageController = PageController(
       initialPage: (widget.initialDate.year - widget.minDate.year),
     );
@@ -87,7 +121,8 @@ class _MonthPickerState extends State<MonthPicker> {
   }
 
   Widget _buildItems(BuildContext context, int index) {
-    final DateTime yearDate = widget.minDate.add(Duration(days: 365 * index));
+    final DateTime yearDate = DateTime(
+        widget.minDate.year + index, widget.minDate.month, widget.minDate.day);
 
     return MonthView(
       key: ValueKey<DateTime>(yearDate),
@@ -96,6 +131,11 @@ class _MonthPickerState extends State<MonthPicker> {
       maxDate: widget.maxDate,
       displayedYear: yearDate,
       selectedMonth: _selectedMonth,
+      currentMonthColor: widget.currentMonthColor,
+      disbaledMonthsColor: widget.disbaledMonthsColor,
+      enabledMonthsColor: widget.enabledMonthsColor,
+      selectedMonthColor: widget.selectedMonthColor,
+      selectedMonthFillColor: widget.selectedMonthFillColor,
       onChanged: (value) {
         widget.onChange?.call(value);
         setState(() {
@@ -106,8 +146,8 @@ class _MonthPickerState extends State<MonthPicker> {
   }
 
   void _handleYearPageChanged(int yearPage) {
-    final DateTime yearDate =
-        widget.minDate.add(const Duration(days: 365) * yearPage);
+    final DateTime yearDate = DateTime(widget.minDate.year + yearPage,
+        widget.minDate.month, widget.minDate.day);
 
     setState(() {
       _displayedYear = yearDate;
@@ -122,10 +162,7 @@ class _MonthPickerState extends State<MonthPicker> {
       children: [
         Header(
           onDateTap: () => widget.onLeadingDateTap?.call(),
-          displayedDate: DateFormat(
-            'yyy',
-            Localizations.localeOf(context).toString(),
-          ).format(_displayedYear!),
+          displayedDate: _displayedYear!.year.toString(),
           onNextPage: () {
             _pageController.nextPage(
               duration: const Duration(milliseconds: 300),

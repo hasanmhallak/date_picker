@@ -25,6 +25,12 @@ class DaysPicker extends StatefulWidget {
     required this.minDate,
     this.onLeadingDateTap,
     this.onChange,
+    this.daysNameColor,
+    this.enabledDaysColor,
+    this.disbaledDaysColor,
+    this.todayColor,
+    this.selectedDayColor,
+    this.selectedDayFillColor,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -45,6 +51,36 @@ class DaysPicker extends StatefulWidget {
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
+
+  /// The color of the days name.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? daysNameColor;
+
+  /// The color of enabled days which are selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface].
+  final Color? enabledDaysColor;
+
+  /// The color of disabled days which are not selectable.
+  ///
+  /// defaults to [ColorScheme.onSurface] with 30% opacity.
+  final Color? disbaledDaysColor;
+
+  /// The color of the current day.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? todayColor;
+
+  /// The color of the selected day.
+  ///
+  /// defaults to [ColorScheme.onPrimary].
+  final Color? selectedDayColor;
+
+  /// The fill color of the selected day.
+  ///
+  /// defaults to [ColorScheme.primary].
+  final Color? selectedDayFillColor;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -98,6 +134,12 @@ class _DaysPickerState extends State<DaysPicker> {
       maxDate: widget.maxDate,
       displayedMonth: month,
       selectedDate: _selectedDate,
+      daysNameColor: widget.daysNameColor,
+      disbaledDaysColor: widget.disbaledDaysColor,
+      enabledDaysColor: widget.enabledDaysColor,
+      selectedDayColor: widget.selectedDayColor,
+      selectedDayFillColor: widget.selectedDayFillColor,
+      todayColor: widget.todayColor,
       onChanged: (value) {
         setState(() {
           _selectedDate = value;

@@ -103,6 +103,11 @@ class MonthView extends StatelessWidget {
     // in the month we should not gray it out.
     final DateTime startMonth = DateTime(minDate.year, minDate.month);
     final DateTime endMonth = DateTime(maxDate.year, maxDate.month);
+    late final DateTime? selectedMonth;
+    if (this.selectedMonth != null) {
+      selectedMonth =
+          DateTime(this.selectedMonth!.year, this.selectedMonth!.month);
+    }
 
     final monthsNames =
         DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
@@ -110,13 +115,13 @@ class MonthView extends StatelessWidget {
 
     int month = 0;
     while (month < 12) {
-      final DateTime monthToBuild = DateTime(year, month + 1, 1);
+      final DateTime monthToBuild = DateTime(year, month + 1);
 
       final bool isDisabled =
           monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
 
       final bool isCurrentMonth =
-          monthToBuild == DateTime(currentDate.year, currentDate.month, 1);
+          monthToBuild == DateTime(currentDate.year, currentDate.month);
 
       final bool isSelected = monthToBuild == selectedMonth;
       //
