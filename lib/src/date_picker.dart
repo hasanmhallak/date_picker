@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'days_picker.dart';
+import 'header.dart';
 import 'month_picker.dart';
+import 'year_picker.dart';
 
 enum PickerType {
   days,
   months,
+  years,
 }
 
 /// Displays a grid of days for a given month and allows the user to select a
@@ -108,7 +112,12 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            onChange: widget.onDateChanged,
+            onChange: (selectedDate) {
+              setState(() {
+                _displayedDate = selectedDate;
+              });
+              widget.onDateChanged(selectedDate);
+            },
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.months;
@@ -123,10 +132,30 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
+            onLeadingDateTap: () {
+              setState(() {
+                _pickerType = PickerType.years;
+              });
+            },
             onChange: (selectedMonth) {
               setState(() {
                 _displayedDate = selectedMonth;
                 _pickerType = PickerType.days;
+              });
+            },
+          ),
+        );
+      case PickerType.years:
+        return Padding(
+          padding: widget.padding,
+          child: YearsPicker(
+            initialDate: _displayedDate!,
+            maxDate: widget.maxDate,
+            minDate: widget.minDate,
+            onChange: (selectedMonth) {
+              setState(() {
+                _displayedDate = selectedMonth;
+                _pickerType = PickerType.months;
               });
             },
           ),
