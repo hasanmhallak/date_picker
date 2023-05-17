@@ -2,16 +2,17 @@ import 'package:datePicker/src/year_view.dart';
 import 'package:flutter/material.dart';
 
 import 'header.dart';
+import 'show_date_picker_dialog.dart';
 
 /// A scrollable grid of years to allow picking a year.
 ///
 /// The year picker widget is rarely used directly. Instead, consider using
-/// [showPicker], which will create a dialog that uses this as well as
+/// [showDatePickerDialog], which will create a dialog that uses this as well as
 /// provides a text entry option.
 ///
 /// See also:
 ///
-///  * [showPicker], which creates a Dialog that contains a
+///  * [showDatePickerDialog], which creates a Dialog that contains a
 ///    [DatePicker] and provides an optional compact view where the
 ///
 class YearsPicker extends StatefulWidget {

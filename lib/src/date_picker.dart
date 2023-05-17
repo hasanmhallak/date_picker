@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'days_picker.dart';
 import 'month_picker.dart';
 import 'year_picker.dart';
+import 'show_date_picker_dialog.dart';
 
 /// Initial display of a calendar date picker.
 ///
@@ -10,7 +11,7 @@ import 'year_picker.dart';
 ///
 /// See also:
 ///
-///  * [showPicker], which shows a dialog that contains a Material Design
+///  * [showDatePickerDialog], which shows a dialog that contains a Material Design
 ///    date picker.
 ///  * [DatePicker], widget which implements the Material Design date picker.
 ///
@@ -33,12 +34,12 @@ enum PickerType {
 /// showing.
 ///
 /// The date picker widget is rarely used directly. Instead, consider using
-/// [showPicker], which will create a dialog that uses this as well as
+/// [showDatePickerDialog], which will create a dialog that uses this as well as
 /// provides a text entry option.
 ///
 /// See also:
 ///
-///  * [showPicker], which creates a Dialog that contains a
+///  * [showDatePickerDialog], which creates a Dialog that contains a
 ///    [DatePicker] and provides an optional compact view where the
 ///
 class DatePicker extends StatefulWidget {
@@ -152,6 +153,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void initState() {
     _displayedDate = widget.initialDate;
+    _pickerType = widget.initialPickerType;
 
     super.initState();
   }
@@ -160,6 +162,9 @@ class _DatePickerState extends State<DatePicker> {
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.initialDate != widget.initialDate) {
       _displayedDate = widget.initialDate;
+    }
+    if (oldWidget.initialPickerType != widget.initialPickerType) {
+      _pickerType = widget.initialPickerType;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -181,9 +186,9 @@ class _DatePickerState extends State<DatePicker> {
             selectedDayFillColor: widget.selectedCellFillColor,
             todayColor: widget.todayColor,
             onChange: (selectedDate) {
-              // setState(() {
-              //   _displayedDate = selectedDate;
-              // });
+              setState(() {
+                _displayedDate = selectedDate;
+              });
               widget.onDateChanged(selectedDate);
             },
             onLeadingDateTap: () {
