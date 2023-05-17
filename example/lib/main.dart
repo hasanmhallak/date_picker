@@ -1,6 +1,7 @@
 import 'package:datePicker/date_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: const Locale('en', 'GB'),
+      locale: const Locale('en', 'US'),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         Locale('ar'),
         Locale('fa'),
       ],
-      theme: ThemeData.light(useMaterial3: true),
+      theme: ThemeData.light(useMaterial3: false),
       home: const MyHomePage(),
     );
   }
@@ -41,16 +42,29 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? selectedDate;
   @override
   Widget build(BuildContext context) {
+    print(Localizations.localeOf(context).toString());
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 120),
+            if (selectedDate != null)
+              Text(DateFormat(
+                'MMM dd, yy',
+                Localizations.localeOf(context).languageCode,
+              ).format(selectedDate!)),
             TextButton(
               onPressed: () async {
-                final date = await showDatePickerDialog(context);
+                final date = await showDatePickerDialog(
+                  context: context,
+                  initialPickerType: PickerType.years,
+                  initialDate: DateTime.now(),
+                  maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
+                  minDate:
+                      DateTime.now().subtract(const Duration(days: 365 * 3)),
+                );
                 if (date != null) {
                   setState(() {
                     selectedDate = date;
@@ -59,47 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text('Show Picker'),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 38),
-              child: Dialog(
-                insetPadding: EdgeInsets.zero,
-                child: DatePicker(
-                  initialDate: DateTime.now(),
-                  maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
-                  minDate:
-                      DateTime.now().subtract(const Duration(days: 365 * 3)),
-                  onDateChanged: (value) {
-                    // Navigator.pop(context, value);
-                    print(value);
-                  },
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
-}
-
-Future<DateTime?> showDatePickerDialog(BuildContext context) async {
-  return showDialog<DateTime>(
-    context: context,
-    builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 38),
-        child: Dialog(
-          insetPadding: EdgeInsets.zero,
-          child: DatePicker(
-            initialDate: DateTime.now(),
-            maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
-            minDate: DateTime.now().subtract(const Duration(days: 365 * 3)),
-            onDateChanged: (value) {
-              Navigator.pop(context, value);
-            },
-          ),
-        ),
-      );
-    },
-  );
 }
