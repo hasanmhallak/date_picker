@@ -20,7 +20,12 @@ class MonthView extends StatelessWidget {
     this.currentMonthColor,
     this.selectedMonthColor,
     this.selectedMonthFillColor,
-  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          if (selectedMonth == null) return true;
+          return selectedMonth.isAfter(minDate) &&
+              selectedMonth.isBefore(maxDate);
+        }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected month.
   ///

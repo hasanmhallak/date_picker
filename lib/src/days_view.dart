@@ -25,7 +25,12 @@ class DaysView extends StatelessWidget {
     this.todayColor,
     this.selectedDayColor,
     this.selectedDayFillColor,
-  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          if (selectedDate == null) return true;
+          return selectedDate.isAfter(minDate) &&
+              selectedDate.isBefore(maxDate);
+        }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected date.
   ///
@@ -193,7 +198,7 @@ class DaysView extends StatelessWidget {
         final bool isToday = DateUtils.isSameDay(currentDate, dayToBuild);
         //
         //
-        BoxDecoration decoration = const BoxDecoration(shape: BoxShape.circle);
+        BoxDecoration? decoration;
         Color dayColor = enabledDayColor;
 
         if (isSelectedDay) {

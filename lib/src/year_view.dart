@@ -19,7 +19,12 @@ class YearView extends StatelessWidget {
     this.currentYearColor,
     this.selectedYearColor,
     this.selectedYearFillColor,
-  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          if (selectedYear == null) return true;
+          return selectedYear.isAfter(minDate) &&
+              selectedYear.isBefore(maxDate);
+        }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected year.
   ///
