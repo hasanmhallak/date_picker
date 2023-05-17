@@ -152,6 +152,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void initState() {
     _displayedDate = widget.initialDate;
+
     super.initState();
   }
 
@@ -180,9 +181,9 @@ class _DatePickerState extends State<DatePicker> {
             selectedDayFillColor: widget.selectedCellFillColor,
             todayColor: widget.todayColor,
             onChange: (selectedDate) {
-              setState(() {
-                _displayedDate = selectedDate;
-              });
+              // setState(() {
+              //   _displayedDate = selectedDate;
+              // });
               widget.onDateChanged(selectedDate);
             },
             onLeadingDateTap: () {
@@ -199,7 +200,6 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            selectedDate: _displayedDate,
             currentMonthColor: widget.todayColor,
             disbaledMonthsColor: widget.disbaledCellsColor,
             enabledMonthsColor: widget.enabledCellsColor,
@@ -225,7 +225,6 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            selectedDate: _displayedDate,
             currentYearColor: widget.todayColor,
             disbaledYearColor: widget.disbaledCellsColor,
             enabledYearColor: widget.enabledCellsColor,

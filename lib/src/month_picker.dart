@@ -25,7 +25,6 @@ class MonthPicker extends StatefulWidget {
     required this.minDate,
     required this.maxDate,
     required this.initialDate,
-    this.selectedDate,
     this.onLeadingDateTap,
     this.enabledMonthsColor,
     this.disbaledMonthsColor,
@@ -49,9 +48,6 @@ class MonthPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
-
-  /// The date currently selected date.
-  final DateTime? selectedDate;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -97,7 +93,7 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   void initState() {
     _displayedYear = widget.initialDate;
-    _selectedMonth = widget.selectedDate;
+    // _selectedMonth = widget.selectedDate;
     _pageController = PageController(
       initialPage: (widget.initialDate.year - widget.minDate.year),
     );
@@ -112,6 +108,9 @@ class _MonthPickerState extends State<MonthPicker> {
       _pageController
           .jumpToPage((widget.initialDate.year - widget.minDate.year));
     }
+    // if (oldWidget.selectedDate != widget.selectedDate) {
+    //   _selectedMonth = widget.selectedDate;
+    // }
     super.didUpdateWidget(oldWidget);
   }
 

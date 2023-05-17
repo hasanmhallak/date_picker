@@ -24,7 +24,6 @@ class YearsPicker extends StatefulWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
-    this.selectedDate,
     this.onChange,
     this.enabledYearColor,
     this.disbaledYearColor,
@@ -48,9 +47,6 @@ class YearsPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
-
-  /// The date currently selected date.
-  final DateTime? selectedDate;
 
   /// The color of enabled month which are selectable.
   ///
@@ -117,7 +113,7 @@ class _YearsPickerState extends State<YearsPicker> {
       start: DateTime(widget.minDate.year + initialPageNumber * 12),
       end: DateTime(widget.minDate.year + initialPageNumber * 12 - 1 + 12),
     );
-    _selectedYear = widget.selectedDate;
+    // _selectedYear = widget.selectedDate;
     super.initState();
   }
 
@@ -133,6 +129,11 @@ class _YearsPickerState extends State<YearsPicker> {
         end: DateTime(widget.minDate.year + initialPageNumber * 12 - 1 + 12),
       );
     }
+
+    // if (oldWidget.selectedDate != widget.selectedDate) {
+    //   _selectedYear = widget.selectedDate;
+    // }
+
     super.didUpdateWidget(oldWidget);
   }
 

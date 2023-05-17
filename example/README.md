@@ -1,4 +1,4 @@
-# swift_datepicker
+# datepicker_example
 
 A new Flutter project.
 

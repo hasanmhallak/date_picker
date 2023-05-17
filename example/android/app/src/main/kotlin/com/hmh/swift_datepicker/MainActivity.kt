@@ -1,4 +1,4 @@
-package com.hmh.swift_datepicker
+package com.hmh.datepicker_example
 
 import io.flutter.embedding.android.FlutterActivity
 
