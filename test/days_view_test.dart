@@ -504,5 +504,52 @@ void main() {
 
       await tester.ensureVisible(enabledDayFinder.first);
     });
+    testWidgets('should select the right date when tap.',
+        (WidgetTester tester) async {
+      final dateToSelect = DateTime(2020, 1, 4);
+      DateTime? selectedDate;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysView(
+              currentDate: DateTime(2020, 1, 10),
+              onChanged: (DateTime date) {
+                selectedDate = date;
+              },
+              minDate: DateTime(2020, 1, 1),
+              maxDate: DateTime(2021, 1, 1),
+              displayedMonth: DateTime(2020, 1, 1),
+            ),
+          ),
+        ),
+      );
+
+      final clickbaleWidget =
+          find.byWidgetPredicate((widget) => widget is InkResponse);
+
+      expect(
+          clickbaleWidget,
+          findsNWidgets(
+              31)); // Assuming there are 31 days in the displayed month
+
+      final Finder enabledDayFinder = find.byWidgetPredicate((widget) {
+        if (widget is Container &&
+            (widget.child as Center).child is Text &&
+            ((widget.child as Center).child as Text).data ==
+                dateToSelect.day.toString()) {
+          return true;
+        }
+        return false;
+      });
+
+      expect(enabledDayFinder, findsNWidgets(1));
+
+      await tester.ensureVisible(enabledDayFinder.first);
+
+      await tester.tap(clickbaleWidget.at(dateToSelect.day - 1));
+
+      expect(selectedDate, dateToSelect);
+    });
   });
 }
