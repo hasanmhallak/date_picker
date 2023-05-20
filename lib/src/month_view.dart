@@ -14,7 +14,7 @@ class MonthView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYear,
-    required this.selectedMonth,
+    this.selectedMonth,
     this.enabledMonthsColor,
     this.disbaledMonthsColor,
     this.currentMonthColor,
@@ -86,19 +86,22 @@ class MonthView extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     //
-    final Color enabledMonthColor = enabledMonthsColor ?? colorScheme.onSurface;
-    final Color currentMonthBorderColor = colorScheme.primary;
-    final Color currentMonthColor = colorScheme.primary;
+    final Color enabledMonthColor =
+        this.enabledMonthsColor ?? colorScheme.onSurface;
+    final Color currentMonthBorderColor =
+        this.currentMonthColor ?? colorScheme.primary;
+    final Color currentMonthColor =
+        this.currentMonthColor ?? colorScheme.primary;
 
     final Color disabledMonthColor =
-        disbaledMonthsColor ?? colorScheme.onSurface.withOpacity(0.30);
+        this.disbaledMonthsColor ?? colorScheme.onSurface.withOpacity(0.30);
 
     //
     final Color selectedMonthColor =
         this.selectedMonthColor ?? colorScheme.onPrimary;
 
     final Color selectedMonthBackground =
-        selectedMonthFillColor ?? colorScheme.primary;
+        this.selectedMonthFillColor ?? colorScheme.primary;
     //
     final TextStyle monthStyle = textTheme.titleLarge!.copyWith(
       fontWeight: FontWeight.normal,
