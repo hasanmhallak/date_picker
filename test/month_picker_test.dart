@@ -438,5 +438,61 @@ void main() {
         expect(animatedContainerWidget.constraints, equals(constraints));
       },
     );
+
+    testWidgets(
+      'Should show the correct month on pick',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010, 2);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        final DateTime monthToSelect = DateTime(2010);
+        late final DateTime expectedMonth;
+        const selectedYearColor = Colors.green;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: MonthPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                selectedMonthColor: selectedYearColor,
+                selectedMonthFillColor: selectedYearColor,
+                onChange: (value) {
+                  expectedMonth = value;
+                },
+              ),
+            ),
+          ),
+        );
+
+        final selectedMonthFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data == 'Jan' &&
+                ((widget.child as Center).child as Text).style?.color ==
+                    selectedYearColor;
+          }
+          return false;
+        });
+
+        final monthFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data == 'Jan';
+          }
+          return false;
+        });
+
+        expect(selectedMonthFinder, findsNothing);
+
+        await tester.tap(monthFinder);
+        await tester.pumpAndSettle();
+
+        expect(expectedMonth, monthToSelect);
+      },
+    );
   });
 }
