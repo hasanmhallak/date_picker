@@ -145,14 +145,14 @@ class _YearsPickerState extends State<YearsPicker> {
   }
 
   Widget _buildItems(BuildContext context, int index) {
-    final DateTime yearDate = widget.minDate.add(Duration(days: 365 * index));
+    final yearRange = calculateDateRange(index);
 
     return YearView(
-      key: ValueKey<DateTime>(yearDate),
+      key: ValueKey<DateTimeRange>(yearRange),
       currentDate: DateTime.now(),
       minDate: widget.minDate,
       maxDate: widget.maxDate,
-      displayedYearRange: calculateDateRange(index),
+      displayedYearRange: yearRange,
       selectedYear: _selectedYear,
       currentYearColor: widget.currentYearColor,
       disbaledYearColor: widget.disbaledYearColor,

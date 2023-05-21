@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'picker_grid_delegate.dart';
 
-/// Displays the months of a given year and allows choosing a month.
+/// Displays the years of a given range and allows choosing a year.
 ///
-/// Months are arranged in a rectangular grid with tree columns.
+/// Years are arranged in a rectangular grid with tree columns.
 class YearView extends StatelessWidget {
+  /// Displays the years of a given range and allows choosing a year.
+  ///
+  /// Years are arranged in a rectangular grid with tree columns.
   YearView({
     super.key,
     required this.currentDate,
@@ -13,13 +16,18 @@ class YearView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYearRange,
-    required this.selectedYear,
+    this.selectedYear,
     this.enabledYearColor,
     this.disbaledYearColor,
     this.currentYearColor,
     this.selectedYearColor,
     this.selectedYearFillColor,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          return (displayedYearRange.end.year -
+                  displayedYearRange.start.year) ==
+              11;
+        }(), "the display year range must always be 12 years."),
         assert(() {
           if (selectedYear == null) return true;
           return selectedYear.isAfter(minDate) &&
@@ -84,8 +92,9 @@ class YearView extends StatelessWidget {
     //
     final Color enabledYearColor =
         this.enabledYearColor ?? colorScheme.onSurface;
-    final Color currentYearBorderColor = colorScheme.primary;
-    final Color currentYearColor = colorScheme.primary;
+    final Color currentYearBorderColor =
+        this.currentYearColor ?? colorScheme.primary;
+    final Color currentYearColor = this.currentYearColor ?? colorScheme.primary;
 
     final Color disabledYearColor =
         disbaledYearColor ?? colorScheme.onSurface.withOpacity(0.30);
@@ -165,7 +174,7 @@ class YearView extends StatelessWidget {
         final date = DateTime(yearsName[i]);
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
-          radius: 60 / 2.5 + 4,
+          radius: 60 / 2 + 4,
           splashColor: currentYearBorderColor.withOpacity(0.38),
           child: Semantics(
             label: yearsName[i].toString(),
