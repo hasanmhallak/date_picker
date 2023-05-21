@@ -454,5 +454,63 @@ void main() {
         expect(animatedContainerWidget.constraints, equals(constraints));
       },
     );
+
+    testWidgets(
+      'Should show the correct day on pick',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        final DateTime dayToSelect = DateTime(2010, 1, 2);
+        late final DateTime expectedDay;
+        const selectedDayColor = Colors.green;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: DaysPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                selectedDayColor: selectedDayColor,
+                selectedDayFillColor: selectedDayColor,
+                onChange: (value) {
+                  expectedDay = value;
+                },
+              ),
+            ),
+          ),
+        );
+
+        final selectedDayFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data ==
+                    dayToSelect.day.toString() &&
+                ((widget.child as Center).child as Text).style?.color ==
+                    selectedDayColor;
+          }
+          return false;
+        });
+
+        final dayFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data ==
+                dayToSelect.day.toString();
+          }
+          return false;
+        });
+
+        expect(selectedDayFinder, findsNothing);
+
+        await tester.tap(dayFinder);
+        await tester.pumpAndSettle();
+
+        expect(expectedDay, dayToSelect);
+      },
+    );
   });
 }
