@@ -1,6 +1,6 @@
 name: date_picker
-description: A new Flutter package project.
-version: 0.0.1
+description: A lightweight and customizable date picker.
+version: 1.0.0
 homepage:
 
 environment:
