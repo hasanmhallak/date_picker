@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
             if (selectedDate != null)
               Text(DateFormat(
                 'MMM dd, yy',
-                Localizations.localeOf(context).languageCode,
               ).format(selectedDate!)),
             TextButton(
               onPressed: () async {
