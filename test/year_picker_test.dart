@@ -376,5 +376,62 @@ void main() {
         expect(animatedContainerWidget.constraints, equals(constraints));
       },
     );
+    testWidgets(
+      'Should show the correct year on pick',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        final DateTime yearToSelect = DateTime(2010);
+        late final DateTime expectedYear;
+        const selectedYearColor = Colors.green;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: YearsPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                selectedYearColor: selectedYearColor,
+                selectedYearFillColor: selectedYearColor,
+                onChange: (value) {
+                  expectedYear = value;
+                },
+              ),
+            ),
+          ),
+        );
+
+        final selectedYearFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data ==
+                    yearToSelect.year.toString() &&
+                ((widget.child as Center).child as Text).style?.color ==
+                    selectedYearColor;
+          }
+          return false;
+        });
+
+        final yearFinder = find.byWidgetPredicate((widget) {
+          if (widget is Container &&
+              widget.child is Center &&
+              (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data ==
+                yearToSelect.year.toString();
+          }
+          return false;
+        });
+
+        expect(selectedYearFinder, findsNothing);
+
+        await tester.tap(yearFinder);
+        await tester.pumpAndSettle();
+
+        expect(expectedYear, yearToSelect);
+      },
+    );
   });
 }
