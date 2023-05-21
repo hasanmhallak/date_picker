@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 final date = await showDatePickerDialog(
                   context: context,
-                  initialDate: DateTime.now(),
+                  initialDate: DateTime(2023, 1),
                   maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
                   minDate:
                       DateTime.now().subtract(const Duration(days: 365 * 3)),

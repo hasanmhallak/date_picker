@@ -345,5 +345,36 @@ void main() {
         expect(newHeaderTextWidget.data, '2000 - 2011');
       },
     );
+
+    testWidgets(
+      'Should the height of the animated container be 78 * 4',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: YearsPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+              ),
+            ),
+          ),
+        );
+
+        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
+        expect(animatedContainerFinder, findsOneWidget);
+
+        const constraints = BoxConstraints.tightFor(height: 78 * 4);
+
+        final AnimatedContainer animatedContainerWidget =
+            tester.widget<AnimatedContainer>(animatedContainerFinder);
+
+        expect(animatedContainerWidget.constraints, equals(constraints));
+      },
+    );
   });
 }

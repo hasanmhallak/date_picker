@@ -391,5 +391,68 @@ void main() {
         );
       },
     );
+
+    testWidgets(
+      'Should the height of the animated container be 52 * 6 when it\'s a six rows month',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2023);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2030);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: DaysPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+              ),
+            ),
+          ),
+        );
+
+        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
+        expect(animatedContainerFinder, findsOneWidget);
+
+        const constraints = BoxConstraints.tightFor(height: 52 * 6);
+
+        final AnimatedContainer animatedContainerWidget =
+            tester.widget<AnimatedContainer>(animatedContainerFinder);
+
+        expect(animatedContainerWidget.constraints, equals(constraints));
+      },
+    );
+    testWidgets(
+      'Should the height of the animated container be 52 * 7 when it\'s a seven rows month',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2023, 7);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2030);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: DaysPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
+        expect(animatedContainerFinder, findsOneWidget);
+
+        const constraints = BoxConstraints.tightFor(height: 52 * 7);
+
+        final AnimatedContainer animatedContainerWidget =
+            tester.widget<AnimatedContainer>(animatedContainerFinder);
+
+        expect(animatedContainerWidget.constraints, equals(constraints));
+      },
+    );
   });
 }
