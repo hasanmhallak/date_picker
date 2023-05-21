@@ -1,5 +1,6 @@
-import 'package:datePicker/date_picker.dart';
+import 'package:date_picker/date_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -12,6 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('en'),
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+        Locale('zh'),
+      ],
       theme: ThemeData.light(useMaterial3: true),
       home: const MyHomePage(),
     );
@@ -44,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 final date = await showDatePickerDialog(
                   context: context,
-                  initialDate: DateTime(2023, 1),
+                  initialDate: DateTime.now(),
                   maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
                   minDate:
                       DateTime.now().subtract(const Duration(days: 365 * 3)),

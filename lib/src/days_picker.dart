@@ -211,7 +211,17 @@ class __DaysPickerState extends State<_DaysPicker> {
         Header(
           onDateTap: () => widget.onLeadingDateTap?.call(),
           displayedDate: MaterialLocalizations.of(context)
-              .formatMonthYear(_displayedMonth!),
+              .formatMonthYear(_displayedMonth!)
+              .replaceAll('٩', '9')
+              .replaceAll('٨', '8')
+              .replaceAll('٧', '7')
+              .replaceAll('٦', '6')
+              .replaceAll('٥', '5')
+              .replaceAll('٤', '4')
+              .replaceAll('٣', '3')
+              .replaceAll('٢', '2')
+              .replaceAll('١', '1')
+              .replaceAll('٠', '0'),
           onNextPage: () {
             _pageController.nextPage(
               duration: const Duration(milliseconds: 300),
