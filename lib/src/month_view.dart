@@ -7,6 +7,9 @@ import 'picker_grid_delegate.dart';
 ///
 /// Months are arranged in a rectangular grid with tree columns.
 class MonthView extends StatelessWidget {
+  /// Displays the months of a given year and allows choosing a month.
+  ///
+  /// Months are arranged in a rectangular grid with tree columns.
   MonthView({
     super.key,
     required this.currentDate,
