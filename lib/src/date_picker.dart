@@ -5,9 +5,7 @@ import 'month_picker.dart';
 import 'year_picker.dart';
 import 'show_date_picker_dialog.dart';
 
-/// Initial display of a calendar date picker.
-///
-/// Either a grid of available years or a monthly calendar.
+/// Initial display of a date picker.
 ///
 /// See also:
 ///
