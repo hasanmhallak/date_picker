@@ -28,14 +28,17 @@ class _DaysPicker extends StatefulWidget {
     required this.maxDate,
     required this.minDate,
     required this.materialLocalizations,
+    required this.daysNameTextStyle,
+    required this.enabledDaysTextStyle,
+    required this.enabledDaysDecoration,
+    required this.disbaledDaysTextStyle,
+    required this.disbaledDaysDecoration,
+    required this.todayTextStyle,
+    required this.todayDecoration,
+    required this.selectedDayTextStyle,
+    required this.selectedDayDecoration,
     this.onLeadingDateTap,
     this.onChange,
-    this.daysNameColor,
-    this.enabledDaysColor,
-    this.disbaledDaysColor,
-    this.todayColor,
-    this.selectedDayColor,
-    this.selectedDayFillColor,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -57,35 +60,32 @@ class _DaysPicker extends StatefulWidget {
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
 
-  /// The color of the days name.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? daysNameColor;
+  /// The text style of the days name.
+  final TextStyle daysNameTextStyle;
 
-  /// The color of enabled days which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledDaysColor;
+  /// The text style of days which are selectable.
+  final TextStyle enabledDaysTextStyle;
 
-  /// The color of disabled days which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledDaysColor;
+  /// The cell decoration of days which are selectable.
+  final BoxDecoration enabledDaysDecoration;
 
-  /// The color of the current day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? todayColor;
+  /// The text style of days which are not selectable.
+  final TextStyle disbaledDaysTextStyle;
 
-  /// The color of the selected day.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedDayColor;
+  /// The cell decoration of days which are not selectable.
+  final BoxDecoration disbaledDaysDecoration;
 
-  /// The fill color of the selected day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedDayFillColor;
+  /// The text style of the current day
+  final TextStyle todayTextStyle;
+
+  /// The cell decoration of the current day.
+  final BoxDecoration todayDecoration;
+
+  /// The text style of selected day.
+  final TextStyle selectedDayTextStyle;
+
+  /// The cell decoration of selected day.
+  final BoxDecoration selectedDayDecoration;
 
   /// Defines the localized resource values used by the Material widgets.
   ///
@@ -153,12 +153,15 @@ class __DaysPickerState extends State<_DaysPicker> {
       maxDate: widget.maxDate,
       displayedMonth: month,
       selectedDate: _selectedDate,
-      daysNameColor: widget.daysNameColor,
-      disbaledDaysColor: widget.disbaledDaysColor,
-      enabledDaysColor: widget.enabledDaysColor,
-      selectedDayColor: widget.selectedDayColor,
-      selectedDayFillColor: widget.selectedDayFillColor,
-      todayColor: widget.todayColor,
+      daysNameTextStyle: widget.daysNameTextStyle,
+      enabledDaysTextStyle: widget.enabledDaysTextStyle,
+      enabledDaysDecoration: widget.enabledDaysDecoration,
+      disbaledDaysTextStyle: widget.disbaledDaysTextStyle,
+      disbaledDaysDecoration: widget.disbaledDaysDecoration,
+      todayDecoration: widget.todayDecoration,
+      todayTextStyle: widget.todayTextStyle,
+      selectedDayDecoration: widget.selectedDayDecoration,
+      selectedDayTextStyle: widget.selectedDayTextStyle,
       onChanged: (value) {
         setState(() {
           _selectedDate = value;
@@ -276,12 +279,15 @@ class DaysPicker extends StatelessWidget {
     required this.minDate,
     this.onLeadingDateTap,
     this.onChange,
-    this.daysNameColor,
-    this.enabledDaysColor,
-    this.disbaledDaysColor,
-    this.todayColor,
-    this.selectedDayColor,
-    this.selectedDayFillColor,
+    required this.daysNameTextStyle,
+    required this.enabledDaysTextStyle,
+    required this.enabledDaysDecoration,
+    required this.disbaledDaysTextStyle,
+    required this.disbaledDaysDecoration,
+    required this.todayTextStyle,
+    required this.todayDecoration,
+    required this.selectedDayTextStyle,
+    required this.selectedDayDecoration,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -303,35 +309,32 @@ class DaysPicker extends StatelessWidget {
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
 
-  /// The color of the days name.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? daysNameColor;
+  /// The text style of the days name.
+  final TextStyle daysNameTextStyle;
 
-  /// The color of enabled days which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledDaysColor;
+  /// The text style of days which are selectable.
+  final TextStyle enabledDaysTextStyle;
 
-  /// The color of disabled days which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledDaysColor;
+  /// The cell decoration of days which are selectable.
+  final BoxDecoration enabledDaysDecoration;
 
-  /// The color of the current day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? todayColor;
+  /// The text style of days which are not selectable.
+  final TextStyle disbaledDaysTextStyle;
 
-  /// The color of the selected day.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedDayColor;
+  /// The cell decoration of days which are not selectable.
+  final BoxDecoration disbaledDaysDecoration;
 
-  /// The fill color of the selected day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedDayFillColor;
+  /// The text style of the current day
+  final TextStyle todayTextStyle;
+
+  /// The cell decoration of the current day.
+  final BoxDecoration todayDecoration;
+
+  /// The text style of selected day.
+  final TextStyle selectedDayTextStyle;
+
+  /// The cell decoration of selected day.
+  final BoxDecoration selectedDayDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -339,14 +342,15 @@ class DaysPicker extends StatelessWidget {
       initialDate: initialDate,
       maxDate: maxDate,
       minDate: minDate,
-      daysNameColor: daysNameColor,
-      disbaledDaysColor: disbaledDaysColor,
-      enabledDaysColor: enabledDaysColor,
-      onChange: onChange,
-      todayColor: todayColor,
-      onLeadingDateTap: onLeadingDateTap,
-      selectedDayFillColor: selectedDayFillColor,
-      selectedDayColor: selectedDayColor,
+      daysNameTextStyle: daysNameTextStyle,
+      enabledDaysTextStyle: enabledDaysTextStyle,
+      enabledDaysDecoration: enabledDaysDecoration,
+      disbaledDaysTextStyle: disbaledDaysTextStyle,
+      disbaledDaysDecoration: disbaledDaysDecoration,
+      todayDecoration: todayDecoration,
+      todayTextStyle: todayTextStyle,
+      selectedDayDecoration: selectedDayDecoration,
+      selectedDayTextStyle: selectedDayTextStyle,
       materialLocalizations: MaterialLocalizations.of(context),
     );
   }
