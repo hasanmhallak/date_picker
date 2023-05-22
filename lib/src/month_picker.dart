@@ -27,11 +27,14 @@ class MonthPicker extends StatefulWidget {
     required this.maxDate,
     required this.initialDate,
     this.onLeadingDateTap,
-    this.enabledMonthsColor,
-    this.disbaledMonthsColor,
-    this.currentMonthColor,
-    this.selectedMonthColor,
-    this.selectedMonthFillColor,
+    required this.enabledMonthTextStyle,
+    required this.enabledMonthDecoration,
+    required this.disbaledMonthTextStyle,
+    required this.disbaledMonthDecoration,
+    required this.currentMonthTextStyle,
+    required this.currentMonthDecoration,
+    required this.selectedMonthTextStyle,
+    required this.selectedMonthDecoration,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -53,30 +56,29 @@ class MonthPicker extends StatefulWidget {
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
 
-  /// The color of enabled month which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledMonthsColor;
+  /// The text style of months which are selectable.
+  final TextStyle enabledMonthTextStyle;
 
-  /// The color of disabled months which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledMonthsColor;
+  /// The cell decoration of months which are selectable.
+  final BoxDecoration enabledMonthDecoration;
 
-  /// The color of the current month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? currentMonthColor;
+  /// The text style of months which are not selectable.
+  final TextStyle disbaledMonthTextStyle;
 
-  /// The color of the selected month.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedMonthColor;
+  /// The cell decoration of months which are not selectable.
+  final BoxDecoration disbaledMonthDecoration;
 
-  /// The fill color of the selected month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedMonthFillColor;
+  /// The text style of the current month
+  final TextStyle currentMonthTextStyle;
+
+  /// The cell decoration of the current month.
+  final BoxDecoration currentMonthDecoration;
+
+  /// The text style of selected month.
+  final TextStyle selectedMonthTextStyle;
+
+  /// The cell decoration of selected month.
+  final BoxDecoration selectedMonthDecoration;
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
@@ -132,11 +134,14 @@ class _MonthPickerState extends State<MonthPicker> {
       maxDate: widget.maxDate,
       displayedYear: yearDate,
       selectedMonth: _selectedMonth,
-      currentMonthColor: widget.currentMonthColor,
-      disbaledMonthsColor: widget.disbaledMonthsColor,
-      enabledMonthsColor: widget.enabledMonthsColor,
-      selectedMonthColor: widget.selectedMonthColor,
-      selectedMonthFillColor: widget.selectedMonthFillColor,
+      currentMonthDecoration: widget.currentMonthDecoration,
+      currentMonthTextStyle: widget.currentMonthTextStyle,
+      disbaledMonthDecoration: widget.disbaledMonthDecoration,
+      disbaledMonthTextStyle: widget.disbaledMonthTextStyle,
+      enabledMonthDecoration: widget.enabledMonthDecoration,
+      enabledMonthTextStyle: widget.enabledMonthTextStyle,
+      selectedMonthDecoration: widget.selectedMonthDecoration,
+      selectedMonthTextStyle: widget.selectedMonthTextStyle,
       onChanged: (value) {
         widget.onChange?.call(value);
         setState(() {

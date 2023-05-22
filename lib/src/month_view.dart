@@ -17,12 +17,15 @@ class MonthView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYear,
+    required this.enabledMonthTextStyle,
+    required this.enabledMonthDecoration,
+    required this.disbaledMonthTextStyle,
+    required this.disbaledMonthDecoration,
+    required this.currentMonthTextStyle,
+    required this.currentMonthDecoration,
+    required this.selectedMonthTextStyle,
+    required this.selectedMonthDecoration,
     this.selectedMonth,
-    this.enabledMonthsColor,
-    this.disbaledMonthsColor,
-    this.currentMonthColor,
-    this.selectedMonthColor,
-    this.selectedMonthFillColor,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           if (selectedMonth == null) return true;
@@ -35,8 +38,7 @@ class MonthView extends StatelessWidget {
   /// This date is highlighted in the picker.
   final DateTime? selectedMonth;
 
-  /// The current date at the time the picker is displayed.
-  /// In other words, the day to be considered as today.
+  /// The current month at the time the picker is displayed.
   final DateTime currentDate;
 
   /// Called when the user picks a month.
@@ -52,33 +54,32 @@ class MonthView extends StatelessWidget {
   /// This date must be on or after the [minDate].
   final DateTime maxDate;
 
-  /// The year whose months are displayed by this picker.
+  /// The year which its months are displayed by this picker.
   final DateTime displayedYear;
 
-  /// The color of enabled month which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledMonthsColor;
+  /// The text style of months which are selectable.
+  final TextStyle enabledMonthTextStyle;
 
-  /// The color of disabled months which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledMonthsColor;
+  /// The cell decoration of months which are selectable.
+  final BoxDecoration enabledMonthDecoration;
 
-  /// The color of the current month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? currentMonthColor;
+  /// The text style of months which are not selectable.
+  final TextStyle disbaledMonthTextStyle;
 
-  /// The color of the selected month.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedMonthColor;
+  /// The cell decoration of months which are not selectable.
+  final BoxDecoration disbaledMonthDecoration;
 
-  /// The fill color of the selected month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedMonthFillColor;
+  /// The text style of the current month
+  final TextStyle currentMonthTextStyle;
+
+  /// The cell decoration of the current month.
+  final BoxDecoration currentMonthDecoration;
+
+  /// The text style of selected month.
+  final TextStyle selectedMonthTextStyle;
+
+  /// The cell decoration of selected month.
+  final BoxDecoration selectedMonthDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -86,28 +87,7 @@ class MonthView extends StatelessWidget {
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    final TextTheme textTheme = Theme.of(context).textTheme;
 
-    //
-    final Color enabledMonthColor = enabledMonthsColor ?? colorScheme.onSurface;
-    final Color currentMonthBorderColor =
-        this.currentMonthColor ?? colorScheme.primary;
-    final Color currentMonthColor =
-        this.currentMonthColor ?? colorScheme.primary;
-
-    final Color disabledMonthColor =
-        disbaledMonthsColor ?? colorScheme.onSurface.withOpacity(0.30);
-
-    //
-    final Color selectedMonthColor =
-        this.selectedMonthColor ?? colorScheme.onPrimary;
-
-    final Color selectedMonthBackground =
-        selectedMonthFillColor ?? colorScheme.primary;
-    //
-    final TextStyle monthStyle = textTheme.titleLarge!.copyWith(
-      fontWeight: FontWeight.normal,
-    );
     final int year = displayedYear.year;
     // we git rid of the day because if there is anu day allowed in
     // in the month we should not gray it out.
@@ -136,28 +116,25 @@ class MonthView extends StatelessWidget {
       final bool isSelected = monthToBuild == selectedMonth;
       //
       //
-      BoxDecoration? decoration;
-      Color monthColor = enabledMonthColor;
+      BoxDecoration decoration = enabledMonthDecoration;
+      TextStyle style = enabledMonthTextStyle;
 
       if (isCurrentMonth) {
-        // The selected month gets a circle background highlight, and a
-        // contrasting text color.
-        monthColor = currentMonthColor;
-        decoration = BoxDecoration(
-          border: Border.all(color: currentMonthBorderColor),
-          shape: BoxShape.circle,
-        );
+        //
+        //
+        style = selectedMonthTextStyle;
+        decoration = selectedMonthDecoration;
       }
       if (isSelected) {
-        monthColor = selectedMonthColor;
-        decoration = BoxDecoration(
-          color: selectedMonthBackground,
-          shape: BoxShape.circle,
-        );
+        //
+        //
+        style = currentMonthTextStyle;
+        decoration = currentMonthDecoration;
       }
 
       if (isDisabled) {
-        monthColor = disabledMonthColor;
+        style = disbaledMonthTextStyle;
+        decoration = disbaledMonthDecoration;
       }
 
       Widget monthWidget = Container(
@@ -165,7 +142,7 @@ class MonthView extends StatelessWidget {
         child: Center(
           child: Text(
             monthsNames[month],
-            style: monthStyle.copyWith(color: monthColor),
+            style: style,
           ),
         ),
       );
@@ -178,10 +155,11 @@ class MonthView extends StatelessWidget {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
           radius: 60 / 2 + 4,
-          splashColor: currentMonthBorderColor.withOpacity(0.38),
+          splashColor: selectedMonthDecoration.color?.withOpacity(0.3) ??
+              colorScheme.primary.withOpacity(0.3),
           child: Semantics(
             label: localizations.formatMediumDate(monthToBuild),
-            selected: isCurrentMonth,
+            selected: isSelected,
             excludeSemantics: true,
             child: monthWidget,
           ),
