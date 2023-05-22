@@ -22,13 +22,16 @@ class DaysView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedMonth,
+    required this.daysNameTextStyle,
+    required this.enabledDaysTextStyle,
+    required this.enabledDaysDecoration,
+    required this.disbaledDaysTextStyle,
+    required this.disbaledDaysDecoration,
+    required this.todayTextStyle,
+    required this.todayDecoration,
+    required this.selectedDayTextStyle,
+    required this.selectedDayDecoration,
     this.selectedDate,
-    this.daysNameColor,
-    this.enabledDaysColor,
-    this.disbaledDaysColor,
-    this.todayColor,
-    this.selectedDayColor,
-    this.selectedDayFillColor,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           if (selectedDate == null) return true;
@@ -61,35 +64,32 @@ class DaysView extends StatelessWidget {
   /// The month whose days are displayed by this picker.
   final DateTime displayedMonth;
 
-  /// The color of the days name.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? daysNameColor;
+  /// The text style of the days name.
+  final TextStyle daysNameTextStyle;
 
-  /// The color of enabled days which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledDaysColor;
+  /// The text style of days which are selectable.
+  final TextStyle enabledDaysTextStyle;
 
-  /// The color of disabled days which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledDaysColor;
+  /// The cell decoration of days which are selectable.
+  final BoxDecoration enabledDaysDecoration;
 
-  /// The color of the current day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? todayColor;
+  /// The text style of days which are not selectable.
+  final TextStyle disbaledDaysTextStyle;
 
-  /// The color of the selected day.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedDayColor;
+  /// The cell decoration of days which are not selectable.
+  final BoxDecoration disbaledDaysDecoration;
 
-  /// The fill color of the selected day.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedDayFillColor;
+  /// The text style of the current day
+  final TextStyle todayTextStyle;
+
+  /// The cell decoration of the current day.
+  final BoxDecoration todayDecoration;
+
+  /// The text style of selected day.
+  final TextStyle selectedDayTextStyle;
+
+  /// The cell decoration of selected day.
+  final BoxDecoration selectedDayDecoration;
 
   /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.
@@ -109,7 +109,7 @@ class DaysView extends StatelessWidget {
   ///     4 5 6 7 8 9 10
   ///
   List<Widget> _dayHeaders(
-    TextStyle? headerStyle,
+    TextStyle headerStyle,
     Locale locale,
     MaterialLocalizations localizations,
   ) {
@@ -130,7 +130,7 @@ class DaysView extends StatelessWidget {
           child: Center(
             child: Text(
               weekday.toUpperCase(),
-              style: headerStyle,
+              style: daysNameTextStyle,
               // style: isToday
               //     ? headerStyle?.copyWith(color: Colors.red)
               //     : headerStyle,
@@ -150,31 +150,9 @@ class DaysView extends StatelessWidget {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
-    final TextTheme textTheme = Theme.of(context).textTheme;
     //
     //
     //
-    final TextStyle? headerStyle = textTheme.titleSmall?.copyWith(
-      color: daysNameColor ?? colorScheme.onSurface.withOpacity(0.30),
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-
-    //
-    final Color enabledDayColor = enabledDaysColor ?? colorScheme.onSurface;
-    final Color disabledDayColor =
-        disbaledDaysColor ?? colorScheme.onSurface.withOpacity(0.30);
-    final Color todayColor = this.todayColor ?? colorScheme.primary;
-    //
-    //
-    final Color selectedDayColor =
-        this.selectedDayColor ?? colorScheme.onPrimary;
-    final Color selectedDayBackground =
-        selectedDayFillColor ?? colorScheme.primary;
-    //
-    final TextStyle dayStyle = textTheme.titleLarge!.copyWith(
-      fontWeight: FontWeight.normal,
-    );
 
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
@@ -182,7 +160,7 @@ class DaysView extends StatelessWidget {
     final int dayOffset = DateUtils.firstDayOffset(year, month, localizations);
 
     final List<Widget> dayItems = _dayHeaders(
-      headerStyle,
+      daysNameTextStyle,
       Localizations.localeOf(context),
       MaterialLocalizations.of(context),
     );
@@ -202,29 +180,24 @@ class DaysView extends StatelessWidget {
         final bool isToday = DateUtils.isSameDay(currentDate, dayToBuild);
         //
         //
-        BoxDecoration? decoration;
-        Color dayColor = enabledDayColor;
+        BoxDecoration decoration = enabledDaysDecoration;
+        TextStyle style = enabledDaysTextStyle;
 
         if (isSelectedDay) {
-          // The selected day gets a circle background highlight, and a
-          // contrasting text color.
-          dayColor = selectedDayColor;
-          decoration = BoxDecoration(
-            color: selectedDayBackground,
-            shape: BoxShape.circle,
-          );
+          //
+          //
+          style = selectedDayTextStyle;
+          decoration = selectedDayDecoration;
         } else if (isToday) {
-          // The current day gets a different text color (if enabled) and a circle stroke
-          // border.
-          dayColor = todayColor;
-          decoration = BoxDecoration(
-            border: Border.all(color: dayColor),
-            shape: BoxShape.circle,
-          );
+          //
+          //
+          style = todayTextStyle;
+          decoration = todayDecoration;
         }
 
         if (isDisabled) {
-          dayColor = disabledDayColor;
+          style = disbaledDaysTextStyle;
+          decoration = disbaledDaysDecoration;
         }
 
         Widget dayWidget = Container(
@@ -232,7 +205,7 @@ class DaysView extends StatelessWidget {
           child: Center(
             child: Text(
               localizations.formatDecimal(day),
-              style: dayStyle.copyWith(color: dayColor),
+              style: style,
             ),
           ),
         );
@@ -244,8 +217,9 @@ class DaysView extends StatelessWidget {
         } else {
           dayWidget = InkResponse(
             onTap: () => onChanged(dayToBuild),
-            radius: _dayPickerRowHeight / 2.5 + 4,
-            splashColor: selectedDayBackground.withOpacity(0.38),
+            radius: _dayPickerRowHeight / 2 + 4,
+            splashColor: selectedDayDecoration.color?.withOpacity(0.3) ??
+                colorScheme.primary.withOpacity(0.3),
             child: Semantics(
               // We want the day of month to be spoken first irrespective of the
               // locale-specific preferences or TextDirection. This is because
