@@ -192,7 +192,7 @@ class YearView extends StatelessWidget {
     return GridView.custom(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(
         columnCount: 3,
         rowExtent: 60,
