@@ -177,7 +177,7 @@ class MonthView extends StatelessWidget {
       } else {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
-          radius: 60 / 2.5 + 4,
+          radius: 60 / 2 + 4,
           splashColor: currentMonthBorderColor.withOpacity(0.38),
           child: Semantics(
             label: localizations.formatMediumDate(monthToBuild),
