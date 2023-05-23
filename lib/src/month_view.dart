@@ -122,14 +122,14 @@ class MonthView extends StatelessWidget {
       if (isCurrentMonth) {
         //
         //
-        style = selectedMonthTextStyle;
-        decoration = selectedMonthDecoration;
+        style = currentMonthTextStyle;
+        decoration = currentMonthDecoration;
       }
       if (isSelected) {
         //
         //
-        style = currentMonthTextStyle;
-        decoration = currentMonthDecoration;
+        style = selectedMonthTextStyle;
+        decoration = selectedMonthDecoration;
       }
 
       if (isDisabled) {

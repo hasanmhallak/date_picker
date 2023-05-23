@@ -118,14 +118,14 @@ class YearView extends StatelessWidget {
       if (isCurrentYear) {
         //
         //
-        style = selectedYearTextStyle;
-        decoration = selectedYearDecoration;
+        style = currentYearTextStyle;
+        decoration = currentYearDecoration;
       }
       if (isSelected) {
         //
         //
-        style = currentYearTextStyle;
-        decoration = currentYearDecoration;
+        style = selectedYearTextStyle;
+        decoration = selectedYearDecoration;
       }
 
       if (isDisabled) {

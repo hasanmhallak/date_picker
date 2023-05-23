@@ -37,8 +37,8 @@ class _DaysPicker extends StatefulWidget {
     required this.todayDecoration,
     required this.selectedDayTextStyle,
     required this.selectedDayDecoration,
-    this.onLeadingDateTap,
-    this.onChange,
+    required this.onLeadingDateTap,
+    required this.onChange,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -352,6 +352,8 @@ class DaysPicker extends StatelessWidget {
       selectedDayDecoration: selectedDayDecoration,
       selectedDayTextStyle: selectedDayTextStyle,
       materialLocalizations: MaterialLocalizations.of(context),
+      onChange: onChange,
+      onLeadingDateTap: onLeadingDateTap,
     );
   }
 }

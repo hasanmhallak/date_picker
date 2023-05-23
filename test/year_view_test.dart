@@ -20,6 +20,14 @@ void main() {
                   currentDate.year + 50, currentDate.month, currentDate.day),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2019), end: DateTime(2030)),
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -51,6 +59,17 @@ void main() {
               maxDate: DateTime(2060),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2019), end: DateTime(2030)),
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: BoxDecoration(
+                border: Border.all(color: Colors.green),
+                shape: BoxShape.circle,
+              ),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -85,6 +104,16 @@ void main() {
               displayedYearRange:
                   DateTimeRange(start: DateTime(2020), end: DateTime(2031)),
               selectedYear: selectedMonth,
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration:
+                  BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration:
+                  const BoxDecoration(shape: BoxShape.circle),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -129,6 +158,16 @@ void main() {
               displayedYearRange:
                   DateTimeRange(start: DateTime(2018), end: DateTime(2029)),
               selectedYear: selectedMonth,
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration:
+                  BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration:
+                  const BoxDecoration(shape: BoxShape.circle),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -175,6 +214,14 @@ void main() {
                 maxDate: maxDate,
                 displayedYearRange:
                     DateTimeRange(start: DateTime(2018), end: DateTime(2029)),
+                currentYearTextStyle: const TextStyle(),
+                enabledYearTextStyle: const TextStyle(),
+                selectedYearTextStyle: const TextStyle(),
+                disbaledYearTextStyle: const TextStyle(),
+                currentYearDecoration: const BoxDecoration(),
+                enabledYearDecoration: const BoxDecoration(),
+                selectedYearDecoration: const BoxDecoration(),
+                disbaledYearDecoration: const BoxDecoration(),
               ),
             ),
           ),
@@ -202,6 +249,14 @@ void main() {
                 maxDate: maxDate,
                 displayedYearRange:
                     DateTimeRange(start: DateTime(2018), end: DateTime(2050)),
+                currentYearTextStyle: const TextStyle(),
+                enabledYearTextStyle: const TextStyle(),
+                selectedYearTextStyle: const TextStyle(),
+                disbaledYearTextStyle: const TextStyle(),
+                currentYearDecoration: const BoxDecoration(),
+                enabledYearDecoration: const BoxDecoration(),
+                selectedYearDecoration: const BoxDecoration(),
+                disbaledYearDecoration: const BoxDecoration(),
               ),
             ),
           ),
@@ -225,6 +280,16 @@ void main() {
               maxDate: maxDate,
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(
+                color: Colors.green,
+              ),
             ),
           ),
         ),
@@ -235,7 +300,7 @@ void main() {
             widget.child is Container &&
             (widget.child as Container).child is Center) {
           final container = widget.child as Container;
-          return container.decoration == null;
+          return (container.decoration as BoxDecoration).color == Colors.green;
         }
         return false;
       });
@@ -258,6 +323,16 @@ void main() {
               maxDate: maxDate,
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(
+                color: Colors.green,
+              ),
             ),
           ),
         ),
@@ -268,7 +343,7 @@ void main() {
             widget.child is Container &&
             (widget.child as Container).child is Center) {
           final container = widget.child as Container;
-          return container.decoration == null;
+          return (container.decoration as BoxDecoration).color == Colors.green;
         }
         return false;
       });
@@ -289,7 +364,16 @@ void main() {
               maxDate: DateTime(2028, 1, 1),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
-              enabledYearColor: customColor,
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(
+                color: customColor,
+              ),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -324,7 +408,16 @@ void main() {
               maxDate: DateTime(2028, 12, 1),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
-              disbaledYearColor: customColor,
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(
+                color: customColor,
+              ),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -358,7 +451,18 @@ void main() {
               maxDate: DateTime(2022, 12, 1),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
-              currentYearColor: customColor,
+              currentYearTextStyle: const TextStyle(
+                color: customColor,
+              ),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: BoxDecoration(
+                border: Border.all(color: customColor),
+              ),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -400,8 +504,18 @@ void main() {
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               selectedYear: DateTime(2020),
-              selectedYearColor: textColor,
-              selectedYearFillColor: fillColor,
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(
+                color: textColor,
+              ),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(
+                color: fillColor,
+              ),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
@@ -442,6 +556,14 @@ void main() {
               maxDate: DateTime(2021, 1, 1),
               displayedYearRange:
                   DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              currentYearTextStyle: const TextStyle(),
+              enabledYearTextStyle: const TextStyle(),
+              selectedYearTextStyle: const TextStyle(),
+              disbaledYearTextStyle: const TextStyle(),
+              currentYearDecoration: const BoxDecoration(),
+              enabledYearDecoration: const BoxDecoration(),
+              selectedYearDecoration: const BoxDecoration(),
+              disbaledYearDecoration: const BoxDecoration(),
             ),
           ),
         ),
