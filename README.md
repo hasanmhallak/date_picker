@@ -1,4 +1,4 @@
-# Date Picker
+# Date Picker Plus
 
 A Flutter library that provides a customizable Material Design date picker widget.
 
@@ -22,13 +22,13 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker: ^1.0.0
+  date_picker_plus: ^1.0.2
 ```
 
 Import the library in your Dart file:
 
 ```dart
-import 'package:date_picker/date_picker.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 ```
 
 ### Show Date Picker Dialog
