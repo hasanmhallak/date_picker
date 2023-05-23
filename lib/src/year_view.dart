@@ -17,11 +17,14 @@ class YearView extends StatelessWidget {
     required this.maxDate,
     required this.displayedYearRange,
     this.selectedYear,
-    this.enabledYearColor,
-    this.disbaledYearColor,
-    this.currentYearColor,
-    this.selectedYearColor,
-    this.selectedYearFillColor,
+    required this.enabledYearTextStyle,
+    required this.enabledYearDecoration,
+    required this.disbaledYearTextStyle,
+    required this.disbaledYearDecoration,
+    required this.currentYearTextStyle,
+    required this.currentYearDecoration,
+    required this.selectedYearTextStyle,
+    required this.selectedYearDecoration,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           return (displayedYearRange.end.year -
@@ -59,57 +62,34 @@ class YearView extends StatelessWidget {
   /// The years range whose years are displayed by this picker.
   final DateTimeRange displayedYearRange;
 
-  /// The color of enabled month which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledYearColor;
+  /// The text style of years which are selectable.
+  final TextStyle enabledYearTextStyle;
 
-  /// The color of disabled months which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledYearColor;
+  /// The cell decoration of years which are selectable.
+  final BoxDecoration enabledYearDecoration;
 
-  /// The color of the current month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? currentYearColor;
+  /// The text style of years which are not selectable.
+  final TextStyle disbaledYearTextStyle;
 
-  /// The color of the selected month.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedYearColor;
+  /// The cell decoration of years which are not selectable.
+  final BoxDecoration disbaledYearDecoration;
 
-  /// The fill color of the selected month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedYearFillColor;
+  /// The text style of the current year
+  final TextStyle currentYearTextStyle;
+
+  /// The cell decoration of the current year.
+  final BoxDecoration currentYearDecoration;
+
+  /// The text style of selected year.
+  final TextStyle selectedYearTextStyle;
+
+  /// The cell decoration of selected year.
+  final BoxDecoration selectedYearDecoration;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
 
-    //
-    final Color enabledYearColor =
-        this.enabledYearColor ?? colorScheme.onSurface;
-    final Color currentYearBorderColor =
-        this.currentYearColor ?? colorScheme.primary;
-    final Color currentYearColor = this.currentYearColor ?? colorScheme.primary;
-
-    final Color disabledYearColor =
-        disbaledYearColor ?? colorScheme.onSurface.withOpacity(0.30);
-
-    //
-    final Color selectedYearColor =
-        this.selectedYearColor ?? colorScheme.onPrimary;
-
-    final Color selectedYearBackground =
-        selectedYearFillColor ?? colorScheme.primary;
-    //
-    final TextStyle yearStyle = textTheme.titleLarge!.copyWith(
-      fontWeight: FontWeight.normal,
-      fontSize: 20,
-    );
     final int currentYear = currentDate.year;
     final int startYear = displayedYearRange.start.year;
     final int endYear = displayedYearRange.end.year;
@@ -120,7 +100,7 @@ class YearView extends StatelessWidget {
       (index) => startYear + index,
     );
 
-    final monthsWidgetList = <Widget>[];
+    final yearWidgetsList = <Widget>[];
 
     int i = 0;
     while (i < numberOfYears) {
@@ -132,28 +112,25 @@ class YearView extends StatelessWidget {
       final bool isSelected = yearsName[i] == selectedYear?.year;
       //
       //
-      BoxDecoration? decoration;
-      Color monthColor = enabledYearColor;
+      BoxDecoration decoration = enabledYearDecoration;
+      TextStyle style = enabledYearTextStyle;
 
       if (isCurrentYear) {
-        // The selected month gets a circle background highlight, and a
-        // contrasting text color.
-        monthColor = currentYearColor;
-        decoration = BoxDecoration(
-          border: Border.all(color: currentYearBorderColor),
-          shape: BoxShape.circle,
-        );
+        //
+        //
+        style = selectedYearTextStyle;
+        decoration = selectedYearDecoration;
       }
       if (isSelected) {
-        monthColor = selectedYearColor;
-        decoration = BoxDecoration(
-          color: selectedYearBackground,
-          shape: BoxShape.circle,
-        );
+        //
+        //
+        style = currentYearTextStyle;
+        decoration = currentYearDecoration;
       }
 
       if (isDisabled) {
-        monthColor = disabledYearColor;
+        style = disbaledYearTextStyle;
+        decoration = disbaledYearDecoration;
       }
 
       Widget monthWidget = Container(
@@ -161,7 +138,7 @@ class YearView extends StatelessWidget {
         child: Center(
           child: Text(
             yearsName[i].toString(),
-            style: yearStyle.copyWith(color: monthColor),
+            style: style,
           ),
         ),
       );
@@ -175,17 +152,18 @@ class YearView extends StatelessWidget {
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
           radius: 60 / 2 + 4,
-          splashColor: currentYearBorderColor.withOpacity(0.38),
+          splashColor: selectedYearDecoration.color?.withOpacity(0.3) ??
+              colorScheme.primary.withOpacity(0.3),
           child: Semantics(
             label: yearsName[i].toString(),
-            selected: isCurrentYear,
+            selected: isSelected,
             excludeSemantics: true,
             child: monthWidget,
           ),
         );
       }
 
-      monthsWidgetList.add(monthWidget);
+      yearWidgetsList.add(monthWidget);
       i++;
     }
 
@@ -199,7 +177,7 @@ class YearView extends StatelessWidget {
         rowStride: 80,
       ),
       childrenDelegate: SliverChildListDelegate(
-        monthsWidgetList,
+        yearWidgetsList,
         addRepaintBoundaries: false,
       ),
     );

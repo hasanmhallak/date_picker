@@ -26,11 +26,14 @@ class YearsPicker extends StatefulWidget {
     required this.maxDate,
     required this.minDate,
     this.onChange,
-    this.enabledYearColor,
-    this.disbaledYearColor,
-    this.currentYearColor,
-    this.selectedYearColor,
-    this.selectedYearFillColor,
+    required this.enabledYearTextStyle,
+    required this.enabledYearDecoration,
+    required this.disbaledYearTextStyle,
+    required this.disbaledYearDecoration,
+    required this.currentYearTextStyle,
+    required this.currentYearDecoration,
+    required this.selectedYearTextStyle,
+    required this.selectedYearDecoration,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a year.
@@ -49,30 +52,29 @@ class YearsPicker extends StatefulWidget {
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
 
-  /// The color of enabled month which are selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface].
-  final Color? enabledYearColor;
+  /// The text style of years which are selectable.
+  final TextStyle enabledYearTextStyle;
 
-  /// The color of disabled months which are not selectable.
-  ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledYearColor;
+  /// The cell decoration of years which are selectable.
+  final BoxDecoration enabledYearDecoration;
 
-  /// The color of the current month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? currentYearColor;
+  /// The text style of years which are not selectable.
+  final TextStyle disbaledYearTextStyle;
 
-  /// The color of the selected month.
-  ///
-  /// defaults to [ColorScheme.onPrimary].
-  final Color? selectedYearColor;
+  /// The cell decoration of years which are not selectable.
+  final BoxDecoration disbaledYearDecoration;
 
-  /// The fill color of the selected month.
-  ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedYearFillColor;
+  /// The text style of the current year
+  final TextStyle currentYearTextStyle;
+
+  /// The cell decoration of the current year.
+  final BoxDecoration currentYearDecoration;
+
+  /// The text style of selected year.
+  final TextStyle selectedYearTextStyle;
+
+  /// The cell decoration of selected year.
+  final BoxDecoration selectedYearDecoration;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -154,11 +156,14 @@ class _YearsPickerState extends State<YearsPicker> {
       maxDate: widget.maxDate,
       displayedYearRange: yearRange,
       selectedYear: _selectedYear,
-      currentYearColor: widget.currentYearColor,
-      disbaledYearColor: widget.disbaledYearColor,
-      enabledYearColor: widget.enabledYearColor,
-      selectedYearColor: widget.selectedYearColor,
-      selectedYearFillColor: widget.selectedYearFillColor,
+      currentYearDecoration: widget.currentYearDecoration,
+      currentYearTextStyle: widget.currentYearTextStyle,
+      disbaledYearDecoration: widget.disbaledYearDecoration,
+      disbaledYearTextStyle: widget.disbaledYearTextStyle,
+      enabledYearDecoration: widget.enabledYearDecoration,
+      enabledYearTextStyle: widget.enabledYearTextStyle,
+      selectedYearDecoration: widget.selectedYearDecoration,
+      selectedYearTextStyle: widget.selectedYearTextStyle,
       onChanged: (value) {
         widget.onChange?.call(value);
         setState(() {
