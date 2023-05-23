@@ -89,7 +89,7 @@ MaterialApp(
 );
 ```
 
-For more details, see the [example](https://github.com/hasanmhallak/date_picker/example) folder.
+For more details, see the [example](https://github.com/hasanmhallak/date_picker/blob/master/example/lib/main.dart) file.
 
 ## Contribution
 
