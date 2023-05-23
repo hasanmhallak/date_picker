@@ -91,6 +91,11 @@ Future<DateTime?> showDatePickerDialog({
             enabledCellTextStyle: enabledCellTextStyle,
             selectedCellDecoration: selectedCellDecoration,
             selectedCellTextStyle: selectedCellTextStyle,
+            currentDateColor: currentDateColor,
+            daysNameTextStyle: daysNameTextStyle,
+            disbaledCellColor: disbaledCellColor,
+            selectedCellColor: selectedCellColor,
+            enabledCellColor: enabledCellColor,
           ),
         ),
       );
