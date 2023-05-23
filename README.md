@@ -1,39 +1,67 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Date Picker
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter library that provides a customizable Material Design date picker widget.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Select a specific day, month, or year from a grid-based interface.
+- Customize the appearance of enabled, disabled, and selected cells.
+- Specify the minimum and maximum selectable dates.
+- Supports localization and internationalization.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+To use the Date Picker library, add the following dependency to your `pubspec.yaml` file:
 
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  date_picker: ^1.0.0
 ```
 
-## Additional information
+Import the library in your Dart file:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:date_picker/date_picker.dart';
+```
+
+Call the `showDatePickerDialog` to show a date picker dialog.
+
+```dart
+
+final date = await showDatePickerDialog(
+                     context: context,
+                     initialDate: DateTime.now(),
+                     minDate: DateTime(2021, 1, 1),
+                     maxDate: DateTime(2023, 12, 31),
+                   );
+```
+
+Customize the appearance of the date picker by providing optional parameters to the `showDatePickerDialog` function.
+
+```dart
+showDatePickerDialog(
+  context: context,
+  initialDate: DateTime.now(),
+  minDate: DateTime(2021, 1, 1),
+  maxDate: DateTime(2023, 12, 31),
+  todayTextStyle: const TextStyle(),
+  daysNameTextStyle: const TextStyle(),
+  enabledDaysTextStyle: const TextStyle(),
+  selectedDayTextStyle: const TextStyle(),
+  disbaledDaysTextStyle: const TextStyle(),
+  todayDecoration: const BoxDecoration(),
+  enabledDaysDecoration: const BoxDecoration(),
+  selectedDayDecoration: const BoxDecoration(),
+  disbaledDaysDecoration: const BoxDecoration(),
+);
+```
+
+For more details, see the [example](https://github.com/hasanmhallak/date_picker/example) folder.
+
+## Contribution
+
+Contributions to the Date Picker library are welcome! If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request on the [GitHub repository](https://github.com/hasanmhallak/date_picker).
+
+## License
+
+The Date Picker library is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](https://github.com/hasanmhallak/date_picker/blob/master/LICENSE) file for more details.
