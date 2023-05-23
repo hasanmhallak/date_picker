@@ -2,6 +2,37 @@ import 'package:flutter/material.dart';
 
 import 'date_picker.dart';
 
+/// Shows a dialog containing a Material Design date picker.
+///
+/// The returned [Future] resolves to the date selected by the user when the
+/// user confirms the dialog. If the user cancels the dialog, null is returned.
+///
+/// When the date picker is first displayed, it will show the month of
+/// [initialDate].
+///
+/// The [minDate] is the earliest allowable date. The [maxDate] is the latest
+/// allowable date. [initialDate] must either fall between these dates,
+/// or be equal to one of them. For each of these [DateTime] parameters, only
+/// their dates are considered. Their time fields are ignored. They must all
+/// be non-null.
+///
+/// The locale for the date picker defaults to the ambient locale
+/// provided by [Localizations].
+///
+/// The [context], [useRootNavigator] and [routeSettings] arguments are passed to
+/// [showDialog], the documentation for which discusses how it is used. [context]
+/// and [useRootNavigator] must be non-null.
+///
+/// An optional [initialPickerType] argument can be used to have the
+/// calendar date picker initially appear in the [initialPickerType.year],
+/// [initialPickerType.month] or [initialPickerType.day] mode. It defaults
+/// to [initialPickerType.day], and
+/// must be non-null.
+///
+/// See also:
+///
+///  * [DatePicker], which provides the calendar grid used by the date picker dialog.
+///
 Future<DateTime?> showDatePickerDialog({
   required BuildContext context,
   required DateTime initialDate,

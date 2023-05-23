@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Controlls the next & previous page.
 class PageSliders extends StatelessWidget {
   final VoidCallback onForward;
   final VoidCallback onBackward;
   final Color? color;
+
+  /// Controlls the next & previous page.
   const PageSliders({
     Key? key,
     required this.onForward,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Shows indication about what year/month are opened.
 class LeadingDate extends StatelessWidget {
+  /// Shows indication about what year/month are opened.
   const LeadingDate({
     super.key,
     required this.displayedText,
