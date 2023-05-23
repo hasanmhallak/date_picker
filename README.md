@@ -97,10 +97,12 @@ Contributions to the Date Picker library are welcome! If you find any issues or 
 
 Before creating a PR:
 
-- Please always create an issue/feature before raising a PR
-- Please always create a minimum reproducible example for an issue
-- Please use the official [Dart Extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code) as your formatter or use `flutter format .` if you are not using VS Code
-- Please keep your changes to its minimum needed scope (avoid introducing unrelated changes)
+- Please make sure to cover any new feature with proper tests.
+- Please make sure that all tests passed.
+- Please always create an issue/feature before raising a PR.
+- Please always create a minimum reproducible example for an issue.
+- Please use the official [Dart Extension](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code) as your formatter or use `flutter format .` if you are not using VS Code.
+- Please keep your changes to its minimum needed scope (avoid introducing unrelated changes).
 
 ## License
 
