@@ -49,7 +49,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  date_picker:
+  date_picker_plus:
     dependency: "direct main"
     description:
       path: ".."

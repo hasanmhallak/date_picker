@@ -1,4 +1,4 @@
-import 'package:date_picker/src/days_view.dart';
+import 'package:date_picker_plus/src/days_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
