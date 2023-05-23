@@ -1,4 +1,4 @@
-import 'package:date_picker_plus/date_picker.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
