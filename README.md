@@ -3,10 +3,10 @@
 A Flutter library that provides a customizable Material Design date picker widget.
 
 <div>
-  <img src="1.png" alt="1" width="250"  height="300"/>
-  <img src="2.png" alt="2" width="250" height="300"/>
-  <img src="3.png" alt="3" width="250" height="300"/>
-  <img src="4.png" alt="4" width="250" height="300"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="250"  height="300"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/2.png" alt="2" width="250" height="300"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/3.png" alt="3" width="250" height="300"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="250" height="300"/>
 </div>
 
 ## Features
