@@ -67,12 +67,19 @@ class DatePicker extends StatefulWidget {
     required this.onDateChanged,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
-    this.daysNameColor,
-    this.enabledCellsColor,
-    this.disbaledCellsColor,
-    this.todayColor,
+    this.daysNameTextStyle,
+    this.enabledCellColor,
+    this.enabledCellTextStyle,
+    this.enabledCellDecoration = const BoxDecoration(),
+    this.disbaledCellColor,
+    this.disbaledCellTextStyle,
+    this.disbaledCellDecoration = const BoxDecoration(),
+    this.currentDateColor,
+    this.currentDateTextStyle,
+    this.currentDateDecoration,
     this.selectedCellColor,
-    this.selectedCellFillColor,
+    this.selectedCellTextStyle,
+    this.selectedCellDecoration,
   }) {
     assert(
       !maxDate.isBefore(minDate),
@@ -85,6 +92,26 @@ class DatePicker extends StatefulWidget {
     assert(
       !initialDate.isAfter(maxDate),
       'initialDate $initialDate must be on or before maxDate $maxDate.',
+    );
+    assert(
+      enabledCellColor == null || enabledCellTextStyle == null,
+      'Cannot provide both a color and a textStyle\n'
+      'To provide both, use "enabledDaysTextStyle: TextStyle(color: color)".',
+    );
+    assert(
+      disbaledCellColor == null || disbaledCellTextStyle == null,
+      'Cannot provide both a color and a textStyle\n'
+      'To provide both, use "disbaledDaysTextStyle: TextStyle(color: color)".',
+    );
+    assert(
+      currentDateColor == null || currentDateTextStyle == null,
+      'Cannot provide both a color and a textStyle\n'
+      'To provide both, use "todayTextStyle: TextStyle(color: color)".',
+    );
+    assert(
+      selectedCellColor == null || selectedCellTextStyle == null,
+      'Cannot provide both a color and a textStyle\n'
+      'To provide both, use "selectedDayTextStyle: TextStyle(color: color)".',
     );
   }
 
@@ -110,35 +137,75 @@ class DatePicker extends StatefulWidget {
   /// The amount of padding to be added around the [DatePicker].
   final EdgeInsets padding;
 
-  /// The color of the days name.
+  /// The text style of the days name in the header.
   ///
-  /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? daysNameColor;
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.bold],
+  /// a `14` font size, and a [ColorScheme.onSurface] with 30% opacity.
+  final TextStyle? daysNameTextStyle;
 
   /// The color of enabled cells which are selectable.
   ///
   /// defaults to [ColorScheme.onSurface].
-  final Color? enabledCellsColor;
+  final Color? enabledCellColor;
+
+  /// The text style of cells which are selectable.
+  ///
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
+  /// and [ColorScheme.onSurface] color.
+  final TextStyle? enabledCellTextStyle;
+
+  /// The cell decoration of cells which are selectable.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration enabledCellDecoration;
 
   /// The color of disabled cells which are not selectable.
   ///
   /// defaults to [ColorScheme.onSurface] with 30% opacity.
-  final Color? disbaledCellsColor;
+  final Color? disbaledCellColor;
 
-  /// The color of the current day.
+  /// The text style of cells which are not selectable.
+  ///
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
+  /// and [ColorScheme.onSurface] color with 30% opacity.
+  final TextStyle? disbaledCellTextStyle;
+
+  /// The cell decoration of cells which are not selectable.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration disbaledCellDecoration;
+
+  /// The color of the current date.
   ///
   /// defaults to [ColorScheme.primary].
-  final Color? todayColor;
+  final Color? currentDateColor;
+
+  /// The text style of the current date.
+  ///
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
+  /// and [ColorScheme.primary] color.
+  final TextStyle? currentDateTextStyle;
+
+  /// The cell decoration of the current date.
+  ///
+  /// defaults to circle stroke border with [ColorScheme.primary] color.
+  final BoxDecoration? currentDateDecoration;
 
   /// The color of the selected cell.
   ///
   /// defaults to [ColorScheme.onPrimary].
   final Color? selectedCellColor;
 
-  /// The fill color of the selected cell.
+  /// The text style of selected cell.
   ///
-  /// defaults to [ColorScheme.primary].
-  final Color? selectedCellFillColor;
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
+  /// and [ColorScheme.onPrimary] color.
+  final TextStyle? selectedCellTextStyle;
+
+  /// The cell decoration of selected cell.
+  ///
+  /// defaults to circle with [ColorScheme.primary] color.
+  final BoxDecoration? selectedCellDecoration;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -169,6 +236,91 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    //
+    //
+    //
+    final TextStyle daysNameTextStyle = widget.daysNameTextStyle ??
+        textTheme.titleSmall!.copyWith(
+          color: colorScheme.onSurface.withOpacity(0.30),
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        );
+
+    //
+    //! enabled
+    //
+    //
+    final Color enabledCellColor =
+        widget.enabledCellColor ?? colorScheme.onSurface;
+
+    final TextStyle enabledCellTextStyle = widget.enabledCellTextStyle ??
+        textTheme.titleLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          color: enabledCellColor,
+        );
+
+    final BoxDecoration enabledCellDecoration = widget.enabledCellDecoration;
+
+    //
+    //! disabled
+    //
+    //
+    final Color disbaledCellColor =
+        widget.disbaledCellColor ?? colorScheme.onSurface.withOpacity(0.30);
+
+    final TextStyle disbaledCellTextStyle = widget.disbaledCellTextStyle ??
+        textTheme.titleLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          color: disbaledCellColor,
+        );
+
+    final BoxDecoration disbaledCellDecoration = widget.disbaledCellDecoration;
+
+    //
+    //! current
+    //
+    //
+    final Color currentDateColor =
+        widget.currentDateColor ?? colorScheme.primary;
+
+    final TextStyle currentDateTextStyle = widget.currentDateTextStyle ??
+        textTheme.titleLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          color: currentDateColor,
+        );
+
+    final BoxDecoration currentDateDecoration = widget.currentDateDecoration ??
+        BoxDecoration(
+          border: Border.all(color: currentDateColor),
+          shape: BoxShape.circle,
+        );
+
+    //
+    //! selected.
+    //
+    //
+    final Color selectedCellColor =
+        widget.selectedCellColor ?? colorScheme.onPrimary;
+
+    final TextStyle selectedCellTextStyle = widget.selectedCellTextStyle ??
+        textTheme.titleLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          color: selectedCellColor,
+        );
+
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+            BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            );
+    //
+    //
+    //
+    //
+
     switch (_pickerType) {
       case PickerType.days:
         return Padding(
@@ -177,12 +329,15 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            daysNameColor: widget.daysNameColor,
-            disbaledDaysColor: widget.disbaledCellsColor,
-            enabledDaysColor: widget.enabledCellsColor,
-            selectedDayColor: widget.selectedCellColor,
-            selectedDayFillColor: widget.selectedCellFillColor,
-            todayColor: widget.todayColor,
+            daysNameTextStyle: daysNameTextStyle,
+            enabledDaysTextStyle: enabledCellTextStyle,
+            enabledDaysDecoration: enabledCellDecoration,
+            disbaledDaysTextStyle: disbaledCellTextStyle,
+            disbaledDaysDecoration: disbaledCellDecoration,
+            todayDecoration: currentDateDecoration,
+            todayTextStyle: currentDateTextStyle,
+            selectedDayDecoration: selectedCellDecoration,
+            selectedDayTextStyle: selectedCellTextStyle,
             onChange: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
@@ -203,11 +358,14 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            currentMonthColor: widget.todayColor,
-            disbaledMonthsColor: widget.disbaledCellsColor,
-            enabledMonthsColor: widget.enabledCellsColor,
-            selectedMonthColor: widget.selectedCellColor,
-            selectedMonthFillColor: widget.selectedCellFillColor,
+            currentMonthDecoration: currentDateDecoration,
+            currentMonthTextStyle: currentDateTextStyle,
+            disbaledMonthDecoration: disbaledCellDecoration,
+            disbaledMonthTextStyle: disbaledCellTextStyle,
+            enabledMonthDecoration: enabledCellDecoration,
+            enabledMonthTextStyle: enabledCellTextStyle,
+            selectedMonthDecoration: selectedCellDecoration,
+            selectedMonthTextStyle: selectedCellTextStyle,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -228,11 +386,14 @@ class _DatePickerState extends State<DatePicker> {
             initialDate: _displayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
-            currentYearColor: widget.todayColor,
-            disbaledYearColor: widget.disbaledCellsColor,
-            enabledYearColor: widget.enabledCellsColor,
-            selectedYearColor: widget.selectedCellColor,
-            selectedYearFillColor: widget.selectedCellFillColor,
+            currentYearDecoration: currentDateDecoration,
+            currentYearTextStyle: currentDateTextStyle,
+            disbaledYearDecoration: disbaledCellDecoration,
+            disbaledYearTextStyle: disbaledCellTextStyle,
+            enabledYearDecoration: enabledCellDecoration,
+            enabledYearTextStyle: enabledCellTextStyle,
+            selectedYearDecoration: selectedCellDecoration,
+            selectedYearTextStyle: selectedCellTextStyle,
             onChange: (selectedYear) {
               setState(() {
                 _displayedDate = selectedYear;
