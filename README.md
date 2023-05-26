@@ -6,7 +6,7 @@ A Flutter library that provides a customizable Material Design date picker widge
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="250"  height="300"/>
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/2.png" alt="2" width="250" height="300"/>
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/3.png" alt="3" width="250" height="300"/>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="250" height="300"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="275" height="300"/>
 </div>
 
 ## Features
@@ -22,7 +22,7 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker_plus: ^1.0.2
+  date_picker_plus: ^1.1.0
 ```
 
 Import the library in your Dart file:
@@ -46,6 +46,25 @@ final date = await showDatePickerDialog(
 
 Customize the appearance of the date picker by providing optional parameters to the `showDatePickerDialog` function.
 
+```dart
+final date = await showDatePickerDialog(
+  context: context,
+  initialDate: DateTime.now(),
+  minDate: DateTime(2021, 1, 1),
+  maxDate: DateTime(2023, 12, 31),
+  todayTextStyle: const TextStyle(),
+  daysNameTextStyle: const TextStyle(),
+  enabledDaysTextStyle: const TextStyle(),
+  selectedDayTextStyle: const TextStyle(),
+  disbaledDaysTextStyle: const TextStyle(),
+  todayDecoration: const BoxDecoration(),
+  enabledDaysDecoration: const BoxDecoration(),
+  selectedDayDecoration: const BoxDecoration(),
+  disbaledDaysDecoration: const BoxDecoration(),
+);
+
+```
+
 ### Use DatePicker Widget
 
 Alternatively, you can use the `DatePicker` widget directly:
@@ -58,15 +77,6 @@ DatePicker(
   onDateChanged: (value) {
     // Handle selected date
   },
-  todayTextStyle: const TextStyle(),
-  daysNameTextStyle: const TextStyle(),
-  enabledDaysTextStyle: const TextStyle(),
-  selectedDayTextStyle: const TextStyle(),
-  disbaledDaysTextStyle: const TextStyle(),
-  todayDecoration: const BoxDecoration(),
-  enabledDaysDecoration: const BoxDecoration(),
-  selectedDayDecoration: const BoxDecoration(),
-  disbaledDaysDecoration: const BoxDecoration(),
 );
 ```
 
@@ -78,12 +88,13 @@ This package has multi-language supports. To enable it, add your `Locale` into t
 MaterialApp(
   localizationsDelegates: GlobalMaterialLocalizations.delegates,
   supportedLocales: const [
-    Locale('en', ''),
-    Locale('zh', ''),
-    Locale('ru', ''),
-    Locale('es', ''),
-    Locale('hi', ''),
-    Locale('ar', ''),
+    Locale('en', 'US'),
+    Locale('en', 'GB'),
+    Locale('ar'),
+    Locale('zh'),
+    Locale('ru'),
+    Locale('es'),
+    Locale('hi'),
   ],
   ...
 );

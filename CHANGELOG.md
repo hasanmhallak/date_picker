@@ -1,3 +1,9 @@
+# 1.1.0
+
+- Update to flutter 3.10
+- Fix ReadMe.
+- Add library screenshots.
+
 ## 1.0.2
 
 - Change library name.

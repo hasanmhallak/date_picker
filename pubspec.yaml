@@ -1,17 +1,17 @@
 name: date_picker_plus
 description: A Flutter library that provides a customizable Material Design date picker widget.
-version: 1.0.2
+version: 1.1.0
 
 repository: https://github.com/hasanmhallak/date_picker
 
 environment:
-  sdk: ">=2.19.2 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +19,14 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_localizations:
     sdk: flutter
+
+screenshots:
+  - description: "Examples of show date picker dialog."
+    path: 1.png
+  - description: "Examples of the year picker dialog."
+    path: 3.png
+  - description: "Examples of the DatePicker widget."
+    path: 4.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
