@@ -61,6 +61,9 @@ Future<DateTime?> showDatePickerDialog({
   Color? selectedCellColor,
   TextStyle? selectedCellTextStyle,
   BoxDecoration? selectedCellDecoration,
+  double? slidersSize,
+  Color? slidersColor,
+  TextStyle? leadingDateTextStyle,
 }) async {
   return showDialog<DateTime>(
     context: context,
@@ -96,6 +99,9 @@ Future<DateTime?> showDatePickerDialog({
             disbaledCellColor: disbaledCellColor,
             selectedCellColor: selectedCellColor,
             enabledCellColor: enabledCellColor,
+            leadingDateTextStyle: leadingDateTextStyle,
+            slidersColor: slidersColor,
+            slidersSize: slidersSize,
           ),
         ),
       );

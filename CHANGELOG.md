@@ -1,3 +1,7 @@
+# 1.1.2
+
+- fix docs
+
 # 1.1.1
 
 - Add the ability to customize header.
