@@ -83,6 +83,9 @@ class DatePicker extends StatefulWidget {
     this.leadingDateTextStyle,
     this.slidersColor,
     this.slidersSize,
+    this.highlightColor,
+    this.splashColor,
+    this.splashRadius,
   }) {
     assert(
       !maxDate.isBefore(minDate),
@@ -209,6 +212,20 @@ class DatePicker extends StatefulWidget {
   ///
   /// defaults to circle with [ColorScheme.primary] color.
   final BoxDecoration? selectedCellDecoration;
+
+  /// The splash color of the ink response.
+  ///
+  /// defaults to the color of [selectedCellDecoration],
+  /// if null will fall back to [ColorScheme.onPrimary] with 30% opacity.
+  final Color? splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  ///
+  /// defaults to [Theme.highlightColor].
+  final Color? highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
 
   /// The text style of leading date showing in the header.
   ///
@@ -352,7 +369,13 @@ class _DatePickerState extends State<DatePicker> {
               shape: BoxShape.circle,
             );
     //
-    //
+    //! splash
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
+
+    final highlightColor =
+        widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -376,6 +399,9 @@ class _DatePickerState extends State<DatePicker> {
             slidersColor: slidersColor,
             slidersSize: sliderSize,
             leadingDateTextStyle: leadingTextStyle,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            splashRadius: widget.splashRadius,
             onChange: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
@@ -407,6 +433,9 @@ class _DatePickerState extends State<DatePicker> {
             slidersColor: slidersColor,
             slidersSize: sliderSize,
             leadingDateTextStyle: leadingTextStyle,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            splashRadius: widget.splashRadius,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -438,6 +467,9 @@ class _DatePickerState extends State<DatePicker> {
             slidersColor: slidersColor,
             slidersSize: sliderSize,
             leadingDateTextStyle: leadingTextStyle,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            splashRadius: widget.splashRadius,
             onChange: (selectedYear) {
               setState(() {
                 _displayedDate = selectedYear;

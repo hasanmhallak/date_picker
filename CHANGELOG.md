@@ -1,3 +1,7 @@
+# 1.1.3
+
+- Add ability to modify splash & highlight colors.
+
 # 1.1.2
 
 - fix docs

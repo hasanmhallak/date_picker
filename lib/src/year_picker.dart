@@ -37,6 +37,9 @@ class YearsPicker extends StatefulWidget {
     required this.leadingDateTextStyle,
     required this.slidersColor,
     required this.slidersSize,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a year.
@@ -87,6 +90,15 @@ class YearsPicker extends StatefulWidget {
 
   /// The size of the page sliders.
   final double slidersSize;
+
+  /// The splash color of the ink response.
+  final Color splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -176,6 +188,9 @@ class _YearsPickerState extends State<YearsPicker> {
       enabledYearTextStyle: widget.enabledYearTextStyle,
       selectedYearDecoration: widget.selectedYearDecoration,
       selectedYearTextStyle: widget.selectedYearTextStyle,
+      highlightColor: widget.highlightColor,
+      splashColor: widget.splashColor,
+      splashRadius: widget.splashRadius,
       onChanged: (value) {
         widget.onChange?.call(value);
         setState(() {

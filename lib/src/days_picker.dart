@@ -42,6 +42,9 @@ class _DaysPicker extends StatefulWidget {
     required this.leadingDateTextStyle,
     required this.slidersColor,
     required this.slidersSize,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -98,6 +101,15 @@ class _DaysPicker extends StatefulWidget {
 
   /// The size of the page sliders.
   final double slidersSize;
+
+  /// The splash color of the ink response.
+  final Color splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
 
   /// Defines the localized resource values used by the Material widgets.
   ///
@@ -174,6 +186,9 @@ class __DaysPickerState extends State<_DaysPicker> {
       todayTextStyle: widget.todayTextStyle,
       selectedDayDecoration: widget.selectedDayDecoration,
       selectedDayTextStyle: widget.selectedDayTextStyle,
+      highlightColor: widget.highlightColor,
+      splashColor: widget.splashColor,
+      splashRadius: widget.splashRadius,
       onChanged: (value) {
         setState(() {
           _selectedDate = value;
@@ -306,6 +321,9 @@ class DaysPicker extends StatelessWidget {
     required this.leadingDateTextStyle,
     required this.slidersColor,
     required this.slidersSize,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -363,6 +381,15 @@ class DaysPicker extends StatelessWidget {
   /// The size of the page sliders.
   final double slidersSize;
 
+  /// The splash color of the ink response.
+  final Color splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
+
   @override
   Widget build(BuildContext context) {
     return _DaysPicker(
@@ -381,6 +408,9 @@ class DaysPicker extends StatelessWidget {
       leadingDateTextStyle: leadingDateTextStyle,
       slidersColor: slidersColor,
       slidersSize: slidersSize,
+      highlightColor: highlightColor,
+      splashColor: splashColor,
+      splashRadius: splashRadius,
       materialLocalizations: MaterialLocalizations.of(context),
       onChange: onChange,
       onLeadingDateTap: onLeadingDateTap,

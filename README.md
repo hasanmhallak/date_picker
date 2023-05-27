@@ -22,7 +22,7 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker_plus: ^1.1.2
+  date_picker_plus: ^1.1.3
 ```
 
 Import the library in your Dart file:

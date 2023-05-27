@@ -25,6 +25,9 @@ class MonthView extends StatelessWidget {
     required this.currentMonthDecoration,
     required this.selectedMonthTextStyle,
     required this.selectedMonthDecoration,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
     this.selectedMonth,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
@@ -81,9 +84,17 @@ class MonthView extends StatelessWidget {
   /// The cell decoration of selected month.
   final BoxDecoration selectedMonthDecoration;
 
+  /// The splash color of the ink response.
+  final Color splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
+
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
@@ -154,9 +165,9 @@ class MonthView extends StatelessWidget {
       } else {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
-          radius: 60 / 2 + 4,
-          splashColor: selectedMonthDecoration.color?.withOpacity(0.3) ??
-              colorScheme.primary.withOpacity(0.3),
+          radius: splashRadius ?? 60 / 2 + 4,
+          splashColor: splashColor,
+          highlightColor: highlightColor,
           child: Semantics(
             label: localizations.formatMediumDate(monthToBuild),
             selected: isSelected,

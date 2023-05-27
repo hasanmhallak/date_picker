@@ -31,6 +31,9 @@ class DaysView extends StatelessWidget {
     required this.todayDecoration,
     required this.selectedDayTextStyle,
     required this.selectedDayDecoration,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
     this.selectedDate,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
@@ -91,6 +94,15 @@ class DaysView extends StatelessWidget {
   /// The cell decoration of selected day.
   final BoxDecoration selectedDayDecoration;
 
+  /// The splash color of the ink response.
+  final Color splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
+
   /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.
   ///
@@ -147,7 +159,6 @@ class DaysView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
     //
@@ -217,9 +228,9 @@ class DaysView extends StatelessWidget {
         } else {
           dayWidget = InkResponse(
             onTap: () => onChanged(dayToBuild),
-            radius: _dayPickerRowHeight / 2 + 4,
-            splashColor: selectedDayDecoration.color?.withOpacity(0.3) ??
-                colorScheme.primary.withOpacity(0.3),
+            radius: splashRadius ?? _dayPickerRowHeight / 2 + 4,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
             child: Semantics(
               // We want the day of month to be spoken first irrespective of the
               // locale-specific preferences or TextDirection. This is because

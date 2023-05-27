@@ -25,6 +25,9 @@ class YearView extends StatelessWidget {
     required this.currentYearDecoration,
     required this.selectedYearTextStyle,
     required this.selectedYearDecoration,
+    required this.highlightColor,
+    required this.splashColor,
+    this.splashRadius,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           return (displayedYearRange.end.year -
@@ -86,10 +89,17 @@ class YearView extends StatelessWidget {
   /// The cell decoration of selected year.
   final BoxDecoration selectedYearDecoration;
 
+  /// The splash color of the ink response.
+  final Color? splashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color? highlightColor;
+
+  /// The radius of the ink splash.
+  final double? splashRadius;
+
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
     final int currentYear = currentDate.year;
     final int startYear = displayedYearRange.start.year;
     final int endYear = displayedYearRange.end.year;
@@ -151,9 +161,9 @@ class YearView extends StatelessWidget {
         final date = DateTime(yearsName[i]);
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
-          radius: 60 / 2 + 4,
-          splashColor: selectedYearDecoration.color?.withOpacity(0.3) ??
-              colorScheme.primary.withOpacity(0.3),
+          radius: splashRadius ?? 60 / 2 + 4,
+          splashColor: splashColor,
+          highlightColor: highlightColor,
           child: Semantics(
             label: yearsName[i].toString(),
             selected: isSelected,
