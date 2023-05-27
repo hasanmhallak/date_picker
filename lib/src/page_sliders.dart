@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 /// Controlls the next & previous page.
 class PageSliders extends StatelessWidget {
   final VoidCallback onForward;
   final VoidCallback onBackward;
-  final Color? color;
+  final Color slidersColor;
+  final double slidersSized;
 
   /// Controlls the next & previous page.
   const PageSliders({
     Key? key,
     required this.onForward,
     required this.onBackward,
-    this.color,
+    required this.slidersColor,
+    required this.slidersSized,
   }) : super(key: key);
 
   @override
@@ -33,8 +34,8 @@ class PageSliders extends StatelessWidget {
                 ),
                 child: Icon(
                   CupertinoIcons.chevron_left,
-                  size: 28,
-                  color: color ?? Theme.of(context).colorScheme.primary,
+                  size: slidersSized,
+                  color: slidersColor,
                 ),
               ),
             ),
@@ -51,8 +52,8 @@ class PageSliders extends StatelessWidget {
                 ),
                 child: Icon(
                   CupertinoIcons.chevron_right,
-                  size: 28,
-                  color: color ?? Theme.of(context).colorScheme.primary,
+                  size: slidersSized,
+                  color: slidersColor,
                 ),
               ),
             ),

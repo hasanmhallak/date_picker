@@ -1,3 +1,7 @@
+# 1.1.1
+
+- Add the ability to customize header.
+
 # 1.1.0
 
 - Update to flutter 3.10

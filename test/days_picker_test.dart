@@ -28,6 +28,9 @@ void main() {
               enabledDaysDecoration: const BoxDecoration(),
               selectedDayDecoration: const BoxDecoration(),
               disbaledDaysDecoration: const BoxDecoration(),
+              leadingDateTextStyle: const TextStyle(),
+              slidersColor: Colors.black,
+              slidersSize: 20,
             ),
           ),
         ),
@@ -66,6 +69,9 @@ void main() {
               enabledDaysDecoration: const BoxDecoration(),
               selectedDayDecoration: const BoxDecoration(),
               disbaledDaysDecoration: const BoxDecoration(),
+              leadingDateTextStyle: const TextStyle(),
+              slidersColor: Colors.black,
+              slidersSize: 20,
             ),
           ),
         ),
@@ -124,6 +130,9 @@ void main() {
               enabledDaysDecoration: const BoxDecoration(),
               selectedDayDecoration: const BoxDecoration(),
               disbaledDaysDecoration: const BoxDecoration(),
+              leadingDateTextStyle: const TextStyle(),
+              slidersColor: Colors.black,
+              slidersSize: 20,
             ),
           ),
         ),
@@ -189,6 +198,9 @@ void main() {
               enabledDaysDecoration: const BoxDecoration(),
               selectedDayDecoration: const BoxDecoration(),
               disbaledDaysDecoration: const BoxDecoration(),
+              leadingDateTextStyle: const TextStyle(),
+              slidersColor: Colors.black,
+              slidersSize: 20,
             ),
           ),
         ),
@@ -253,6 +265,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
               ),
             ),
           ),
@@ -329,6 +344,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
               ),
             ),
           ),
@@ -405,6 +423,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
               ),
             ),
           ),
@@ -478,6 +499,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
               ),
             ),
           ),
@@ -517,6 +541,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
               ),
             ),
           ),
@@ -564,6 +591,9 @@ void main() {
                 enabledDaysDecoration: const BoxDecoration(),
                 selectedDayDecoration: const BoxDecoration(),
                 disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
                 onChange: (value) {
                   expectedDay = value;
                 },
@@ -600,6 +630,108 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(expectedDay, dayToSelect);
+      },
+    );
+    testWidgets(
+      'Should show the correct text style for the leading date',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        const leadingDayColor = Colors.green;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: DaysPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                todayTextStyle: const TextStyle(),
+                daysNameTextStyle: const TextStyle(),
+                enabledDaysTextStyle: const TextStyle(),
+                selectedDayTextStyle: const TextStyle(),
+                disbaledDaysTextStyle: const TextStyle(),
+                todayDecoration: const BoxDecoration(),
+                enabledDaysDecoration: const BoxDecoration(),
+                selectedDayDecoration: const BoxDecoration(),
+                disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(
+                  color: leadingDayColor,
+                ),
+                slidersColor: Colors.black,
+                slidersSize: 20,
+              ),
+            ),
+          ),
+        );
+
+        final leadingDayFinder = find.byWidgetPredicate((widget) {
+          if (widget is Text) {
+            return widget.data == 'January 2010' &&
+                widget.style?.color == leadingDayColor;
+          }
+          return false;
+        });
+
+        expect(leadingDayFinder, findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Should show the correct color and size for page sliders',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        const slidersColors = Colors.green;
+        const slidersSize = 18.0;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: DaysPicker(
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                todayTextStyle: const TextStyle(),
+                daysNameTextStyle: const TextStyle(),
+                enabledDaysTextStyle: const TextStyle(),
+                selectedDayTextStyle: const TextStyle(),
+                disbaledDaysTextStyle: const TextStyle(),
+                todayDecoration: const BoxDecoration(),
+                enabledDaysDecoration: const BoxDecoration(),
+                selectedDayDecoration: const BoxDecoration(),
+                disbaledDaysDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: slidersColors,
+                slidersSize: slidersSize,
+              ),
+            ),
+          ),
+        );
+
+        final leftIconFinder = find.byWidgetPredicate((widget) {
+          if (widget is Icon) {
+            return widget.color == slidersColors &&
+                widget.size == slidersSize &&
+                widget.icon == CupertinoIcons.chevron_left;
+          }
+          return false;
+        });
+
+        expect(leftIconFinder, findsOneWidget);
+
+        final rightIconFinder = find.byWidgetPredicate((widget) {
+          if (widget is Icon) {
+            return widget.color == slidersColors &&
+                widget.size == slidersSize &&
+                widget.icon == CupertinoIcons.chevron_right;
+          }
+          return false;
+        });
+
+        expect(rightIconFinder, findsOneWidget);
       },
     );
   });

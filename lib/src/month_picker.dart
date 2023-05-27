@@ -35,6 +35,9 @@ class MonthPicker extends StatefulWidget {
     required this.currentMonthDecoration,
     required this.selectedMonthTextStyle,
     required this.selectedMonthDecoration,
+    required this.leadingDateTextStyle,
+    required this.slidersColor,
+    required this.slidersSize,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -79,6 +82,15 @@ class MonthPicker extends StatefulWidget {
 
   /// The cell decoration of selected month.
   final BoxDecoration selectedMonthDecoration;
+
+  /// The text style of leading date showing in the header.
+  final TextStyle leadingDateTextStyle;
+
+  /// The color of the page sliders.
+  final Color slidersColor;
+
+  /// The size of the page sliders.
+  final double slidersSize;
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
@@ -167,6 +179,9 @@ class _MonthPickerState extends State<MonthPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          leadingDateTextStyle: widget.leadingDateTextStyle,
+          slidersColor: widget.slidersColor,
+          slidersSize: widget.slidersSize,
           onDateTap: () => widget.onLeadingDateTap?.call(),
           displayedDate: _displayedYear!.year.toString(),
           onNextPage: () {

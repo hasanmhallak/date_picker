@@ -80,6 +80,9 @@ class DatePicker extends StatefulWidget {
     this.selectedCellColor,
     this.selectedCellTextStyle,
     this.selectedCellDecoration,
+    this.leadingDateTextStyle,
+    this.slidersColor,
+    this.slidersSize,
   }) {
     assert(
       !maxDate.isBefore(minDate),
@@ -207,6 +210,22 @@ class DatePicker extends StatefulWidget {
   /// defaults to circle with [ColorScheme.primary] color.
   final BoxDecoration? selectedCellDecoration;
 
+  /// The text style of leading date showing in the header.
+  ///
+  /// defaults to `18px` with a [FontWeight.bold]
+  /// and [ColorScheme.primary] color.
+  final TextStyle? leadingDateTextStyle;
+
+  /// The color of the page sliders.
+  ///
+  /// defaults to [ColorScheme.primary] color.
+  final Color? slidersColor;
+
+  /// The size of the page sliders.
+  ///
+  /// defaults to `20px`.
+  final double? slidersSize;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -239,6 +258,22 @@ class _DatePickerState extends State<DatePicker> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
     //
+    //
+    //
+    //! header
+    final leadingTextStyle = widget.leadingDateTextStyle ??
+        TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.primary,
+        );
+
+    final sliderSize = widget.slidersSize ?? 20;
+    final slidersColor =
+        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+
+    //
+    //! days of the week
     //
     //
     final TextStyle daysNameTextStyle = widget.daysNameTextStyle ??
@@ -338,6 +373,9 @@ class _DatePickerState extends State<DatePicker> {
             todayTextStyle: currentDateTextStyle,
             selectedDayDecoration: selectedCellDecoration,
             selectedDayTextStyle: selectedCellTextStyle,
+            slidersColor: slidersColor,
+            slidersSize: sliderSize,
+            leadingDateTextStyle: leadingTextStyle,
             onChange: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
@@ -366,6 +404,9 @@ class _DatePickerState extends State<DatePicker> {
             enabledMonthTextStyle: enabledCellTextStyle,
             selectedMonthDecoration: selectedCellDecoration,
             selectedMonthTextStyle: selectedCellTextStyle,
+            slidersColor: slidersColor,
+            slidersSize: sliderSize,
+            leadingDateTextStyle: leadingTextStyle,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -394,6 +435,9 @@ class _DatePickerState extends State<DatePicker> {
             enabledYearTextStyle: enabledCellTextStyle,
             selectedYearDecoration: selectedCellDecoration,
             selectedYearTextStyle: selectedCellTextStyle,
+            slidersColor: slidersColor,
+            slidersSize: sliderSize,
+            leadingDateTextStyle: leadingTextStyle,
             onChange: (selectedYear) {
               setState(() {
                 _displayedDate = selectedYear;

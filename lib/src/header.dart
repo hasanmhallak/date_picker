@@ -17,6 +17,9 @@ class Header extends StatelessWidget {
   final VoidCallback onDateTap;
   final VoidCallback onNextPage;
   final VoidCallback onPreviousPage;
+  final Color slidersColor;
+  final double slidersSize;
+  final TextStyle leadingDateTextStyle;
 
   /// The header that will be shown above the calendar grid.
   const Header({
@@ -25,6 +28,9 @@ class Header extends StatelessWidget {
     required this.onDateTap,
     required this.onNextPage,
     required this.onPreviousPage,
+    required this.slidersColor,
+    required this.slidersSize,
+    required this.leadingDateTextStyle,
   });
 
   @override
@@ -35,10 +41,13 @@ class Header extends StatelessWidget {
         LeadingDate(
           onTap: onDateTap,
           displayedText: displayedDate,
+          displayedTextStyle: leadingDateTextStyle,
         ),
         PageSliders(
           onBackward: onPreviousPage,
           onForward: onNextPage,
+          slidersSized: slidersSize,
+          slidersColor: slidersColor,
         ),
       ],
     );

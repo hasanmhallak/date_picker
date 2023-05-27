@@ -7,10 +7,14 @@ class LeadingDate extends StatelessWidget {
     super.key,
     required this.displayedText,
     required this.onTap,
+    required this.displayedTextStyle,
   });
 
   /// The year/month whose days are displayed by this picker.
   final String displayedText;
+
+  /// The text style of [displayedText].
+  final TextStyle displayedTextStyle;
 
   final VoidCallback onTap;
 
@@ -20,11 +24,7 @@ class LeadingDate extends StatelessWidget {
       onTap: onTap,
       child: Text(
         displayedText,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+        style: displayedTextStyle,
       ),
     );
   }

@@ -34,6 +34,9 @@ class YearsPicker extends StatefulWidget {
     required this.currentYearDecoration,
     required this.selectedYearTextStyle,
     required this.selectedYearDecoration,
+    required this.leadingDateTextStyle,
+    required this.slidersColor,
+    required this.slidersSize,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a year.
@@ -75,6 +78,15 @@ class YearsPicker extends StatefulWidget {
 
   /// The cell decoration of selected year.
   final BoxDecoration selectedYearDecoration;
+
+  /// The text style of leading date showing in the header.
+  final TextStyle leadingDateTextStyle;
+
+  /// The color of the page sliders.
+  final Color slidersColor;
+
+  /// The size of the page sliders.
+  final double slidersSize;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -186,6 +198,9 @@ class _YearsPickerState extends State<YearsPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          leadingDateTextStyle: widget.leadingDateTextStyle,
+          slidersColor: widget.slidersColor,
+          slidersSize: widget.slidersSize,
           onDateTap: () {},
           displayedDate:
               '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
