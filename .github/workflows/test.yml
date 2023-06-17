@@ -21,7 +21,7 @@ jobs:
         run: flutter pub get
       
       - name: Insure Formatting
-        run: flutter format
+        run: dart format
 
       - name: Analyze project source
         run: flutter analyze
