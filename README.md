@@ -1,4 +1,4 @@
-[![Tests](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml/badge.svg)](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml)
+[![Tests](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml)
 
 # Date Picker Plus
 
