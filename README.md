@@ -1,5 +1,4 @@
 [![Tests](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/hasanmhallak/date_picker/actions/workflows/tests.yml)
-
 # Date Picker Plus
 
 A Flutter library that provides a customizable Material Design date picker widget.
