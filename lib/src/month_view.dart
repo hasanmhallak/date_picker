@@ -31,11 +31,11 @@ class MonthView extends StatelessWidget {
     this.selectedMonth,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
-          if (selectedDate == null) return true;
-          return (selectedDate.isAfter(minDate) ||
-                  selectedDate.isAtSameMomentAs(minDate)) &&
-              (selectedDate.isBefore(maxDate) ||
-                  selectedDate.isAtSameMomentAs(maxDate));
+          if (selectedMonth == null) return true;
+          return (selectedMonth.isAfter(minDate) ||
+                  selectedMonth.isAtSameMomentAs(minDate)) &&
+              (selectedMonth.isBefore(maxDate) ||
+                  selectedMonth.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected month.

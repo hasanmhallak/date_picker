@@ -16,7 +16,6 @@ class YearView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYearRange,
-    this.selectedYear,
     required this.enabledYearTextStyle,
     required this.enabledYearDecoration,
     required this.disbaledYearTextStyle,
@@ -28,6 +27,7 @@ class YearView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
+    this.selectedYear,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           return (displayedYearRange.end.year -
@@ -35,11 +35,11 @@ class YearView extends StatelessWidget {
               11;
         }(), "the display year range must always be 12 years."),
         assert(() {
-          if (selectedDate == null) return true;
-          return (selectedDate.isAfter(minDate) ||
-                  selectedDate.isAtSameMomentAs(minDate)) &&
-              (selectedDate.isBefore(maxDate) ||
-                  selectedDate.isAtSameMomentAs(maxDate));
+          if (selectedYear == null) return true;
+          return (selectedYear.isAfter(minDate) ||
+                  selectedYear.isAtSameMomentAs(minDate)) &&
+              (selectedYear.isBefore(maxDate) ||
+                  selectedYear.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected year.
