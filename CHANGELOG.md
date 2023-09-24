@@ -1,3 +1,7 @@
+# 1.1.4
+
+- Fix the assertion when the selected date is the same as max or min date.
+
 # 1.1.3
 
 - Add ability to modify splash & highlight colors.

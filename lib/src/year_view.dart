@@ -35,9 +35,11 @@ class YearView extends StatelessWidget {
               11;
         }(), "the display year range must always be 12 years."),
         assert(() {
-          if (selectedYear == null) return true;
-          return selectedYear.isAfter(minDate) &&
-              selectedYear.isBefore(maxDate);
+          if (selectedDate == null) return true;
+          return (selectedDate.isAfter(minDate) ||
+                  selectedDate.isAtSameMomentAs(minDate)) &&
+              (selectedDate.isBefore(maxDate) ||
+                  selectedDate.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected year.
