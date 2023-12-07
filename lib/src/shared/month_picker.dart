@@ -7,13 +7,15 @@ import '../date/show_date_picker_dialog.dart';
 /// A scrollable grid of months to allow picking a month.
 ///
 /// The month picker widget is rarely used directly. Instead, consider using
-/// [showDatePickerDialog], which will create a dialog that uses this as well as
-/// provides a text entry option.
+/// [showDatePickerDialog], which will create a dialog that uses this.
 ///
 /// See also:
 ///
 ///  * [showDatePickerDialog], which creates a Dialog that contains a
-///    [DatePicker] and provides an optional compact view where the
+///    [DatePicker] and provides an optional compact view.
+///
+///  * [showDateRangePicker], which creates a Dialog that contains a
+///    [RangeDatePicker] and provides an optional compact view.
 ///
 class MonthPicker extends StatefulWidget {
   /// Creates a month picker.
@@ -22,11 +24,9 @@ class MonthPicker extends StatefulWidget {
   /// must be non-null. The [minDate] must be after the [maxDate].
   MonthPicker({
     super.key,
-    this.onChange,
     required this.minDate,
     required this.maxDate,
     required this.initialDate,
-    this.onLeadingDateTap,
     required this.enabledMonthTextStyle,
     required this.enabledMonthDecoration,
     required this.disbaledMonthTextStyle,
@@ -41,6 +41,8 @@ class MonthPicker extends StatefulWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
+    this.onLeadingDateTap,
+    this.onChange,
   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
   /// Called when the user picks a month.
@@ -120,7 +122,6 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   void initState() {
     _displayedYear = widget.initialDate;
-    // _selectedMonth = widget.selectedDate;
     _pageController = PageController(
       initialPage: (widget.initialDate.year - widget.minDate.year),
     );
@@ -135,9 +136,7 @@ class _MonthPickerState extends State<MonthPicker> {
       _pageController
           .jumpToPage((widget.initialDate.year - widget.minDate.year));
     }
-    // if (oldWidget.selectedDate != widget.selectedDate) {
-    //   _selectedMonth = widget.selectedDate;
-    // }
+
     super.didUpdateWidget(oldWidget);
   }
 
