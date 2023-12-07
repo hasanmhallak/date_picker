@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart' as intl;
 
-import 'picker_grid_delegate.dart';
+import '../shared/picker_grid_delegate.dart';
 
 const double _dayPickerRowHeight = 52.0;
 
@@ -38,8 +38,10 @@ class DaysView extends StatelessWidget {
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           if (selectedDate == null) return true;
-          return selectedDate.isAfter(minDate) &&
-              selectedDate.isBefore(maxDate);
+          return (selectedDate.isAfter(minDate) ||
+                  selectedDate.isAtSameMomentAs(minDate)) &&
+              (selectedDate.isBefore(maxDate) ||
+                  selectedDate.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected date.
@@ -258,6 +260,7 @@ class DaysView extends StatelessWidget {
       gridDelegate: const PickerGridDelegate(
         columnCount: DateTime.daysPerWeek,
         columnPadding: 4,
+        rowPadding: 4,
         rowExtent: _dayPickerRowHeight,
         rowStride: _dayPickerRowHeight,
       ),

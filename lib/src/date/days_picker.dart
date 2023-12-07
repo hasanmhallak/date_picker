@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'days_view.dart';
-import 'header.dart';
+import '../shared/header.dart';
 import 'show_date_picker_dialog.dart';
 
 /// A scrollable grid of months to allow picking a month.

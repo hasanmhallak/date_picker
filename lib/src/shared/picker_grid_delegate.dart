@@ -30,6 +30,7 @@ class PickerGridDelegate extends SliverGridDelegate {
     required this.rowExtent,
     required this.rowStride,
     this.columnPadding = 0,
+    this.rowPadding = 0,
   });
 
   /// The number of columns in the cross axis.
@@ -37,6 +38,9 @@ class PickerGridDelegate extends SliverGridDelegate {
 
   /// The amount of padding between columns in the cross axis.
   final double columnPadding;
+
+  /// The amount of padding between rows in the main axis.
+  final double rowPadding;
 
   /// The number of pixels from the leading edge of one tile to the trailing edge of the same tile in the main axis.
   final double rowExtent;
@@ -51,7 +55,7 @@ class PickerGridDelegate extends SliverGridDelegate {
     return SliverGridRegularTileLayout(
       // to add padding between cells.
       childCrossAxisExtent: tileWidth - columnPadding,
-      childMainAxisExtent: rowExtent - columnPadding,
+      childMainAxisExtent: rowExtent - rowPadding,
       crossAxisCount: columnCount,
       crossAxisStride: tileWidth,
       mainAxisStride: rowStride,

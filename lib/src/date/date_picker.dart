@@ -1,28 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../shared/picker_type.dart';
 import 'days_picker.dart';
-import 'month_picker.dart';
-import 'year_picker.dart';
+import '../shared/month_picker.dart';
+import '../shared/year_picker.dart';
 import 'show_date_picker_dialog.dart';
-
-/// Initial display of a date picker.
-///
-/// See also:
-///
-///  * [showDatePickerDialog], which shows a dialog that contains a Material Design
-///    date picker.
-///  * [DatePicker], widget which implements the Material Design date picker.
-///
-enum PickerType {
-  /// Choosing a day.
-  days,
-
-  /// Choosing a month.
-  months,
-
-  /// Choosing a year.
-  years,
-}
 
 /// Displays a grid of days for a given month and allows the user to select a
 /// date.

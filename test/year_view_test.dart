@@ -1,4 +1,4 @@
-import 'package:date_picker_plus/src/year_view.dart';
+import 'package:date_picker_plus/src/shared/year_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

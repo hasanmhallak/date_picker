@@ -32,8 +32,10 @@ class MonthView extends StatelessWidget {
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           if (selectedMonth == null) return true;
-          return selectedMonth.isAfter(minDate) &&
-              selectedMonth.isBefore(maxDate);
+          return (selectedMonth.isAfter(minDate) ||
+                  selectedMonth.isAtSameMomentAs(minDate)) &&
+              (selectedMonth.isBefore(maxDate) ||
+                  selectedMonth.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected month.
@@ -187,6 +189,7 @@ class MonthView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(
         columnCount: 3,
+        rowPadding: 3,
         rowExtent: 60,
         rowStride: 80,
       ),

@@ -16,7 +16,6 @@ class YearView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     required this.displayedYearRange,
-    this.selectedYear,
     required this.enabledYearTextStyle,
     required this.enabledYearDecoration,
     required this.disbaledYearTextStyle,
@@ -28,6 +27,7 @@ class YearView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
+    this.selectedYear,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           return (displayedYearRange.end.year -
@@ -36,8 +36,10 @@ class YearView extends StatelessWidget {
         }(), "the display year range must always be 12 years."),
         assert(() {
           if (selectedYear == null) return true;
-          return selectedYear.isAfter(minDate) &&
-              selectedYear.isBefore(maxDate);
+          return (selectedYear.isAfter(minDate) ||
+                  selectedYear.isAtSameMomentAs(minDate)) &&
+              (selectedYear.isBefore(maxDate) ||
+                  selectedYear.isAtSameMomentAs(maxDate));
         }(), "selected date should be in the range of min date & max date");
 
   /// The currently selected year.
@@ -183,6 +185,7 @@ class YearView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(
         columnCount: 3,
+        rowPadding: 3,
         rowExtent: 60,
         rowStride: 80,
       ),
