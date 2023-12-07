@@ -44,26 +44,28 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (selectedDate != null)
-              Text(DateFormat(
-                'MMM dd, yy',
-              ).format(selectedDate!)),
+            // if (selectedDate != null)
+            //   Text(DateFormat(
+            //     'MMM dd, yy',
+            //   ).format(selectedDate!)),
             TextButton(
               onPressed: () async {
-                final date = await showDatePickerDialog(
+                showDatePicker(
                   context: context,
-                  initialDate: DateTime.now(),
-                  maxDate: DateTime.now().add(const Duration(days: 365 * 3)),
-                  minDate:
-                      DateTime.now().subtract(const Duration(days: 365 * 3)),
+                  initialDate: DateTime(2022, 10, 1),
+                  firstDate: DateTime(2022, 10, 1),
+                  lastDate: DateTime(2023, 10, 30),
                 );
-                if (date != null) {
-                  setState(() {
-                    selectedDate = date;
-                  });
-                }
               },
               child: const Text('Show Picker'),
+            ),
+            RangeDatePicker(
+              maxDate: DateTime(2023, 10, 30),
+              minDate: DateTime(2020, 10, 1),
+              currentDate: DateTime(2023, 10, 5),
+              onRangeSelected: (DateTimeRange value) {
+                print(value);
+              },
             ),
           ],
         ),
