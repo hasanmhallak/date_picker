@@ -1,6 +1,25 @@
 import 'package:flutter/cupertino.dart';
 
-/// Controlls the next & previous page.
+/// Controls the navigation to the next and previous pages.
+///
+/// The `PageSliders` widget provides a set of forward and backward sliders for navigating
+/// between pages. It typically represents controls for moving to the next and previous pages
+/// in a paginated interface, such as in a carousel or date picker.
+///
+/// ### Example:
+///
+/// ```dart
+/// PageSliders(
+///   onForward: () {
+///     // Handle forward slider tap action
+///   },
+///   onBackward: () {
+///     // Handle backward slider tap action
+///   },
+///   slidersColor: Colors.blue,
+///   slidersSized: 20.0,
+/// )
+/// ```
 class PageSliders extends StatelessWidget {
   final VoidCallback onForward;
   final VoidCallback onBackward;
