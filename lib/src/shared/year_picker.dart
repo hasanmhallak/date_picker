@@ -13,7 +13,10 @@ import 'year_view.dart';
 /// See also:
 ///
 ///  * [showDatePickerDialog], which creates a Dialog that contains a
-///    [DatePicker] and provides an optional compact view where the
+///    [DatePicker] and provides an optional compact view.
+///
+///  * [showDateRangePicker], which creates a Dialog that contains a
+///    [RangeDatePicker] and provides an optional compact view.
 ///
 class YearsPicker extends StatefulWidget {
   /// Creates a year picker.
