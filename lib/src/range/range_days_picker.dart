@@ -38,18 +38,40 @@ class RangeDaysPicker extends StatefulWidget {
     required this.splashColor,
     required this.splashRadius,
     required this.materialLocalizations,
-  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          if (selectedStartDate == null) return true;
+          return (selectedStartDate.isAfter(minDate) ||
+                  selectedStartDate.isAtSameMomentAs(minDate)) &&
+              (selectedStartDate.isBefore(maxDate) ||
+                  selectedStartDate.isAtSameMomentAs(maxDate));
+        }(),
+            "selected start date should be in the range of min date & max date"),
+        assert(() {
+          if (selectedEndDate == null) return true;
+          return (selectedEndDate.isAfter(minDate) ||
+                  selectedEndDate.isAtSameMomentAs(minDate)) &&
+              (selectedEndDate.isBefore(maxDate) ||
+                  selectedEndDate.isAtSameMomentAs(maxDate));
+        }(), "selected end date should be in the range of min date & max date");
 
-  /// Called when the user picks a day.
+  /// Called when the user picks a start date.
   final ValueChanged<DateTime> onStartDateChanged;
+
+  /// Called when the user picks an end date.
   final ValueChanged<DateTime> onEndDateChanged;
 
-  /// The currently selected date.
+  /// The currently selected start date.
   ///
   /// This date is highlighted in the picker.
   final DateTime? selectedStartDate;
+
+  /// The currently selected end date.
+  ///
+  /// This date is highlighted in the picker.
   final DateTime? selectedEndDate;
 
+  /// The current date. e.g (today)
   final DateTime currentDate;
 
   /// The date which will be displayed on first opening.
@@ -244,13 +266,13 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     final daysCount = DateUtils.getDaysInMonth(year, month);
 
     // 30 & 5 => false
-    // 31 & 5 => true
-    // 30 & 6 => true
-    // 31 & 6 => true
     if (offset == 5 && daysCount == 30) {
       return false;
     }
 
+    // 31 & 5 => true
+    // 30 & 6 => true
+    // 31 & 6 => true
     if (offset >= 5 && daysCount >= 30) {
       return true;
     }
@@ -311,135 +333,3 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     );
   }
 }
-
-// /// A scrollable grid of months to allow picking a month.
-// ///
-// /// The days picker widget is rarely used directly. Instead, consider using
-// /// [showDatePickerDialog], which will create a dialog that uses this as well as
-// /// provides a text entry option.
-// ///
-// /// See also:
-// ///
-// ///  * [showDatePickerDialog], which creates a Dialog that contains a
-// ///    [DatePicker] and provides an optional compact view where the
-// ///
-// class DaysPicker extends StatelessWidget {
-//   /// Creates a month picker.
-//   ///
-//   /// The [maxDate], [minDate], [initialDate] arguments
-//   /// must be non-null. The [minDate] must be after the [maxDate].
-//   DaysPicker({
-//     super.key,
-//     required this.initialDate,
-//     required this.maxDate,
-//     required this.minDate,
-//     this.onLeadingDateTap,
-//     this.onChange,
-//     required this.daysNameTextStyle,
-//     required this.enabledDaysTextStyle,
-//     required this.enabledDaysDecoration,
-//     required this.disbaledDaysTextStyle,
-//     required this.disbaledDaysDecoration,
-//     required this.todayTextStyle,
-//     required this.todayDecoration,
-//     required this.selectedDayTextStyle,
-//     required this.selectedDayDecoration,
-//     required this.leadingDateTextStyle,
-//     required this.slidersColor,
-//     required this.slidersSize,
-//     required this.highlightColor,
-//     required this.splashColor,
-//     this.splashRadius,
-//   }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
-
-//   /// Called when the user picks a month.
-//   final ValueChanged<DateTime>? onChange;
-
-//   /// The earliest date the user is permitted to pick.
-//   ///
-//   /// This date must be on or before the [maxDate].
-//   final DateTime minDate;
-
-//   /// The latest date the user is permitted to pick.
-//   ///
-//   /// This date must be on or after the [minDate].
-//   final DateTime maxDate;
-
-//   /// The date which will be displayed on first opening.
-//   final DateTime initialDate;
-
-//   /// Called when the user tap on the leading date.
-//   final VoidCallback? onLeadingDateTap;
-
-//   /// The text style of the days name.
-//   final TextStyle daysNameTextStyle;
-
-//   /// The text style of days which are selectable.
-//   final TextStyle enabledDaysTextStyle;
-
-//   /// The cell decoration of days which are selectable.
-//   final BoxDecoration enabledDaysDecoration;
-
-//   /// The text style of days which are not selectable.
-//   final TextStyle disbaledDaysTextStyle;
-
-//   /// The cell decoration of days which are not selectable.
-//   final BoxDecoration disbaledDaysDecoration;
-
-//   /// The text style of the current day
-//   final TextStyle todayTextStyle;
-
-//   /// The cell decoration of the current day.
-//   final BoxDecoration todayDecoration;
-
-//   /// The text style of selected day.
-//   final TextStyle selectedDayTextStyle;
-
-//   /// The cell decoration of selected day.
-//   final BoxDecoration selectedDayDecoration;
-
-//   /// The text style of leading date showing in the header.
-//   final TextStyle leadingDateTextStyle;
-
-//   /// The color of the page sliders.
-//   final Color slidersColor;
-
-//   /// The size of the page sliders.
-//   final double slidersSize;
-
-//   /// The splash color of the ink response.
-//   final Color splashColor;
-
-//   /// The highlight color of the ink response when pressed.
-//   final Color highlightColor;
-
-//   /// The radius of the ink splash.
-//   final double? splashRadius;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return _DaysPicker(
-//       initialDate: initialDate,
-//       maxDate: maxDate,
-//       minDate: minDate,
-//       daysNameTextStyle: daysNameTextStyle,
-//       enabledDaysTextStyle: enabledDaysTextStyle,
-//       enabledDaysDecoration: enabledDaysDecoration,
-//       disbaledDaysTextStyle: disbaledDaysTextStyle,
-//       disbaledDaysDecoration: disbaledDaysDecoration,
-//       todayDecoration: todayDecoration,
-//       todayTextStyle: todayTextStyle,
-//       selectedDayDecoration: selectedDayDecoration,
-//       selectedDayTextStyle: selectedDayTextStyle,
-//       leadingDateTextStyle: leadingDateTextStyle,
-//       slidersColor: slidersColor,
-//       slidersSize: slidersSize,
-//       highlightColor: highlightColor,
-//       splashColor: splashColor,
-//       splashRadius: splashRadius,
-//       materialLocalizations: MaterialLocalizations.of(context),
-//       onChange: onChange,
-//       onLeadingDateTap: onLeadingDateTap,
-//     );
-//   }
-// }
