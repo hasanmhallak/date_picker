@@ -6,12 +6,12 @@ import '../shared/picker_grid_delegate.dart';
 
 const double _dayPickerRowHeight = 52.0;
 
-/// Displays the days of a given month and allows choosing a day.
+/// Displays the days of a given month and allows choosing days range.
 ///
 /// The days are arranged in a rectangular grid with one column for each day of
 /// the week.
 class DaysView extends StatelessWidget {
-  /// Displays the days of a given month and allows choosing a day.
+  /// Displays the days of a given month and allows choosing  days range.
   ///
   /// The days are arranged in a rectangular grid with one column for each day of
   /// the week.
@@ -43,7 +43,22 @@ class DaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     required this.splashRadius,
-  }) : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
+        assert(() {
+          if (selectedStartDate == null) return true;
+          return (selectedStartDate.isAfter(minDate) ||
+                  selectedStartDate.isAtSameMomentAs(minDate)) &&
+              (selectedStartDate.isBefore(maxDate) ||
+                  selectedStartDate.isAtSameMomentAs(maxDate));
+        }(),
+            "selected start date should be in the range of min date & max date"),
+        assert(() {
+          if (selectedEndDate == null) return true;
+          return (selectedEndDate.isAfter(minDate) ||
+                  selectedEndDate.isAtSameMomentAs(minDate)) &&
+              (selectedEndDate.isBefore(maxDate) ||
+                  selectedEndDate.isAtSameMomentAs(maxDate));
+        }(), "selected end date should be in the range of min date & max date");
 
   /// The currently selected start date.
   ///
