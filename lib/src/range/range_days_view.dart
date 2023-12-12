@@ -34,10 +34,6 @@ class DaysView extends StatelessWidget {
     required this.currentDateDecoration,
     required this.selectedCellsTextStyle,
     required this.selectedCellsDecoration,
-    required this.selectedStartCellTextStyle,
-    required this.selectedStartCellDecoration,
-    required this.selectedEndCellTextStyle,
-    required this.selectedEndCellDecoration,
     required this.singelSelectedCellTextStyle,
     required this.singelSelectedCellDecoration,
     required this.highlightColor,
@@ -107,22 +103,12 @@ class DaysView extends StatelessWidget {
   /// The cell decoration of cells which are not selectable.
   final BoxDecoration disbaledCellsDecoration;
 
-  /// The text style of selected start cell of the range.
-  final TextStyle selectedStartCellTextStyle;
-
-  /// The cell decoration of selected start cell of the range.
-  final BoxDecoration selectedStartCellDecoration;
-
-  /// The text style of selected end cell of the range.
-  final TextStyle selectedEndCellTextStyle;
-
-  /// The cell decoration of selected end cell of the range.
-  final BoxDecoration selectedEndCellDecoration;
-
-  /// The text style of a single selected cell.
+  /// The text style of a single selected cell and the
+  /// leading/trailing cell of a selected range.
   final TextStyle singelSelectedCellTextStyle;
 
-  /// The cell decoration of a single selected cell.
+  /// The cell decoration of a single selected cell and the
+  /// leading/trailing cell of a selected range.
   final BoxDecoration singelSelectedCellDecoration;
 
   /// The text style of the current date.
@@ -253,20 +239,7 @@ class DaysView extends StatelessWidget {
           decoration = currentDateDecoration;
         }
 
-        if (isStartDate) {
-          //
-          //
-          style = selectedStartCellTextStyle;
-          decoration = selectedStartCellDecoration;
-        }
-        if (isEndDate) {
-          //
-          //
-          style = selectedEndCellTextStyle;
-          decoration = selectedEndCellDecoration;
-        }
-
-        if (isSingleCellSelected) {
+        if (isSingleCellSelected || isStartDate || isEndDate) {
           //
           //
           style = singelSelectedCellTextStyle;
@@ -300,18 +273,22 @@ class DaysView extends StatelessWidget {
           ),
         );
 
-        if (isStartDate || isEndDate) {
-          dayWidget = Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: singelSelectedCellDecoration,
-            child: dayWidget,
-          );
-        }
-
         dayWidget = Container(
+          clipBehavior: Clip.hardEdge,
           decoration: decoration,
           child: dayWidget,
         );
+
+        if ((isStartDate || isEndDate) && isRangeSelected) {
+          dayWidget = CustomPaint(
+            painter: _DecorationPainter(
+              textDirection: Directionality.of(context),
+              color: selectedCellsDecoration.color!,
+              start: isStartDate,
+            ),
+            child: dayWidget,
+          );
+        }
 
         if (isDisabled) {
           dayWidget = ExcludeSemantics(
@@ -368,5 +345,52 @@ class DaysView extends StatelessWidget {
         addRepaintBoundaries: false,
       ),
     );
+  }
+}
+
+class _DecorationPainter extends CustomPainter {
+  final TextDirection textDirection;
+  final Color color;
+  final bool start;
+
+  _DecorationPainter({
+    required this.textDirection,
+    required this.color,
+    required this.start,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final width = size.width / 2;
+    final height = size.height;
+
+    final painter = Paint()..color = color;
+
+    late final Offset offset;
+    switch (textDirection) {
+      case TextDirection.ltr:
+        if (start) {
+          offset = Offset(width, 0);
+        } else {
+          offset = Offset.zero;
+        }
+        break;
+      case TextDirection.rtl:
+        if (start) {
+          offset = Offset.zero;
+        } else {
+          offset = Offset(width, 0);
+        }
+        break;
+    }
+
+    canvas.drawRect(offset & Size(width, height), painter);
+  }
+
+  @override
+  bool shouldRepaint(covariant _DecorationPainter oldDelegate) {
+    return oldDelegate.textDirection != textDirection ||
+        oldDelegate.color != color ||
+        oldDelegate.start != start;
   }
 }

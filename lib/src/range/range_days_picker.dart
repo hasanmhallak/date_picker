@@ -22,10 +22,6 @@ class RangeDaysPicker extends StatefulWidget {
     required this.currentDecoration,
     required this.selectedCellsTextStyle,
     required this.selectedCellsDecoration,
-    required this.selectedStartCellTextStyle,
-    required this.selectedStartCellDecoration,
-    required this.selectedEndCellTextStyle,
-    required this.selectedEndCellDecoration,
     required this.singelSelectedCellTextStyle,
     required this.singelSelectedCellDecoration,
     required this.onLeadingDateTap,
@@ -117,22 +113,12 @@ class RangeDaysPicker extends StatefulWidget {
   /// The cell decoration of selected day.
   final BoxDecoration selectedCellsDecoration;
 
-  /// The text style of selected start cell of the range.
-  final TextStyle selectedStartCellTextStyle;
-
-  /// The cell decoration of selected start cell of the range.
-  final BoxDecoration selectedStartCellDecoration;
-
-  /// The text style of selected end cell of the range.
-  final TextStyle selectedEndCellTextStyle;
-
-  /// The cell decoration of selected end cell of the range.
-  final BoxDecoration selectedEndCellDecoration;
-
-  /// The text style of a single selected cell.
+  /// The text style of a single selected cell and the
+  /// leading/trailing cell of a selected range.
   final TextStyle singelSelectedCellTextStyle;
 
-  /// The cell decoration of a single selected cell.
+  /// The cell decoration of a single selected cell and the
+  /// leading/trailing cell of a selected range.
   final BoxDecoration singelSelectedCellDecoration;
 
   /// The text style of leading date showing in the header.
@@ -229,10 +215,6 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
       currentDateTextStyle: widget.currentTextStyle,
       selectedCellsDecoration: widget.selectedCellsDecoration,
       selectedCellsTextStyle: widget.selectedCellsTextStyle,
-      selectedStartCellTextStyle: widget.selectedStartCellTextStyle,
-      selectedStartCellDecoration: widget.selectedStartCellDecoration,
-      selectedEndCellTextStyle: widget.selectedEndCellTextStyle,
-      selectedEndCellDecoration: widget.selectedEndCellDecoration,
       singelSelectedCellTextStyle: widget.singelSelectedCellTextStyle,
       singelSelectedCellDecoration: widget.singelSelectedCellDecoration,
       highlightColor: widget.highlightColor,

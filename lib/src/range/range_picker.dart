@@ -23,8 +23,7 @@ import 'range_days_picker.dart';
 class RangeDatePicker extends StatefulWidget {
   /// Creates a calendar date range picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. The day
-  /// indicated by [initialDate] will be selected.
+  /// It will display a grid of days for the [initialDate]'s month.
   ///
   /// The user interface provides a way to change the year of the month being
   /// displayed. By default it will show the day grid, but this can be changed
@@ -35,9 +34,6 @@ class RangeDatePicker extends StatefulWidget {
   /// [initialPickerType] must be non-null.
   ///
   /// [maxDate] must be after or equal to [minDate].
-  ///
-  /// [initialDate] must be between [maxDate] and [minDate] or equal to
-  /// one of them.
   ///
   RangeDatePicker({
     super.key,
@@ -62,12 +58,6 @@ class RangeDatePicker extends StatefulWidget {
     this.selectedCellsColor,
     this.selectedCellsTextStyle,
     this.selectedCellsDecoration,
-    this.selectedStartCellColor,
-    this.selectedStartCellTextStyle,
-    this.selectedStartCellDecoration,
-    this.selectedEndCellColor,
-    this.selectedEndCellTextStyle,
-    this.selectedEndCellDecoration,
     this.singelSelectedCellColor,
     this.singelSelectedCellTextStyle,
     this.singelSelectedCellDecoration,
@@ -82,21 +72,27 @@ class RangeDatePicker extends StatefulWidget {
       !maxDate.isBefore(minDate),
       'maxDate $maxDate must be on or after minDate $minDate.',
     );
-    assert(() {
-      if (selectedRange == null) return true;
+    assert(
+      () {
+        if (selectedRange == null) return true;
+        return (selectedRange!.start.isAfter(minDate) ||
+                selectedRange!.start.isAtSameMomentAs(minDate)) &&
+            (selectedRange!.start.isBefore(maxDate) ||
+                selectedRange!.start.isAtSameMomentAs(maxDate));
+      }(),
+      "selected start date should be in the range of min date & max date",
+    );
 
-      final isMaxBeforeEnd = maxDate.isBefore(selectedRange!.end);
-
-      return !isMaxBeforeEnd;
-    }(), 'maxDate must be on or after the end of selected range date');
-
-    assert(() {
-      if (selectedRange == null) return true;
-
-      final isMinBeforeStart = minDate.isBefore(selectedRange!.start);
-
-      return !isMinBeforeStart;
-    }(), 'minDate must be on or before the start of selected range date');
+    assert(
+      () {
+        if (selectedRange == null) return true;
+        return (selectedRange!.end.isAfter(minDate) ||
+                selectedRange!.end.isAtSameMomentAs(minDate)) &&
+            (selectedRange!.end.isBefore(maxDate) ||
+                selectedRange!.end.isAtSameMomentAs(maxDate));
+      }(),
+      "selected end date should be in the range of min date & max date",
+    );
 
     assert(
       enabledCellColor == null || enabledCellTextStyle == null,
@@ -119,16 +115,6 @@ class RangeDatePicker extends StatefulWidget {
       'To provide both, use "selectedCellTextStyle: TextStyle(color: color)".',
     );
     assert(
-      selectedStartCellColor == null || selectedStartCellTextStyle == null,
-      'Cannot provide both a color and a textStyle\n'
-      'To provide both, use "selectedStartCellTextStyle: TextStyle(color: color)".',
-    );
-    assert(
-      selectedEndCellColor == null || selectedEndCellTextStyle == null,
-      'Cannot provide both a color and a textStyle\n'
-      'To provide both, use "selectedEndCellTextStyle: TextStyle(color: color)".',
-    );
-    assert(
       singelSelectedCellColor == null || singelSelectedCellTextStyle == null,
       'Cannot provide both a color and a textStyle\n'
       'To provide both, use "singelSelectedCellTextStyle: TextStyle(color: color)".',
@@ -136,10 +122,10 @@ class RangeDatePicker extends StatefulWidget {
   }
 
   /// The initially selected date range when the picker is first opened.
-  /// If the specified range contains the [currentDate], that range will be selected.
+  /// If the specified range contains the [initialDate], that range will be selected.
   final DateTimeRange? selectedRange;
 
-  /// The date to which the picker will consider.
+  /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to today's date.
   final DateTime? currentDate;
 
@@ -207,45 +193,72 @@ class RangeDatePicker extends StatefulWidget {
   /// The color of the current date.
   ///
   /// defaults to [ColorScheme.primary].
+  ///
+  /// ### Note:
+  /// If [currentDate] is within the selected range this will
+  /// be override by [selectedCellsColor]
   final Color? currentDateColor;
 
   /// The text style of the current date.
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.primary] color.
+  ///
+  /// ### Note:
+  /// If [currentDate] is within the selected range this will
+  /// be override by [selectedCellsTextStyle]
   final TextStyle? currentDateTextStyle;
 
   /// The cell decoration of the current date.
   ///
   /// defaults to circle stroke border with [ColorScheme.primary] color.
+  ///
+  /// ### Note:
+  /// If [currentDate] is within the selected range this will
+  /// be override by [selectedCellsDecoration]
   final BoxDecoration? currentDateDecoration;
 
-  /// The color of the selected cells.
+  /// The color of the selected cells within the range.
   ///
-  /// defaults to [ColorScheme.onPrimary].
+  /// defaults to [ColorScheme.onPrimaryContainer].
   final Color? selectedCellsColor;
 
-  /// The text style of selected cells.
+  /// The text style of selected cells within the range.
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.onPrimary] color.
+  /// and [ColorScheme.onPrimaryContainer] color.
   final TextStyle? selectedCellsTextStyle;
 
-  /// The cell decoration of selected cells.
+  /// The cell decoration of selected cells within the range.
   ///
-  /// defaults to circle with [ColorScheme.primary] color.
+  /// defaults to circle with [ColorScheme.primaryContainer] color.
   final BoxDecoration? selectedCellsDecoration;
 
-  final Color? selectedStartCellColor;
-  final TextStyle? selectedStartCellTextStyle;
-  final BoxDecoration? selectedStartCellDecoration;
-
-  final Color? selectedEndCellColor;
-  final TextStyle? selectedEndCellTextStyle;
-  final BoxDecoration? selectedEndCellDecoration;
-
+  /// The color for a cell's text representing:
+  ///
+  /// 1. A single cell when initially selected.
+  /// 2. The leading/trailing cell of a selected range.
+  ///
+  /// If not provided, `singelSelectedCellColor` defaults to the color specified
+  /// in `selectedCellsDecoration`, using [ColorScheme.onPrimary].
   final Color? singelSelectedCellColor;
+
+  /// The text style for a cell representing:
+  ///
+  /// 1. A single cell when initially selected.
+  /// 2. The leading/trailing cell of a selected range.
+  ///
+  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
+  /// and [ColorScheme.onPrimary] color
   final TextStyle? singelSelectedCellTextStyle;
+
+  /// The decoration for a cell representing:
+  ///
+  /// 1. A single cell when initially selected.
+  /// 2. The leading/trailing cell of a selected range.
+  ///
+  /// If not provided, `singelSelectedCellDecoration` is a circle with the color specified
+  /// in `selectedCellsDecoration`, using [ColorScheme.primary].
   final BoxDecoration? singelSelectedCellDecoration;
 
   /// The splash color of the ink response.
@@ -335,12 +348,11 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.primary,
+          color: colorScheme.primary,
         );
 
     final sliderSize = widget.slidersSize ?? 20;
-    final slidersColor =
-        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+    final slidersColor = widget.slidersColor ?? colorScheme.primary;
 
     //
     //! days of the week
@@ -423,51 +435,6 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             );
 
     //
-    //? start
-    final Color selectedStartCellColor =
-        widget.selectedStartCellColor ?? colorScheme.onPrimary;
-
-    final TextStyle selectedStartCellTextStyle =
-        widget.selectedStartCellTextStyle ??
-            textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.normal,
-              color: selectedStartCellColor,
-            );
-
-    final BoxDecoration selectedStartCellDecoration =
-        widget.selectedStartCellDecoration ??
-            BoxDecoration(
-              color: colorScheme.primaryContainer,
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadiusDirectional.only(
-                topStart: Radius.circular(30),
-                bottomStart: Radius.circular(30),
-              ),
-            );
-    //
-    //? end
-    final Color selectedEndCellColor =
-        widget.selectedEndCellColor ?? colorScheme.onPrimary;
-
-    final TextStyle selectedEndCellTextStyle =
-        widget.selectedEndCellTextStyle ??
-            textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.normal,
-              color: selectedEndCellColor,
-            );
-
-    final BoxDecoration selectedEndCellDecoration =
-        widget.selectedEndCellDecoration ??
-            BoxDecoration(
-              color: colorScheme.primaryContainer,
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadiusDirectional.only(
-                topEnd: Radius.circular(30),
-                bottomEnd: Radius.circular(30),
-              ),
-            );
-
-    //
     //? singel
     final Color singelSelectedCellColor =
         widget.singelSelectedCellColor ?? colorScheme.onPrimary;
@@ -520,10 +487,6 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             selectedCellsTextStyle: selectedCellsTextStyle,
             singelSelectedCellTextStyle: singelSelectedCellTextStyle,
             singelSelectedCellDecoration: singelSelectedCellDecoration,
-            selectedStartCellTextStyle: selectedStartCellTextStyle,
-            selectedStartCellDecoration: selectedStartCellDecoration,
-            selectedEndCellTextStyle: selectedEndCellTextStyle,
-            selectedEndCellDecoration: selectedEndCellDecoration,
             slidersColor: slidersColor,
             slidersSize: sliderSize,
             leadingDateTextStyle: leadingTextStyle,
