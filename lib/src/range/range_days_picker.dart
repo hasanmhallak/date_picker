@@ -198,7 +198,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     final DateTime month =
         DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
-    return DaysView(
+    return RangeDaysView(
       key: ValueKey<DateTime>(month),
       currentDate: widget.currentDate,
       minDate: widget.minDate,

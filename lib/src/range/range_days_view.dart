@@ -10,12 +10,12 @@ const double _dayPickerRowHeight = 52.0;
 ///
 /// The days are arranged in a rectangular grid with one column for each day of
 /// the week.
-class DaysView extends StatelessWidget {
+class RangeDaysView extends StatelessWidget {
   /// Displays the days of a given month and allows choosing  days range.
   ///
   /// The days are arranged in a rectangular grid with one column for each day of
   /// the week.
-  DaysView({
+  RangeDaysView({
     super.key,
     required this.currentDate,
     required this.minDate,
