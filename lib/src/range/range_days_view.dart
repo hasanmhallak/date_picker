@@ -348,16 +348,54 @@ class DaysView extends StatelessWidget {
   }
 }
 
+/// A custom painter class for decorating a widget with a colored rectangle.
+///
+/// The [_DecorationPainter] class extends [CustomPainter] and is responsible
+/// for painting a colored rectangle on a canvas based on specified parameters.
+/// This class is typically used as the painter for a [CustomPaint] widget to
+/// achieve a customized visual effect.
+///
+/// ### Example:
+///
+/// ```dart
+/// CustomPaint(
+///   painter: _DecorationPainter(
+///     textDirection: TextDirection.ltr,
+///     color: Colors.blue,
+///     start: true,
+///   ),
+///   child: // Your child widget goes here,
+/// )
+/// ```
 class _DecorationPainter extends CustomPainter {
-  final TextDirection textDirection;
-  final Color color;
-  final bool start;
-
+  /// Creates a [_DecorationPainter] with the specified parameters.
+  ///
+  /// The `textDirection` parameter is required to determine the positioning
+  /// of the colored rectangle based on the text direction.
+  ///
+  /// The `color` parameter defines the color of the rectangle to be painted.
+  ///
+  /// The `start` parameter is a boolean value indicating whether the rectangle
+  /// should be drawn at the start (left for LTR, right for RTL) or at the zero
+  /// position of the canvas.
   _DecorationPainter({
     required this.textDirection,
     required this.color,
     required this.start,
   });
+
+  /// The text direction to determine the positioning of the
+  ///   colored rectangle. The rectangle will be drawn on either the left or
+  ///   right side based on the text direction.
+  final TextDirection textDirection;
+
+  /// The color of the rectangle to be painted on the canvas.
+  final Color color;
+
+  /// A boolean value indicating whether the rectangle should be drawn
+  ///   at the start (left for LTR, right for RTL) or at the zero position of
+  ///   the canvas.
+  final bool start;
 
   @override
   void paint(Canvas canvas, Size size) {
