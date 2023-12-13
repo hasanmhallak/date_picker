@@ -18,8 +18,8 @@ class RangeDaysPicker extends StatefulWidget {
     required this.enabledCellsDecoration,
     required this.disbaledCellsTextStyle,
     required this.disbaledCellsDecoration,
-    required this.currentTextStyle,
-    required this.currentDecoration,
+    required this.currentDateTextStyle,
+    required this.currentDateDecoration,
     required this.selectedCellsTextStyle,
     required this.selectedCellsDecoration,
     required this.singelSelectedCellTextStyle,
@@ -102,10 +102,10 @@ class RangeDaysPicker extends StatefulWidget {
   final BoxDecoration disbaledCellsDecoration;
 
   /// The text style of the current day
-  final TextStyle currentTextStyle;
+  final TextStyle currentDateTextStyle;
 
   /// The cell decoration of the current day.
-  final BoxDecoration currentDecoration;
+  final BoxDecoration currentDateDecoration;
 
   /// The text style of selected day.
   final TextStyle selectedCellsTextStyle;
@@ -211,8 +211,8 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
       enabledCellsDecoration: widget.enabledCellsDecoration,
       disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
       disbaledCellsDecoration: widget.disbaledCellsDecoration,
-      currentDateDecoration: widget.currentDecoration,
-      currentDateTextStyle: widget.currentTextStyle,
+      currentDateDecoration: widget.currentDateDecoration,
+      currentDateTextStyle: widget.currentDateTextStyle,
       selectedCellsDecoration: widget.selectedCellsDecoration,
       selectedCellsTextStyle: widget.selectedCellsTextStyle,
       singelSelectedCellTextStyle: widget.singelSelectedCellTextStyle,
