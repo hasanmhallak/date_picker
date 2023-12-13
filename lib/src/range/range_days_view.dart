@@ -283,7 +283,7 @@ class RangeDaysView extends StatelessWidget {
           dayWidget = CustomPaint(
             painter: _DecorationPainter(
               textDirection: Directionality.of(context),
-              color: selectedCellsDecoration.color!,
+              color: selectedCellsDecoration.color,
               start: isStartDate,
             ),
             child: dayWidget,
@@ -390,7 +390,7 @@ class _DecorationPainter extends CustomPainter {
   final TextDirection textDirection;
 
   /// The color of the rectangle to be painted on the canvas.
-  final Color color;
+  final Color? color;
 
   /// A boolean value indicating whether the rectangle should be drawn
   ///   at the start (left for LTR, right for RTL) or at the zero position of
@@ -402,7 +402,11 @@ class _DecorationPainter extends CustomPainter {
     final width = size.width / 2;
     final height = size.height;
 
-    final painter = Paint()..color = color;
+    final painter = Paint();
+
+    if (color != null) {
+      painter.color = color!;
+    }
 
     late final Offset offset;
     switch (textDirection) {
