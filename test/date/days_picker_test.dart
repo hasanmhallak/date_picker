@@ -16,6 +16,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: DaysPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -59,6 +60,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: DaysPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -122,6 +124,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: DaysPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -192,6 +195,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: DaysPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -261,6 +265,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -342,6 +347,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -423,6 +429,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -501,6 +508,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -545,6 +553,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -595,6 +604,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -664,6 +674,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -713,6 +724,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: DaysPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,

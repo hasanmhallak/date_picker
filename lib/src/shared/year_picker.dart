@@ -28,6 +28,7 @@ class YearsPicker extends StatefulWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
+    required this.currentDate,
     this.onChange,
     required this.enabledYearTextStyle,
     required this.enabledYearDecoration,
@@ -47,6 +48,9 @@ class YearsPicker extends StatefulWidget {
 
   /// Called when the user picks a year.
   final ValueChanged<DateTime>? onChange;
+
+  /// The current date. e.g (today)
+  final DateTime currentDate;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -178,7 +182,7 @@ class _YearsPickerState extends State<YearsPicker> {
 
     return YearView(
       key: ValueKey<DateTimeRange>(yearRange),
-      currentDate: DateTime.now(),
+      currentDate: widget.currentDate,
       minDate: widget.minDate,
       maxDate: widget.maxDate,
       displayedYearRange: yearRange,

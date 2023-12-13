@@ -529,6 +529,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             initialDate: _diplayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
+            currentDate:
+                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
             currentMonthDecoration: currentDateDecoration,
             currentMonthTextStyle: currentDateTextStyle,
             disbaledMonthDecoration: disbaledCellDecoration,
@@ -563,6 +565,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             initialDate: _diplayedDate!,
             maxDate: widget.maxDate,
             minDate: widget.minDate,
+            currentDate:
+                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
             currentYearDecoration: currentDateDecoration,
             currentYearTextStyle: currentDateTextStyle,
             disbaledYearDecoration: disbaledCellDecoration,

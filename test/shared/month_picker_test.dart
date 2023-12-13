@@ -17,6 +17,7 @@ void main() {
           home: Material(
             child: MonthPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentMonthTextStyle: const TextStyle(),
@@ -65,6 +66,7 @@ void main() {
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
+              currentDate: initialDate,
               currentMonthTextStyle: const TextStyle(),
               enabledMonthTextStyle: const TextStyle(),
               selectedMonthTextStyle: const TextStyle(),
@@ -133,6 +135,7 @@ void main() {
           home: Material(
             child: MonthPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentMonthTextStyle: const TextStyle(),
@@ -210,6 +213,7 @@ void main() {
           home: Material(
             child: MonthPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentMonthTextStyle: const TextStyle(),
@@ -287,6 +291,7 @@ void main() {
           home: Material(
             child: MonthPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentMonthTextStyle: const TextStyle(),
@@ -363,6 +368,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: MonthPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -440,6 +446,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: MonthPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -510,6 +517,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: MonthPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -557,6 +565,7 @@ void main() {
           MaterialApp(
             home: Material(
               child: MonthPicker(
+                currentDate: initialDate,
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -623,6 +632,7 @@ void main() {
             home: Material(
               child: MonthPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentMonthTextStyle: const TextStyle(),
@@ -669,6 +679,7 @@ void main() {
             home: Material(
               child: MonthPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentMonthTextStyle: const TextStyle(),

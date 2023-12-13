@@ -46,6 +46,7 @@ class DatePicker extends StatefulWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
+    this.currentDate,
     required this.onDateChanged,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
@@ -105,6 +106,10 @@ class DatePicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
+
+  /// The date to which the picker will consider as current date. e.g (today).
+  /// If not specified, the picker will default to today's date.
+  final DateTime? currentDate;
 
   /// Called when the user picks a month.
   final ValueChanged<DateTime> onDateChanged;
@@ -367,6 +372,8 @@ class _DatePickerState extends State<DatePicker> {
           padding: widget.padding,
           child: DaysPicker(
             initialDate: _displayedDate!,
+            currentDate:
+                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
             maxDate: widget.maxDate,
             minDate: widget.minDate,
             daysNameTextStyle: daysNameTextStyle,
@@ -402,6 +409,8 @@ class _DatePickerState extends State<DatePicker> {
           padding: widget.padding,
           child: MonthPicker(
             initialDate: _displayedDate!,
+            currentDate:
+                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
             maxDate: widget.maxDate,
             minDate: widget.minDate,
             currentMonthDecoration: currentDateDecoration,
@@ -436,6 +445,8 @@ class _DatePickerState extends State<DatePicker> {
           padding: widget.padding,
           child: YearsPicker(
             initialDate: _displayedDate!,
+            currentDate:
+                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
             maxDate: widget.maxDate,
             minDate: widget.minDate,
             currentYearDecoration: currentDateDecoration,

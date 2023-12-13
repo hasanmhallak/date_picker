@@ -17,6 +17,7 @@ void main() {
           home: Material(
             child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentYearTextStyle: const TextStyle(),
@@ -56,6 +57,7 @@ void main() {
         MaterialApp(
           home: Material(
             child: YearsPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
@@ -113,6 +115,7 @@ void main() {
           home: Material(
             child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentYearTextStyle: const TextStyle(),
@@ -176,6 +179,7 @@ void main() {
           home: Material(
             child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
               currentYearTextStyle: const TextStyle(),
@@ -239,6 +243,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -312,6 +317,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -382,6 +388,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -449,6 +456,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -495,6 +503,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -562,6 +571,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),
@@ -608,6 +618,7 @@ void main() {
             home: Material(
               child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 currentYearTextStyle: const TextStyle(),

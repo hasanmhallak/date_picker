@@ -27,6 +27,7 @@ class _DaysPicker extends StatefulWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
+    required this.currentDate,
     required this.materialLocalizations,
     required this.daysNameTextStyle,
     required this.enabledDaysTextStyle,
@@ -62,6 +63,9 @@ class _DaysPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
+
+  /// The current date. e.g (today)
+  final DateTime currentDate;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -172,7 +176,7 @@ class __DaysPickerState extends State<_DaysPicker> {
 
     return DaysView(
       key: ValueKey<DateTime>(month),
-      currentDate: DateTime.now(),
+      currentDate: widget.currentDate,
       minDate: widget.minDate,
       maxDate: widget.maxDate,
       displayedMonth: month,
@@ -307,6 +311,7 @@ class DaysPicker extends StatelessWidget {
     required this.initialDate,
     required this.maxDate,
     required this.minDate,
+    required this.currentDate,
     this.onLeadingDateTap,
     this.onChange,
     required this.daysNameTextStyle,
@@ -341,6 +346,9 @@ class DaysPicker extends StatelessWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
+
+  /// The current date. e.g (today)
+  final DateTime currentDate;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -396,6 +404,7 @@ class DaysPicker extends StatelessWidget {
       initialDate: initialDate,
       maxDate: maxDate,
       minDate: minDate,
+      currentDate: currentDate,
       daysNameTextStyle: daysNameTextStyle,
       enabledDaysTextStyle: enabledDaysTextStyle,
       enabledDaysDecoration: enabledDaysDecoration,

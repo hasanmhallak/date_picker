@@ -27,6 +27,7 @@ class MonthPicker extends StatefulWidget {
     required this.minDate,
     required this.maxDate,
     required this.initialDate,
+    required this.currentDate,
     required this.enabledMonthTextStyle,
     required this.enabledMonthDecoration,
     required this.disbaledMonthTextStyle,
@@ -60,6 +61,9 @@ class MonthPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   final DateTime initialDate;
+
+  /// The current date. e.g (today)
+  final DateTime currentDate;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -152,7 +156,7 @@ class _MonthPickerState extends State<MonthPicker> {
 
     return MonthView(
       key: ValueKey<DateTime>(yearDate),
-      currentDate: DateTime.now(),
+      currentDate: widget.currentDate,
       minDate: widget.minDate,
       maxDate: widget.maxDate,
       displayedYear: yearDate,
