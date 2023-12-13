@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: RangeDatePicker(
           padding: EdgeInsets.zero,
           maxDate: DateTime(2023, 10, 30),
-          minDate: DateTime(2020, 10, 1),
+          minDate: DateTime(2023, 10, 10),
           currentDate: DateTime(2023, 10, 5),
           onRangeSelected: (DateTimeRange value) {
             debugPrint(value.toString());
