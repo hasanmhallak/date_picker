@@ -158,10 +158,6 @@ class RangeDaysView extends StatelessWidget {
     final weekdayNames =
         intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
-    // Monday is represented by 1 and Sunday is represented by 7.
-    // but MaterialLocalizations does not have 7 instead the sunday is 0.
-    // final int todayIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
-    // TODO: add custom firstDayOfWeekIndex.
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
       final String weekday = weekdayNames[i].replaceFirst('ال', '');

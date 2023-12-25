@@ -30,9 +30,8 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initailDate: initialDate,
+                initialDate: initialDate,
                 leadingDateTextStyle: const TextStyle(),
-                materialLocalizations: MaterialLocalizations.of(context),
                 onLeadingDateTap: null,
                 splashRadius: 20,
                 currentDateDecoration: const BoxDecoration(),
@@ -94,9 +93,8 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initailDate: initialDate,
+                initialDate: initialDate,
                 leadingDateTextStyle: const TextStyle(),
-                materialLocalizations: MaterialLocalizations.of(context),
                 onLeadingDateTap: null,
                 splashRadius: 20,
                 currentDateDecoration: const BoxDecoration(),
@@ -178,9 +176,8 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initailDate: initialDate,
+                initialDate: initialDate,
                 leadingDateTextStyle: const TextStyle(),
-                materialLocalizations: MaterialLocalizations.of(context),
                 onLeadingDateTap: null,
                 splashRadius: 20,
                 currentDateDecoration: const BoxDecoration(),
@@ -269,9 +266,8 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initailDate: initialDate,
+                initialDate: initialDate,
                 leadingDateTextStyle: const TextStyle(),
-                materialLocalizations: MaterialLocalizations.of(context),
                 onLeadingDateTap: null,
                 splashRadius: 20,
                 currentDateDecoration: const BoxDecoration(),
@@ -360,9 +356,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),
@@ -462,9 +457,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),
@@ -564,9 +558,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),
@@ -640,73 +633,7 @@ void main() {
     );
 
     testWidgets(
-      'Should the height of the animated container be 52 * 6 when it\'s a six rows month',
-      (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2023);
-        final DateTime minDate = DateTime(2000);
-        final DateTime maxDate = DateTime(2030);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            supportedLocales: const [
-              Locale('en', 'US'),
-              Locale('en', 'GB'),
-            ],
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            home: Material(
-              child: Builder(builder: (context) {
-                return RangeDaysPicker(
-                  currentDate: initialDate,
-                  minDate: minDate,
-                  maxDate: maxDate,
-                  initailDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
-                  onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disbaledCellsDecoration: const BoxDecoration(),
-                  disbaledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
-                  onEndDateChanged: (value) {},
-                  onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
-                  selectedEndDate: null,
-                  selectedStartDate: null,
-                  singelSelectedCellDecoration: const BoxDecoration(),
-                  singelSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: Colors.black,
-                  slidersSize: 20,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
-                );
-              }),
-            ),
-          ),
-        );
-
-        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
-        expect(animatedContainerFinder, findsOneWidget);
-
-        const constraints = BoxConstraints.tightFor(height: 52 * 6);
-
-        final AnimatedContainer animatedContainerWidget =
-            tester.widget<AnimatedContainer>(animatedContainerFinder);
-
-        expect(animatedContainerWidget.constraints, equals(constraints));
-      },
-    );
-
-    testWidgets(
-      'Should the height of the animated container be 52 * 7 when it\'s a seven rows month',
+      'Should the height of the animated container be 52 * 7',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2023, 7);
         final DateTime minDate = DateTime(2000);
@@ -729,9 +656,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),
@@ -798,9 +724,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(color: leadingDayColor),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),
@@ -866,9 +791,8 @@ void main() {
                   currentDate: initialDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initailDate: initialDate,
+                  initialDate: initialDate,
                   leadingDateTextStyle: const TextStyle(),
-                  materialLocalizations: MaterialLocalizations.of(context),
                   onLeadingDateTap: null,
                   splashRadius: 20,
                   currentDateDecoration: const BoxDecoration(),

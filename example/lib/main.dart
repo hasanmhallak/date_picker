@@ -12,42 +12,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: const Locale('en'),
+      locale: const Locale('en', 'US'),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
-        Locale('en'),
+        Locale('en', 'GB'),
+        Locale('en', 'US'),
         Locale('ar'),
         Locale('zh'),
       ],
-      theme: ThemeData.light(useMaterial3: true),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  DateTime? selectedDate;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: RangeDatePicker(
-          padding: EdgeInsets.zero,
-          maxDate: DateTime(2023, 10, 30),
-          minDate: DateTime(2023, 10, 10),
-          currentDate: DateTime(2023, 10, 5),
-          onRangeSelected: (DateTimeRange value) {
-            debugPrint(value.toString());
-          },
-        ),
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RangeDatePicker(
+                    minDate: DateTime(2020, 10, 10),
+                    maxDate: DateTime(2024, 10, 30),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

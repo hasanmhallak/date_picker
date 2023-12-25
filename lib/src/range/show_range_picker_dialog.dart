@@ -3,42 +3,42 @@ import 'package:flutter/material.dart';
 import '../shared/picker_type.dart';
 import 'range_picker.dart';
 
-/// Shows a dialog containing a Material Design date picker.
+/// Shows a dialog containing a Material Design range picker.
 ///
-/// The returned [Future] resolves to the date selected by the user when the
-/// user confirms the dialog. If the user cancels the dialog, null is returned.
+/// The returned [Future] resolves to the range selected by the user or `null` when tap
+/// outside the dialog.
 ///
-/// When the date picker is first displayed, it will show the month of
-/// [initialDate].
+/// When the range picker is first displayed, it will show the [initialDate].
 ///
 /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-/// allowable date. [initialDate] must either fall between these dates,
+/// allowable date. [initialDate] and [selectedRange] must either fall between these dates,
 /// or be equal to one of them. For each of these [DateTime] parameters, only
-/// their dates are considered. Their time fields are ignored. They must all
-/// be non-null.
+/// their dates are considered. Their time fields are ignored.
+///
+/// [initialDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
 ///
 /// The locale for the date picker defaults to the ambient locale
 /// provided by [Localizations].
 ///
 /// The [context], [useRootNavigator] and [routeSettings] arguments are passed to
-/// [showDialog], the documentation for which discusses how it is used. [context]
-/// and [useRootNavigator] must be non-null.
+/// [showDialog], the documentation for which discusses how it is used.
 ///
 /// An optional [initialPickerType] argument can be used to have the
-/// calendar date picker initially appear in the [initialPickerType.year],
+/// date picker initially appear in the [initialPickerType.year],
 /// [initialPickerType.month] or [initialPickerType.day] mode. It defaults
-/// to [initialPickerType.day], and
-/// must be non-null.
+/// to [initialPickerType.day].
 ///
 /// See also:
 ///
-///  * [DatePicker], which provides the calendar grid used by the date picker dialog.
+///  * [RangeDatePicker], which provides the calendar grid used by the range picker dialog.
 ///
 Future<DateTimeRange?> showRangePickerDialog({
   required BuildContext context,
-  required DateTime initialDate,
   required DateTime maxDate,
   required DateTime minDate,
+  DateTime? initialDate,
+  DateTime? currentDate,
+  DateTimeRange? selectedRange,
   EdgeInsets contentPadding = const EdgeInsets.all(16),
   EdgeInsets padding = const EdgeInsets.all(36),
   PickerType initialPickerType = PickerType.days,
@@ -49,19 +49,17 @@ Future<DateTimeRange?> showRangePickerDialog({
   bool useRootNavigator = true,
   RouteSettings? routeSettings,
   Offset? anchorPoint,
-  TextStyle? daysNameTextStyle,
-  Color? enabledCellColor,
-  TextStyle? enabledCellTextStyle,
-  BoxDecoration enabledCellDecoration = const BoxDecoration(),
-  Color? disbaledCellColor,
-  TextStyle? disbaledCellTextStyle,
-  BoxDecoration disbaledCellDecoration = const BoxDecoration(),
-  Color? currentDateColor,
+  TextStyle? daysOfTheWeekTextStyle,
+  TextStyle? enabledCellsTextStyle,
+  BoxDecoration enabledCellsDecoration = const BoxDecoration(),
+  TextStyle? disbaledCellsTextStyle,
+  BoxDecoration disbaledCellsDecoration = const BoxDecoration(),
   TextStyle? currentDateTextStyle,
   BoxDecoration? currentDateDecoration,
-  Color? selectedCellColor,
-  TextStyle? selectedCellTextStyle,
-  BoxDecoration? selectedCellDecoration,
+  TextStyle? selectedCellsTextStyle,
+  BoxDecoration? selectedCellsDecoration,
+  TextStyle? singelSelectedCellTextStyle,
+  BoxDecoration? singelSelectedCellDecoration,
   double? slidersSize,
   Color? slidersColor,
   TextStyle? leadingDateTextStyle,
@@ -84,25 +82,25 @@ Future<DateTimeRange?> showRangePickerDialog({
         child: Dialog(
           insetPadding: EdgeInsets.zero,
           child: RangeDatePicker(
-            currentDate: initialDate,
+            currentDate: currentDate,
             maxDate: maxDate,
             minDate: minDate,
+            initialDate: initialDate,
+            selectedRange: selectedRange,
             onRangeSelected: (value) => Navigator.pop(context, value),
             initialPickerType: initialPickerType,
             padding: contentPadding,
             currentDateDecoration: currentDateDecoration,
             currentDateTextStyle: currentDateTextStyle,
-            disbaledCellDecoration: disbaledCellDecoration,
-            disbaledCellTextStyle: disbaledCellTextStyle,
-            enabledCellDecoration: enabledCellDecoration,
-            enabledCellTextStyle: enabledCellTextStyle,
-            selectedCellsDecoration: selectedCellDecoration,
-            selectedCellsTextStyle: selectedCellTextStyle,
-            currentDateColor: currentDateColor,
-            daysOfTheWeekTextStyle: daysNameTextStyle,
-            disbaledCellColor: disbaledCellColor,
-            selectedCellsColor: selectedCellColor,
-            enabledCellColor: enabledCellColor,
+            disbaledCellsDecoration: disbaledCellsDecoration,
+            disbaledCellsTextStyle: disbaledCellsTextStyle,
+            enabledCellsDecoration: enabledCellsDecoration,
+            enabledCellsTextStyle: enabledCellsTextStyle,
+            selectedCellsDecoration: selectedCellsDecoration,
+            selectedCellsTextStyle: selectedCellsTextStyle,
+            daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
+            singelSelectedCellTextStyle: singelSelectedCellTextStyle,
+            singelSelectedCellDecoration: singelSelectedCellDecoration,
             leadingDateTextStyle: leadingDateTextStyle,
             slidersColor: slidersColor,
             slidersSize: slidersSize,
