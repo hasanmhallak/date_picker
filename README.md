@@ -5,12 +5,12 @@
 A Flutter library that provides a customizable Material Design date and range picker widgets.
 
 <div>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/1.png" alt="1" width="200"  height="225"/>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/2.png" alt="2" width="200" height="225"/>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/3.png" alt="3" width="200" height="225"/>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/4.png" alt="4" width="200" height="225"/>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/5.png" alt="5" width="200" height="225"/>
-  <img src="https://github.com/hasanmhallak/date_picker/blob/master/6.png" alt="6" width="200" height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="200"  height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/2.png" alt="2" width="200" height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/3.png" alt="3" width="200" height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="200" height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/5.png" alt="5" width="200" height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/6.png" alt="6" width="200" height="225"/>
 </div>
 
 ## Features
