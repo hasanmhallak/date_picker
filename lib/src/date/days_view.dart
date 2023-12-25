@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart' as intl;
 
-import 'picker_grid_delegate.dart';
+import '../shared/picker_grid_delegate.dart';
 
 const double _dayPickerRowHeight = 52.0;
 
@@ -21,20 +21,20 @@ class DaysView extends StatelessWidget {
     required this.onChanged,
     required this.minDate,
     required this.maxDate,
+    this.selectedDate,
     required this.displayedMonth,
-    required this.daysNameTextStyle,
-    required this.enabledDaysTextStyle,
-    required this.enabledDaysDecoration,
-    required this.disbaledDaysTextStyle,
-    required this.disbaledDaysDecoration,
-    required this.todayTextStyle,
-    required this.todayDecoration,
+    required this.daysOfTheWeekTextStyle,
+    required this.enabledCellsTextStyle,
+    required this.enabledCellsDecoration,
+    required this.disbaledCellsTextStyle,
+    required this.disbaledCellsDecoration,
+    required this.currentDateTextStyle,
+    required this.currentDateDecoration,
     required this.selectedDayTextStyle,
     required this.selectedDayDecoration,
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
-    this.selectedDate,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           if (selectedDate == null) return true;
@@ -70,25 +70,25 @@ class DaysView extends StatelessWidget {
   final DateTime displayedMonth;
 
   /// The text style of the days name.
-  final TextStyle daysNameTextStyle;
+  final TextStyle daysOfTheWeekTextStyle;
 
   /// The text style of days which are selectable.
-  final TextStyle enabledDaysTextStyle;
+  final TextStyle enabledCellsTextStyle;
 
   /// The cell decoration of days which are selectable.
-  final BoxDecoration enabledDaysDecoration;
+  final BoxDecoration enabledCellsDecoration;
 
   /// The text style of days which are not selectable.
-  final TextStyle disbaledDaysTextStyle;
+  final TextStyle disbaledCellsTextStyle;
 
   /// The cell decoration of days which are not selectable.
-  final BoxDecoration disbaledDaysDecoration;
+  final BoxDecoration disbaledCellsDecoration;
 
   /// The text style of the current day
-  final TextStyle todayTextStyle;
+  final TextStyle currentDateTextStyle;
 
   /// The cell decoration of the current day.
-  final BoxDecoration todayDecoration;
+  final BoxDecoration currentDateDecoration;
 
   /// The text style of selected day.
   final TextStyle selectedDayTextStyle;
@@ -131,23 +131,15 @@ class DaysView extends StatelessWidget {
     final weekdayNames =
         intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
-    // Monday is represented by 1 and Sunday is represented by 7.
-    // but MaterialLocalizations does not have 7 instead the sunday is 0.
-    // final int todayIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
-    // TODO: add custom firstDayOfWeekIndex.
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
       final String weekday = weekdayNames[i].replaceFirst('ال', '');
-      // final bool isToday = (i == todayIndex);
       result.add(
         ExcludeSemantics(
           child: Center(
             child: Text(
               weekday.toUpperCase(),
-              style: daysNameTextStyle,
-              // style: isToday
-              //     ? headerStyle?.copyWith(color: Colors.red)
-              //     : headerStyle,
+              style: daysOfTheWeekTextStyle,
             ),
           ),
         ),
@@ -173,7 +165,7 @@ class DaysView extends StatelessWidget {
     final int dayOffset = DateUtils.firstDayOffset(year, month, localizations);
 
     final List<Widget> dayItems = _dayHeaders(
-      daysNameTextStyle,
+      daysOfTheWeekTextStyle,
       Localizations.localeOf(context),
       MaterialLocalizations.of(context),
     );
@@ -190,27 +182,36 @@ class DaysView extends StatelessWidget {
         final bool isSelectedDay =
             DateUtils.isSameDay(selectedDate, dayToBuild);
 
-        final bool isToday = DateUtils.isSameDay(currentDate, dayToBuild);
+        final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
         //
         //
-        BoxDecoration decoration = enabledDaysDecoration;
-        TextStyle style = enabledDaysTextStyle;
+        BoxDecoration decoration = enabledCellsDecoration;
+        TextStyle style = enabledCellsTextStyle;
+
+        if (isCurrent) {
+          //
+          //
+          style = currentDateTextStyle;
+          decoration = currentDateDecoration;
+        }
 
         if (isSelectedDay) {
           //
           //
           style = selectedDayTextStyle;
           decoration = selectedDayDecoration;
-        } else if (isToday) {
-          //
-          //
-          style = todayTextStyle;
-          decoration = todayDecoration;
         }
 
         if (isDisabled) {
-          style = disbaledDaysTextStyle;
-          decoration = disbaledDaysDecoration;
+          style = disbaledCellsTextStyle;
+          decoration = disbaledCellsDecoration;
+        }
+
+        if (isCurrent && isDisabled) {
+          //
+          //
+          style = disbaledCellsTextStyle;
+          decoration = currentDateDecoration;
         }
 
         Widget dayWidget = Container(
@@ -260,12 +261,13 @@ class DaysView extends StatelessWidget {
       gridDelegate: const PickerGridDelegate(
         columnCount: DateTime.daysPerWeek,
         columnPadding: 4,
+        rowPadding: 4,
         rowExtent: _dayPickerRowHeight,
         rowStride: _dayPickerRowHeight,
       ),
       childrenDelegate: SliverChildListDelegate(
-        dayItems,
         addRepaintBoundaries: false,
+        dayItems,
       ),
     );
   }

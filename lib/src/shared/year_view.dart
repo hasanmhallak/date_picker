@@ -11,23 +11,23 @@ class YearView extends StatelessWidget {
   /// Years are arranged in a rectangular grid with tree columns.
   YearView({
     super.key,
-    required this.currentDate,
-    required this.onChanged,
-    required this.minDate,
     required this.maxDate,
+    required this.minDate,
+    required this.currentDate,
+    this.selectedDate,
+    required this.onChanged,
     required this.displayedYearRange,
-    required this.enabledYearTextStyle,
-    required this.enabledYearDecoration,
-    required this.disbaledYearTextStyle,
-    required this.disbaledYearDecoration,
-    required this.currentYearTextStyle,
-    required this.currentYearDecoration,
-    required this.selectedYearTextStyle,
-    required this.selectedYearDecoration,
+    required this.enabledCellsTextStyle,
+    required this.enabledCellsDecoration,
+    required this.disbaledCellsTextStyle,
+    required this.disbaledCellsDecoration,
+    required this.currentDateTextStyle,
+    required this.currentDateDecoration,
+    required this.selectedCellTextStyle,
+    required this.selectedCellDecoration,
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
-    this.selectedYear,
   })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
         assert(() {
           return (displayedYearRange.end.year -
@@ -35,17 +35,19 @@ class YearView extends StatelessWidget {
               11;
         }(), "the display year range must always be 12 years."),
         assert(() {
-          if (selectedYear == null) return true;
-          return (selectedYear.isAfter(minDate) ||
-                  selectedYear.isAtSameMomentAs(minDate)) &&
-              (selectedYear.isBefore(maxDate) ||
-                  selectedYear.isAtSameMomentAs(maxDate));
+          if (selectedDate == null) return true;
+          final max = DateTime(maxDate.year);
+          final min = DateTime(minDate.year);
+          return (selectedDate.isAfter(min) ||
+                  selectedDate.isAtSameMomentAs(min)) &&
+              (selectedDate.isBefore(max) ||
+                  selectedDate.isAtSameMomentAs(max));
         }(), "selected date should be in the range of min date & max date");
 
-  /// The currently selected year.
+  /// The currently selected date.
   ///
   /// This date is highlighted in the picker.
-  final DateTime? selectedYear;
+  final DateTime? selectedDate;
 
   /// The current date at the time the picker is displayed.
   /// In other words, the day to be considered as today.
@@ -68,28 +70,28 @@ class YearView extends StatelessWidget {
   final DateTimeRange displayedYearRange;
 
   /// The text style of years which are selectable.
-  final TextStyle enabledYearTextStyle;
+  final TextStyle enabledCellsTextStyle;
 
   /// The cell decoration of years which are selectable.
-  final BoxDecoration enabledYearDecoration;
+  final BoxDecoration enabledCellsDecoration;
 
   /// The text style of years which are not selectable.
-  final TextStyle disbaledYearTextStyle;
+  final TextStyle disbaledCellsTextStyle;
 
   /// The cell decoration of years which are not selectable.
-  final BoxDecoration disbaledYearDecoration;
+  final BoxDecoration disbaledCellsDecoration;
 
   /// The text style of the current year
-  final TextStyle currentYearTextStyle;
+  final TextStyle currentDateTextStyle;
 
   /// The cell decoration of the current year.
-  final BoxDecoration currentYearDecoration;
+  final BoxDecoration currentDateDecoration;
 
   /// The text style of selected year.
-  final TextStyle selectedYearTextStyle;
+  final TextStyle selectedCellTextStyle;
 
   /// The cell decoration of selected year.
-  final BoxDecoration selectedYearDecoration;
+  final BoxDecoration selectedCellDecoration;
 
   /// The splash color of the ink response.
   final Color? splashColor;
@@ -121,28 +123,28 @@ class YearView extends StatelessWidget {
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 
-      final bool isSelected = yearsName[i] == selectedYear?.year;
+      final bool isSelected = yearsName[i] == selectedDate?.year;
       //
       //
-      BoxDecoration decoration = enabledYearDecoration;
-      TextStyle style = enabledYearTextStyle;
+      BoxDecoration decoration = enabledCellsDecoration;
+      TextStyle style = enabledCellsTextStyle;
 
       if (isCurrentYear) {
         //
         //
-        style = currentYearTextStyle;
-        decoration = currentYearDecoration;
+        style = currentDateTextStyle;
+        decoration = currentDateDecoration;
       }
       if (isSelected) {
         //
         //
-        style = selectedYearTextStyle;
-        decoration = selectedYearDecoration;
+        style = selectedCellTextStyle;
+        decoration = selectedCellDecoration;
       }
 
       if (isDisabled) {
-        style = disbaledYearTextStyle;
-        decoration = disbaledYearDecoration;
+        style = disbaledCellsTextStyle;
+        decoration = disbaledCellsDecoration;
       }
 
       Widget monthWidget = Container(
@@ -185,6 +187,7 @@ class YearView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(
         columnCount: 3,
+        rowPadding: 3,
         rowExtent: 60,
         rowStride: 80,
       ),

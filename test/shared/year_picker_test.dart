@@ -1,33 +1,33 @@
-import 'package:date_picker_plus/src/days_picker.dart';
-import 'package:date_picker_plus/src/header.dart';
+import 'package:date_picker_plus/src/shared/header.dart';
+import 'package:date_picker_plus/src/shared/year_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('DaysPicker', () {
+  group('YearsPicker', () {
     testWidgets('should show the correct leading header date',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
-      final DateTime minDate = DateTime(2022, 1, 1);
-      final DateTime maxDate = DateTime(2022, 12, 31);
+      final DateTime initialDate = DateTime(2022);
+      final DateTime minDate = DateTime(2000);
+      final DateTime maxDate = DateTime(2036);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
+            child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              todayTextStyle: const TextStyle(),
-              daysNameTextStyle: const TextStyle(),
-              enabledDaysTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disbaledDaysTextStyle: const TextStyle(),
-              todayDecoration: const BoxDecoration(),
-              enabledDaysDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disbaledDaysDecoration: const BoxDecoration(),
+              currentDateTextStyle: const TextStyle(),
+              enabledCellsTextStyle: const TextStyle(),
+              selectedCellTextStyle: const TextStyle(),
+              disbaledCellsTextStyle: const TextStyle(),
+              currentDateDecoration: const BoxDecoration(),
+              enabledCellsDecoration: const BoxDecoration(),
+              selectedCellDecoration: const BoxDecoration(),
+              disbaledCellsDecoration: const BoxDecoration(),
               leadingDateTextStyle: const TextStyle(),
               slidersColor: Colors.black,
               slidersSize: 20,
@@ -43,34 +43,32 @@ void main() {
 
       final Text headerTextWidget = tester.widget<Text>(
           find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate));
+
+      expect(headerTextWidget.data, '2012 - 2023');
     });
 
     testWidgets('should change the page forward and backward on drag.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2020, 6, 1);
-      final DateTime minDate = DateTime(2000, 1, 1);
-      final DateTime maxDate = DateTime(2030, 12, 31);
+      final DateTime initialDate = DateTime(2022);
+      final DateTime minDate = DateTime(2000);
+      final DateTime maxDate = DateTime(2036);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
+            child: YearsPicker(
+              currentDate: initialDate,
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              todayTextStyle: const TextStyle(),
-              daysNameTextStyle: const TextStyle(),
-              enabledDaysTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disbaledDaysTextStyle: const TextStyle(),
-              todayDecoration: const BoxDecoration(),
-              enabledDaysDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disbaledDaysDecoration: const BoxDecoration(),
+              currentDateTextStyle: const TextStyle(),
+              enabledCellsTextStyle: const TextStyle(),
+              selectedCellTextStyle: const TextStyle(),
+              disbaledCellsTextStyle: const TextStyle(),
+              currentDateDecoration: const BoxDecoration(),
+              enabledCellsDecoration: const BoxDecoration(),
+              selectedCellDecoration: const BoxDecoration(),
+              disbaledCellsDecoration: const BoxDecoration(),
               leadingDateTextStyle: const TextStyle(),
               slidersColor: Colors.black,
               slidersSize: 20,
@@ -84,7 +82,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final DateTime newDisplayedMonth = DateTime(2020, 7, 1);
+      const String newDisplayedMonth = '2024 - 2035';
 
       await tester.drag(
           pageViewFinder, const Offset(-600, 0)); // Drag the page forward
@@ -93,10 +91,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(
           find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedMonth));
+      expect(headerTextWidget.data, newDisplayedMonth);
 
       await tester.drag(
           pageViewFinder, const Offset(600, 0)); // Drag the page backward
@@ -105,35 +100,32 @@ void main() {
       final Finder newHeaderFinder = find.byType(Header);
       final Text newHeaderTextWidget = tester.widget<Text>(
           find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
-      expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder))
-              .formatMonthYear(initialDate));
+      expect(newHeaderTextWidget.data, '2012 - 2023');
     });
 
     testWidgets(
         'should change the page when tapping on the next page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
-      final DateTime minDate = DateTime(2022, 1, 1);
-      final DateTime maxDate = DateTime(2022, 12, 31);
+      final DateTime initialDate = DateTime(2022);
+      final DateTime minDate = DateTime(2000);
+      final DateTime maxDate = DateTime(2036);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
+            child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              todayTextStyle: const TextStyle(),
-              daysNameTextStyle: const TextStyle(),
-              enabledDaysTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disbaledDaysTextStyle: const TextStyle(),
-              todayDecoration: const BoxDecoration(),
-              enabledDaysDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disbaledDaysDecoration: const BoxDecoration(),
+              currentDateTextStyle: const TextStyle(),
+              enabledCellsTextStyle: const TextStyle(),
+              selectedCellTextStyle: const TextStyle(),
+              disbaledCellsTextStyle: const TextStyle(),
+              currentDateDecoration: const BoxDecoration(),
+              enabledCellsDecoration: const BoxDecoration(),
+              selectedCellDecoration: const BoxDecoration(),
+              disbaledCellsDecoration: const BoxDecoration(),
               leadingDateTextStyle: const TextStyle(),
               slidersColor: Colors.black,
               slidersSize: 20,
@@ -157,10 +149,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(
           find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate));
+      expect(headerTextWidget.data, '2012 - 2023');
 
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
@@ -170,40 +159,37 @@ void main() {
 
       expect(currentPage, equals(initialPage + 1));
 
-      final DateTime newDisplayedMonth = DateTime(2022, 7, 1);
+      const String newDisplayedMonth = '2024 - 2035';
 
       final Finder newHeaderFinder = find.byType(Header);
       final Text newHeaderTextWidget = tester.widget<Text>(
           find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
-      expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder))
-              .formatMonthYear(newDisplayedMonth));
+      expect(newHeaderTextWidget.data, newDisplayedMonth);
     });
 
     testWidgets(
         'should change the page when tapping on the previous page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
-      final DateTime minDate = DateTime(2022, 1, 1);
-      final DateTime maxDate = DateTime(2022, 12, 31);
+      final DateTime initialDate = DateTime(2022);
+      final DateTime minDate = DateTime(2000);
+      final DateTime maxDate = DateTime(2036);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
+            child: YearsPicker(
               initialDate: initialDate,
+              currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              todayTextStyle: const TextStyle(),
-              daysNameTextStyle: const TextStyle(),
-              enabledDaysTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disbaledDaysTextStyle: const TextStyle(),
-              todayDecoration: const BoxDecoration(),
-              enabledDaysDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disbaledDaysDecoration: const BoxDecoration(),
+              currentDateTextStyle: const TextStyle(),
+              enabledCellsTextStyle: const TextStyle(),
+              selectedCellTextStyle: const TextStyle(),
+              disbaledCellsTextStyle: const TextStyle(),
+              currentDateDecoration: const BoxDecoration(),
+              enabledCellsDecoration: const BoxDecoration(),
+              selectedCellDecoration: const BoxDecoration(),
+              disbaledCellsDecoration: const BoxDecoration(),
               leadingDateTextStyle: const TextStyle(),
               slidersColor: Colors.black,
               slidersSize: 20,
@@ -227,10 +213,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(
           find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate));
+      expect(headerTextWidget.data, '2012 - 2023');
 
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
@@ -240,39 +223,37 @@ void main() {
 
       expect(currentPage, equals(initialPage - 1));
 
-      final DateTime newDisplayedMonth = DateTime(2022, 5, 1);
+      const String newDisplayedMonth = '2000 - 2011';
 
       final Finder newHeaderFinder = find.byType(Header);
       final Text newHeaderTextWidget = tester.widget<Text>(
           find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
-      expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder))
-              .formatMonthYear(newDisplayedMonth));
+      expect(newHeaderTextWidget.data, newDisplayedMonth);
     });
+
     testWidgets(
       'should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2020, 1, 5);
-        final DateTime minDate = DateTime(2020, 1, 1);
-        final DateTime maxDate = DateTime(2020, 1, 31);
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
 
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
                 leadingDateTextStyle: const TextStyle(),
                 slidersColor: Colors.black,
                 slidersSize: 20,
@@ -302,8 +283,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate),
+          '2000 - 2011',
         );
 
         await tester.tap(previousPageIconFinder);
@@ -314,8 +294,6 @@ void main() {
 
         expect(currentPage, equals(initialPage));
 
-        final DateTime newDisplayedYear = DateTime(2020, 1, 1);
-
         final Finder newHeaderFinder = find.byType(Header);
         final Text newHeaderTextWidget = tester.widget<Text>(
           find.descendant(
@@ -323,37 +301,33 @@ void main() {
             matching: find.byType(Text),
           ),
         );
-        expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
-        );
+        expect(newHeaderTextWidget.data, '2000 - 2011');
       },
     );
 
     testWidgets(
       'should NOT change the page when tapping on the next page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2022, 1, 1);
-        final DateTime minDate = DateTime(2022, 1, 1);
-        final DateTime maxDate = DateTime(2022, 1, 31);
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
 
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
                 leadingDateTextStyle: const TextStyle(),
                 slidersColor: Colors.black,
                 slidersSize: 20,
@@ -381,11 +355,7 @@ void main() {
             matching: find.byType(Text),
           ),
         );
-        expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate),
-        );
+        expect(headerTextWidget.data, '2000 - 2011');
 
         await tester.tap(nextPageIconFinder);
         await tester.pumpAndSettle();
@@ -395,8 +365,6 @@ void main() {
 
         expect(currentPage, equals(initialPage));
 
-        final DateTime newDisplayedYear = DateTime(2022, 1, 1);
-
         final Finder newHeaderFinder = find.byType(Header);
         final Text newHeaderTextWidget = tester.widget<Text>(
           find.descendant(
@@ -404,37 +372,33 @@ void main() {
             matching: find.byType(Text),
           ),
         );
-        expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
-        );
+        expect(newHeaderTextWidget.data, '2000 - 2011');
       },
     );
 
     testWidgets(
       'should NOT change the page forward and backward on drag when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2020, 1, 1);
-        final DateTime minDate = DateTime(2020, 1, 1);
-        final DateTime maxDate = DateTime(2020, 1, 31);
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
 
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
                 leadingDateTextStyle: const TextStyle(),
                 slidersColor: Colors.black,
                 slidersSize: 20,
@@ -447,8 +411,6 @@ void main() {
 
         final Finder pageViewFinder = find.byType(PageView);
         expect(pageViewFinder, findsOneWidget);
-
-        final DateTime newDisplayedYear = DateTime(2020, 1, 1);
 
         await tester.drag(
           pageViewFinder,
@@ -463,11 +425,7 @@ void main() {
             matching: find.byType(Text),
           ),
         );
-        expect(
-          headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
-        );
+        expect(headerTextWidget.data, '2000 - 2011');
 
         await tester.drag(
           pageViewFinder,
@@ -482,176 +440,124 @@ void main() {
             matching: find.byType(Text),
           ),
         );
-        expect(
-          newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(initialDate),
-        );
+        expect(newHeaderTextWidget.data, '2000 - 2011');
       },
     );
 
     testWidgets(
-      'Should the height of the animated container be 52 * 6 when it\'s a six rows month',
-      (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2023);
-        final DateTime minDate = DateTime(2000);
-        final DateTime maxDate = DateTime(2030);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Material(
-              child: DaysPicker(
-                initialDate: initialDate,
-                minDate: minDate,
-                maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
-              ),
-            ),
-          ),
-        );
-
-        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
-        expect(animatedContainerFinder, findsOneWidget);
-
-        const constraints = BoxConstraints.tightFor(height: 52 * 6);
-
-        final AnimatedContainer animatedContainerWidget =
-            tester.widget<AnimatedContainer>(animatedContainerFinder);
-
-        expect(animatedContainerWidget.constraints, equals(constraints));
-      },
-    );
-    testWidgets(
-      'Should the height of the animated container be 52 * 7 when it\'s a seven rows month',
-      (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2023, 7);
-        final DateTime minDate = DateTime(2000);
-        final DateTime maxDate = DateTime(2030);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Material(
-              child: DaysPicker(
-                initialDate: initialDate,
-                minDate: minDate,
-                maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
-              ),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
-        expect(animatedContainerFinder, findsOneWidget);
-
-        const constraints = BoxConstraints.tightFor(height: 52 * 7);
-
-        final AnimatedContainer animatedContainerWidget =
-            tester.widget<AnimatedContainer>(animatedContainerFinder);
-
-        expect(animatedContainerWidget.constraints, equals(constraints));
-      },
-    );
-
-    testWidgets(
-      'Should show the correct day on pick',
+      'Should the height of the animated container be 78 * 4',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
-        final DateTime dayToSelect = DateTime(2010, 1, 2);
-        late final DateTime expectedDay;
-        const selectedDayColor = Colors.green;
 
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(
-                  color: selectedDayColor,
-                ),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
                 leadingDateTextStyle: const TextStyle(),
                 slidersColor: Colors.black,
                 slidersSize: 20,
                 splashColor: Colors.black,
                 highlightColor: Colors.black,
-                onChange: (value) {
-                  expectedDay = value;
+              ),
+            ),
+          ),
+        );
+
+        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
+        expect(animatedContainerFinder, findsOneWidget);
+
+        const constraints = BoxConstraints.tightFor(height: 78 * 4);
+
+        final AnimatedContainer animatedContainerWidget =
+            tester.widget<AnimatedContainer>(animatedContainerFinder);
+
+        expect(animatedContainerWidget.constraints, equals(constraints));
+      },
+    );
+    testWidgets(
+      'Should show the correct year on pick',
+      (WidgetTester tester) async {
+        final DateTime initialDate = DateTime(2010);
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2011);
+        final DateTime yearToSelect = DateTime(2010);
+        late final DateTime expectedYear;
+        const selectedYearColor = Colors.green;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: YearsPicker(
+                initialDate: initialDate,
+                currentDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(),
+                slidersColor: Colors.black,
+                slidersSize: 20,
+                splashColor: Colors.black,
+                highlightColor: Colors.black,
+                onDateSelected: (value) {
+                  expectedYear = value;
                 },
               ),
             ),
           ),
         );
 
-        final selectedDayFinder = find.byWidgetPredicate((widget) {
+        final selectedYearFinder = find.byWidgetPredicate((widget) {
           if (widget is Container &&
               widget.child is Center &&
               (widget.child as Center).child is Text) {
             return ((widget.child as Center).child as Text).data ==
-                    dayToSelect.day.toString() &&
+                    yearToSelect.year.toString() &&
                 ((widget.child as Center).child as Text).style?.color ==
-                    selectedDayColor;
+                    selectedYearColor;
           }
           return false;
         });
 
-        final dayFinder = find.byWidgetPredicate((widget) {
+        final yearFinder = find.byWidgetPredicate((widget) {
           if (widget is Container &&
               widget.child is Center &&
               (widget.child as Center).child is Text) {
             return ((widget.child as Center).child as Text).data ==
-                dayToSelect.day.toString();
+                yearToSelect.year.toString();
           }
           return false;
         });
 
-        expect(selectedDayFinder, findsNothing);
+        expect(selectedYearFinder, findsNothing);
 
-        await tester.tap(dayFinder);
+        await tester.tap(yearFinder);
         await tester.pumpAndSettle();
 
-        expect(expectedDay, dayToSelect);
+        expect(expectedYear, yearToSelect);
       },
     );
+
     testWidgets(
       'Should show the correct text style for the leading date',
       (WidgetTester tester) async {
@@ -663,22 +569,20 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(
-                  color: leadingDayColor,
-                ),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
+                leadingDateTextStyle: const TextStyle(color: leadingDayColor),
                 slidersColor: Colors.black,
                 slidersSize: 20,
                 splashColor: Colors.black,
@@ -690,7 +594,7 @@ void main() {
 
         final leadingDayFinder = find.byWidgetPredicate((widget) {
           if (widget is Text) {
-            return widget.data == 'January 2010' &&
+            return widget.data == '2000 - 2011' &&
                 widget.style?.color == leadingDayColor;
           }
           return false;
@@ -712,19 +616,19 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: DaysPicker(
+              child: YearsPicker(
                 initialDate: initialDate,
+                currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                todayTextStyle: const TextStyle(),
-                daysNameTextStyle: const TextStyle(),
-                enabledDaysTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disbaledDaysTextStyle: const TextStyle(),
-                todayDecoration: const BoxDecoration(),
-                enabledDaysDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disbaledDaysDecoration: const BoxDecoration(),
+                currentDateTextStyle: const TextStyle(),
+                enabledCellsTextStyle: const TextStyle(),
+                selectedCellTextStyle: const TextStyle(),
+                disbaledCellsTextStyle: const TextStyle(),
+                currentDateDecoration: const BoxDecoration(),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disbaledCellsDecoration: const BoxDecoration(),
                 leadingDateTextStyle: const TextStyle(),
                 slidersColor: slidersColors,
                 slidersSize: slidersSize,

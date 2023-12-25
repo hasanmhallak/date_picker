@@ -13,35 +13,39 @@ class MonthView extends StatelessWidget {
   MonthView({
     super.key,
     required this.currentDate,
+    this.selectedDate,
+    required this.displayedDate,
     required this.onChanged,
     required this.minDate,
     required this.maxDate,
-    required this.displayedYear,
-    required this.enabledMonthTextStyle,
-    required this.enabledMonthDecoration,
-    required this.disbaledMonthTextStyle,
-    required this.disbaledMonthDecoration,
-    required this.currentMonthTextStyle,
-    required this.currentMonthDecoration,
-    required this.selectedMonthTextStyle,
-    required this.selectedMonthDecoration,
+    required this.enabledCellsTextStyle,
+    required this.enabledCellsDecoration,
+    required this.disbaledCellsTextStyle,
+    required this.disbaledCellsDecoration,
+    required this.currentDateTextStyle,
+    required this.currentDateDecoration,
+    required this.selectedCellTextStyle,
+    required this.selectedCellDecoration,
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
-    this.selectedMonth,
-  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
-        assert(() {
-          if (selectedMonth == null) return true;
-          return (selectedMonth.isAfter(minDate) ||
-                  selectedMonth.isAtSameMomentAs(minDate)) &&
-              (selectedMonth.isBefore(maxDate) ||
-                  selectedMonth.isAtSameMomentAs(maxDate));
-        }(), "selected date should be in the range of min date & max date");
+  }) {
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+    assert(() {
+      if (selectedDate == null) return true;
+      final max = DateTime(maxDate.year, maxDate.month);
+      final min = DateTime(minDate.year, minDate.month);
+
+      return (selectedDate!.isAfter(min) ||
+              selectedDate!.isAtSameMomentAs(min)) &&
+          (selectedDate!.isBefore(max) || selectedDate!.isAtSameMomentAs(max));
+    }(), "selected date should be in the range of min date & max date");
+  }
 
   /// The currently selected month.
   ///
   /// This date is highlighted in the picker.
-  final DateTime? selectedMonth;
+  final DateTime? selectedDate;
 
   /// The current month at the time the picker is displayed.
   final DateTime currentDate;
@@ -60,31 +64,31 @@ class MonthView extends StatelessWidget {
   final DateTime maxDate;
 
   /// The year which its months are displayed by this picker.
-  final DateTime displayedYear;
+  final DateTime displayedDate;
 
   /// The text style of months which are selectable.
-  final TextStyle enabledMonthTextStyle;
+  final TextStyle enabledCellsTextStyle;
 
   /// The cell decoration of months which are selectable.
-  final BoxDecoration enabledMonthDecoration;
+  final BoxDecoration enabledCellsDecoration;
 
   /// The text style of months which are not selectable.
-  final TextStyle disbaledMonthTextStyle;
+  final TextStyle disbaledCellsTextStyle;
 
   /// The cell decoration of months which are not selectable.
-  final BoxDecoration disbaledMonthDecoration;
+  final BoxDecoration disbaledCellsDecoration;
 
   /// The text style of the current month
-  final TextStyle currentMonthTextStyle;
+  final TextStyle currentDateTextStyle;
 
   /// The cell decoration of the current month.
-  final BoxDecoration currentMonthDecoration;
+  final BoxDecoration currentDateDecoration;
 
   /// The text style of selected month.
-  final TextStyle selectedMonthTextStyle;
+  final TextStyle selectedCellTextStyle;
 
   /// The cell decoration of selected month.
-  final BoxDecoration selectedMonthDecoration;
+  final BoxDecoration selectedCellDecoration;
 
   /// The splash color of the ink response.
   final Color splashColor;
@@ -101,15 +105,14 @@ class MonthView extends StatelessWidget {
         MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
 
-    final int year = displayedYear.year;
+    final int year = displayedDate.year;
     // we git rid of the day because if there is anu day allowed in
     // in the month we should not gray it out.
     final DateTime startMonth = DateTime(minDate.year, minDate.month);
     final DateTime endMonth = DateTime(maxDate.year, maxDate.month);
     DateTime? selectedMonth;
-    if (this.selectedMonth != null) {
-      selectedMonth =
-          DateTime(this.selectedMonth!.year, this.selectedMonth!.month);
+    if (selectedDate != null) {
+      selectedMonth = DateTime(selectedDate!.year, selectedDate!.month);
     }
 
     final monthsNames =
@@ -129,25 +132,25 @@ class MonthView extends StatelessWidget {
       final bool isSelected = monthToBuild == selectedMonth;
       //
       //
-      BoxDecoration decoration = enabledMonthDecoration;
-      TextStyle style = enabledMonthTextStyle;
+      BoxDecoration decoration = enabledCellsDecoration;
+      TextStyle style = enabledCellsTextStyle;
 
       if (isCurrentMonth) {
         //
         //
-        style = currentMonthTextStyle;
-        decoration = currentMonthDecoration;
+        style = currentDateTextStyle;
+        decoration = currentDateDecoration;
       }
       if (isSelected) {
         //
         //
-        style = selectedMonthTextStyle;
-        decoration = selectedMonthDecoration;
+        style = selectedCellTextStyle;
+        decoration = selectedCellDecoration;
       }
 
       if (isDisabled) {
-        style = disbaledMonthTextStyle;
-        decoration = disbaledMonthDecoration;
+        style = disbaledCellsTextStyle;
+        decoration = disbaledCellsDecoration;
       }
 
       Widget monthWidget = Container(
@@ -189,6 +192,7 @@ class MonthView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(
         columnCount: 3,
+        rowPadding: 3,
         rowExtent: 60,
         rowStride: 80,
       ),

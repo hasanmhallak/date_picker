@@ -1,6 +1,11 @@
-# 1.1.4
+# 2.0.0 [Breaking]
 
-- Fix the assertion when the selected date is the same as max or min date.
+- Add `RangeDatePicker`.
+- Remove color properties in favor of providing a textStyle.
+- Rename properties to avoid confusion.
+- Expose `DaysPicker`, `MonthPicker`, `YearsPicker` widgets to use
+  instead of using a full picker.
+- Update docs and README and Example.
 
 # 1.1.3
 

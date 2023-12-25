@@ -2,13 +2,15 @@
 
 # Date Picker Plus
 
-A Flutter library that provides a customizable Material Design date picker widget.
+A Flutter library that provides a customizable Material Design date and range picker widgets.
 
 <div>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="250"  height="300"/>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/2.png" alt="2" width="250" height="300"/>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/3.png" alt="3" width="250" height="300"/>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="275" height="300"/>
+  <img src="./1.png" alt="1" width="200"  height="225"/>
+  <img src="./2.png" alt="2" width="200" height="225"/>
+  <img src="./3.png" alt="3" width="200" height="225"/>
+  <img src="./4.png" alt="4" width="200" height="225"/>
+  <img src="./5.png" alt="5" width="200" height="225"/>
+  <img src="./6.png" alt="6" width="200" height="225"/>
 </div>
 
 ## Features
@@ -24,7 +26,7 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker_plus: ^1.1.3
+  date_picker_plus: ^2.0.0
 ```
 
 Import the library in your Dart file:
@@ -40,43 +42,151 @@ Call the `showDatePickerDialog` function to show a date picker dialog:
 ```dart
 final date = await showDatePickerDialog(
   context: context,
-  initialDate: DateTime.now(),
   minDate: DateTime(2021, 1, 1),
   maxDate: DateTime(2023, 12, 31),
 );
 ```
 
-Customize the appearance of the date picker by providing optional parameters to the `showDatePickerDialog` function.
+### Show Range Picker Dialog
+
+Call the `showRangePickerDialog` function to show a range picker dialog:
+
+```dart
+final date = await showRangePickerDialog(
+  context: context,
+  minDate: DateTime(2021, 1, 1),
+  maxDate: DateTime(2023, 12, 31),
+);
+```
+
+Customize the appearance of the picker by providing optional parameters to the `showDatePickerDialog` or
+`showRangePickerDialog` function.
 
 ```dart
 final date = await showDatePickerDialog(
-  context: context,
-  initialDate: DateTime.now(),
-  minDate: DateTime(2021, 1, 1),
-  maxDate: DateTime(2023, 12, 31),
-  todayTextStyle: const TextStyle(),
-  daysNameTextStyle: const TextStyle(),
-  enabledDaysTextStyle: const TextStyle(),
-  selectedDayTextStyle: const TextStyle(),
-  disbaledDaysTextStyle: const TextStyle(),
-  todayDecoration: const BoxDecoration(),
-  enabledDaysDecoration: const BoxDecoration(),
-  selectedDayDecoration: const BoxDecoration(),
-  disbaledDaysDecoration: const BoxDecoration(),
+      context: context,
+      initialDate: DateTime(2022, 10, 10),
+      minDate: DateTime(2020, 10, 10),
+      maxDate: DateTime(2024, 10, 30),
+      currentDate: DateTime(2022, 10, 15),
+      selectedDate: DateTime(2022, 10, 16),
+      currentDateDecoration: const BoxDecoration(),
+      currentDateTextStyle: const TextStyle(),
+      daysOfTheWeekTextStyle: const TextStyle(),
+      disbaledCellsDecoration: const BoxDecoration(),
+      disbaledCellsTextStyle: const TextStyle(),
+      enabledCellsDecoration: const BoxDecoration(),
+      enabledCellsTextStyle: const TextStyle(),
+      initialPickerType: PickerType.days,
+      selectedCellDecoration: const BoxDecoration(),
+      selectedCellTextStyle: const TextStyle(),
+      leadingDateTextStyle: const TextStyle(),
+      slidersColor: Colors.lightBlue,
+      highlightColor: Colors.redAccent,
+      slidersSize: 20,
+      splashColor: Colors.lightBlueAccent,
+      splashRadius: 40,
 );
-
 ```
 
-### Use DatePicker Widget
+```dart
+final range = await showRangePickerDialog(
+      context: context,
+      initialDate: DateTime(2022, 10, 10),
+      minDate: DateTime(2020, 10, 10),
+      maxDate: DateTime(2024, 10, 30),
+      currentDate: DateTime(2022, 10, 15),
+      selectedRange: DateTimeRange(start: DateTime(2022), end: Dat(2023)),
+      selectedCellsDecoration: const BoxDecoration(),
+      selectedCellsTextStyle: const TextStyle(),
+      singelSelectedCellDecoration: const BoxDecoration(),
+      singelSelectedCellTextStyle: const TextStyle(),
+      currentDateDecoration: const BoxDecoration(),
+      currentDateTextStyle: const TextStyle(),
+      daysOfTheWeekTextStyle: const TextStyle(),
+      disbaledCellsDecoration: const BoxDecoration(),
+      disbaledCellsTextStyle: const TextStyle(),
+      enabledCellsDecoration: const BoxDecoration(),
+      enabledCellsTextStyle: const TextStyle(),
+      initialPickerType: PickerType.days,
+      leadingDateTextStyle: const TextStyle(),
+      slidersColor: Colors.lightBlue,
+      highlightColor: Colors.redAccent,
+      slidersSize: 20,
+      splashColor: Colors.lightBlueAccent,
+      splashRadius: 40,
+);
+```
 
-Alternatively, you can use the `DatePicker` widget directly:
+## Other Widgets
+
+Alternatively, you can use other widget directly:
+
+### DatePicker Widget
+
+Creates a full date picker.
 
 ```dart
 DatePicker(
-  initialDate: DateTime.now(),
   minDate: DateTime(2021, 1, 1),
   maxDate: DateTime(2023, 12, 31),
-  onDateChanged: (value) {
+  onDateSelected: (value) {
+    // Handle selected date
+  },
+);
+```
+
+### RangeDatePicker Widget
+
+Creates a full range picker.
+
+```dart
+RangeDatePicker(
+  minDate: DateTime(2021, 1, 1),
+  maxDate: DateTime(2023, 12, 31),
+  onRangeSelected: (value) {
+    // Handle selected range
+  },
+);
+```
+
+### DaysPicker Widget
+
+Creates a day picker only.
+
+```dart
+DaysPicker(
+  minDate: DateTime(2021, 1, 1),
+  maxDate: DateTime(2023, 12, 31),
+  onDateSelected: (value) {
+    // Handle selected date
+  },
+);
+```
+
+### MonthPicker Widget
+
+Creates a month picker only. The day of selected month will always be `1`.
+
+```dart
+MonthPicker(
+  minDate: DateTime(2021, 1),
+  maxDate: DateTime(2023, 12),
+  onDateSelected: (value) {
+    // Handle selected date
+  },
+);
+```
+
+### YearsPicker Widget
+
+Creates a year picker only. The month of selected year will always be `1`.
+
+```dart
+YearsPicker(
+  minDate: DateTime(2021),
+  maxDate: DateTime(2023),
+  onDateSelected: (value) {
     // Handle selected date
   },
 );
@@ -89,6 +199,7 @@ This package has multi-language supports. To enable it, add your `Locale` into t
 ```dart
 MaterialApp(
   localizationsDelegates: GlobalMaterialLocalizations.delegates,
+  locale: const Locale('en', 'US'),
   supportedLocales: const [
     Locale('en', 'US'),
     Locale('en', 'GB'),

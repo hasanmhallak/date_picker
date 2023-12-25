@@ -2,9 +2,9 @@ name: Tests
 
 on:
   push:
-    branches: [ "master", "dev" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master", "dev" ]
+    branches: ["master"]
 
 jobs:
   test:
@@ -19,7 +19,7 @@ jobs:
 
       - name: Restore Packages
         run: flutter pub get
-      
+
       - name: Insure Formatting
         run: dart format
 
@@ -28,7 +28,3 @@ jobs:
 
       - name: Run tests
         run: flutter test --coverage
-        
-      - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash
-        shell: bash
