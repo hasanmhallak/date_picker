@@ -1,3 +1,11 @@
+# 2.0.1
+
+- Fix Images url in README.md
+- Fix Broken golden tests.
+
+
+
+
 # 2.0.0 [Breaking]
 
 - Add `RangeDatePicker`.
