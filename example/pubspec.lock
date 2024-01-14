@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.18.0"
   cupertino_icons:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cupertino_icons
       sha256: d57953e10f9f8327ce64a508a355f0b1ec902193f66288e8cb5070e7c47eeb2d
@@ -55,7 +55,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0"
+    version: "2.0.2"
   fake_async:
     dependency: transitive
     description:

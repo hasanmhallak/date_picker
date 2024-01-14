@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: any
+  cupertino_icons: any
 
 dev_dependencies:
   flutter_test:
@@ -21,17 +22,17 @@ dev_dependencies:
     sdk: flutter
 
 screenshots:
-  - description: "Examples of range picker."
+  - description: "1 Examples of range picker."
     path: 1.png
-  - description: "Examples of range picker."
+  - description: "2 Examples of range picker."
     path: 2.png
-  - description: "Examples of date picker."
+  - description: "3 Examples of date picker."
     path: 3.png
-  - description: "Examples of date picker."
+  - description: "4 Examples of date picker."
     path: 4.png
-  - description: "Examples of date picker."
+  - description: "5 Examples of date picker."
     path: 5.png
-  - description: "Examples of date picker."
+  - description: "6 Examples of date picker."
     path: 6.png
 
 # For information on the generic Dart part of this file, see the
