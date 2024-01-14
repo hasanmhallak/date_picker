@@ -1,3 +1,12 @@
+# 2.0.3
+
+- Add `cupertino_icons` to dependencies. Closes [#9](https://github.com/hasanmhallak/date_picker/issues/9)
+
+# 2.0.2
+
+- Fix Images url in README.md
+- Fix Broken golden tests.
+
 # 2.0.0 [Breaking]
 
 - Add `RangeDatePicker`.
