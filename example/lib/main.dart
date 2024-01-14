@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RangeDatePicker(
+                    centerLeadingDate: true,
                     minDate: DateTime(2020, 10, 10),
                     maxDate: DateTime(2024, 10, 30),
                   ),

@@ -66,6 +66,7 @@ Future<DateTimeRange?> showRangePickerDialog({
   Color? highlightColor,
   Color? splashColor,
   double? splashRadius,
+  bool centerLeadingDate = false,
 }) async {
   return showDialog<DateTimeRange>(
     context: context,
@@ -82,6 +83,7 @@ Future<DateTimeRange?> showRangePickerDialog({
         child: Dialog(
           insetPadding: EdgeInsets.zero,
           child: RangeDatePicker(
+            centerLeadingDate: centerLeadingDate,
             currentDate: currentDate,
             maxDate: maxDate,
             minDate: minDate,

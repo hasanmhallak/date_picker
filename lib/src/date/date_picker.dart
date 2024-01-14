@@ -70,6 +70,7 @@ class DatePicker extends StatefulWidget {
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
+    this.centerLeadingDate = false,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -195,6 +196,12 @@ class DatePicker extends StatefulWidget {
   /// The radius of the ink splash.
   final double? splashRadius;
 
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -239,6 +246,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: DaysPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate:
@@ -278,6 +286,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate:
@@ -315,6 +324,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: YearsPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate:

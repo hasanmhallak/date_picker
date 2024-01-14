@@ -62,6 +62,7 @@ class YearsPicker extends StatefulWidget {
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
+    this.centerLeadingDate = false,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -201,6 +202,12 @@ class YearsPicker extends StatefulWidget {
 
   /// The radius of the ink splash.
   final double? splashRadius;
+
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -376,6 +383,7 @@ class _YearsPickerState extends State<YearsPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          centerLeadingDate: widget.centerLeadingDate,
           leadingDateTextStyle: leadingDateTextStyle,
           slidersColor: slidersColor,
           slidersSize: slidersSize,
