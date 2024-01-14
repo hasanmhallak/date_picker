@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart' as intl;
@@ -35,22 +37,34 @@ class DaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
-  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
-        assert(() {
-          if (selectedDate == null) return true;
-          return (selectedDate.isAfter(minDate) ||
-                  selectedDate.isAtSameMomentAs(minDate)) &&
-              (selectedDate.isBefore(maxDate) ||
-                  selectedDate.isAtSameMomentAs(maxDate));
-        }(), "selected date should be in the range of min date & max date");
+  }) {
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+
+    assert(() {
+      if (selectedDate == null) return true;
+      final min = DateTime(minDate.year, minDate.month, minDate.day);
+      final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
+      final selected = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+      );
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+    }(), "selected date should be in the range of min date & max date");
+  }
 
   /// The currently selected date.
   ///
   /// This date is highlighted in the picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedDate;
 
   /// The current date at the time the picker is displayed.
   /// In other words, the day to be considered as today.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime currentDate;
 
   /// Called when the user picks a day.
@@ -59,14 +73,20 @@ class DaysView extends StatelessWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The month whose days are displayed by this picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime displayedMonth;
 
   /// The text style of the days name.
@@ -164,6 +184,9 @@ class DaysView extends StatelessWidget {
     final int daysInMonth = DateUtils.getDaysInMonth(year, month);
     final int dayOffset = DateUtils.firstDayOffset(year, month, localizations);
 
+    final _maxDate = DateUtils.dateOnly(maxDate);
+    final _minDate = DateUtils.dateOnly(minDate);
+
     final List<Widget> dayItems = _dayHeaders(
       daysOfTheWeekTextStyle,
       Localizations.localeOf(context),
@@ -178,7 +201,8 @@ class DaysView extends StatelessWidget {
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
         final bool isDisabled =
-            dayToBuild.isAfter(maxDate) || dayToBuild.isBefore(minDate);
+            dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
+
         final bool isSelectedDay =
             DateUtils.isSameDay(selectedDate, dayToBuild);
 
