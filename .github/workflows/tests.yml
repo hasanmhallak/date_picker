@@ -25,6 +25,10 @@ jobs:
 
       - name: Analyze project source
         run: flutter analyze
+        
+      - name: Update Goldens
+        run: flutter test --update-goldens
 
+        
       - name: Run tests
         run: flutter test --coverage
