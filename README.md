@@ -86,6 +86,7 @@ final date = await showDatePickerDialog(
       slidersSize: 20,
       splashColor: Colors.lightBlueAccent,
       splashRadius: 40,
+      centerLeadingDate: true,
 );
 ```
 
@@ -115,6 +116,7 @@ final range = await showRangePickerDialog(
       slidersSize: 20,
       splashColor: Colors.lightBlueAccent,
       splashRadius: 40,
+      centerLeadingDate: true,
 );
 ```
 
