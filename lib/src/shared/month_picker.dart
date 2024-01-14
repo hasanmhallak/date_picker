@@ -29,15 +29,16 @@ class MonthPicker extends StatefulWidget {
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
   ///
-  ///
-  /// [maxDate] must be after or equal to [minDate].
-  ///
-  /// [initialDate] and [selectedDate], if provided, must be between [maxDate] and [minDate]
-  /// or equal to one of them.
+  /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
+  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
-  /// date will be highlighted in the months grid. If null, the date of
+  /// date will be highlighted in the day grid. If null, the date of
   /// `DateTime.now()` will be used.
+  ///
+  /// For each of these [DateTime] parameters, only
+  /// their dates are considered. Their time fields are ignored.
   MonthPicker({
     super.key,
     required this.minDate,
@@ -61,14 +62,17 @@ class MonthPicker extends StatefulWidget {
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
+    this.centerLeadingDate = false,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+
     assert(
       () {
         if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year);
+        final init =
+            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
-        final min = DateTime(minDate.year);
+        final min = DateTime(minDate.year, minDate.month, minDate.day);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
@@ -77,9 +81,10 @@ class MonthPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year);
+        final init =
+            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
-        final max = DateTime(maxDate.year);
+        final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
       'initialDate $initialDate must be on or before maxDate $maxDate.',
@@ -88,13 +93,19 @@ class MonthPicker extends StatefulWidget {
 
   /// The date which will be displayed on first opening.
   /// If not specified, the picker will default to `DateTime.now()` date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? currentDate;
 
   /// The initially selected date when the picker is first opened.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedDate;
 
   /// Called when the user picks a date.
@@ -103,11 +114,15 @@ class MonthPicker extends StatefulWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// Called when the user tap on the leading date.
@@ -188,6 +203,12 @@ class MonthPicker extends StatefulWidget {
   /// The radius of the ink splash.
   final double? splashRadius;
 
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
   @override
   State<MonthPicker> createState() => _MonthPickerState();
 }
@@ -203,8 +224,10 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    _displayedYear = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
-    _selectedDate = widget.selectedDate;
+    _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: (_displayedYear!.year - widget.minDate.year),
     );
@@ -218,12 +241,14 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedYear = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
+      _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      _selectedDate = widget.selectedDate;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -333,6 +358,7 @@ class _MonthPickerState extends State<MonthPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          centerLeadingDate: widget.centerLeadingDate,
           leadingDateTextStyle: leadingDateTextStyle,
           slidersColor: slidersColor,
           slidersSize: slidersSize,
@@ -352,9 +378,9 @@ class _MonthPickerState extends State<MonthPicker> {
           },
         ),
         const SizedBox(height: 10),
-        AnimatedContainer(
+        SizedBox(
+          key: const ValueKey<double>(78 * 4),
           height: 78 * 4,
-          duration: const Duration(milliseconds: 200),
           child: PageView.builder(
             scrollDirection: Axis.horizontal,
             key: _pageViewKey,
@@ -381,9 +407,9 @@ class _MonthPickerState extends State<MonthPicker> {
               return MonthView(
                 key: ValueKey<DateTime>(year),
                 currentDate:
-                    widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
-                minDate: widget.minDate,
-                maxDate: widget.maxDate,
+                    DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                maxDate: DateUtils.dateOnly(widget.maxDate),
+                minDate: DateUtils.dateOnly(widget.minDate),
                 displayedDate: year,
                 selectedDate: _selectedDate,
                 enabledCellsDecoration: enabledCellsDecoration,

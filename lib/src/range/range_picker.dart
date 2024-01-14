@@ -25,7 +25,7 @@ class RangeDatePicker extends StatefulWidget {
   ///
   /// It will display a grid of days for the [initialDate]'s month. if that
   /// is null, `DateTime.now()` will be used. The day
-  /// indicated by [selectedDate] will be selected if provided.
+  /// indicated by [selectedRange] will be selected if provided.
   ///
   /// The optional [onRangeSelected] callback will be called if provided
   /// when a range is selected.
@@ -34,14 +34,16 @@ class RangeDatePicker extends StatefulWidget {
   /// displayed. By default it will show the day grid, but this can be changed
   /// with [initialPickerType].
   ///
-  /// [maxDate] must be after or equal to [minDate].
-  ///
-  /// [initialDate] and [selectedRange], if provided, must be between
-  /// [maxDate] and [minDate] or equal to one of them.
+  /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
+  /// allowable date. [initialDate] and [selectedRange] must either fall between
+  /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
   /// date will be highlighted in the day grid. If null, the date of
   /// `DateTime.now()` will be used.
+  ///
+  /// For each of these [DateTime] parameters, only
+  /// their dates are considered. Their time fields are ignored.
   RangeDatePicker({
     super.key,
     required this.maxDate,
@@ -69,23 +71,27 @@ class RangeDatePicker extends StatefulWidget {
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
+    this.centerLeadingDate = false,
   }) {
-    assert(
-      !maxDate.isBefore(minDate),
-      'maxDate $maxDate must be on or after minDate $minDate.',
-    );
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
 
   /// The initially selected date range when the picker is first opened.
   /// If the specified range contains the [initialDate], that range will be selected.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTimeRange? selectedRange;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to today's date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? currentDate;
 
   /// The date to which the picker will be initially opened.
   /// If not specified, the picker will default to today's date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
 
   /// Called when the user picks a range.
@@ -94,11 +100,15 @@ class RangeDatePicker extends StatefulWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The initial display of the calendar picker.
@@ -213,6 +223,12 @@ class RangeDatePicker extends StatefulWidget {
   /// The radius of the ink splash.
   final double? splashRadius;
 
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
   @override
   State<RangeDatePicker> createState() => _RangeDatePickerState();
 }
@@ -226,10 +242,11 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
   @override
   void initState() {
     _pickerType = widget.initialPickerType;
-    _diplayedDate = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
+    _diplayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+
     if (widget.selectedRange != null) {
-      _selectedStartDate = widget.selectedRange!.start;
-      _selectedEndDate = widget.selectedRange!.end;
+      _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
+      _selectedEndDate = DateUtils.dateOnly(widget.selectedRange!.end);
     }
 
     super.initState();
@@ -242,12 +259,17 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
     }
 
     if (widget.selectedRange != oldWidget.selectedRange) {
-      _selectedStartDate = widget.selectedRange?.start;
-      _selectedEndDate = widget.selectedRange?.end;
+      if (widget.selectedRange == null) {
+        _selectedStartDate = null;
+        _selectedEndDate = null;
+      } else {
+        _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
+        _selectedEndDate = DateUtils.dateOnly(widget.selectedRange!.end);
+      }
     }
 
     if (widget.initialDate != oldWidget.initialDate) {
-      _diplayedDate = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
+      _diplayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
     }
 
     super.didUpdateWidget(oldWidget);
@@ -260,13 +282,14 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         return Padding(
           padding: widget.padding,
           child: RangeDaysPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             currentDate:
-                widget.currentDate ?? DateUtils.dateOnly(DateTime.now()),
-            initialDate: _diplayedDate!,
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            initialDate: _diplayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
             daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
@@ -316,11 +339,13 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _diplayedDate,
             selectedDate: null,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
-            currentDate: widget.currentDate,
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disbaledCellsDecoration: widget.disbaledCellsDecoration,
@@ -352,11 +377,13 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         return Padding(
           padding: widget.padding,
           child: YearsPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             selectedDate: null,
             initialDate: _diplayedDate,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
-            currentDate: widget.currentDate,
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disbaledCellsDecoration: widget.disbaledCellsDecoration,

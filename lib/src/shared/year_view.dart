@@ -28,29 +28,37 @@ class YearView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
-  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
-        assert(() {
-          return (displayedYearRange.end.year -
-                  displayedYearRange.start.year) ==
-              11;
-        }(), "the display year range must always be 12 years."),
-        assert(() {
-          if (selectedDate == null) return true;
-          final max = DateTime(maxDate.year);
-          final min = DateTime(minDate.year);
-          return (selectedDate.isAfter(min) ||
-                  selectedDate.isAtSameMomentAs(min)) &&
-              (selectedDate.isBefore(max) ||
-                  selectedDate.isAtSameMomentAs(max));
-        }(), "selected date should be in the range of min date & max date");
+  }) {
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+    assert(() {
+      return displayedYearRange.end.year - displayedYearRange.start.year == 11;
+    }(), "the display year range must always be 12 years.");
+
+    assert(() {
+      if (selectedDate == null) return true;
+      final max = DateTime(maxDate.year);
+      final min = DateTime(minDate.year);
+      final selected = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+      );
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+    }(), "selected date should be in the range of min date & max date");
+  }
 
   /// The currently selected date.
   ///
   /// This date is highlighted in the picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedDate;
 
   /// The current date at the time the picker is displayed.
   /// In other words, the day to be considered as today.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime currentDate;
 
   /// Called when the user picks a year.
@@ -59,14 +67,20 @@ class YearView extends StatelessWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The years range whose years are displayed by this picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTimeRange displayedYearRange;
 
   /// The text style of years which are selectable.

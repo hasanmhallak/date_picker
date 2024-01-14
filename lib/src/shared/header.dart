@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'leading_date.dart';
-import 'page_sliders.dart';
 
 /// The `Header` class represents the header widget that is displayed above the calendar grid.
 ///
 /// This widget includes information about the currently displayed date, as well as navigation controls
-/// for moving to the next or previous page in the calendar. It consists of a [LeadingDate] widget,
-/// which indicates the current year and month, and a [PageSliders] widget for navigating between pages.
+/// for moving to the next or previous page in the calendar.
 ///
 /// ### Example:
 ///
 /// ```dart
 /// Header(
 ///   displayedDate: "December 2023",
+///   centerLeadingDate: true,
 ///   onDateTap: () {
 ///     // Handle date tap action
 ///   },
@@ -36,7 +35,6 @@ import 'page_sliders.dart';
 ///
 ///  * [LeadingDate], a widget that shows an indication of the opened year/month.
 ///
-///  * [PageSliders], a widget that controls the next and previous page navigation.
 ///
 class Header extends StatelessWidget {
   /// Creates a new [Header] instance.
@@ -52,6 +50,7 @@ class Header extends StatelessWidget {
     required this.slidersColor,
     required this.slidersSize,
     required this.leadingDateTextStyle,
+    this.centerLeadingDate = false,
   });
 
   /// The currently displayed date. It is typically in a format
@@ -84,22 +83,98 @@ class Header extends StatelessWidget {
   /// (forward and backward).
   final double slidersSize;
 
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (centerLeadingDate)
+          GestureDetector(
+            onTap: onPreviousPage,
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  CupertinoIcons.chevron_left,
+                  size: slidersSize,
+                  color: slidersColor,
+                ),
+              ),
+            ),
+          ),
         LeadingDate(
           onTap: onDateTap,
           displayedText: displayedDate,
           displayedTextStyle: leadingDateTextStyle,
         ),
-        PageSliders(
-          onBackward: onPreviousPage,
-          onForward: onNextPage,
-          slidersSized: slidersSize,
-          slidersColor: slidersColor,
-        ),
+        if (centerLeadingDate)
+          GestureDetector(
+            onTap: onNextPage,
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  CupertinoIcons.chevron_right,
+                  size: slidersSize,
+                  color: slidersColor,
+                ),
+              ),
+            ),
+          ),
+        if (!centerLeadingDate)
+          Row(
+            children: [
+              GestureDetector(
+                onTap: onPreviousPage,
+                child: SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      CupertinoIcons.chevron_left,
+                      size: slidersSize,
+                      color: slidersColor,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: onNextPage,
+                child: SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      CupertinoIcons.chevron_right,
+                      size: slidersSize,
+                      color: slidersColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
       ],
     );
   }

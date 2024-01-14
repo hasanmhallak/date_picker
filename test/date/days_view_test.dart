@@ -428,8 +428,8 @@ void main() {
             child: DaysView(
               currentDate: DateTime.now(),
               onChanged: (DateTime date) {},
-              minDate: DateTime.now(),
-              maxDate: DateTime.now(),
+              minDate: DateTime(2024),
+              maxDate: DateTime(2024),
               displayedMonth: DateTime.now(),
               currentDateTextStyle: const TextStyle(),
               daysOfTheWeekTextStyle: const TextStyle(

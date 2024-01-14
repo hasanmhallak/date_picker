@@ -5,7 +5,7 @@
 A Flutter library that provides a customizable Material Design date and range picker widgets.
 
 <div>
-  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="200"  height="225"/>
+  <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/1.png" alt="1" width="200" height="225"/>
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/2.png" alt="2" width="200" height="225"/>
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/3.png" alt="3" width="200" height="225"/>
   <img src="https://raw.githubusercontent.com/hasanmhallak/date_picker/master/4.png" alt="4" width="200" height="225"/>
@@ -86,6 +86,7 @@ final date = await showDatePickerDialog(
       slidersSize: 20,
       splashColor: Colors.lightBlueAccent,
       splashRadius: 40,
+      centerLeadingDate: true,
 );
 ```
 
@@ -115,6 +116,7 @@ final range = await showRangePickerDialog(
       slidersSize: 20,
       splashColor: Colors.lightBlueAccent,
       splashRadius: 40,
+      centerLeadingDate: true,
 );
 ```
 

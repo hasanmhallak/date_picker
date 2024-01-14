@@ -35,19 +35,27 @@ class MonthView extends StatelessWidget {
       if (selectedDate == null) return true;
       final max = DateTime(maxDate.year, maxDate.month);
       final min = DateTime(minDate.year, minDate.month);
+      final selected = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+      );
 
-      return (selectedDate!.isAfter(min) ||
-              selectedDate!.isAtSameMomentAs(min)) &&
-          (selectedDate!.isBefore(max) || selectedDate!.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
   /// The currently selected month.
   ///
   /// This date is highlighted in the picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedDate;
 
   /// The current month at the time the picker is displayed.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime currentDate;
 
   /// Called when the user picks a month.
@@ -56,14 +64,20 @@ class MonthView extends StatelessWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The year which its months are displayed by this picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime displayedDate;
 
   /// The text style of months which are selectable.
@@ -106,11 +120,12 @@ class MonthView extends StatelessWidget {
     final locale = Localizations.localeOf(context);
 
     final int year = displayedDate.year;
-    // we git rid of the day because if there is anu day allowed in
+    // we get rid of the day because if there is any day allowed in
     // in the month we should not gray it out.
     final DateTime startMonth = DateTime(minDate.year, minDate.month);
     final DateTime endMonth = DateTime(maxDate.year, maxDate.month);
     DateTime? selectedMonth;
+
     if (selectedDate != null) {
       selectedMonth = DateTime(selectedDate!.year, selectedDate!.month);
     }

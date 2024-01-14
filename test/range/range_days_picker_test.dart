@@ -633,7 +633,7 @@ void main() {
     );
 
     testWidgets(
-      'Should the height of the animated container be 52 * 7',
+      'Should the height of the sized box be 52 * 7',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2023, 7);
         final DateTime minDate = DateTime(2000);
@@ -687,15 +687,15 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        final Finder animatedContainerFinder = find.byType(AnimatedContainer);
-        expect(animatedContainerFinder, findsOneWidget);
+        final Finder sizedBoxFinder =
+            find.byKey(const ValueKey<double>(52 * 7));
+        expect(sizedBoxFinder, findsOneWidget);
 
-        const constraints = BoxConstraints.tightFor(height: 52 * 7);
+        const height = 52 * 7;
 
-        final AnimatedContainer animatedContainerWidget =
-            tester.widget<AnimatedContainer>(animatedContainerFinder);
+        final SizedBox sizedBoxWidget = tester.widget<SizedBox>(sizedBoxFinder);
 
-        expect(animatedContainerWidget.constraints, equals(constraints));
+        expect(sizedBoxWidget.height, equals(height));
       },
     );
 

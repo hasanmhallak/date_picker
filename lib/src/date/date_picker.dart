@@ -35,14 +35,16 @@ class DatePicker extends StatefulWidget {
   /// displayed. By default it will show the day grid, but this can be changed
   /// with [initialPickerType].
   ///
-  /// [maxDate] must be after or equal to [minDate].
-  ///
-  /// [initialDate] and [selectedDate], if provided, must be between [maxDate] and [minDate]
-  /// or equal to one of them.
+  /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
+  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
   /// date will be highlighted in the day grid. If null, the date of
   /// `DateTime.now()` will be used.
+  ///
+  /// For each of these [DateTime] parameters, only
+  /// their dates are considered. Their time fields are ignored.
   DatePicker({
     super.key,
     required this.maxDate,
@@ -68,22 +70,26 @@ class DatePicker extends StatefulWidget {
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
+    this.centerLeadingDate = false,
   }) {
-    assert(
-      !maxDate.isBefore(minDate),
-      'maxDate $maxDate must be on or after minDate $minDate.',
-    );
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
 
   /// The date which will be displayed on first opening.
   /// If not specified, the picker will default to `DateTime.now()` date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? currentDate;
 
   /// The initially selected date when the picker is first opened.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedDate;
 
   /// Called when the user picks a date.
@@ -92,11 +98,15 @@ class DatePicker extends StatefulWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The initial display of the calendar picker.
@@ -186,6 +196,12 @@ class DatePicker extends StatefulWidget {
   /// The radius of the ink splash.
   final double? splashRadius;
 
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -197,9 +213,12 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    _displayedDate = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
+    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
     _pickerType = widget.initialPickerType;
-    _selectedDate = widget.selectedDate;
+
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
 
     super.initState();
   }
@@ -207,13 +226,15 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedDate = widget.initialDate ?? DateUtils.dateOnly(DateTime.now());
+      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
       _pickerType = widget.initialPickerType;
     }
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -225,11 +246,13 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: DaysPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: widget.currentDate,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
             daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
@@ -263,11 +286,13 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: widget.currentDate,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disbaledCellsDecoration: widget.disbaledCellsDecoration,
@@ -299,11 +324,13 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: YearsPicker(
+            centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: widget.currentDate,
-            maxDate: widget.maxDate,
-            minDate: widget.minDate,
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            maxDate: DateUtils.dateOnly(widget.maxDate),
+            minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disbaledCellsDecoration: widget.disbaledCellsDecoration,

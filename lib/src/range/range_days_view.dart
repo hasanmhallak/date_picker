@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart' as intl;
@@ -39,34 +41,53 @@ class RangeDaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     required this.splashRadius,
-  })  : assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate"),
-        assert(() {
-          if (selectedStartDate == null) return true;
-          return (selectedStartDate.isAfter(minDate) ||
-                  selectedStartDate.isAtSameMomentAs(minDate)) &&
-              (selectedStartDate.isBefore(maxDate) ||
-                  selectedStartDate.isAtSameMomentAs(maxDate));
-        }(),
-            "selected start date should be in the range of min date & max date"),
-        assert(() {
-          if (selectedEndDate == null) return true;
-          return (selectedEndDate.isAfter(minDate) ||
-                  selectedEndDate.isAtSameMomentAs(minDate)) &&
-              (selectedEndDate.isBefore(maxDate) ||
-                  selectedEndDate.isAtSameMomentAs(maxDate));
-        }(), "selected end date should be in the range of min date & max date");
+  }) {
+    assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
+
+    assert(() {
+      if (selectedStartDate == null) return true;
+      final min = DateTime(minDate.year, minDate.month, minDate.day);
+      final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
+      final selected = DateTime(
+        selectedStartDate!.year,
+        selectedStartDate!.month,
+        selectedStartDate!.day,
+      );
+
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+    }(), "selected start date should be in the range of min date & max date");
+    assert(() {
+      if (selectedEndDate == null) return true;
+      final min = DateTime(minDate.year, minDate.month, minDate.day);
+      final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
+      final selected = DateTime(
+        selectedEndDate!.year,
+        selectedEndDate!.month,
+        selectedEndDate!.day,
+      );
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+    }(), "selected end date should be in the range of min date & max date");
+  }
 
   /// The currently selected start date.
   ///
   /// This date is highlighted in the picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedStartDate;
 
   /// The currently selected end date.
   ///
-  /// This date is highlighted in the picker
+  /// This date is highlighted in the picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime? selectedEndDate;
 
-  /// The current date. e.g (today)
+  /// The current date. e.g (today).
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime currentDate;
 
   /// Called when the user picks a start date.
@@ -78,14 +99,20 @@ class RangeDaysView extends StatelessWidget {
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
 
   /// The month whose days are displayed by this picker.
+  ///
+  /// Note that only dates are considered. time fields are ignored.
   final DateTime displayedMonth;
 
   /// The text style of the week days name.
@@ -187,8 +214,20 @@ class RangeDaysView extends StatelessWidget {
     //
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
-    final int daysInMonth = DateUtils.getDaysInMonth(year, month);
-    final int dayOffset = DateUtils.firstDayOffset(year, month, localizations);
+    final int daysInMonth =
+        DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
+    final int dayOffset = DateUtils.firstDayOffset(
+        displayedMonth.year, displayedMonth.month, localizations);
+
+    DateTime? selectedEndDateOnly =
+        selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
+
+    DateTime? selectedStartDateOnly = selectedStartDate != null
+        ? DateUtils.dateOnly(selectedStartDate!)
+        : null;
+
+    final _maxDate = DateUtils.dateOnly(maxDate);
+    final _minDate = DateUtils.dateOnly(minDate);
 
     final List<Widget> dayItems = _dayHeaders(
       daysOfTheWeekTextStyle,
@@ -204,23 +243,35 @@ class RangeDaysView extends StatelessWidget {
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
         final bool isDisabled =
-            dayToBuild.isAfter(maxDate) || dayToBuild.isBefore(minDate);
+            dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
 
         final isRangeSelected =
-            selectedStartDate != null && selectedEndDate != null;
+            selectedStartDateOnly != null && selectedEndDateOnly != null;
 
-        final isSingleCellSelected = (selectedStartDate != null &&
-                selectedEndDate == null &&
-                dayToBuild == selectedStartDate) &&
-            !isRangeSelected;
+        final isStartSelectedOnly = selectedStartDateOnly != null &&
+            dayToBuild == selectedStartDateOnly &&
+            selectedEndDateOnly == null;
+
+        final isEndSelectedOnly = selectedStartDateOnly == null &&
+            selectedEndDateOnly != null &&
+            dayToBuild == selectedEndDateOnly;
+
+        final isRangeOnlyOneDate =
+            selectedStartDateOnly == selectedEndDateOnly &&
+                dayToBuild == selectedStartDateOnly;
+
+        final isSingleCellSelected =
+            isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
 
         final bool isWithinRange = isRangeSelected &&
-            dayToBuild.isAfter(selectedStartDate!) &&
-            dayToBuild.isBefore(selectedEndDate!);
+            dayToBuild.isAfter(selectedStartDateOnly) &&
+            dayToBuild.isBefore(selectedEndDateOnly) &&
+            !isRangeOnlyOneDate;
 
-        final isStartDate = DateUtils.isSameDay(selectedStartDate, dayToBuild);
+        final isStartDate =
+            DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
 
-        final isEndDate = DateUtils.isSameDay(selectedEndDate, dayToBuild);
+        final isEndDate = DateUtils.isSameDay(selectedEndDateOnly, dayToBuild);
 
         final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
         //
@@ -241,6 +292,7 @@ class RangeDaysView extends StatelessWidget {
           style = singelSelectedCellTextStyle;
           decoration = singelSelectedCellDecoration;
         }
+
         if (isWithinRange) {
           //
           //
@@ -275,7 +327,9 @@ class RangeDaysView extends StatelessWidget {
           child: dayWidget,
         );
 
-        if ((isStartDate || isEndDate) && isRangeSelected) {
+        if ((isStartDate || isEndDate) &&
+            isRangeSelected &&
+            !isRangeOnlyOneDate) {
           dayWidget = CustomPaint(
             painter: _DecorationPainter(
               textDirection: Directionality.of(context),
@@ -305,10 +359,6 @@ class RangeDaysView extends StatelessWidget {
               if (dayToBuild.isBefore(selectedStartDate!)) {
                 onStartDateChanged(dayToBuild);
                 onEndDateChanged(selectedStartDate!);
-                return;
-              }
-
-              if (dayToBuild == selectedStartDate) {
                 return;
               }
 
