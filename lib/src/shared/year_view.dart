@@ -20,8 +20,8 @@ class YearView extends StatelessWidget {
     required this.displayedYearRange,
     required this.enabledCellsTextStyle,
     required this.enabledCellsDecoration,
-    required this.disbaledCellsTextStyle,
-    required this.disbaledCellsDecoration,
+    required this.disabledCellsTextStyle,
+    required this.disabledCellsDecoration,
     required this.currentDateTextStyle,
     required this.currentDateDecoration,
     required this.selectedCellTextStyle,
@@ -86,10 +86,10 @@ class YearView extends StatelessWidget {
   final BoxDecoration enabledCellsDecoration;
 
   /// The text style of years which are not selectable.
-  final TextStyle disbaledCellsTextStyle;
+  final TextStyle disabledCellsTextStyle;
 
   /// The cell decoration of years which are not selectable.
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current year
   final TextStyle currentDateTextStyle;
@@ -152,8 +152,8 @@ class YearView extends StatelessWidget {
       }
 
       if (isDisabled) {
-        style = disbaledCellsTextStyle;
-        decoration = disbaledCellsDecoration;
+        style = disabledCellsTextStyle;
+        decoration = disabledCellsDecoration;
       }
 
       Widget monthWidget = Container(

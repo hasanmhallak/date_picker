@@ -49,8 +49,8 @@ class YearsPicker extends StatefulWidget {
     this.selectedDate,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration = const BoxDecoration(),
-    this.disbaledCellsTextStyle,
-    this.disbaledCellsDecoration = const BoxDecoration(),
+    this.disabledCellsTextStyle,
+    this.disabledCellsDecoration = const BoxDecoration(),
     this.currentDateTextStyle,
     this.currentDateDecoration,
     this.selectedCellTextStyle,
@@ -142,12 +142,12 @@ class YearsPicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disbaledCellsTextStyle;
+  final TextStyle? disabledCellsTextStyle;
 
   /// The cell decoration of cells which are not selectable.
   ///
   /// defaults to empty [BoxDecoration].
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current date.
   ///
@@ -301,13 +301,13 @@ class _YearsPickerState extends State<YearsPicker> {
     //
     //
 
-    final TextStyle disbaledCellsTextStyle = widget.disbaledCellsTextStyle ??
+    final TextStyle disabledCellsTextStyle = widget.disabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disbaledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
 
     //
     //! current
@@ -416,8 +416,8 @@ class _YearsPickerState extends State<YearsPicker> {
                 selectedDate: _selectedDate,
                 enabledCellsDecoration: enabledCellsDecoration,
                 enabledCellsTextStyle: enabledCellsTextStyle,
-                disbaledCellsDecoration: disbaledCellsDecoration,
-                disbaledCellsTextStyle: disbaledCellsTextStyle,
+                disabledCellsDecoration: disbaledCellsDecoration,
+                disabledCellsTextStyle: disabledCellsTextStyle,
                 currentDateDecoration: currentDateDecoration,
                 currentDateTextStyle: currentDateTextStyle,
                 selectedCellDecoration: selectedCellDecoration,

@@ -58,8 +58,8 @@ class DatePicker extends StatefulWidget {
     this.daysOfTheWeekTextStyle,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration = const BoxDecoration(),
-    this.disbaledCellsTextStyle,
-    this.disbaledCellsDecoration = const BoxDecoration(),
+    this.disabledCellsTextStyle,
+    this.disabledCellsDecoration = const BoxDecoration(),
     this.currentDateTextStyle,
     this.currentDateDecoration,
     this.selectedCellTextStyle,
@@ -136,12 +136,12 @@ class DatePicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disbaledCellsTextStyle;
+  final TextStyle? disabledCellsTextStyle;
 
   /// The cell decoration of cells which are not selectable.
   ///
   /// defaults to empty [BoxDecoration].
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current date.
   ///
@@ -216,9 +216,7 @@ class _DatePickerState extends State<DatePicker> {
     _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
     _pickerType = widget.initialPickerType;
 
-    _selectedDate = widget.selectedDate != null
-        ? DateUtils.dateOnly(widget.selectedDate!)
-        : null;
+    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
 
     super.initState();
   }
@@ -232,9 +230,7 @@ class _DatePickerState extends State<DatePicker> {
       _pickerType = widget.initialPickerType;
     }
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null
-          ? DateUtils.dateOnly(widget.selectedDate!)
-          : null;
+      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -249,15 +245,14 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             selectedCellDecoration: widget.selectedCellDecoration,
@@ -289,14 +284,13 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             selectedCellDecoration: widget.selectedCellDecoration,
@@ -327,14 +321,13 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             selectedCellDecoration: widget.selectedCellDecoration,

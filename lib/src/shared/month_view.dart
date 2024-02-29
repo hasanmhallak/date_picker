@@ -21,8 +21,8 @@ class MonthView extends StatelessWidget {
     required this.maxDate,
     required this.enabledCellsTextStyle,
     required this.enabledCellsDecoration,
-    required this.disbaledCellsTextStyle,
-    required this.disbaledCellsDecoration,
+    required this.disabledCellsTextStyle,
+    required this.disabledCellsDecoration,
     required this.currentDateTextStyle,
     required this.currentDateDecoration,
     required this.selectedCellTextStyle,
@@ -83,10 +83,10 @@ class MonthView extends StatelessWidget {
   final BoxDecoration enabledCellsDecoration;
 
   /// The text style of months which are not selectable.
-  final TextStyle disbaledCellsTextStyle;
+  final TextStyle disabledCellsTextStyle;
 
   /// The cell decoration of months which are not selectable.
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current month
   final TextStyle currentDateTextStyle;
@@ -156,8 +156,8 @@ class MonthView extends StatelessWidget {
       }
 
       if (isDisabled) {
-        style = disbaledCellsTextStyle;
-        decoration = disbaledCellsDecoration;
+        style = disabledCellsTextStyle;
+        decoration = disabledCellsDecoration;
       }
 
       Widget monthWidget = Container(

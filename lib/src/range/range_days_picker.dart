@@ -16,8 +16,8 @@ class RangeDaysPicker extends StatefulWidget {
     this.daysOfTheWeekTextStyle,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration = const BoxDecoration(),
-    this.disbaledCellsTextStyle,
-    this.disbaledCellsDecoration = const BoxDecoration(),
+    this.disabledCellsTextStyle,
+    this.disabledCellsDecoration = const BoxDecoration(),
     this.currentDateTextStyle,
     this.currentDateDecoration,
     this.selectedCellsTextStyle,
@@ -40,8 +40,7 @@ class RangeDaysPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init =
-            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
         final min = DateTime(minDate.year, minDate.month, minDate.day);
 
@@ -52,8 +51,7 @@ class RangeDaysPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init =
-            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
         final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
@@ -132,12 +130,12 @@ class RangeDaysPicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disbaledCellsTextStyle;
+  final TextStyle? disabledCellsTextStyle;
 
   /// The cell decoration of cells which are not selectable.
   ///
   /// defaults to empty [BoxDecoration].
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current date.
   ///
@@ -230,8 +228,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedMonth =
-          DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
       );
@@ -279,14 +276,13 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     //
     //
 
-    final TextStyle disbaledCellsTextStyle = widget.disbaledCellsTextStyle ??
+    final TextStyle disabledCellsTextStyle = widget.disabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration =
-        widget.disbaledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
 
     //
     //! current
@@ -315,29 +311,26 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
           color: colorScheme.onPrimaryContainer,
         );
 
-    final BoxDecoration selectedCellsDecoration =
-        widget.selectedCellsDecoration ??
-            BoxDecoration(
-              color: colorScheme.primaryContainer,
-              shape: BoxShape.rectangle,
-            );
+    final BoxDecoration selectedCellsDecoration = widget.selectedCellsDecoration ??
+        BoxDecoration(
+          color: colorScheme.primaryContainer,
+          shape: BoxShape.rectangle,
+        );
 
     //
     //! singel
 
-    final TextStyle singelSelectedCellTextStyle =
-        widget.singelSelectedCellTextStyle ??
-            textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.normal,
-              color: colorScheme.onPrimary,
-            );
+    final TextStyle singelSelectedCellTextStyle = widget.singelSelectedCellTextStyle ??
+        textTheme.titleLarge!.copyWith(
+          fontWeight: FontWeight.normal,
+          color: colorScheme.onPrimary,
+        );
 
-    final BoxDecoration singelSelectedCellDecoration =
-        widget.singelSelectedCellDecoration ??
-            BoxDecoration(
-              color: colorScheme.primary,
-              shape: BoxShape.circle,
-            );
+    final BoxDecoration singelSelectedCellDecoration = widget.singelSelectedCellDecoration ??
+        BoxDecoration(
+          color: colorScheme.primary,
+          shape: BoxShape.circle,
+        );
 
     //
     //
@@ -355,12 +348,9 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
     //
     //! splash
-    final splashColor = widget.splashColor ??
-        selectedCellsDecoration.color?.withOpacity(0.3) ??
-        colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ?? selectedCellsDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor =
-        widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -409,35 +399,28 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
             controller: _pageController,
             itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
             onPageChanged: (monthPage) {
-              final DateTime monthDate =
-                  DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+              final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
               setState(() {
                 _displayedMonth = monthDate;
               });
             },
             itemBuilder: (context, index) {
-              final DateTime month =
-                  DateUtils.addMonthsToMonthDate(widget.minDate, index);
+              final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
               return RangeDaysView(
                 key: ValueKey<DateTime>(month),
-                currentDate:
-                    DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
                 minDate: DateUtils.dateOnly(widget.minDate),
                 maxDate: DateUtils.dateOnly(widget.maxDate),
                 displayedMonth: month,
-                selectedEndDate: widget.selectedEndDate == null
-                    ? null
-                    : DateUtils.dateOnly(widget.selectedEndDate!),
-                selectedStartDate: widget.selectedStartDate == null
-                    ? null
-                    : DateUtils.dateOnly(widget.selectedStartDate!),
+                selectedEndDate: widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
+                selectedStartDate: widget.selectedStartDate == null ? null : DateUtils.dateOnly(widget.selectedStartDate!),
                 daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
                 enabledCellsTextStyle: enabledCellsTextStyle,
                 enabledCellsDecoration: enabledCellsDecoration,
-                disbaledCellsTextStyle: disbaledCellsTextStyle,
-                disbaledCellsDecoration: disbaledCellsDecoration,
+                disabledCellsTextStyle: disabledCellsTextStyle,
+                disabledCellsDecoration: disbaledCellsDecoration,
                 currentDateDecoration: currentDateDecoration,
                 currentDateTextStyle: currentDateTextStyle,
                 selectedCellsDecoration: selectedCellsDecoration,
@@ -447,10 +430,8 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                 highlightColor: highlightColor,
                 splashColor: splashColor,
                 splashRadius: widget.splashRadius,
-                onEndDateChanged: (value) =>
-                    widget.onEndDateChanged?.call(value),
-                onStartDateChanged: (value) =>
-                    widget.onStartDateChanged?.call(value),
+                onEndDateChanged: (value) => widget.onEndDateChanged?.call(value),
+                onStartDateChanged: (value) => widget.onStartDateChanged?.call(value),
               );
             },
           ),
