@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'header.dart';
 import 'month_view.dart';
+import 'utils.dart';
 import '../date/show_date_picker_dialog.dart';
 
 /// Displays a grid of months for a given year and allows the user to select a
@@ -38,7 +39,7 @@ class MonthPicker extends StatefulWidget {
   /// `DateTime.now()` will be used.
   ///
   /// For each of these [DateTime] parameters, only
-  /// their dates are considered. Their time fields are ignored.
+  /// their year & month are considered. Their time & day fields are ignored.
   MonthPicker({
     super.key,
     required this.minDate,
@@ -48,8 +49,8 @@ class MonthPicker extends StatefulWidget {
     this.selectedDate,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration = const BoxDecoration(),
-    this.disbaledCellsTextStyle,
-    this.disbaledCellsDecoration = const BoxDecoration(),
+    this.disabledCellsTextStyle,
+    this.disabledCellsDecoration = const BoxDecoration(),
     this.currentDateTextStyle,
     this.currentDateDecoration,
     this.selectedCellTextStyle,
@@ -69,10 +70,9 @@ class MonthPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init =
-            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init = DateUtilsX.monthOnly(initialDate!);
 
-        final min = DateTime(minDate.year, minDate.month, minDate.day);
+        final min = DateUtilsX.monthOnly(minDate);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
@@ -81,10 +81,9 @@ class MonthPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init =
-            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init = DateUtilsX.monthOnly(initialDate!);
 
-        final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
+        final max = DateUtilsX.monthOnly(maxDate);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
       'initialDate $initialDate must be on or before maxDate $maxDate.',
@@ -94,18 +93,18 @@ class MonthPicker extends StatefulWidget {
   /// The date which will be displayed on first opening.
   /// If not specified, the picker will default to `DateTime.now()` date.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime? initialDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime? currentDate;
 
   /// The initially selected date when the picker is first opened.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime? selectedDate;
 
   /// Called when the user picks a date.
@@ -115,14 +114,14 @@ class MonthPicker extends StatefulWidget {
   ///
   /// This date must be on or before the [maxDate].
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime maxDate;
 
   /// Called when the user tap on the leading date.
@@ -143,12 +142,12 @@ class MonthPicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disbaledCellsTextStyle;
+  final TextStyle? disabledCellsTextStyle;
 
   /// The cell decoration of cells which are not selectable.
   ///
   /// defaults to empty [BoxDecoration].
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current date.
   ///
@@ -224,10 +223,9 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
-    _selectedDate = widget.selectedDate != null
-        ? DateUtils.dateOnly(widget.selectedDate!)
-        : null;
+    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
+
+    _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     _pageController = PageController(
       initialPage: (_displayedYear!.year - widget.minDate.year),
     );
@@ -241,14 +239,14 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+      // _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      _selectedDate = widget.selectedDate != null
-          ? DateUtils.dateOnly(widget.selectedDate!)
-          : null;
+      // _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -282,14 +280,13 @@ class _MonthPickerState extends State<MonthPicker> {
     //
     //
 
-    final TextStyle disbaledCellsTextStyle = widget.disbaledCellsTextStyle ??
+    final TextStyle disabledCellsTextStyle = widget.disabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration =
-        widget.disbaledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
 
     //
     //! current
@@ -319,12 +316,11 @@ class _MonthPickerState extends State<MonthPicker> {
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration =
-        widget.selectedCellDecoration ??
-            BoxDecoration(
-              color: colorScheme.primary,
-              shape: BoxShape.circle,
-            );
+    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
+        BoxDecoration(
+          color: colorScheme.primary,
+          shape: BoxShape.circle,
+        );
 
     //
     //
@@ -337,19 +333,15 @@ class _MonthPickerState extends State<MonthPicker> {
           color: Theme.of(context).colorScheme.primary,
         );
 
-    final slidersColor =
-        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+    final slidersColor = widget.slidersColor ?? Theme.of(context).colorScheme.primary;
 
     final slidersSize = widget.slidersSize ?? 20;
 
     //
     //! splash
-    final splashColor = widget.splashColor ??
-        selectedCellDecoration.color?.withOpacity(0.3) ??
-        colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor =
-        widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -389,8 +381,8 @@ class _MonthPickerState extends State<MonthPicker> {
             onPageChanged: (yearPage) {
               final DateTime year = DateTime(
                 widget.minDate.year + yearPage,
-                widget.minDate.month,
-                widget.minDate.day,
+                // widget.minDate.month,
+                // widget.minDate.day,
               );
 
               setState(() {
@@ -400,22 +392,21 @@ class _MonthPickerState extends State<MonthPicker> {
             itemBuilder: (context, index) {
               final DateTime year = DateTime(
                 widget.minDate.year + index,
-                widget.minDate.month,
-                widget.minDate.day,
+                // widget.minDate.month,
+                // widget.minDate.day,
               );
 
               return MonthView(
                 key: ValueKey<DateTime>(year),
-                currentDate:
-                    DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                maxDate: DateUtils.dateOnly(widget.maxDate),
-                minDate: DateUtils.dateOnly(widget.minDate),
+                currentDate: widget.currentDate != null ? DateUtilsX.monthOnly(widget.currentDate!) : DateUtilsX.monthOnly(DateTime.now()),
+                maxDate: DateUtilsX.monthOnly(widget.maxDate),
+                minDate: DateUtilsX.monthOnly(widget.minDate),
                 displayedDate: year,
                 selectedDate: _selectedDate,
                 enabledCellsDecoration: enabledCellsDecoration,
                 enabledCellsTextStyle: enabledCellsTextStyle,
-                disbaledCellsDecoration: disbaledCellsDecoration,
-                disbaledCellsTextStyle: disbaledCellsTextStyle,
+                disabledCellsDecoration: disbaledCellsDecoration,
+                disabledCellsTextStyle: disabledCellsTextStyle,
                 currentDateDecoration: currentDateDecoration,
                 currentDateTextStyle: currentDateTextStyle,
                 selectedCellDecoration: selectedCellDecoration,
@@ -424,9 +415,10 @@ class _MonthPickerState extends State<MonthPicker> {
                 splashColor: splashColor,
                 splashRadius: widget.splashRadius,
                 onChanged: (value) {
-                  widget.onDateSelected?.call(value);
+                  final selected = DateUtilsX.monthOnly(value);
+                  widget.onDateSelected?.call(selected);
                   setState(() {
-                    _selectedDate = value;
+                    _selectedDate = selected;
                   });
                 },
               );

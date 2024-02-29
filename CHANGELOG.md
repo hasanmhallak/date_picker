@@ -1,8 +1,14 @@
+# 3.0.0 [Breaking]
+
+- Fix Assertions issue see [#14](https://github.com/hasanmhallak/date_picker/issues/14)
+- Fix Types see [#13](https://github.com/hasanmhallak/date_picker/issues/13)
+
 # 2.1.0
 
 - Ignore time in all DateTime classes. fixes [#11](https://github.com/hasanmhallak/date_picker/issues/11)
 - User now can pick the same date as a range fixes [#10](https://github.com/hasanmhallak/date_picker/issues/10)
 - User now can choose to center the leading date or not fixes [#10](https://github.com/hasanmhallak/date_picker/issues/10)
+
 
 # 2.0.3
 

@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'picker_grid_delegate.dart';
@@ -19,8 +20,8 @@ class YearView extends StatelessWidget {
     required this.displayedYearRange,
     required this.enabledCellsTextStyle,
     required this.enabledCellsDecoration,
-    required this.disbaledCellsTextStyle,
-    required this.disbaledCellsDecoration,
+    required this.disabledCellsTextStyle,
+    required this.disabledCellsDecoration,
     required this.currentDateTextStyle,
     required this.currentDateDecoration,
     required this.selectedCellTextStyle,
@@ -36,15 +37,10 @@ class YearView extends StatelessWidget {
 
     assert(() {
       if (selectedDate == null) return true;
-      final max = DateTime(maxDate.year);
-      final min = DateTime(minDate.year);
-      final selected = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-      );
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
-          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      final max = DateUtilsX.yearOnly(maxDate);
+      final min = DateUtilsX.yearOnly(minDate);
+      final selected = DateUtilsX.yearOnly(selectedDate!);
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
@@ -52,13 +48,13 @@ class YearView extends StatelessWidget {
   ///
   /// This date is highlighted in the picker.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime? selectedDate;
 
   /// The current date at the time the picker is displayed.
   /// In other words, the day to be considered as today.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime currentDate;
 
   /// Called when the user picks a year.
@@ -68,19 +64,19 @@ class YearView extends StatelessWidget {
   ///
   /// This date must be on or before the [maxDate].
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime minDate;
 
   /// The latest date the user is permitted to pick.
   ///
   /// This date must be on or after the [minDate].
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime maxDate;
 
   /// The years range whose years are displayed by this picker.
   ///
-  /// Note that only dates are considered. time fields are ignored.
+  /// Note that only year are considered. time, month and day fields are ignored.
   final DateTimeRange displayedYearRange;
 
   /// The text style of years which are selectable.
@@ -90,10 +86,10 @@ class YearView extends StatelessWidget {
   final BoxDecoration enabledCellsDecoration;
 
   /// The text style of years which are not selectable.
-  final TextStyle disbaledCellsTextStyle;
+  final TextStyle disabledCellsTextStyle;
 
   /// The cell decoration of years which are not selectable.
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current year
   final TextStyle currentDateTextStyle;
@@ -132,8 +128,7 @@ class YearView extends StatelessWidget {
 
     int i = 0;
     while (i < numberOfYears) {
-      final bool isDisabled =
-          yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
+      final bool isDisabled = yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 
@@ -157,8 +152,8 @@ class YearView extends StatelessWidget {
       }
 
       if (isDisabled) {
-        style = disbaledCellsTextStyle;
-        decoration = disbaledCellsDecoration;
+        style = disabledCellsTextStyle;
+        decoration = disabledCellsDecoration;
       }
 
       Widget monthWidget = Container(

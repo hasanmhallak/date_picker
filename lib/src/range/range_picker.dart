@@ -57,8 +57,8 @@ class RangeDatePicker extends StatefulWidget {
     this.daysOfTheWeekTextStyle,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration = const BoxDecoration(),
-    this.disbaledCellsTextStyle,
-    this.disbaledCellsDecoration = const BoxDecoration(),
+    this.disabledCellsTextStyle,
+    this.disabledCellsDecoration = const BoxDecoration(),
     this.currentDateTextStyle,
     this.currentDateDecoration,
     this.selectedCellsTextStyle,
@@ -138,12 +138,12 @@ class RangeDatePicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disbaledCellsTextStyle;
+  final TextStyle? disabledCellsTextStyle;
 
   /// The cell decoration of cells which are not selectable.
   ///
   /// defaults to empty [BoxDecoration].
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current date.
   ///
@@ -283,8 +283,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           padding: widget.padding,
           child: RangeDaysPicker(
             centerLeadingDate: widget.centerLeadingDate,
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             initialDate: _diplayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
@@ -293,8 +292,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             selectedCellsDecoration: widget.selectedCellsDecoration,
@@ -344,12 +343,11 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             selectedDate: null,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             selectedCellDecoration: widget.singelSelectedCellDecoration,
@@ -382,12 +380,11 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             initialDate: _diplayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
-            disbaledCellsDecoration: widget.disbaledCellsDecoration,
-            disbaledCellsTextStyle: widget.disbaledCellsTextStyle,
+            disabledCellsDecoration: widget.disabledCellsDecoration,
+            disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
             selectedCellDecoration: widget.singelSelectedCellDecoration,

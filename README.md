@@ -26,7 +26,8 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker_plus: ^2.1.0
+  date_picker_plus: ^3.0.0
+
 ```
 
 Import the library in your Dart file:
@@ -74,7 +75,7 @@ final date = await showDatePickerDialog(
       currentDateTextStyle: const TextStyle(),
       daysOfTheWeekTextStyle: const TextStyle(),
       disbaledCellsDecoration: const BoxDecoration(),
-      disbaledCellsTextStyle: const TextStyle(),
+      disabledCellsTextStyle: const TextStyle(),
       enabledCellsDecoration: const BoxDecoration(),
       enabledCellsTextStyle: const TextStyle(),
       initialPickerType: PickerType.days,
@@ -106,7 +107,7 @@ final range = await showRangePickerDialog(
       currentDateTextStyle: const TextStyle(),
       daysOfTheWeekTextStyle: const TextStyle(),
       disbaledCellsDecoration: const BoxDecoration(),
-      disbaledCellsTextStyle: const TextStyle(),
+      disabledCellsTextStyle: const TextStyle(),
       enabledCellsDecoration: const BoxDecoration(),
       enabledCellsTextStyle: const TextStyle(),
       initialPickerType: PickerType.days,

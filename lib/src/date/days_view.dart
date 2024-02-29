@@ -28,8 +28,8 @@ class DaysView extends StatelessWidget {
     required this.daysOfTheWeekTextStyle,
     required this.enabledCellsTextStyle,
     required this.enabledCellsDecoration,
-    required this.disbaledCellsTextStyle,
-    required this.disbaledCellsDecoration,
+    required this.disabledCellsTextStyle,
+    required this.disabledCellsDecoration,
     required this.currentDateTextStyle,
     required this.currentDateDecoration,
     required this.selectedDayTextStyle,
@@ -49,8 +49,7 @@ class DaysView extends StatelessWidget {
         selectedDate!.month,
         selectedDate!.day,
       );
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
-          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
@@ -99,10 +98,10 @@ class DaysView extends StatelessWidget {
   final BoxDecoration enabledCellsDecoration;
 
   /// The text style of days which are not selectable.
-  final TextStyle disbaledCellsTextStyle;
+  final TextStyle disabledCellsTextStyle;
 
   /// The cell decoration of days which are not selectable.
-  final BoxDecoration disbaledCellsDecoration;
+  final BoxDecoration disabledCellsDecoration;
 
   /// The text style of the current day
   final TextStyle currentDateTextStyle;
@@ -148,8 +147,7 @@ class DaysView extends StatelessWidget {
     MaterialLocalizations localizations,
   ) {
     final List<Widget> result = <Widget>[];
-    final weekdayNames =
-        intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
+    final weekdayNames = intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
@@ -173,8 +171,7 @@ class DaysView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     //
     //
     //
@@ -200,11 +197,9 @@ class DaysView extends StatelessWidget {
         dayItems.add(const SizedBox.shrink());
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
-        final bool isDisabled =
-            dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
+        final bool isDisabled = dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
 
-        final bool isSelectedDay =
-            DateUtils.isSameDay(selectedDate, dayToBuild);
+        final bool isSelectedDay = DateUtils.isSameDay(selectedDate, dayToBuild);
 
         final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
         //
@@ -227,14 +222,14 @@ class DaysView extends StatelessWidget {
         }
 
         if (isDisabled) {
-          style = disbaledCellsTextStyle;
-          decoration = disbaledCellsDecoration;
+          style = disabledCellsTextStyle;
+          decoration = disabledCellsDecoration;
         }
 
         if (isCurrent && isDisabled) {
           //
           //
-          style = disbaledCellsTextStyle;
+          style = disabledCellsTextStyle;
           decoration = currentDateDecoration;
         }
 
@@ -265,8 +260,7 @@ class DaysView extends StatelessWidget {
               // day of month before the rest of the date, as they are looking
               // for the day of month. To do that we prepend day of month to the
               // formatted full date.
-              label:
-                  '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
+              label: '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
               selected: isSelectedDay,
               excludeSemantics: true,
               child: dayWidget,
