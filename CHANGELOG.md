@@ -1,3 +1,8 @@
+# 3.0.0 [Breaking]
+
+- Fix Assertions issue see [#14](https://github.com/hasanmhallak/date_picker/issues/14)
+- Fix Types see [#13](https://github.com/hasanmhallak/date_picker/issues/13)
+
 # 2.0.3
 
 - Add `cupertino_icons` to dependencies. Closes [#9](https://github.com/hasanmhallak/date_picker/issues/9)
