@@ -50,6 +50,7 @@ class DatePicker extends StatefulWidget {
     required this.maxDate,
     required this.minDate,
     this.onDateSelected,
+    this.backgroundColor,
     this.initialDate,
     this.selectedDate,
     this.currentDate,
@@ -176,6 +177,11 @@ class DatePicker extends StatefulWidget {
   /// defaults to [ColorScheme.primary] color.
   final Color? slidersColor;
 
+  /// The color of the backgroundColor.
+  ///
+  /// defaults to [ColorScheme.primary] color.
+  final Color? backgroundColor;
+
   /// The size of the page sliders.
   ///
   /// defaults to `20px`.
@@ -216,7 +222,9 @@ class _DatePickerState extends State<DatePicker> {
     _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
     _pickerType = widget.initialPickerType;
 
-    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
 
     super.initState();
   }
@@ -230,122 +238,134 @@ class _DatePickerState extends State<DatePicker> {
       _pickerType = widget.initialPickerType;
     }
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (_pickerType!) {
-      case PickerType.days:
-        return Padding(
-          padding: widget.padding,
-          child: DaysPicker(
-            centerLeadingDate: widget.centerLeadingDate,
-            initialDate: _displayedDate,
-            selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            maxDate: DateUtils.dateOnly(widget.maxDate),
-            minDate: DateUtils.dateOnly(widget.minDate),
-            daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            selectedCellDecoration: widget.selectedCellDecoration,
-            selectedCellTextStyle: widget.selectedCellTextStyle,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            onDateSelected: (selectedDate) {
-              setState(() {
-                _displayedDate = selectedDate;
-                _selectedDate = selectedDate;
-              });
-              widget.onDateSelected?.call(selectedDate);
-            },
-            onLeadingDateTap: () {
-              setState(() {
-                _pickerType = PickerType.months;
-              });
-            },
-          ),
-        );
-      case PickerType.months:
-        return Padding(
-          padding: widget.padding,
-          child: MonthPicker(
-            centerLeadingDate: widget.centerLeadingDate,
-            initialDate: _displayedDate,
-            selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            maxDate: DateUtils.dateOnly(widget.maxDate),
-            minDate: DateUtils.dateOnly(widget.minDate),
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.selectedCellDecoration,
-            selectedCellTextStyle: widget.selectedCellTextStyle,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            onLeadingDateTap: () {
-              setState(() {
-                _pickerType = PickerType.years;
-              });
-            },
-            onDateSelected: (selectedMonth) {
-              setState(() {
-                _displayedDate = selectedMonth;
-                _pickerType = PickerType.days;
-              });
-            },
-          ),
-        );
-      case PickerType.years:
-        return Padding(
-          padding: widget.padding,
-          child: YearsPicker(
-            centerLeadingDate: widget.centerLeadingDate,
-            initialDate: _displayedDate,
-            selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            maxDate: DateUtils.dateOnly(widget.maxDate),
-            minDate: DateUtils.dateOnly(widget.minDate),
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.selectedCellDecoration,
-            selectedCellTextStyle: widget.selectedCellTextStyle,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            onDateSelected: (selectedYear) {
-              setState(() {
-                _displayedDate = selectedYear;
-                _pickerType = PickerType.months;
-              });
-            },
-          ),
-        );
+    Widget child() {
+      switch (_pickerType!) {
+        case PickerType.days:
+          return Padding(
+            padding: widget.padding,
+            child: DaysPicker(
+              centerLeadingDate: widget.centerLeadingDate,
+              initialDate: _displayedDate,
+              selectedDate: _selectedDate,
+              currentDate:
+                  DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+              maxDate: DateUtils.dateOnly(widget.maxDate),
+              minDate: DateUtils.dateOnly(widget.minDate),
+              daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
+              enabledCellsTextStyle: widget.enabledCellsTextStyle,
+              enabledCellsDecoration: widget.enabledCellsDecoration,
+              disabledCellsTextStyle: widget.disabledCellsTextStyle,
+              disabledCellsDecoration: widget.disabledCellsDecoration,
+              currentDateDecoration: widget.currentDateDecoration,
+              currentDateTextStyle: widget.currentDateTextStyle,
+              selectedCellDecoration: widget.selectedCellDecoration,
+              selectedCellTextStyle: widget.selectedCellTextStyle,
+              slidersColor: widget.slidersColor,
+              slidersSize: widget.slidersSize,
+              leadingDateTextStyle: widget.leadingDateTextStyle,
+              splashColor: widget.splashColor,
+              highlightColor: widget.highlightColor,
+              splashRadius: widget.splashRadius,
+              onDateSelected: (selectedDate) {
+                setState(() {
+                  _displayedDate = selectedDate;
+                  _selectedDate = selectedDate;
+                });
+                widget.onDateSelected?.call(selectedDate);
+              },
+              onLeadingDateTap: () {
+                setState(() {
+                  _pickerType = PickerType.months;
+                });
+              },
+            ),
+          );
+        case PickerType.months:
+          return Padding(
+            padding: widget.padding,
+            child: MonthPicker(
+              centerLeadingDate: widget.centerLeadingDate,
+              initialDate: _displayedDate,
+              selectedDate: _selectedDate,
+              currentDate:
+                  DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+              maxDate: DateUtils.dateOnly(widget.maxDate),
+              minDate: DateUtils.dateOnly(widget.minDate),
+              currentDateDecoration: widget.currentDateDecoration,
+              currentDateTextStyle: widget.currentDateTextStyle,
+              disabledCellsDecoration: widget.disabledCellsDecoration,
+              disabledCellsTextStyle: widget.disabledCellsTextStyle,
+              enabledCellsDecoration: widget.enabledCellsDecoration,
+              enabledCellsTextStyle: widget.enabledCellsTextStyle,
+              selectedCellDecoration: widget.selectedCellDecoration,
+              selectedCellTextStyle: widget.selectedCellTextStyle,
+              slidersColor: widget.slidersColor,
+              slidersSize: widget.slidersSize,
+              leadingDateTextStyle: widget.leadingDateTextStyle,
+              splashColor: widget.splashColor,
+              highlightColor: widget.highlightColor,
+              splashRadius: widget.splashRadius,
+              onLeadingDateTap: () {
+                setState(() {
+                  _pickerType = PickerType.years;
+                });
+              },
+              onDateSelected: (selectedMonth) {
+                setState(() {
+                  _displayedDate = selectedMonth;
+                  _pickerType = PickerType.days;
+                });
+              },
+            ),
+          );
+        case PickerType.years:
+          return Padding(
+            padding: widget.padding,
+            child: YearsPicker(
+              centerLeadingDate: widget.centerLeadingDate,
+              initialDate: _displayedDate,
+              selectedDate: _selectedDate,
+              currentDate:
+                  DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+              maxDate: DateUtils.dateOnly(widget.maxDate),
+              minDate: DateUtils.dateOnly(widget.minDate),
+              currentDateDecoration: widget.currentDateDecoration,
+              currentDateTextStyle: widget.currentDateTextStyle,
+              disabledCellsDecoration: widget.disabledCellsDecoration,
+              disabledCellsTextStyle: widget.disabledCellsTextStyle,
+              enabledCellsDecoration: widget.enabledCellsDecoration,
+              enabledCellsTextStyle: widget.enabledCellsTextStyle,
+              selectedCellDecoration: widget.selectedCellDecoration,
+              selectedCellTextStyle: widget.selectedCellTextStyle,
+              slidersColor: widget.slidersColor,
+              slidersSize: widget.slidersSize,
+              leadingDateTextStyle: widget.leadingDateTextStyle,
+              splashColor: widget.splashColor,
+              highlightColor: widget.highlightColor,
+              splashRadius: widget.splashRadius,
+              onDateSelected: (selectedYear) {
+                setState(() {
+                  _displayedDate = selectedYear;
+                  _pickerType = PickerType.months;
+                });
+              },
+            ),
+          );
+      }
     }
+
+    return Container(
+      color: widget.backgroundColor ?? Theme.of(context).colorScheme.primary,
+      child: child(),
+    );
   }
 }
