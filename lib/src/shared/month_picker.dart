@@ -23,9 +23,13 @@ import '../date/show_date_picker_dialog.dart';
 class MonthPicker extends StatefulWidget {
   /// Creates a month picker.
   ///
-  /// It will display a grid of months for the [initialDate]'s year. if that
-  /// is null, `DateTime.now()` will be used. The month
-  /// indicated by [selectedDate] will be selected if provided.
+  /// It will display a grid of months for the [initialDate]'s year. If [initialDate]
+  /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
+  /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
+  /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
+  /// after the valid range, or [minDate] if before.
+  ///
+  /// The month indicated by [selectedDate] will be selected if provided.
   ///
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
@@ -90,8 +94,11 @@ class MonthPicker extends StatefulWidget {
     );
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime? initialDate;
@@ -223,7 +230,8 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
 
     _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     _pageController = PageController(
@@ -239,13 +247,12 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      // _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
+      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      // _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
       _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     }
     super.didUpdateWidget(oldWidget);

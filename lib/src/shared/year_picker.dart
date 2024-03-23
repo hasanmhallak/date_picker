@@ -23,9 +23,11 @@ import 'year_view.dart';
 class YearsPicker extends StatefulWidget {
   /// Creates a year picker.
   ///
-  /// It will display a grid of years for the [initialDate]'s year. if that
-  /// is null, `DateTime.now()` will be used. The year
-  /// indicated by [selectedDate] will be selected if provided.
+  /// It will display a grid of years for the [initialDate]'s year. If [initialDate]
+  /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
+  /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
+  /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
+  /// after the valid range, or [minDate] if before.
   ///
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
@@ -90,8 +92,11 @@ class YearsPicker extends StatefulWidget {
     );
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime? initialDate;
@@ -264,7 +269,8 @@ class _YearsPickerState extends State<YearsPicker> {
   int get pageCount => ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
 
   int get initialPageNumber {
-    final init = widget.initialDate ?? DateTime.now();
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    final init = widget.initialDate ?? clampedInitailDate;
 
     final page = ((init.year - widget.minDate.year + 1) / 12).ceil() - 1;
     if (page < 0) return 0;

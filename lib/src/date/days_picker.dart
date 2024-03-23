@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'days_view.dart';
@@ -22,9 +23,13 @@ import 'show_date_picker_dialog.dart';
 class DaysPicker extends StatefulWidget {
   /// Creates a days picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. if that
-  /// is null, `DateTime.now()` will be used. The day
-  /// indicated by [selectedDate] will be selected if provided.
+  /// It will display a grid of days for the [initialDate]'s month. If [initialDate]
+  /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
+  /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
+  /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
+  /// after the valid range, or [minDate] if before.
+  ///
+  /// The day indicated by [selectedDate] will be selected if provided.
   ///
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
@@ -89,8 +94,11 @@ class DaysPicker extends StatefulWidget {
     );
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
@@ -230,7 +238,8 @@ class _DaysPickerState extends State<DaysPicker> {
 
   @override
   void initState() {
-    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
@@ -245,7 +254,8 @@ class _DaysPickerState extends State<DaysPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
 
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),

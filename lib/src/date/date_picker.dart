@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/picker_type.dart';
@@ -24,9 +25,13 @@ import 'show_date_picker_dialog.dart';
 class DatePicker extends StatefulWidget {
   /// Creates a calendar date picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. if that
-  /// is null, `DateTime.now()` will be used. The day
-  /// indicated by [selectedDate] will be selected if provided.
+  /// It will display a grid of days for the [initialDate]'s month. If [initialDate]
+  /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
+  /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
+  /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
+  /// after the valid range, or [minDate] if before.
+  ///
+  /// The day indicated by [selectedDate] will be selected if provided.
   ///
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
@@ -75,8 +80,11 @@ class DatePicker extends StatefulWidget {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
@@ -213,7 +221,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     _pickerType = widget.initialPickerType;
 
     _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
@@ -224,7 +233,8 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.initialDate != widget.initialDate) {
-      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
+      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
       _pickerType = widget.initialPickerType;
@@ -307,8 +317,14 @@ class _DatePickerState extends State<DatePicker> {
               });
             },
             onDateSelected: (selectedMonth) {
+              // clamped the initial date to fall between min and max date.
+              final clampedSelectedMonth = DateUtilsX.clampDateToRange(
+                min: widget.minDate,
+                max: widget.maxDate,
+                date: selectedMonth,
+              );
               setState(() {
-                _displayedDate = selectedMonth;
+                _displayedDate = clampedSelectedMonth;
                 _pickerType = PickerType.days;
               });
             },
@@ -339,8 +355,14 @@ class _DatePickerState extends State<DatePicker> {
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
             onDateSelected: (selectedYear) {
+              // clamped the initial date to fall between min and max date.
+              final clampedSelectedYear = DateUtilsX.clampDateToRange(
+                min: widget.minDate,
+                max: widget.maxDate,
+                date: selectedYear,
+              );
               setState(() {
-                _displayedDate = selectedYear;
+                _displayedDate = clampedSelectedYear;
                 _pickerType = PickerType.months;
               });
             },
