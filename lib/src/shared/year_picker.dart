@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/src/shared/utils.dart';
+import 'package:date_picker_plus/src/date/date_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'header.dart';
@@ -264,7 +265,8 @@ class _YearsPickerState extends State<YearsPicker> {
   int get pageCount => ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
 
   int get initialPageNumber {
-    final init = widget.initialDate ?? DateTime.now();
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    final init = widget.initialDate ?? clampedInitailDate;
 
     final page = ((init.year - widget.minDate.year + 1) / 12).ceil() - 1;
     if (page < 0) return 0;
@@ -427,10 +429,24 @@ class _YearsPickerState extends State<YearsPicker> {
                 splashRadius: widget.splashRadius,
                 onChanged: (value) {
                   final selected = DateUtilsX.yearOnly(value);
-                  widget.onDateSelected?.call(selected);
-                  setState(() {
-                    _selectedDate = selected;
-                  });
+
+                  final isPartOfDatePicker = context.findAncestorWidgetOfExactType<DatePicker>() != null;
+
+                  if (isPartOfDatePicker) {
+                    // clamped the initial date to fall between min and max date.
+                    final clampedSelectedYear = DateUtilsX.clampDateToRange(
+                      min: widget.minDate,
+                      max: widget.maxDate,
+                      date: value,
+                    );
+
+                    widget.onDateSelected!.call(clampedSelectedYear);
+                  } else {
+                    widget.onDateSelected?.call(selected);
+                    setState(() {
+                      _selectedDate = selected;
+                    });
+                  }
                 },
               );
             },
