@@ -23,9 +23,13 @@ import '../date/show_date_picker_dialog.dart';
 class MonthPicker extends StatefulWidget {
   /// Creates a month picker.
   ///
-  /// It will display a grid of months for the [initialDate]'s year. if that
-  /// is null, `DateTime.now()` will be used. The month
-  /// indicated by [selectedDate] will be selected if provided.
+  /// It will display a grid of months for the [initialDate]'s year. If [initialDate]
+  /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
+  /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
+  /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
+  /// after the valid range, or [minDate] if before.
+  ///
+  /// The month indicated by [selectedDate] will be selected if provided.
   ///
   /// The optional [onDateSelected] callback will be called if provided when a date
   /// is selected.
@@ -90,8 +94,11 @@ class MonthPicker extends StatefulWidget {
     );
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime? initialDate;

@@ -61,8 +61,11 @@ class RangeDaysPicker extends StatefulWidget {
     );
   }
 
-  /// The date which will be displayed on first opening.
-  /// If not specified, the picker will default to `DateTime.now()` date.
+  /// The date which will be displayed on first opening. If not specified, the picker
+  /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
+  /// valid range of [minDate] and [maxDate], it will automatically adjust to the nearest
+  /// valid date, selecting [maxDate] if `DateTime.now()` is after the valid range, or
+  /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
