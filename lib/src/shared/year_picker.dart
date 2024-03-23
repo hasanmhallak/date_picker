@@ -1,5 +1,4 @@
 import 'package:date_picker_plus/src/shared/utils.dart';
-import 'package:date_picker_plus/src/date/date_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'header.dart';
@@ -429,24 +428,10 @@ class _YearsPickerState extends State<YearsPicker> {
                 splashRadius: widget.splashRadius,
                 onChanged: (value) {
                   final selected = DateUtilsX.yearOnly(value);
-
-                  final isPartOfDatePicker = context.findAncestorWidgetOfExactType<DatePicker>() != null;
-
-                  if (isPartOfDatePicker) {
-                    // clamped the initial date to fall between min and max date.
-                    final clampedSelectedYear = DateUtilsX.clampDateToRange(
-                      min: widget.minDate,
-                      max: widget.maxDate,
-                      date: value,
-                    );
-
-                    widget.onDateSelected!.call(clampedSelectedYear);
-                  } else {
-                    widget.onDateSelected?.call(selected);
-                    setState(() {
-                      _selectedDate = selected;
-                    });
-                  }
+                  widget.onDateSelected?.call(selected);
+                  setState(() {
+                    _selectedDate = selected;
+                  });
                 },
               );
             },
