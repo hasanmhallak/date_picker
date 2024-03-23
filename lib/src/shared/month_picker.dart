@@ -223,7 +223,8 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
+    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
 
     _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     _pageController = PageController(
@@ -239,13 +240,12 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      // _displayedYear = DateUtils.dateOnly(widget.initialDate ?? DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? DateTime.now());
+      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      // _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
       _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     }
     super.didUpdateWidget(oldWidget);

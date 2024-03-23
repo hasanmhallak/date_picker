@@ -709,5 +709,34 @@ void main() {
         );
       },
     );
+    testWidgets(
+      'Should not scroll when first open',
+      (WidgetTester tester) async {
+        final DateTime minDate = DateTime(2000);
+        final DateTime maxDate = DateTime(2010);
+
+        int numberOfScrollListenerCalled = 0;
+
+        void scrollListener() => numberOfScrollListenerCalled++;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: MonthPicker(
+                minDate: minDate,
+                maxDate: maxDate,
+              ),
+            ),
+          ),
+        );
+
+        final pageViewWidget = tester.widget<PageView>(find.byType(PageView));
+        pageViewWidget.controller.addListener(scrollListener);
+
+        await tester.pumpAndSettle();
+
+        expect(numberOfScrollListenerCalled, equals(0));
+      },
+    );
   });
 }
