@@ -76,6 +76,8 @@ class DatePicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -210,6 +212,14 @@ class DatePicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
+  /// Semantic label for button to go to the previous page
+  ///
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page
+  ///
+  final String? nextPageSemanticLabel;
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }
@@ -273,6 +283,8 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onDateSelected: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
@@ -311,6 +323,8 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -354,6 +368,8 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(

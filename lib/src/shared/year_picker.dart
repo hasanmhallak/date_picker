@@ -217,11 +217,11 @@ class YearsPicker extends StatefulWidget {
 
   /// Semantic label for button to go to the previous page
   ///
-  final String previousPageSemanticLabel;
+  final String? previousPageSemanticLabel;
 
   /// Semantic label for button to go to the next page
   ///
-  final String nextPageSemanticLabel;
+  final String? nextPageSemanticLabel;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();

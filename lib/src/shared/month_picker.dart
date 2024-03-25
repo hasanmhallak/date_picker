@@ -219,11 +219,11 @@ class MonthPicker extends StatefulWidget {
 
   /// Semantic label for button to go to the previous page
   ///
-  final String previousPageSemanticLabel;
+  final String? previousPageSemanticLabel;
 
   /// Semantic label for button to go to the next page
   ///
-  final String nextPageSemanticLabel;
+  final String? nextPageSemanticLabel;
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
