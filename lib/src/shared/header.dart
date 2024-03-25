@@ -51,6 +51,8 @@ class Header extends StatelessWidget {
     required this.slidersSize,
     required this.leadingDateTextStyle,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel = 'Previous page',
+    this.nextPageSemanticLabel = 'Next page',
   });
 
   /// The currently displayed date. It is typically in a format
@@ -89,93 +91,92 @@ class Header extends StatelessWidget {
   ///
   final bool centerLeadingDate;
 
+  /// Semantic label for button to go to the previous page
+  ///
+  final String previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page
+  ///
+  final String nextPageSemanticLabel;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (centerLeadingDate)
-          GestureDetector(
-            onTap: onPreviousPage,
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  CupertinoIcons.chevron_left,
-                  size: slidersSize,
-                  color: slidersColor,
-                ),
-              ),
-            ),
-          ),
-        LeadingDate(
-          onTap: onDateTap,
-          displayedText: displayedDate,
-          displayedTextStyle: leadingDateTextStyle,
-        ),
-        if (centerLeadingDate)
-          GestureDetector(
-            onTap: onNextPage,
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  CupertinoIcons.chevron_right,
-                  size: slidersSize,
-                  color: slidersColor,
-                ),
-              ),
-            ),
-          ),
-        if (!centerLeadingDate)
-          Row(
-            children: [
-              GestureDetector(
-                onTap: onPreviousPage,
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.chevron_left,
-                      size: slidersSize,
-                      color: slidersColor,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: onNextPage,
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.chevron_right,
-                      size: slidersSize,
-                      color: slidersColor,
-                    ),
-                  ),
-                ),
-              ),
+      children: centerLeadingDate
+          ? [
+              _previousPageButton(),
+              _leadingDate(),
+              _nextPageButton(),
+            ]
+          : [
+              _leadingDate(),
+              Row(
+                children: [
+                  _previousPageButton(),
+                  const SizedBox(width: 10),
+                  _nextPageButton(),
+                ],
+              )
             ],
-          )
-      ],
+    );
+  }
+
+  Widget _leadingDate() {
+    return LeadingDate(
+      onTap: onDateTap,
+      displayedText: displayedDate,
+      displayedTextStyle: leadingDateTextStyle,
+    );
+  }
+
+  Widget _previousPageButton() {
+    return GestureDetector(
+      excludeFromSemantics: true,
+      onTap: onPreviousPage,
+      child: Semantics(
+        button: true,
+        label: previousPageSemanticLabel,
+        child: SizedBox(
+          width: 36,
+          height: 36,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.chevron_left,
+              size: slidersSize,
+              color: slidersColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _nextPageButton() {
+    return GestureDetector(
+      excludeFromSemantics: true,
+      onTap: onNextPage,
+      child: Semantics(
+        button: true,
+        label: nextPageSemanticLabel,
+        child: SizedBox(
+          width: 36,
+          height: 36,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.chevron_right,
+              size: slidersSize,
+              color: slidersColor,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

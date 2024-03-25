@@ -69,6 +69,8 @@ class DaysPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel = 'Previous Day',
+    this.nextPageSemanticLabel = 'Next Day'
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
@@ -220,6 +222,14 @@ class DaysPicker extends StatefulWidget {
   /// <       December 2023      >
   ///
   final bool centerLeadingDate;
+
+  /// Semantic label for button to go to the previous page
+  ///
+  final String previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page
+  ///
+  final String nextPageSemanticLabel;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -407,6 +417,8 @@ class _DaysPickerState extends State<DaysPicker> {
               curve: Curves.ease,
             );
           },
+          previousPageSemanticLabel: widget.previousPageSemanticLabel,
+          nextPageSemanticLabel: widget.nextPageSemanticLabel,
         ),
         const SizedBox(height: 10),
         SizedBox(
