@@ -1,3 +1,7 @@
+# 3.0.2
+
+- Add semantic labels for next/previous button see [#21](https://github.com/hasanmhallak/date_picker/issues/21)
+
 # 3.0.1
 
 - Fix Assertions issue see [#18](https://github.com/hasanmhallak/date_picker/issues/18)
