@@ -212,12 +212,14 @@ class DatePicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
-  /// Semantic label for button to go to the previous page
+  /// Semantic label for button to go to the previous page.
   ///
+  /// defaults to `Previous Day/Month/Year` according to picker type.
   final String? previousPageSemanticLabel;
 
-  /// Semantic label for button to go to the next page
+  /// Semantic label for button to go to the next page.
   ///
+  /// defaults to `Next Day/Month/Year` according to picker type.
   final String? nextPageSemanticLabel;
 
   @override
@@ -231,11 +233,15 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedDate =
+        DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     _pickerType = widget.initialPickerType;
 
-    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
 
     super.initState();
   }
@@ -243,14 +249,18 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedDate =
+          DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
       _pickerType = widget.initialPickerType;
     }
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -265,7 +275,8 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
@@ -285,17 +296,17 @@ class _DatePickerState extends State<DatePicker> {
             splashRadius: widget.splashRadius,
             previousPageSemanticLabel: widget.previousPageSemanticLabel,
             nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            onLeadingDateTap: () {
+              setState(() {
+                _pickerType = PickerType.months;
+              });
+            },
             onDateSelected: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
                 _selectedDate = selectedDate;
               });
               widget.onDateSelected?.call(selectedDate);
-            },
-            onLeadingDateTap: () {
-              setState(() {
-                _pickerType = PickerType.months;
-              });
             },
           ),
         );
@@ -306,7 +317,8 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,
@@ -351,7 +363,8 @@ class _DatePickerState extends State<DatePicker> {
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDateDecoration: widget.currentDateDecoration,

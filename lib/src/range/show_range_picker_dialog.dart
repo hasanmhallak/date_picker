@@ -67,6 +67,8 @@ Future<DateTimeRange?> showRangePickerDialog({
   Color? splashColor,
   double? splashRadius,
   bool centerLeadingDate = false,
+  String? previousPageSemanticLabel,
+  String? nextPageSemanticLabel,
 }) async {
   return showDialog<DateTimeRange>(
     context: context,
@@ -109,6 +111,8 @@ Future<DateTimeRange?> showRangePickerDialog({
             highlightColor: highlightColor,
             splashColor: splashColor,
             splashRadius: splashRadius,
+            previousPageSemanticLabel: previousPageSemanticLabel,
+            nextPageSemanticLabel: nextPageSemanticLabel,
           ),
         ),
       );

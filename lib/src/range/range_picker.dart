@@ -77,6 +77,8 @@ class RangeDatePicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -237,6 +239,16 @@ class RangeDatePicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
+  /// Semantic label for button to go to the previous page.
+  ///
+  /// defaults to `Previous Day/Month/Year` according to picker type.
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page.
+  ///
+  /// defaults to `Next Day/Month/Year` according to picker type.
+  final String? nextPageSemanticLabel;
+
   @override
   State<RangeDatePicker> createState() => _RangeDatePickerState();
 }
@@ -250,8 +262,10 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
   @override
   void initState() {
     _pickerType = widget.initialPickerType;
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _diplayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _diplayedDate =
+        DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
 
     if (widget.selectedRange != null) {
       _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
@@ -278,8 +292,10 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
     }
 
     if (widget.initialDate != oldWidget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _diplayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _diplayedDate =
+          DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -293,7 +309,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           padding: widget.padding,
           child: RangeDaysPicker(
             centerLeadingDate: widget.centerLeadingDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             initialDate: _diplayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
@@ -316,6 +333,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.months;
@@ -353,7 +372,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             selectedDate: null,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disabledCellsDecoration: widget.disabledCellsDecoration,
@@ -368,6 +388,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -396,7 +418,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             initialDate: _diplayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             currentDateDecoration: widget.currentDateDecoration,
             currentDateTextStyle: widget.currentDateTextStyle,
             disabledCellsDecoration: widget.disabledCellsDecoration,
@@ -411,6 +434,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(

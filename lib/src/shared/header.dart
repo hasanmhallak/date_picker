@@ -51,8 +51,8 @@ class Header extends StatelessWidget {
     required this.slidersSize,
     required this.leadingDateTextStyle,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel = 'Previous page',
-    this.nextPageSemanticLabel = 'Next page',
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
   });
 
   /// The currently displayed date. It is typically in a format
@@ -91,12 +91,10 @@ class Header extends StatelessWidget {
   ///
   final bool centerLeadingDate;
 
-  /// Semantic label for button to go to the previous page
-  ///
+  /// Semantic label for button to go to the previous page.
   final String? previousPageSemanticLabel;
 
-  /// Semantic label for button to go to the next page
-  ///
+  /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
 
   @override

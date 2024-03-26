@@ -40,7 +40,8 @@ class YearView extends StatelessWidget {
       final max = DateUtilsX.yearOnly(maxDate);
       final min = DateUtilsX.yearOnly(minDate);
       final selected = DateUtilsX.yearOnly(selectedDate!);
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
@@ -128,7 +129,8 @@ class YearView extends StatelessWidget {
 
     int i = 0;
     while (i < numberOfYears) {
-      final bool isDisabled = yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
+      final bool isDisabled =
+          yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 

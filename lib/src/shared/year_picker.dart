@@ -66,8 +66,8 @@ class YearsPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel = 'Previous year',
-    this.nextPageSemanticLabel = 'Next year',
+    this.previousPageSemanticLabel = 'Previous Year',
+    this.nextPageSemanticLabel = 'Next Year',
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -215,12 +215,10 @@ class YearsPicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
-  /// Semantic label for button to go to the previous page
-  ///
+  /// Semantic label for button to go to the previous page.
   final String? previousPageSemanticLabel;
 
-  /// Semantic label for button to go to the next page
-  ///
+  /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
 
   @override
@@ -242,7 +240,9 @@ class _YearsPickerState extends State<YearsPicker> {
       start: DateTime(widget.minDate.year + initialPageNumber * 12),
       end: DateTime(widget.minDate.year + initialPageNumber * 12 - 1 + 12),
     );
-    _selectedDate = widget.selectedDate != null ? DateUtilsX.yearOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtilsX.yearOnly(widget.selectedDate!)
+        : null;
     super.initState();
   }
 
@@ -260,7 +260,9 @@ class _YearsPickerState extends State<YearsPicker> {
     }
 
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtilsX.yearOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtilsX.yearOnly(widget.selectedDate!)
+          : null;
     }
 
     super.didUpdateWidget(oldWidget);
@@ -276,10 +278,12 @@ class _YearsPickerState extends State<YearsPicker> {
   /// between [minDate] and [maxDate].
   ///
   /// Each page will contains 12 years in a 3 x 4 grid.
-  int get pageCount => ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
+  int get pageCount =>
+      ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
 
   int get initialPageNumber {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
     final init = widget.initialDate ?? clampedInitailDate;
 
     final page = ((init.year - widget.minDate.year + 1) / 12).ceil() - 1;
@@ -323,7 +327,8 @@ class _YearsPickerState extends State<YearsPicker> {
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration =
+        widget.disabledCellsDecoration;
 
     //
     //! current
@@ -353,11 +358,12 @@ class _YearsPickerState extends State<YearsPicker> {
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
-        BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        );
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+            BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            );
 
     //
     //
@@ -370,15 +376,19 @@ class _YearsPickerState extends State<YearsPicker> {
           color: Theme.of(context).colorScheme.primary,
         );
 
-    final slidersColor = widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+    final slidersColor =
+        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
 
     final slidersSize = widget.slidersSize ?? 20;
 
     //
     //! splash
-    final splashColor = widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor =
+        widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -387,12 +397,15 @@ class _YearsPickerState extends State<YearsPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          previousPageSemanticLabel: widget.previousPageSemanticLabel,
+          nextPageSemanticLabel: widget.nextPageSemanticLabel,
           centerLeadingDate: widget.centerLeadingDate,
           leadingDateTextStyle: leadingDateTextStyle,
           slidersColor: slidersColor,
           slidersSize: slidersSize,
           onDateTap: () => widget.onLeadingDateTap?.call(),
-          displayedDate: '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
+          displayedDate:
+              '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
           onNextPage: () {
             _pageController.nextPage(
               duration: const Duration(milliseconds: 300),
@@ -405,8 +418,6 @@ class _YearsPickerState extends State<YearsPicker> {
               curve: Curves.ease,
             );
           },
-          previousPageSemanticLabel: widget.previousPageSemanticLabel,
-          nextPageSemanticLabel: widget.nextPageSemanticLabel,
         ),
         const SizedBox(height: 10),
         SizedBox(
@@ -427,7 +438,9 @@ class _YearsPickerState extends State<YearsPicker> {
 
               return YearView(
                 key: ValueKey<DateTimeRange>(yearRange),
-                currentDate: widget.currentDate != null ? DateUtilsX.yearOnly(widget.currentDate!) : DateUtilsX.yearOnly(DateTime.now()),
+                currentDate: widget.currentDate != null
+                    ? DateUtilsX.yearOnly(widget.currentDate!)
+                    : DateUtilsX.yearOnly(DateTime.now()),
                 maxDate: DateUtilsX.yearOnly(widget.maxDate),
                 minDate: DateUtilsX.yearOnly(widget.minDate),
                 displayedYearRange: yearRange,

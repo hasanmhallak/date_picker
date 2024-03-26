@@ -54,7 +54,8 @@ class RangeDaysView extends StatelessWidget {
         selectedStartDate!.day,
       );
 
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected start date should be in the range of min date & max date");
     assert(() {
       if (selectedEndDate == null) return true;
@@ -65,7 +66,8 @@ class RangeDaysView extends StatelessWidget {
         selectedEndDate!.month,
         selectedEndDate!.day,
       );
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected end date should be in the range of min date & max date");
   }
 
@@ -180,7 +182,8 @@ class RangeDaysView extends StatelessWidget {
     MaterialLocalizations localizations,
   ) {
     final List<Widget> result = <Widget>[];
-    final weekdayNames = intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
+    final weekdayNames =
+        intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
@@ -204,18 +207,24 @@ class RangeDaysView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     //
     //
     //
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
-    final int daysInMonth = DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
-    final int dayOffset = DateUtils.firstDayOffset(displayedMonth.year, displayedMonth.month, localizations);
+    final int daysInMonth =
+        DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
+    final int dayOffset = DateUtils.firstDayOffset(
+        displayedMonth.year, displayedMonth.month, localizations);
 
-    DateTime? selectedEndDateOnly = selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
+    DateTime? selectedEndDateOnly =
+        selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
 
-    DateTime? selectedStartDateOnly = selectedStartDate != null ? DateUtils.dateOnly(selectedStartDate!) : null;
+    DateTime? selectedStartDateOnly = selectedStartDate != null
+        ? DateUtils.dateOnly(selectedStartDate!)
+        : null;
 
     final _maxDate = DateUtils.dateOnly(maxDate);
     final _minDate = DateUtils.dateOnly(minDate);
@@ -233,21 +242,34 @@ class RangeDaysView extends StatelessWidget {
         dayItems.add(const SizedBox.shrink());
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
-        final bool isDisabled = dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
+        final bool isDisabled =
+            dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
 
-        final isRangeSelected = selectedStartDateOnly != null && selectedEndDateOnly != null;
+        final isRangeSelected =
+            selectedStartDateOnly != null && selectedEndDateOnly != null;
 
-        final isStartSelectedOnly = selectedStartDateOnly != null && dayToBuild == selectedStartDateOnly && selectedEndDateOnly == null;
+        final isStartSelectedOnly = selectedStartDateOnly != null &&
+            dayToBuild == selectedStartDateOnly &&
+            selectedEndDateOnly == null;
 
-        final isEndSelectedOnly = selectedStartDateOnly == null && selectedEndDateOnly != null && dayToBuild == selectedEndDateOnly;
+        final isEndSelectedOnly = selectedStartDateOnly == null &&
+            selectedEndDateOnly != null &&
+            dayToBuild == selectedEndDateOnly;
 
-        final isRangeOnlyOneDate = selectedStartDateOnly == selectedEndDateOnly && dayToBuild == selectedStartDateOnly;
+        final isRangeOnlyOneDate =
+            selectedStartDateOnly == selectedEndDateOnly &&
+                dayToBuild == selectedStartDateOnly;
 
-        final isSingleCellSelected = isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
+        final isSingleCellSelected =
+            isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
 
-        final bool isWithinRange = isRangeSelected && dayToBuild.isAfter(selectedStartDateOnly) && dayToBuild.isBefore(selectedEndDateOnly) && !isRangeOnlyOneDate;
+        final bool isWithinRange = isRangeSelected &&
+            dayToBuild.isAfter(selectedStartDateOnly) &&
+            dayToBuild.isBefore(selectedEndDateOnly) &&
+            !isRangeOnlyOneDate;
 
-        final isStartDate = DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
+        final isStartDate =
+            DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
 
         final isEndDate = DateUtils.isSameDay(selectedEndDateOnly, dayToBuild);
 
@@ -305,7 +327,9 @@ class RangeDaysView extends StatelessWidget {
           child: dayWidget,
         );
 
-        if ((isStartDate || isEndDate) && isRangeSelected && !isRangeOnlyOneDate) {
+        if ((isStartDate || isEndDate) &&
+            isRangeSelected &&
+            !isRangeOnlyOneDate) {
           dayWidget = CustomPaint(
             painter: _DecorationPainter(
               textDirection: Directionality.of(context),
@@ -323,7 +347,9 @@ class RangeDaysView extends StatelessWidget {
         } else {
           dayWidget = InkResponse(
             onTap: () {
-              final isStart = (selectedEndDate == null && selectedStartDate == null) || (selectedEndDate != null && selectedStartDate != null);
+              final isStart =
+                  (selectedEndDate == null && selectedStartDate == null) ||
+                      (selectedEndDate != null && selectedStartDate != null);
 
               if (isStart) {
                 onStartDateChanged(dayToBuild);
@@ -451,6 +477,8 @@ class _DecorationPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _DecorationPainter oldDelegate) {
-    return oldDelegate.textDirection != textDirection || oldDelegate.color != color || oldDelegate.start != start;
+    return oldDelegate.textDirection != textDirection ||
+        oldDelegate.color != color ||
+        oldDelegate.start != start;
   }
 }

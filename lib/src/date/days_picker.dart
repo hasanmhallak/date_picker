@@ -70,13 +70,14 @@ class DaysPicker extends StatefulWidget {
     this.splashRadius,
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Day',
-    this.nextPageSemanticLabel = 'Next Day'
+    this.nextPageSemanticLabel = 'Next Day',
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
       () {
         if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init =
+            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
         final min = DateTime(minDate.year, minDate.month, minDate.day);
 
@@ -87,7 +88,8 @@ class DaysPicker extends StatefulWidget {
     assert(
       () {
         if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        final init =
+            DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
 
         final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
@@ -223,12 +225,10 @@ class DaysPicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
-  /// Semantic label for button to go to the previous page
-  ///
+  /// Semantic label for button to go to the previous page.
   final String? previousPageSemanticLabel;
 
-  /// Semantic label for button to go to the next page
-  ///
+  /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
 
   @override
@@ -248,9 +248,13 @@ class _DaysPickerState extends State<DaysPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
-    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedMonth =
+        DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
@@ -264,8 +268,10 @@ class _DaysPickerState extends State<DaysPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedMonth =
+          DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
 
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
@@ -273,7 +279,9 @@ class _DaysPickerState extends State<DaysPicker> {
     }
 
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -324,7 +332,8 @@ class _DaysPickerState extends State<DaysPicker> {
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration =
+        widget.disabledCellsDecoration;
 
     //
     //! current
@@ -354,11 +363,12 @@ class _DaysPickerState extends State<DaysPicker> {
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
-        BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        );
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+            BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            );
 
     //
     //
@@ -377,9 +387,12 @@ class _DaysPickerState extends State<DaysPicker> {
 
     //
     //! splash
-    final splashColor = widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor =
+        widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -430,18 +443,21 @@ class _DaysPickerState extends State<DaysPicker> {
             controller: _pageController,
             itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
             onPageChanged: (monthPage) {
-              final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+              final DateTime monthDate =
+                  DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
               setState(() {
                 _displayedMonth = monthDate;
               });
             },
             itemBuilder: (context, index) {
-              final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
+              final DateTime month =
+                  DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
               return DaysView(
                 key: ValueKey<DateTime>(month),
-                currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                currentDate:
+                    DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
                 maxDate: DateUtils.dateOnly(widget.maxDate),
                 minDate: DateUtils.dateOnly(widget.minDate),
                 displayedMonth: month,

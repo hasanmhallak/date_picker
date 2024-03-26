@@ -68,8 +68,8 @@ class MonthPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel = 'Previous month',
-    this.nextPageSemanticLabel = 'Next month',
+    this.previousPageSemanticLabel = 'Previous Month',
+    this.nextPageSemanticLabel = 'Next Month',
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -217,12 +217,10 @@ class MonthPicker extends StatefulWidget {
   ///
   final bool centerLeadingDate;
 
-  /// Semantic label for button to go to the previous page
-  ///
+  /// Semantic label for button to go to the previous page.
   final String? previousPageSemanticLabel;
 
-  /// Semantic label for button to go to the next page
-  ///
+  /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
 
   @override
@@ -240,10 +238,14 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedYear =
+        DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
 
-    _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtilsX.monthOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: (_displayedYear!.year - widget.minDate.year),
     );
@@ -257,13 +259,17 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedYear =
+          DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtilsX.monthOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -303,7 +309,8 @@ class _MonthPickerState extends State<MonthPicker> {
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration =
+        widget.disabledCellsDecoration;
 
     //
     //! current
@@ -333,11 +340,12 @@ class _MonthPickerState extends State<MonthPicker> {
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
-        BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        );
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+            BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            );
 
     //
     //
@@ -350,15 +358,19 @@ class _MonthPickerState extends State<MonthPicker> {
           color: Theme.of(context).colorScheme.primary,
         );
 
-    final slidersColor = widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+    final slidersColor =
+        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
 
     final slidersSize = widget.slidersSize ?? 20;
 
     //
     //! splash
-    final splashColor = widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor =
+        widget.highlightColor ?? Theme.of(context).highlightColor;
     //
     //
 
@@ -367,6 +379,8 @@ class _MonthPickerState extends State<MonthPicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Header(
+          previousPageSemanticLabel: widget.previousPageSemanticLabel,
+          nextPageSemanticLabel: widget.nextPageSemanticLabel,
           centerLeadingDate: widget.centerLeadingDate,
           leadingDateTextStyle: leadingDateTextStyle,
           slidersColor: slidersColor,
@@ -385,8 +399,6 @@ class _MonthPickerState extends State<MonthPicker> {
               curve: Curves.ease,
             );
           },
-          previousPageSemanticLabel: widget.previousPageSemanticLabel,
-          nextPageSemanticLabel: widget.nextPageSemanticLabel,
         ),
         const SizedBox(height: 10),
         SizedBox(
@@ -417,7 +429,9 @@ class _MonthPickerState extends State<MonthPicker> {
 
               return MonthView(
                 key: ValueKey<DateTime>(year),
-                currentDate: widget.currentDate != null ? DateUtilsX.monthOnly(widget.currentDate!) : DateUtilsX.monthOnly(DateTime.now()),
+                currentDate: widget.currentDate != null
+                    ? DateUtilsX.monthOnly(widget.currentDate!)
+                    : DateUtilsX.monthOnly(DateTime.now()),
                 maxDate: DateUtilsX.monthOnly(widget.maxDate),
                 minDate: DateUtilsX.monthOnly(widget.minDate),
                 displayedDate: year,

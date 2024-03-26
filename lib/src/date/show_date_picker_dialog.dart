@@ -67,7 +67,7 @@ Future<DateTime?> showDatePickerDialog({
   double? splashRadius,
   bool centerLeadingDate = false,
   String? previousPageSemanticLabel,
-  String? nextPageSemanticLabel
+  String? nextPageSemanticLabel,
 }) async {
   return showDialog<DateTime>(
     context: context,
