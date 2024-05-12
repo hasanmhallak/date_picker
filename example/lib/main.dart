@@ -28,10 +28,13 @@ class MyApp extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RangeDatePicker(
-                    centerLeadingDate: true,
-                    minDate: DateTime(2020, 10, 10),
-                    maxDate: DateTime(2024, 10, 30),
+                  SizedBox(
+                    height: 400,
+                    child: RangeDatePicker(
+                      centerLeadingDate: true,
+                      minDate: DateTime(2020, 10, 10),
+                      maxDate: DateTime(2024, 10, 30),
+                    ),
                   ),
                 ],
               ),
