@@ -1,7 +1,7 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'picker_grid_delegate.dart';
+import 'utils.dart';
 
 /// Displays the years of a given range and allows choosing a year.
 ///
@@ -176,7 +176,7 @@ class YearView extends StatelessWidget {
         final date = DateTime(yearsName[i]);
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
-          radius: splashRadius ?? 60 / 2 + 4,
+          radius: splashRadius,
           splashColor: splashColor,
           highlightColor: highlightColor,
           child: Semantics(
@@ -194,14 +194,9 @@ class YearView extends StatelessWidget {
 
     return GridView.custom(
       padding: EdgeInsets.zero,
-      shrinkWrap: true,
+      shrinkWrap: false,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
-        columnCount: 3,
-        rowPadding: 3,
-        rowExtent: 60,
-        rowStride: 80,
-      ),
+      gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(
         yearWidgetsList,
         addRepaintBoundaries: false,

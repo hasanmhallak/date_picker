@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../shared/picker_grid_delegate.dart';
-
-const double _dayPickerRowHeight = 52.0;
 
 /// Displays the days of a given month and allows choosing days range.
 ///
@@ -183,7 +181,7 @@ class RangeDaysView extends StatelessWidget {
   ) {
     final List<Widget> result = <Widget>[];
     final weekdayNames =
-        intl.DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
+        DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
@@ -364,7 +362,7 @@ class RangeDaysView extends StatelessWidget {
 
               onEndDateChanged(dayToBuild);
             },
-            radius: splashRadius ?? _dayPickerRowHeight / 2 + 4,
+            radius: splashRadius,
             splashColor: splashColor,
             highlightColor: highlightColor,
             child: dayWidget,
@@ -379,13 +377,7 @@ class RangeDaysView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
-        columnCount: DateTime.daysPerWeek,
-        columnPadding: 0,
-        rowPadding: 3,
-        rowExtent: _dayPickerRowHeight,
-        rowStride: _dayPickerRowHeight,
-      ),
+      gridDelegate: const PickerGridDelegate(columnCount: 7, rowCount: 7),
       childrenDelegate: SliverChildListDelegate(
         dayItems,
         addRepaintBoundaries: false,

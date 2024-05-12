@@ -1,8 +1,8 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/month_picker.dart';
 import '../shared/picker_type.dart';
+import '../shared/utils.dart';
 import '../shared/year_picker.dart';
 import 'range_days_picker.dart';
 
@@ -227,7 +227,8 @@ class RangeDatePicker extends StatefulWidget {
 
   /// The highlight color of the ink response when pressed.
   ///
-  /// defaults to [Theme.highlightColor].
+  /// defaults to the color of [selectedCellsDecoration],
+  /// if null will fall back to [ColorScheme.onPrimary] with 30% opacity.
   final Color? highlightColor;
 
   /// The radius of the ink splash.

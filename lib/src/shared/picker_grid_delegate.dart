@@ -1,3 +1,5 @@
+import 'dart:math' show min;
+
 import 'package:flutter/rendering.dart';
 
 /// A [SliverGridLayout] that uses equally sized and spaced tiles.
@@ -27,44 +29,39 @@ class PickerGridDelegate extends SliverGridDelegate {
   /// The crossAxisCount argument must be greater than zero.
   const PickerGridDelegate({
     required this.columnCount,
-    required this.rowExtent,
-    required this.rowStride,
-    this.columnPadding = 0,
-    this.rowPadding = 0,
+    required this.rowCount,
   });
 
-  /// The number of columns in the cross axis.
+  final int rowCount;
+
   final int columnCount;
-
-  /// The amount of padding between columns in the cross axis.
-  final double columnPadding;
-
-  /// The amount of padding between rows in the main axis.
-  final double rowPadding;
-
-  /// The number of pixels from the leading edge of one tile to the trailing
-  /// edge of the same tile in the main axis.
-  final double rowExtent;
-
-  /// The number of pixels from the leading edge of one tile to the leading
-  /// edge of the next tile in the main axis.
-  final double rowStride;
 
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
     final double tileWidth = constraints.crossAxisExtent / columnCount;
+    // vertical padding between cells is 4px
+    final double calculatedTileHeight =
+        (constraints.viewportMainAxisExtent - rowCount * 4) / rowCount;
+
+    // height should always be equal or less than the width
+    // this is for range decoration.
+    final double tileHeight = min(calculatedTileHeight, tileWidth);
 
     return SliverGridRegularTileLayout(
-      // to add padding between cells.
-      childCrossAxisExtent: tileWidth - columnPadding,
-      childMainAxisExtent: rowExtent - rowPadding,
       crossAxisCount: columnCount,
-      crossAxisStride: tileWidth,
-      mainAxisStride: rowStride,
+      childCrossAxisExtent: _zeroOrGreater(tileWidth),
+      crossAxisStride: _zeroOrGreater(tileWidth),
+      childMainAxisExtent: _zeroOrGreater(tileHeight),
+      mainAxisStride: _zeroOrGreater(tileHeight + 4),
       reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
     );
   }
 
   @override
   bool shouldRelayout(PickerGridDelegate oldDelegate) => false;
+
+  // for when the keyboard is opened.
+  double _zeroOrGreater(double number) {
+    return number >= 0 ? number : 0;
+  }
 }

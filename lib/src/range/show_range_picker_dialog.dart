@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
 import 'range_picker.dart';
 
@@ -36,6 +37,8 @@ Future<DateTimeRange?> showRangePickerDialog({
   required BuildContext context,
   required DateTime maxDate,
   required DateTime minDate,
+  double? width,
+  double? height,
   DateTime? initialDate,
   DateTime? currentDate,
   DateTimeRange? selectedRange,
@@ -80,42 +83,57 @@ Future<DateTimeRange?> showRangePickerDialog({
     useRootNavigator: useRootNavigator,
     useSafeArea: useSafeArea,
     builder: (context) {
-      return Padding(
-        padding: padding,
-        child: Dialog(
-          insetPadding: EdgeInsets.zero,
-          child: RangeDatePicker(
-            centerLeadingDate: centerLeadingDate,
-            currentDate: currentDate,
-            maxDate: maxDate,
-            minDate: minDate,
-            initialDate: initialDate,
-            selectedRange: selectedRange,
-            onRangeSelected: (value) => Navigator.pop(context, value),
-            initialPickerType: initialPickerType,
-            padding: contentPadding,
-            currentDateDecoration: currentDateDecoration,
-            currentDateTextStyle: currentDateTextStyle,
-            disabledCellsDecoration: disabledCellsDecoration,
-            disabledCellsTextStyle: disabledCellsTextStyle,
-            enabledCellsDecoration: enabledCellsDecoration,
-            enabledCellsTextStyle: enabledCellsTextStyle,
-            selectedCellsDecoration: selectedCellsDecoration,
-            selectedCellsTextStyle: selectedCellsTextStyle,
-            daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
-            singelSelectedCellTextStyle: singelSelectedCellTextStyle,
-            singelSelectedCellDecoration: singelSelectedCellDecoration,
-            leadingDateTextStyle: leadingDateTextStyle,
-            slidersColor: slidersColor,
-            slidersSize: slidersSize,
-            highlightColor: highlightColor,
-            splashColor: splashColor,
-            splashRadius: splashRadius,
-            previousPageSemanticLabel: previousPageSemanticLabel,
-            nextPageSemanticLabel: nextPageSemanticLabel,
+      return DeviceOrientationBuilder(builder: (context, o) {
+        late final Size size;
+        switch (o) {
+          case Orientation.portrait:
+            size = const Size(328.0, 400.0);
+            break;
+          case Orientation.landscape:
+            size = const Size(328.0, 300.0);
+            break;
+        }
+        return Padding(
+          padding: padding,
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: SizedBox(
+              width: width ?? size.width,
+              height: height ?? size.height,
+              child: RangeDatePicker(
+                centerLeadingDate: centerLeadingDate,
+                currentDate: currentDate,
+                maxDate: maxDate,
+                minDate: minDate,
+                initialDate: initialDate,
+                selectedRange: selectedRange,
+                onRangeSelected: (value) => Navigator.pop(context, value),
+                initialPickerType: initialPickerType,
+                padding: contentPadding,
+                currentDateDecoration: currentDateDecoration,
+                currentDateTextStyle: currentDateTextStyle,
+                disabledCellsDecoration: disabledCellsDecoration,
+                disabledCellsTextStyle: disabledCellsTextStyle,
+                enabledCellsDecoration: enabledCellsDecoration,
+                enabledCellsTextStyle: enabledCellsTextStyle,
+                selectedCellsDecoration: selectedCellsDecoration,
+                selectedCellsTextStyle: selectedCellsTextStyle,
+                daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
+                singelSelectedCellTextStyle: singelSelectedCellTextStyle,
+                singelSelectedCellDecoration: singelSelectedCellDecoration,
+                leadingDateTextStyle: leadingDateTextStyle,
+                slidersColor: slidersColor,
+                slidersSize: slidersSize,
+                highlightColor: highlightColor,
+                splashColor: splashColor,
+                splashRadius: splashRadius,
+                previousPageSemanticLabel: previousPageSemanticLabel,
+                nextPageSemanticLabel: nextPageSemanticLabel,
+              ),
+            ),
           ),
-        ),
-      );
+        );
+      });
     },
   );
 }

@@ -6,8 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('YearsPicker', () {
-    testWidgets('should show the correct leading header date',
-        (WidgetTester tester) async {
+    testWidgets('should show the correct leading header date', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
@@ -41,14 +40,12 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       expect(headerFinder, findsOneWidget);
 
-      final Text headerTextWidget = tester.widget<Text>(
-          find.descendant(of: headerFinder, matching: find.byType(Text)));
+      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
 
       expect(headerTextWidget.data, '2012 - 2023');
     });
 
-    testWidgets('should change the page forward and backward on drag.',
-        (WidgetTester tester) async {
+    testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
@@ -84,28 +81,22 @@ void main() {
 
       const String newDisplayedMonth = '2024 - 2035';
 
-      await tester.drag(
-          pageViewFinder, const Offset(-600, 0)); // Drag the page forward
+      await tester.drag(pageViewFinder, const Offset(-600, 0)); // Drag the page forward
       await tester.pumpAndSettle();
 
       final Finder headerFinder = find.byType(Header);
-      final Text headerTextWidget = tester.widget<Text>(
-          find.descendant(of: headerFinder, matching: find.byType(Text)));
+      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(headerTextWidget.data, newDisplayedMonth);
 
-      await tester.drag(
-          pageViewFinder, const Offset(600, 0)); // Drag the page backward
+      await tester.drag(pageViewFinder, const Offset(600, 0)); // Drag the page backward
       await tester.pumpAndSettle();
 
       final Finder newHeaderFinder = find.byType(Header);
-      final Text newHeaderTextWidget = tester.widget<Text>(
-          find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
+      final Text newHeaderTextWidget = tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data, '2012 - 2023');
     });
 
-    testWidgets(
-        'should change the page when tapping on the next page icon and update header.',
-        (WidgetTester tester) async {
+    testWidgets('should change the page when tapping on the next page icon and update header.', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
@@ -139,37 +130,30 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
-      final Finder nextPageIconFinder =
-          find.byIcon(CupertinoIcons.chevron_right);
+      final Finder nextPageIconFinder = find.byIcon(CupertinoIcons.chevron_right);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
-      final Text headerTextWidget = tester.widget<Text>(
-          find.descendant(of: headerFinder, matching: find.byType(Text)));
+      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(headerTextWidget.data, '2012 - 2023');
 
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage + 1));
 
       const String newDisplayedMonth = '2024 - 2035';
 
       final Finder newHeaderFinder = find.byType(Header);
-      final Text newHeaderTextWidget = tester.widget<Text>(
-          find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
+      final Text newHeaderTextWidget = tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data, newDisplayedMonth);
     });
 
-    testWidgets(
-        'should change the page when tapping on the previous page icon and update header.',
-        (WidgetTester tester) async {
+    testWidgets('should change the page when tapping on the previous page icon and update header.', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
@@ -203,31 +187,26 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
-      final Finder previousPageIconFinder =
-          find.byIcon(CupertinoIcons.chevron_left);
+      final Finder previousPageIconFinder = find.byIcon(CupertinoIcons.chevron_left);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
-      final Text headerTextWidget = tester.widget<Text>(
-          find.descendant(of: headerFinder, matching: find.byType(Text)));
+      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(headerTextWidget.data, '2012 - 2023');
 
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage - 1));
 
       const String newDisplayedMonth = '2000 - 2011';
 
       final Finder newHeaderFinder = find.byType(Header);
-      final Text newHeaderTextWidget = tester.widget<Text>(
-          find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
+      final Text newHeaderTextWidget = tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data, newDisplayedMonth);
     });
 
@@ -267,11 +246,9 @@ void main() {
         final Finder pageViewFinder = find.byType(PageView);
         expect(pageViewFinder, findsOneWidget);
 
-        final int initialPage =
-            tester.widget<PageView>(pageViewFinder).controller.initialPage;
+        final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
-        final Finder previousPageIconFinder =
-            find.byIcon(CupertinoIcons.chevron_left);
+        final Finder previousPageIconFinder = find.byIcon(CupertinoIcons.chevron_left);
         expect(previousPageIconFinder, findsOneWidget);
 
         final Finder headerFinder = find.byType(Header);
@@ -289,8 +266,7 @@ void main() {
         await tester.tap(previousPageIconFinder);
         await tester.pumpAndSettle();
 
-        final int currentPage =
-            tester.widget<PageView>(pageViewFinder).controller.page!.round();
+        final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
         expect(currentPage, equals(initialPage));
 
@@ -341,11 +317,9 @@ void main() {
         final Finder pageViewFinder = find.byType(PageView);
         expect(pageViewFinder, findsOneWidget);
 
-        final int initialPage =
-            tester.widget<PageView>(pageViewFinder).controller.initialPage;
+        final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
-        final Finder nextPageIconFinder =
-            find.byIcon(CupertinoIcons.chevron_right);
+        final Finder nextPageIconFinder = find.byIcon(CupertinoIcons.chevron_right);
         expect(nextPageIconFinder, findsOneWidget);
 
         final Finder headerFinder = find.byType(Header);
@@ -360,8 +334,7 @@ void main() {
         await tester.tap(nextPageIconFinder);
         await tester.pumpAndSettle();
 
-        final int currentPage =
-            tester.widget<PageView>(pageViewFinder).controller.page!.round();
+        final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
         expect(currentPage, equals(initialPage));
 
@@ -443,51 +416,6 @@ void main() {
         expect(newHeaderTextWidget.data, '2000 - 2011');
       },
     );
-
-    testWidgets(
-      'Should the height of the sized box be 78 * 4',
-      (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
-        final DateTime minDate = DateTime(2000);
-        final DateTime maxDate = DateTime(2011);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Material(
-              child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
-                minDate: minDate,
-                maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
-              ),
-            ),
-          ),
-        );
-
-        final Finder sizedBoxFinder =
-            find.byKey(const ValueKey<double>(78 * 4));
-        expect(sizedBoxFinder, findsOneWidget);
-
-        const height = 78 * 4;
-
-        final SizedBox sizedBoxWidget = tester.widget<SizedBox>(sizedBoxFinder);
-
-        expect(sizedBoxWidget.height, equals(height));
-      },
-    );
     testWidgets(
       'Should show the correct year on pick',
       (WidgetTester tester) async {
@@ -528,23 +456,15 @@ void main() {
         );
 
         final selectedYearFinder = find.byWidgetPredicate((widget) {
-          if (widget is Container &&
-              widget.child is Center &&
-              (widget.child as Center).child is Text) {
-            return ((widget.child as Center).child as Text).data ==
-                    yearToSelect.year.toString() &&
-                ((widget.child as Center).child as Text).style?.color ==
-                    selectedYearColor;
+          if (widget is Container && widget.child is Center && (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data == yearToSelect.year.toString() && ((widget.child as Center).child as Text).style?.color == selectedYearColor;
           }
           return false;
         });
 
         final yearFinder = find.byWidgetPredicate((widget) {
-          if (widget is Container &&
-              widget.child is Center &&
-              (widget.child as Center).child is Text) {
-            return ((widget.child as Center).child as Text).data ==
-                yearToSelect.year.toString();
+          if (widget is Container && widget.child is Center && (widget.child as Center).child is Text) {
+            return ((widget.child as Center).child as Text).data == yearToSelect.year.toString();
           }
           return false;
         });
@@ -594,8 +514,7 @@ void main() {
 
         final leadingDayFinder = find.byWidgetPredicate((widget) {
           if (widget is Text) {
-            return widget.data == '2000 - 2011' &&
-                widget.style?.color == leadingDayColor;
+            return widget.data == '2000 - 2011' && widget.style?.color == leadingDayColor;
           }
           return false;
         });
@@ -641,9 +560,7 @@ void main() {
 
         final leftIconFinder = find.byWidgetPredicate((widget) {
           if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == CupertinoIcons.chevron_left;
+            return widget.color == slidersColors && widget.size == slidersSize && widget.icon == CupertinoIcons.chevron_left;
           }
           return false;
         });
@@ -652,9 +569,7 @@ void main() {
 
         final rightIconFinder = find.byWidgetPredicate((widget) {
           if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == CupertinoIcons.chevron_right;
+            return widget.color == slidersColors && widget.size == slidersSize && widget.icon == CupertinoIcons.chevron_right;
           }
           return false;
         });

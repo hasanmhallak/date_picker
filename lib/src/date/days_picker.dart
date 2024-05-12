@@ -1,6 +1,7 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
+import '../shared/device_orientation_builder.dart';
+import '../shared/utils.dart';
 import 'days_view.dart';
 import '../shared/header.dart';
 import 'show_date_picker_dialog.dart';
@@ -213,7 +214,9 @@ class DaysPicker extends StatefulWidget {
 
   /// The highlight color of the ink response when pressed.
   ///
-  /// defaults to [Theme.highlightColor].
+  /// defaults to the color of [selectedCellDecoration] with 30% opacity,
+  /// if [selectedCellDecoration] is null will fall back to
+  /// [ColorScheme.onPrimary] with 30% opacity.
   final Color? highlightColor;
 
   /// The radius of the ink splash.
@@ -240,11 +243,8 @@ class _DaysPickerState extends State<DaysPicker> {
   DateTime? _selectedDate;
   final GlobalKey _pageViewKey = GlobalKey();
   late final PageController _pageController;
-  // Represents the maximum height for a calendar with 6 weeks.
-  // In scenarios where a month starts on the last day of a week,
-  // it may extend into the first day of the sixth week to
-  // accommodate the full month.
-  double maxHeight = 52 * 7;
+
+  // double maxHeight = 52 * 7;
 
   @override
   void initState() {
@@ -391,100 +391,116 @@ class _DaysPickerState extends State<DaysPicker> {
         selectedCellDecoration.color?.withOpacity(0.3) ??
         colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor =
-        widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor = widget.highlightColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
     //
     //
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Header(
-          centerLeadingDate: widget.centerLeadingDate,
-          leadingDateTextStyle: leadingDateTextStyle,
-          slidersColor: slidersColor,
-          slidersSize: slidersSize,
-          onDateTap: () => widget.onLeadingDateTap?.call(),
-          displayedDate: MaterialLocalizations.of(context)
-              .formatMonthYear(_displayedMonth!)
-              .replaceAll('٩', '9')
-              .replaceAll('٨', '8')
-              .replaceAll('٧', '7')
-              .replaceAll('٦', '6')
-              .replaceAll('٥', '5')
-              .replaceAll('٤', '4')
-              .replaceAll('٣', '3')
-              .replaceAll('٢', '2')
-              .replaceAll('١', '1')
-              .replaceAll('٠', '0'),
-          onNextPage: () {
-            _pageController.nextPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-          onPreviousPage: () {
-            _pageController.previousPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-          previousPageSemanticLabel: widget.previousPageSemanticLabel,
-          nextPageSemanticLabel: widget.nextPageSemanticLabel,
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          key: ValueKey(maxHeight),
-          height: maxHeight,
-          child: PageView.builder(
-            scrollDirection: Axis.horizontal,
-            key: _pageViewKey,
-            controller: _pageController,
-            itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
-            onPageChanged: (monthPage) {
-              final DateTime monthDate =
-                  DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+    return DeviceOrientationBuilder(builder: (context, o) {
+      late final Size size;
+      switch (o) {
+        case Orientation.portrait:
+          size = const Size(328.0, 402.0);
+          break;
+        case Orientation.landscape:
+          size = const Size(328.0, 300.0);
+          break;
+      }
 
-              setState(() {
-                _displayedMonth = monthDate;
-              });
-            },
-            itemBuilder: (context, index) {
-              final DateTime month =
-                  DateUtils.addMonthsToMonthDate(widget.minDate, index);
+      return LimitedBox(
+        maxHeight: size.height,
+        maxWidth: size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Header(
+              centerLeadingDate: widget.centerLeadingDate,
+              leadingDateTextStyle: leadingDateTextStyle,
+              slidersColor: slidersColor,
+              slidersSize: slidersSize,
+              onDateTap: () => widget.onLeadingDateTap?.call(),
+              displayedDate: MaterialLocalizations.of(context)
+                  .formatMonthYear(_displayedMonth!)
+                  .replaceAll('٩', '9')
+                  .replaceAll('٨', '8')
+                  .replaceAll('٧', '7')
+                  .replaceAll('٦', '6')
+                  .replaceAll('٥', '5')
+                  .replaceAll('٤', '4')
+                  .replaceAll('٣', '3')
+                  .replaceAll('٢', '2')
+                  .replaceAll('١', '1')
+                  .replaceAll('٠', '0'),
+              onNextPage: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
+                );
+              },
+              onPreviousPage: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
+                );
+              },
+              previousPageSemanticLabel: widget.previousPageSemanticLabel,
+              nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                key: _pageViewKey,
+                controller: _pageController,
+                itemCount:
+                    DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                onPageChanged: (monthPage) {
+                  final DateTime monthDate =
+                      DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
-              return DaysView(
-                key: ValueKey<DateTime>(month),
-                currentDate:
-                    DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                maxDate: DateUtils.dateOnly(widget.maxDate),
-                minDate: DateUtils.dateOnly(widget.minDate),
-                displayedMonth: month,
-                selectedDate: _selectedDate,
-                daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
-                enabledCellsTextStyle: enabledCellsTextStyle,
-                enabledCellsDecoration: enabledCellsDecoration,
-                disabledCellsTextStyle: disabledCellsTextStyle,
-                disabledCellsDecoration: disbaledCellsDecoration,
-                currentDateDecoration: currentDateDecoration,
-                currentDateTextStyle: currentDateTextStyle,
-                selectedDayDecoration: selectedCellDecoration,
-                selectedDayTextStyle: selectedCellTextStyle,
-                highlightColor: highlightColor,
-                splashColor: splashColor,
-                splashRadius: widget.splashRadius,
-                onChanged: (value) {
                   setState(() {
-                    _selectedDate = value;
+                    _displayedMonth = monthDate;
                   });
-                  widget.onDateSelected?.call(value);
                 },
-              );
-            },
-          ),
+                itemBuilder: (context, index) {
+                  final DateTime month =
+                      DateUtils.addMonthsToMonthDate(widget.minDate, index);
+
+                  return DaysView(
+                    key: ValueKey<DateTime>(month),
+                    currentDate: DateUtils.dateOnly(
+                        widget.currentDate ?? DateTime.now()),
+                    maxDate: DateUtils.dateOnly(widget.maxDate),
+                    minDate: DateUtils.dateOnly(widget.minDate),
+                    displayedMonth: month,
+                    selectedDate: _selectedDate,
+                    daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
+                    enabledCellsTextStyle: enabledCellsTextStyle,
+                    enabledCellsDecoration: enabledCellsDecoration,
+                    disabledCellsTextStyle: disabledCellsTextStyle,
+                    disabledCellsDecoration: disbaledCellsDecoration,
+                    currentDateDecoration: currentDateDecoration,
+                    currentDateTextStyle: currentDateTextStyle,
+                    selectedDayDecoration: selectedCellDecoration,
+                    selectedDayTextStyle: selectedCellTextStyle,
+                    highlightColor: highlightColor,
+                    splashColor: splashColor,
+                    splashRadius: widget.splashRadius,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedDate = value;
+                      });
+                      widget.onDateSelected?.call(value);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ],
-    );
+      );
+    });
   }
 }

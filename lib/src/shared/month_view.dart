@@ -1,8 +1,8 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import 'picker_grid_delegate.dart';
+import 'utils.dart';
 
 /// Displays the months of a given year and allows choosing a month.
 ///
@@ -182,7 +182,7 @@ class MonthView extends StatelessWidget {
       } else {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
-          radius: splashRadius ?? 60 / 2 + 4,
+          radius: splashRadius,
           splashColor: splashColor,
           highlightColor: highlightColor,
           child: Semantics(
@@ -202,12 +202,7 @@ class MonthView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
-        columnCount: 3,
-        rowPadding: 3,
-        rowExtent: 60,
-        rowStride: 80,
-      ),
+      gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(
         monthsWidgetList,
         addRepaintBoundaries: false,
