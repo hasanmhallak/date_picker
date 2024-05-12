@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'leading_date.dart';
 
@@ -99,82 +99,62 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final forwardButton = GestureDetector(
+      onTap: onNextPage,
+      child: SizedBox(
+        width: 36,
+        height: 36,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: slidersSize,
+            color: slidersColor,
+          ),
+        ),
+      ),
+    );
+
+    final backButton = GestureDetector(
+      onTap: onPreviousPage,
+      child: SizedBox(
+        width: 36,
+        height: 36,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            size: slidersSize,
+            color: slidersColor,
+          ),
+        ),
+      ),
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: centerLeadingDate
-          ? [
-              _previousPageButton(),
-              _leadingDate(),
-              _nextPageButton(),
-            ]
-          : [
-              _leadingDate(),
-              Row(
-                children: [
-                  _previousPageButton(),
-                  const SizedBox(width: 10),
-                  _nextPageButton(),
-                ],
-              )
+      children: [
+        if (centerLeadingDate) backButton,
+        LeadingDate(
+          onTap: onDateTap,
+          displayedText: displayedDate,
+          displayedTextStyle: leadingDateTextStyle,
+        ),
+        if (centerLeadingDate)
+          forwardButton
+        else
+          Row(
+            children: [
+              backButton,
+              const SizedBox(width: 10),
+              forwardButton,
             ],
-    );
-  }
-
-  Widget _leadingDate() {
-    return LeadingDate(
-      onTap: onDateTap,
-      displayedText: displayedDate,
-      displayedTextStyle: leadingDateTextStyle,
-    );
-  }
-
-  Widget _previousPageButton() {
-    return GestureDetector(
-      excludeFromSemantics: true,
-      onTap: onPreviousPage,
-      child: Semantics(
-        button: true,
-        label: previousPageSemanticLabel,
-        child: SizedBox(
-          width: 36,
-          height: 36,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              CupertinoIcons.chevron_left,
-              size: slidersSize,
-              color: slidersColor,
-            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _nextPageButton() {
-    return GestureDetector(
-      excludeFromSemantics: true,
-      onTap: onNextPage,
-      child: Semantics(
-        button: true,
-        label: nextPageSemanticLabel,
-        child: SizedBox(
-          width: 36,
-          height: 36,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              CupertinoIcons.chevron_right,
-              size: slidersSize,
-              color: slidersColor,
-            ),
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:date_picker_plus/src/range/range_days_picker.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -212,7 +211,7 @@ void main() {
           tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder nextPageIconFinder =
-          find.byIcon(CupertinoIcons.chevron_right);
+          find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -302,7 +301,7 @@ void main() {
           tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder previousPageIconFinder =
-          find.byIcon(CupertinoIcons.chevron_left);
+          find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -392,7 +391,7 @@ void main() {
             tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
         final Finder previousPageIconFinder =
-            find.byIcon(CupertinoIcons.chevron_left);
+            find.byIcon(Icons.arrow_back_ios_rounded);
         expect(previousPageIconFinder, findsOneWidget);
 
         final Finder headerFinder = find.byType(Header);
@@ -493,7 +492,7 @@ void main() {
             tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
         final Finder nextPageIconFinder =
-            find.byIcon(CupertinoIcons.chevron_right);
+            find.byIcon(Icons.arrow_forward_ios_rounded);
         expect(nextPageIconFinder, findsOneWidget);
 
         final Finder headerFinder = find.byType(Header);
@@ -757,7 +756,7 @@ void main() {
           if (widget is Icon) {
             return widget.color == slidersColors &&
                 widget.size == slidersSize &&
-                widget.icon == CupertinoIcons.chevron_left;
+                widget.icon == Icons.arrow_back_ios_rounded;
           }
           return false;
         });
@@ -768,7 +767,7 @@ void main() {
           if (widget is Icon) {
             return widget.color == slidersColors &&
                 widget.size == slidersSize &&
-                widget.icon == CupertinoIcons.chevron_right;
+                widget.icon == Icons.arrow_forward_ios_rounded;
           }
           return false;
         });
