@@ -24,8 +24,8 @@ class RangeDaysPicker extends StatefulWidget {
     this.currentDateDecoration,
     this.selectedCellsTextStyle,
     this.selectedCellsDecoration,
-    this.singelSelectedCellTextStyle,
-    this.singelSelectedCellDecoration,
+    this.singleSelectedCellTextStyle,
+    this.singleSelectedCellDecoration,
     this.onLeadingDateTap,
     this.onStartDateChanged,
     this.onEndDateChanged,
@@ -163,11 +163,11 @@ class RangeDaysPicker extends StatefulWidget {
 
   /// The text style of a single selected cell and the
   /// leading/trailing cell of a selected range.
-  final TextStyle? singelSelectedCellTextStyle;
+  final TextStyle? singleSelectedCellTextStyle;
 
   /// The cell decoration of a single selected cell and the
   /// leading/trailing cell of a selected range.
-  final BoxDecoration? singelSelectedCellDecoration;
+  final BoxDecoration? singleSelectedCellDecoration;
 
   /// The text style of leading date showing in the header.
   ///
@@ -187,15 +187,15 @@ class RangeDaysPicker extends StatefulWidget {
 
   /// The splash color of the ink response.
   ///
-  /// defaults to the color of [singelSelectedCellDecoration] with 30% opacity,
-  /// if [singelSelectedCellDecoration] is null will fall back to
+  /// defaults to the color of [singleSelectedCellDecoration] with 30% opacity,
+  /// if [singleSelectedCellDecoration] is null will fall back to
   /// [ColorScheme.onPrimary] with 30% opacity.
   final Color? splashColor;
 
   /// The highlight color of the ink response when pressed.
   ///
-  /// defaults to the color of [singelSelectedCellDecoration] with 30% opacity,
-  /// if [singelSelectedCellDecoration] is null will fall back to
+  /// defaults to the color of [singleSelectedCellDecoration] with 30% opacity,
+  /// if [singleSelectedCellDecoration] is null will fall back to
   /// [ColorScheme.onPrimary] with 30% opacity.
   final Color? highlightColor;
 
@@ -343,17 +343,17 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
             );
 
     //
-    //! singel
+    //! single
 
-    final TextStyle singelSelectedCellTextStyle =
-        widget.singelSelectedCellTextStyle ??
+    final TextStyle singleSelectedCellTextStyle =
+        widget.singleSelectedCellTextStyle ??
             textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.normal,
               color: colorScheme.onPrimary,
             );
 
-    final BoxDecoration singelSelectedCellDecoration =
-        widget.singelSelectedCellDecoration ??
+    final BoxDecoration singleSelectedCellDecoration =
+        widget.singleSelectedCellDecoration ??
             BoxDecoration(
               color: colorScheme.primary,
               shape: BoxShape.circle,
@@ -376,11 +376,11 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
     //
     //! splash
     final splashColor = widget.splashColor ??
-        singelSelectedCellDecoration.color?.withOpacity(0.3) ??
+        singleSelectedCellDecoration.color?.withOpacity(0.3) ??
         colorScheme.primary.withOpacity(0.3);
 
     final highlightColor = widget.highlightColor ??
-        singelSelectedCellDecoration.color?.withOpacity(0.3) ??
+        singleSelectedCellDecoration.color?.withOpacity(0.3) ??
         colorScheme.primary.withOpacity(0.3);
     //
     //
@@ -478,8 +478,8 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                     currentDateTextStyle: currentDateTextStyle,
                     selectedCellsDecoration: selectedCellsDecoration,
                     selectedCellsTextStyle: selectedCellsTextStyle,
-                    singelSelectedCellTextStyle: singelSelectedCellTextStyle,
-                    singelSelectedCellDecoration: singelSelectedCellDecoration,
+                    singleSelectedCellTextStyle: singleSelectedCellTextStyle,
+                    singleSelectedCellDecoration: singleSelectedCellDecoration,
                     highlightColor: highlightColor,
                     splashColor: splashColor,
                     splashRadius: widget.splashRadius,

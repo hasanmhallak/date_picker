@@ -68,8 +68,8 @@ class RangeDatePicker extends StatefulWidget {
     this.currentDateDecoration,
     this.selectedCellsTextStyle,
     this.selectedCellsDecoration,
-    this.singelSelectedCellTextStyle,
-    this.singelSelectedCellDecoration,
+    this.singleSelectedCellTextStyle,
+    this.singleSelectedCellDecoration,
     this.leadingDateTextStyle,
     this.slidersColor,
     this.slidersSize,
@@ -192,16 +192,16 @@ class RangeDatePicker extends StatefulWidget {
   ///
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.onPrimary] color
-  final TextStyle? singelSelectedCellTextStyle;
+  final TextStyle? singleSelectedCellTextStyle;
 
   /// The decoration for a cell representing:
   ///
   /// 1. A single cell when initially selected.
   /// 2. The leading/trailing cell of a selected range.
   ///
-  /// If not provided, `singelSelectedCellDecoration` is a circle with the color specified
+  /// If not provided, `singleSelectedCellDecoration` is a circle with the color specified
   /// in `selectedCellsDecoration`, using [ColorScheme.primary].
-  final BoxDecoration? singelSelectedCellDecoration;
+  final BoxDecoration? singleSelectedCellDecoration;
 
   /// The text style of leading date showing in the header.
   ///
@@ -326,8 +326,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             currentDateTextStyle: widget.currentDateTextStyle,
             selectedCellsDecoration: widget.selectedCellsDecoration,
             selectedCellsTextStyle: widget.selectedCellsTextStyle,
-            singelSelectedCellTextStyle: widget.singelSelectedCellTextStyle,
-            singelSelectedCellDecoration: widget.singelSelectedCellDecoration,
+            singleSelectedCellTextStyle: widget.singleSelectedCellTextStyle,
+            singleSelectedCellDecoration: widget.singleSelectedCellDecoration,
             slidersColor: widget.slidersColor,
             slidersSize: widget.slidersSize,
             leadingDateTextStyle: widget.leadingDateTextStyle,
@@ -381,8 +381,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.singelSelectedCellDecoration,
-            selectedCellTextStyle: widget.singelSelectedCellTextStyle,
+            selectedCellDecoration: widget.singleSelectedCellDecoration,
+            selectedCellTextStyle: widget.singleSelectedCellTextStyle,
             slidersColor: widget.slidersColor,
             slidersSize: widget.slidersSize,
             leadingDateTextStyle: widget.leadingDateTextStyle,
@@ -427,8 +427,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             disabledCellsTextStyle: widget.disabledCellsTextStyle,
             enabledCellsDecoration: widget.enabledCellsDecoration,
             enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.singelSelectedCellDecoration,
-            selectedCellTextStyle: widget.singelSelectedCellTextStyle,
+            selectedCellDecoration: widget.singleSelectedCellDecoration,
+            selectedCellTextStyle: widget.singleSelectedCellTextStyle,
             slidersColor: widget.slidersColor,
             slidersSize: widget.slidersSize,
             leadingDateTextStyle: widget.leadingDateTextStyle,

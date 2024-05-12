@@ -34,8 +34,8 @@ class RangeDaysView extends StatelessWidget {
     required this.currentDateDecoration,
     required this.selectedCellsTextStyle,
     required this.selectedCellsDecoration,
-    required this.singelSelectedCellTextStyle,
-    required this.singelSelectedCellDecoration,
+    required this.singleSelectedCellTextStyle,
+    required this.singleSelectedCellDecoration,
     required this.highlightColor,
     required this.splashColor,
     required this.splashRadius,
@@ -130,11 +130,11 @@ class RangeDaysView extends StatelessWidget {
 
   /// The text style of a single selected cell and the
   /// leading/trailing cell of a selected range.
-  final TextStyle singelSelectedCellTextStyle;
+  final TextStyle singleSelectedCellTextStyle;
 
   /// The cell decoration of a single selected cell and the
   /// leading/trailing cell of a selected range.
-  final BoxDecoration singelSelectedCellDecoration;
+  final BoxDecoration singleSelectedCellDecoration;
 
   /// The text style of the current date.
   final TextStyle currentDateTextStyle;
@@ -287,8 +287,8 @@ class RangeDaysView extends StatelessWidget {
         if (isSingleCellSelected || isStartDate || isEndDate) {
           //
           //
-          style = singelSelectedCellTextStyle;
-          decoration = singelSelectedCellDecoration;
+          style = singleSelectedCellTextStyle;
+          decoration = singleSelectedCellDecoration;
         }
 
         if (isWithinRange) {
