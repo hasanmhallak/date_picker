@@ -5,8 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('MonthPicker', () {
-    testWidgets('should show the correct leading header date',
-        (WidgetTester tester) async {
+    testWidgets('should show the correct leading header date', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
@@ -52,8 +51,7 @@ void main() {
       );
     });
 
-    testWidgets('should change the page forward and backward on drag.',
-        (WidgetTester tester) async {
+    testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2020, 6, 1);
       final DateTime minDate = DateTime(2000, 1, 1);
       final DateTime maxDate = DateTime(2030, 12, 31);
@@ -89,8 +87,7 @@ void main() {
 
       final DateTime newDisplayedYear = DateTime(2021, 6, 1);
 
-      await tester.drag(
-          pageViewFinder, const Offset(-600, 0)); // Drag the page forward
+      await tester.drag(pageViewFinder, const Offset(-600, 0)); // Drag the page forward
       await tester.pumpAndSettle();
 
       final Finder headerFinder = find.byType(Header);
@@ -105,8 +102,7 @@ void main() {
         newDisplayedYear.year.toString(),
       );
 
-      await tester.drag(
-          pageViewFinder, const Offset(600, 0)); // Drag the page backward
+      await tester.drag(pageViewFinder, const Offset(600, 0)); // Drag the page backward
       await tester.pumpAndSettle();
 
       final Finder newHeaderFinder = find.byType(Header);
@@ -122,8 +118,7 @@ void main() {
       );
     });
 
-    testWidgets(
-        'should change the page when tapping on the next page icon and update header.',
+    testWidgets('should change the page when tapping on the next page icon and update header.',
         (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
@@ -158,11 +153,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder nextPageIconFinder =
-          find.byIcon(Icons.arrow_forward_ios_rounded);
+      final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -180,8 +173,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage + 1));
 
@@ -200,8 +192,7 @@ void main() {
       );
     });
 
-    testWidgets(
-        'should change the page when tapping on the previous page icon and update header.',
+    testWidgets('should change the page when tapping on the previous page icon and update header.',
         (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2000, 1, 1);
@@ -236,11 +227,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder previousPageIconFinder =
-          find.byIcon(Icons.arrow_back_ios_rounded);
+      final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -258,8 +247,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage - 1));
 
@@ -314,11 +302,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder previousPageIconFinder =
-          find.byIcon(Icons.arrow_back_ios_rounded);
+      final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -336,8 +322,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -392,11 +377,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage =
-          tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder nextPageIconFinder =
-          find.byIcon(Icons.arrow_forward_ios_rounded);
+      final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -414,8 +397,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage =
-          tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -472,8 +454,7 @@ void main() {
 
       final DateTime newDisplayedYear = DateTime(2020, 6, 1);
 
-      await tester.drag(
-          pageViewFinder, const Offset(-600, 0)); // Drag the page forward
+      await tester.drag(pageViewFinder, const Offset(-600, 0)); // Drag the page forward
       await tester.pumpAndSettle();
 
       final Finder headerFinder = find.byType(Header);
@@ -488,8 +469,7 @@ void main() {
         newDisplayedYear.year.toString(),
       );
 
-      await tester.drag(
-          pageViewFinder, const Offset(600, 0)); // Drag the page backward
+      await tester.drag(pageViewFinder, const Offset(600, 0)); // Drag the page backward
       await tester.pumpAndSettle();
 
       final Finder newHeaderFinder = find.byType(Header);
@@ -545,20 +525,15 @@ void main() {
         );
 
         final selectedMonthFinder = find.byWidgetPredicate((widget) {
-          if (widget is Container &&
-              widget.child is Center &&
-              (widget.child as Center).child is Text) {
+          if (widget is Container && widget.child is Center && (widget.child as Center).child is Text) {
             return ((widget.child as Center).child as Text).data == 'Jan' &&
-                ((widget.child as Center).child as Text).style?.color ==
-                    selectedYearColor;
+                ((widget.child as Center).child as Text).style?.color == selectedYearColor;
           }
           return false;
         });
 
         final monthFinder = find.byWidgetPredicate((widget) {
-          if (widget is Container &&
-              widget.child is Center &&
-              (widget.child as Center).child is Text) {
+          if (widget is Container && widget.child is Center && (widget.child as Center).child is Text) {
             return ((widget.child as Center).child as Text).data == 'Jan';
           }
           return false;
@@ -609,8 +584,7 @@ void main() {
 
         final leadingDayFinder = find.byWidgetPredicate((widget) {
           if (widget is Text) {
-            return widget.data == '2010' &&
-                widget.style?.color == leadingDayColor;
+            return widget.data == '2010' && widget.style?.color == leadingDayColor;
           }
           return false;
         });
@@ -725,7 +699,7 @@ void main() {
         );
 
         final pageViewWidget = tester.widget<PageView>(find.byType(PageView));
-        pageViewWidget.controller.addListener(scrollListener);
+        pageViewWidget.controller!.addListener(scrollListener);
 
         await tester.pumpAndSettle();
 

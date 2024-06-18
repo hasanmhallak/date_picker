@@ -16,8 +16,6 @@ jobs:
 
       - name: Flutter action
         uses: subosito/flutter-action@v2.14.0
-        with:
-          flutter-version: 3.19.5
 
       - name: Restore Packages
         run: flutter pub get
@@ -27,10 +25,9 @@ jobs:
 
       - name: Analyze project source
         run: flutter analyze
-        
+
       - name: Update Goldens
         run: flutter test --update-goldens
 
-        
       - name: Run tests
         run: flutter test --coverage
