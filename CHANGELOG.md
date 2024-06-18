@@ -1,3 +1,22 @@
+# 4.1.0
+
+- Add `disabledDayPredicate` to provide a way to disable days with custom logic.
+
+```dart
+SizedBox(
+  height: 400,
+  child: DatePicker(
+    centerLeadingDate: true,
+    minDate: DateTime(2020, 10, 10),
+    maxDate: DateTime(2024, 10, 30),
+    disabledDayPredicate: (date) {
+      // This will disable every Sunday and Monday.
+      return date.weekday == DateTime.sunday || date.weekday == DateTime.monday;
+    },
+  ),
+),
+```
+
 # 4.0.0 [Breaking]
 
 This update introduces significant changes to the layout behavior of the picker. It now adapts to small sizes up to 150x150px, providing more flexibility in integrating the widget tree to match your design aesthetics.

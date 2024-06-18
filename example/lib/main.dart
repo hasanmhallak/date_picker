@@ -30,10 +30,17 @@ class MyApp extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 400,
-                    child: RangeDatePicker(
+                    child: DatePicker(
                       centerLeadingDate: true,
-                      minDate: DateTime(2020, 10, 10),
-                      maxDate: DateTime(2024, 10, 30),
+                      minDate: DateTime(2020),
+                      maxDate: DateTime(2024),
+                      initialDate: DateTime(2023, 1),
+                      disabledDayPredicate: (date) {
+                        return date.weekday == DateTime.sunday || date.weekday == DateTime.saturday;
+                      },
+                      disabledCellsDecoration: const BoxDecoration(
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ],
