@@ -39,6 +39,7 @@ class RangeDaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     required this.splashRadius,
+    this.typeTitle,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -174,14 +175,16 @@ class RangeDaysView extends StatelessWidget {
   ///     _ _ _ _ 1 2 3
   ///     4 5 6 7 8 9 10
   ///
+  final String? typeTitle;
+  ///
   List<Widget> _dayHeaders(
     TextStyle headerStyle,
     Locale locale,
     MaterialLocalizations localizations,
   ) {
     final List<Widget> result = <Widget>[];
-    final weekdayNames =
-        DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
+    final dateSymbols = DateFormat('', locale.toString()).dateSymbols;
+    final weekdayNames = typeTitle == null ? dateSymbols.SHORTWEEKDAYS : dateSymbols.NARROWWEEKDAYS;
 
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
