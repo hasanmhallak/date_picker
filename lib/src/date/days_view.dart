@@ -160,7 +160,7 @@ class DaysView extends StatelessWidget {
         ExcludeSemantics(
           child: Center(
             child: Text(
-              weekday.toUpperCase(),
+              weekday[0].toUpperCase() + weekday.substring(1).toLowerCase(),
               style: daysOfTheWeekTextStyle,
             ),
           ),

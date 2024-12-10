@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: any
+  string_extensions: ^0.7.3
 
 dev_dependencies:
   flutter_test:

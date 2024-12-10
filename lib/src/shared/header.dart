@@ -142,7 +142,7 @@ class Header extends StatelessWidget {
         LeadingDate(
           onTap: onDateTap,
           displayedText: displayedDate,
-          displayedTextStyle: leadingDateTextStyle,
+          displayedTextStyle: leadingDateTextStyle.copyWith(color: Colors.red),
         ),
         if (centerLeadingDate)
           forwardButton

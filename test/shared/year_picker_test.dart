@@ -131,7 +131,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
@@ -143,7 +143,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage + 1));
 
@@ -190,7 +190,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
@@ -202,7 +202,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage - 1));
 
@@ -250,7 +250,7 @@ void main() {
         final Finder pageViewFinder = find.byType(PageView);
         expect(pageViewFinder, findsOneWidget);
 
-        final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+        final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
         final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
         expect(previousPageIconFinder, findsOneWidget);
@@ -270,7 +270,7 @@ void main() {
         await tester.tap(previousPageIconFinder);
         await tester.pumpAndSettle();
 
-        final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+        final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
         expect(currentPage, equals(initialPage));
 
@@ -321,7 +321,7 @@ void main() {
         final Finder pageViewFinder = find.byType(PageView);
         expect(pageViewFinder, findsOneWidget);
 
-        final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+        final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
         final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
         expect(nextPageIconFinder, findsOneWidget);
@@ -338,7 +338,7 @@ void main() {
         await tester.tap(nextPageIconFinder);
         await tester.pumpAndSettle();
 
-        final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+        final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
         expect(currentPage, equals(initialPage));
 
@@ -636,7 +636,7 @@ void main() {
         );
 
         final pageViewWidget = tester.widget<PageView>(find.byType(PageView));
-        pageViewWidget.controller!.addListener(scrollListener);
+        pageViewWidget.controller.addListener(scrollListener);
 
         await tester.pumpAndSettle();
 

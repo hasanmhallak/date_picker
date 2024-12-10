@@ -122,7 +122,7 @@ void main() {
         (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
-      final DateTime maxDate = DateTime(2024, 12, 31);
+      final DateTime maxDate = DateTime(2023, 12, 31);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -153,7 +153,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage + 1));
 
@@ -227,7 +227,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
@@ -247,7 +247,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage - 1));
 
@@ -302,7 +302,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
@@ -322,7 +322,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -377,7 +377,7 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
 
       final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
@@ -397,7 +397,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -493,7 +493,7 @@ void main() {
         final DateTime maxDate = DateTime(2011);
         final DateTime monthToSelect = DateTime(2010);
         late final DateTime expectedMonth;
-        const selectedYearColor = Colors.green;
+        const selectedYearColor = Colors.blue;
 
         await tester.pumpWidget(
           MaterialApp(
@@ -699,7 +699,7 @@ void main() {
         );
 
         final pageViewWidget = tester.widget<PageView>(find.byType(PageView));
-        pageViewWidget.controller!.addListener(scrollListener);
+        pageViewWidget.controller.addListener(scrollListener);
 
         await tester.pumpAndSettle();
 
