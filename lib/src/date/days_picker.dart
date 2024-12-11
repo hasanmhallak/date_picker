@@ -300,9 +300,10 @@ class _DaysPickerState extends State<DaysPicker> {
     //
     final TextStyle daysOfTheWeekTextStyle = widget.daysOfTheWeekTextStyle ??
         textTheme.titleSmall!.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.30),
+          color: Color(0xff000000),
           fontWeight: FontWeight.bold,
-          fontSize: 14,
+          fontStyle: FontStyle.italic,
+          fontSize: 20,
         );
 
     //
@@ -361,7 +362,7 @@ class _DaysPickerState extends State<DaysPicker> {
 
     final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
         BoxDecoration(
-          color: colorScheme.primary,
+          color: colorScheme.error,
           shape: BoxShape.circle,
         );
 
@@ -371,9 +372,9 @@ class _DaysPickerState extends State<DaysPicker> {
     //! header
     final leadingDateTextStyle = widget.leadingDateTextStyle ??
         TextStyle(
-          fontSize: 18,
+          fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: colorScheme.primary,
+          color: Color(0xffFF0000),
         );
 
     final slidersColor = widget.slidersColor ?? colorScheme.primary;

@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
                         return date.weekday == DateTime.sunday || date.weekday == DateTime.saturday;
                       },
                       disabledCellsDecoration: const BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.yellow,
                       ),
                     ),
                   ),
