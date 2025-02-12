@@ -36,6 +36,7 @@ class DaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     this.splashRadius,
+    this.useWidgetMaxHeight = false,
     this.disabledDayPredicate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -128,6 +129,11 @@ class DaysView extends StatelessWidget {
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
 
+  /// Flag to use maximum widget height - 7 line variant. Usecase - using
+  /// DaysPicker and RangeDaysPicker within one widget - to keep equal content
+  /// height.
+  final bool useWidgetMaxHeight;
+
   /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.
   ///
@@ -151,7 +157,8 @@ class DaysView extends StatelessWidget {
     MaterialLocalizations localizations,
   ) {
     final List<Widget> result = <Widget>[];
-    final weekdayNames = DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
+    final weekdayNames =
+        DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
 
     for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
       // to save space in arabic as arabic don't has short week days.
@@ -175,7 +182,8 @@ class DaysView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     //
     //
     //
@@ -205,7 +213,8 @@ class DaysView extends StatelessWidget {
             dayToBuild.isBefore(_minDate) ||
             (disabledDayPredicate?.call(dayToBuild) ?? false);
 
-        final bool isSelectedDay = DateUtils.isSameDay(selectedDate, dayToBuild);
+        final bool isSelectedDay =
+            DateUtils.isSameDay(selectedDate, dayToBuild);
 
         final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
         //
@@ -266,7 +275,8 @@ class DaysView extends StatelessWidget {
               // day of month before the rest of the date, as they are looking
               // for the day of month. To do that we prepend day of month to the
               // formatted full date.
-              label: '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
+              label:
+                  '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}',
               selected: isSelectedDay,
               excludeSemantics: true,
               child: dayWidget,
@@ -283,7 +293,11 @@ class DaysView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: PickerGridDelegate(
         columnCount: 7,
-        rowCount: dayItems.length >= 43 ? 7 : 6,
+        rowCount: useWidgetMaxHeight
+            ? 7
+            : dayItems.length >= 43
+                ? 7
+                : 6,
       ),
       childrenDelegate: SliverChildListDelegate(
         addRepaintBoundaries: false,
