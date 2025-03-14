@@ -1,7 +1,8 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/picker_type.dart';
+import '../shared/types.dart';
+import '../shared/utils.dart';
 import 'days_picker.dart';
 import '../shared/month_picker.dart';
 import '../shared/year_picker.dart';
@@ -76,6 +77,9 @@ class DatePicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
+    this.disabledDayPredicate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -198,7 +202,9 @@ class DatePicker extends StatefulWidget {
 
   /// The highlight color of the ink response when pressed.
   ///
-  /// defaults to [Theme.highlightColor].
+  /// defaults to the color of [selectedCellDecoration] with 30% opacity,
+  /// if [selectedCellDecoration] is null will fall back to
+  /// [ColorScheme.onPrimary] with 30% opacity.
   final Color? highlightColor;
 
   /// The radius of the ink splash.
@@ -209,6 +215,19 @@ class DatePicker extends StatefulWidget {
   /// <       December 2023      >
   ///
   final bool centerLeadingDate;
+
+  /// Semantic label for button to go to the previous page.
+  ///
+  /// defaults to `Previous Day/Month/Year` according to picker type.
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page.
+  ///
+  /// defaults to `Next Day/Month/Year` according to picker type.
+  final String? nextPageSemanticLabel;
+
+  /// A predicate function used to determine if a given day should be disabled.
+  final DatePredicate? disabledDayPredicate;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -221,7 +240,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    final clampedInitailDate =
+        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
     _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     _pickerType = widget.initialPickerType;
 
@@ -233,7 +253,8 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      final clampedInitailDate =
+          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
       _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
@@ -273,17 +294,20 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            disabledDayPredicate: widget.disabledDayPredicate,
+            onLeadingDateTap: () {
+              setState(() {
+                _pickerType = PickerType.months;
+              });
+            },
             onDateSelected: (selectedDate) {
               setState(() {
                 _displayedDate = selectedDate;
                 _selectedDate = selectedDate;
               });
               widget.onDateSelected?.call(selectedDate);
-            },
-            onLeadingDateTap: () {
-              setState(() {
-                _pickerType = PickerType.months;
-              });
             },
           ),
         );
@@ -311,6 +335,8 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -354,6 +380,8 @@ class _DatePickerState extends State<DatePicker> {
             splashColor: widget.splashColor,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
+            previousPageSemanticLabel: widget.previousPageSemanticLabel,
+            nextPageSemanticLabel: widget.nextPageSemanticLabel,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(

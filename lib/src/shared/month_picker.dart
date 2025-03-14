@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'device_orientation_builder.dart';
 import 'header.dart';
 import 'month_view.dart';
 import 'utils.dart';
@@ -68,6 +69,8 @@ class MonthPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel = 'Previous Month',
+    this.nextPageSemanticLabel = 'Next Month',
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -203,7 +206,9 @@ class MonthPicker extends StatefulWidget {
 
   /// The highlight color of the ink response when pressed.
   ///
-  /// defaults to [Theme.highlightColor].
+  /// defaults to the color of [selectedCellDecoration] with 30% opacity,
+  /// if [selectedCellDecoration] is null will fall back to
+  /// [ColorScheme.onPrimary] with 30% opacity.
   final Color? highlightColor;
 
   /// The radius of the ink splash.
@@ -214,6 +219,12 @@ class MonthPicker extends StatefulWidget {
   /// <       December 2023      >
   ///
   final bool centerLeadingDate;
+
+  /// Semantic label for button to go to the previous page.
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page.
+  final String? nextPageSemanticLabel;
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
@@ -230,10 +241,14 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedYear =
+        DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
 
-    _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtilsX.monthOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: (_displayedYear!.year - widget.minDate.year),
     );
@@ -247,13 +262,17 @@ class _MonthPickerState extends State<MonthPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedYear =
+          DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != _selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtilsX.monthOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -293,7 +312,8 @@ class _MonthPickerState extends State<MonthPicker> {
           color: colorScheme.onSurface.withOpacity(0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration =
+        widget.disabledCellsDecoration;
 
     //
     //! current
@@ -323,11 +343,12 @@ class _MonthPickerState extends State<MonthPicker> {
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
-        BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        );
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+            BoxDecoration(
+              color: colorScheme.primary,
+              shape: BoxShape.circle,
+            );
 
     //
     //
@@ -340,99 +361,121 @@ class _MonthPickerState extends State<MonthPicker> {
           color: Theme.of(context).colorScheme.primary,
         );
 
-    final slidersColor = widget.slidersColor ?? Theme.of(context).colorScheme.primary;
+    final slidersColor =
+        widget.slidersColor ?? Theme.of(context).colorScheme.primary;
 
     final slidersSize = widget.slidersSize ?? 20;
 
     //
     //! splash
-    final splashColor = widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
 
-    final highlightColor = widget.highlightColor ?? Theme.of(context).highlightColor;
+    final highlightColor = widget.highlightColor ??
+        selectedCellDecoration.color?.withOpacity(0.3) ??
+        colorScheme.primary.withOpacity(0.3);
     //
     //
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Header(
-          centerLeadingDate: widget.centerLeadingDate,
-          leadingDateTextStyle: leadingDateTextStyle,
-          slidersColor: slidersColor,
-          slidersSize: slidersSize,
-          onDateTap: () => widget.onLeadingDateTap?.call(),
-          displayedDate: _displayedYear!.year.toString(),
-          onNextPage: () {
-            _pageController.nextPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-          onPreviousPage: () {
-            _pageController.previousPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          key: const ValueKey<double>(78 * 4),
-          height: 78 * 4,
-          child: PageView.builder(
-            scrollDirection: Axis.horizontal,
-            key: _pageViewKey,
-            controller: _pageController,
-            itemCount: yearsCount,
-            onPageChanged: (yearPage) {
-              final DateTime year = DateTime(
-                widget.minDate.year + yearPage,
-                // widget.minDate.month,
-                // widget.minDate.day,
-              );
+    return DeviceOrientationBuilder(builder: (context, o) {
+      late final Size size;
+      switch (o) {
+        case Orientation.portrait:
+          size = const Size(328.0, 402.0);
+          break;
+        case Orientation.landscape:
+          size = const Size(328.0, 300.0);
+          break;
+      }
+      return LimitedBox(
+        maxHeight: size.height,
+        maxWidth: size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Header(
+              previousPageSemanticLabel: widget.previousPageSemanticLabel,
+              nextPageSemanticLabel: widget.nextPageSemanticLabel,
+              centerLeadingDate: widget.centerLeadingDate,
+              leadingDateTextStyle: leadingDateTextStyle,
+              slidersColor: slidersColor,
+              slidersSize: slidersSize,
+              onDateTap: () => widget.onLeadingDateTap?.call(),
+              displayedDate: _displayedYear!.year.toString(),
+              onNextPage: () {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
+                );
+              },
+              onPreviousPage: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                key: _pageViewKey,
+                controller: _pageController,
+                itemCount: yearsCount,
+                onPageChanged: (yearPage) {
+                  final DateTime year = DateTime(
+                    widget.minDate.year + yearPage,
+                    // widget.minDate.month,
+                    // widget.minDate.day,
+                  );
 
-              setState(() {
-                _displayedYear = year;
-              });
-            },
-            itemBuilder: (context, index) {
-              final DateTime year = DateTime(
-                widget.minDate.year + index,
-                // widget.minDate.month,
-                // widget.minDate.day,
-              );
-
-              return MonthView(
-                key: ValueKey<DateTime>(year),
-                currentDate: widget.currentDate != null ? DateUtilsX.monthOnly(widget.currentDate!) : DateUtilsX.monthOnly(DateTime.now()),
-                maxDate: DateUtilsX.monthOnly(widget.maxDate),
-                minDate: DateUtilsX.monthOnly(widget.minDate),
-                displayedDate: year,
-                selectedDate: _selectedDate,
-                enabledCellsDecoration: enabledCellsDecoration,
-                enabledCellsTextStyle: enabledCellsTextStyle,
-                disabledCellsDecoration: disbaledCellsDecoration,
-                disabledCellsTextStyle: disabledCellsTextStyle,
-                currentDateDecoration: currentDateDecoration,
-                currentDateTextStyle: currentDateTextStyle,
-                selectedCellDecoration: selectedCellDecoration,
-                selectedCellTextStyle: selectedCellTextStyle,
-                highlightColor: highlightColor,
-                splashColor: splashColor,
-                splashRadius: widget.splashRadius,
-                onChanged: (value) {
-                  final selected = DateUtilsX.monthOnly(value);
-                  widget.onDateSelected?.call(selected);
                   setState(() {
-                    _selectedDate = selected;
+                    _displayedYear = year;
                   });
                 },
-              );
-            },
-          ),
+                itemBuilder: (context, index) {
+                  final DateTime year = DateTime(
+                    widget.minDate.year + index,
+                    // widget.minDate.month,
+                    // widget.minDate.day,
+                  );
+
+                  return MonthView(
+                    key: ValueKey<DateTime>(year),
+                    currentDate: widget.currentDate != null
+                        ? DateUtilsX.monthOnly(widget.currentDate!)
+                        : DateUtilsX.monthOnly(DateTime.now()),
+                    maxDate: DateUtilsX.monthOnly(widget.maxDate),
+                    minDate: DateUtilsX.monthOnly(widget.minDate),
+                    displayedDate: year,
+                    selectedDate: _selectedDate,
+                    enabledCellsDecoration: enabledCellsDecoration,
+                    enabledCellsTextStyle: enabledCellsTextStyle,
+                    disabledCellsDecoration: disbaledCellsDecoration,
+                    disabledCellsTextStyle: disabledCellsTextStyle,
+                    currentDateDecoration: currentDateDecoration,
+                    currentDateTextStyle: currentDateTextStyle,
+                    selectedCellDecoration: selectedCellDecoration,
+                    selectedCellTextStyle: selectedCellTextStyle,
+                    highlightColor: highlightColor,
+                    splashColor: splashColor,
+                    splashRadius: widget.splashRadius,
+                    onChanged: (value) {
+                      final selected = DateUtilsX.monthOnly(value);
+                      widget.onDateSelected?.call(selected);
+                      setState(() {
+                        _selectedDate = selected;
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ],
-    );
+      );
+    });
   }
 }

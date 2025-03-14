@@ -26,7 +26,7 @@ To use the Date Picker library, add the following dependency to your `pubspec.ya
 
 ```yaml
 dependencies:
-  date_picker_plus: ^3.0.1
+  date_picker_plus: ^3.0.2
 ```
 
 Import the library in your Dart file:
@@ -68,6 +68,8 @@ final date = await showDatePickerDialog(
       initialDate: DateTime(2022, 10, 10),
       minDate: DateTime(2020, 10, 10),
       maxDate: DateTime(2024, 10, 30),
+      width: 300,
+      height: 300,
       currentDate: DateTime(2022, 10, 15),
       selectedDate: DateTime(2022, 10, 16),
       currentDateDecoration: const BoxDecoration(),
@@ -96,12 +98,14 @@ final range = await showRangePickerDialog(
       initialDate: DateTime(2022, 10, 10),
       minDate: DateTime(2020, 10, 10),
       maxDate: DateTime(2024, 10, 30),
+      width: 300,
+      height: 300,
       currentDate: DateTime(2022, 10, 15),
       selectedRange: DateTimeRange(start: DateTime(2022), end: Dat(2023)),
       selectedCellsDecoration: const BoxDecoration(),
       selectedCellsTextStyle: const TextStyle(),
-      singelSelectedCellDecoration: const BoxDecoration(),
-      singelSelectedCellTextStyle: const TextStyle(),
+      singleSelectedCellDecoration: const BoxDecoration(),
+      singleSelectedCellTextStyle: const TextStyle(),
       currentDateDecoration: const BoxDecoration(),
       currentDateTextStyle: const TextStyle(),
       daysOfTheWeekTextStyle: const TextStyle(),
@@ -129,12 +133,16 @@ Alternatively, you can use other widget directly:
 Creates a full date picker.
 
 ```dart
-DatePicker(
+SizedBox(
+  width: 300,
+  height: 400,
+  child: DatePicker(
   minDate: DateTime(2021, 1, 1),
   maxDate: DateTime(2023, 12, 31),
   onDateSelected: (value) {
     // Handle selected date
   },
+ ),
 );
 ```
 
@@ -143,12 +151,17 @@ DatePicker(
 Creates a full range picker.
 
 ```dart
-RangeDatePicker(
-  minDate: DateTime(2021, 1, 1),
-  maxDate: DateTime(2023, 12, 31),
-  onRangeSelected: (value) {
+SizedBox(
+  width: 300,
+  height: 400,
+  child: RangeDatePicker(
+    centerLeadingDate: true,
+    minDate: DateTime(2020, 10, 10),
+    maxDate: DateTime(2024, 10, 30),
+    onRangeSelected: (value) {
     // Handle selected range
   },
+ ),
 );
 ```
 
@@ -157,12 +170,16 @@ RangeDatePicker(
 Creates a day picker only.
 
 ```dart
-DaysPicker(
+SizedBox(
+  width: 300,
+  height: 400,
+  child: DaysPicker(
   minDate: DateTime(2021, 1, 1),
   maxDate: DateTime(2023, 12, 31),
   onDateSelected: (value) {
     // Handle selected date
   },
+ ),
 );
 ```
 
@@ -171,12 +188,16 @@ DaysPicker(
 Creates a month picker only. The day of selected month will always be `1`.
 
 ```dart
-MonthPicker(
+SizedBox(
+  width: 300,
+  height: 400,
+  child: MonthPicker(
   minDate: DateTime(2021, 1),
   maxDate: DateTime(2023, 12),
   onDateSelected: (value) {
     // Handle selected date
   },
+ ),
 );
 ```
 
@@ -185,12 +206,16 @@ MonthPicker(
 Creates a year picker only. The month of selected year will always be `1`.
 
 ```dart
-YearsPicker(
+SizedBox(
+  width: 300,
+  height: 400,
+  child: YearsPicker(
   minDate: DateTime(2021),
   maxDate: DateTime(2023),
   onDateSelected: (value) {
     // Handle selected date
   },
+ ),
 );
 ```
 

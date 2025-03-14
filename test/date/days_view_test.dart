@@ -84,7 +84,8 @@ void main() {
       expect(todayFinder, findsOneWidget);
     });
 
-    testWidgets('should be two widget highlighted, Today with border, and selected day with fill color.', (WidgetTester tester) async {
+    testWidgets('should be two widget highlighted, Today with border, and selected day with fill color.',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
       final DateTime selectedDate = DateTime(
         currentDate.year,
@@ -139,7 +140,8 @@ void main() {
       expect(todayFinder, findsOneWidget);
     });
 
-    testWidgets('should be one widget highlighted, when selected day is not in the month displayed.', (WidgetTester tester) async {
+    testWidgets('should be one widget highlighted, when selected day is not in the month displayed.',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
       final DateTime selectedDate = DateTime(
         currentDate.year,
@@ -308,6 +310,52 @@ void main() {
         return false;
       });
       expect(disabledDayFinder, findsNWidgets(11));
+    });
+
+    testWidgets('should disbale all the days provided in disabledDayPredicate.', (WidgetTester tester) async {
+      final DateTime currentDate = DateTime(2021);
+      final DateTime displayedMonth = DateTime(2023);
+      final DateTime minDate = DateTime(2020);
+      final DateTime maxDate = DateTime(2024);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysView(
+              currentDate: currentDate,
+              onChanged: (DateTime date) {},
+              disabledDayPredicate: (date) {
+                return date.weekday == DateTime.sunday || date.weekday == DateTime.saturday;
+              },
+              minDate: minDate,
+              maxDate: maxDate,
+              displayedMonth: displayedMonth,
+              currentDateTextStyle: const TextStyle(),
+              daysOfTheWeekTextStyle: const TextStyle(),
+              enabledCellsTextStyle: const TextStyle(),
+              selectedDayTextStyle: const TextStyle(),
+              disabledCellsTextStyle: const TextStyle(),
+              currentDateDecoration: const BoxDecoration(),
+              enabledCellsDecoration: const BoxDecoration(),
+              selectedDayDecoration: const BoxDecoration(),
+              splashColor: Colors.black,
+              highlightColor: Colors.black,
+              disabledCellsDecoration: const BoxDecoration(
+                color: Colors.green,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final disabledDayFinder = find.byWidgetPredicate((widget) {
+        if (widget is ExcludeSemantics && widget.child is Container && (widget.child as Container).child is Center) {
+          final container = widget.child as Container;
+          return (container.decoration as BoxDecoration).color == Colors.green;
+        }
+        return false;
+      });
+      expect(disabledDayFinder, findsNWidgets(9));
     });
 
     testWidgets('should show the correct first day of the week based on locale.', (WidgetTester tester) async {
@@ -650,7 +698,9 @@ void main() {
       expect(clickbaleWidget, findsNWidgets(31)); // Assuming there are 31 days in the displayed month
 
       final Finder enabledDayFinder = find.byWidgetPredicate((widget) {
-        if (widget is Container && (widget.child as Center).child is Text && ((widget.child as Center).child as Text).data == dateToSelect.day.toString()) {
+        if (widget is Container &&
+            (widget.child as Center).child is Text &&
+            ((widget.child as Center).child as Text).data == dateToSelect.day.toString()) {
           return true;
         }
         return false;

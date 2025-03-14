@@ -28,10 +28,20 @@ class MyApp extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RangeDatePicker(
-                    centerLeadingDate: true,
-                    minDate: DateTime(2020, 10, 10),
-                    maxDate: DateTime(2024, 10, 30),
+                  SizedBox(
+                    height: 400,
+                    child: DatePicker(
+                      centerLeadingDate: true,
+                      minDate: DateTime(2020),
+                      maxDate: DateTime(2024),
+                      initialDate: DateTime(2023, 1),
+                      disabledDayPredicate: (date) {
+                        return date.weekday == DateTime.sunday || date.weekday == DateTime.saturday;
+                      },
+                      disabledCellsDecoration: const BoxDecoration(
+                        color: Colors.green,
+                      ),
+                    ),
                   ),
                 ],
               ),

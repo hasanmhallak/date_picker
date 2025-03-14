@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'leading_date.dart';
 
@@ -51,6 +51,8 @@ class Header extends StatelessWidget {
     required this.slidersSize,
     required this.leadingDateTextStyle,
     this.centerLeadingDate = false,
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
   });
 
   /// The currently displayed date. It is typically in a format
@@ -89,92 +91,69 @@ class Header extends StatelessWidget {
   ///
   final bool centerLeadingDate;
 
+  /// Semantic label for button to go to the previous page.
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page.
+  final String? nextPageSemanticLabel;
+
   @override
   Widget build(BuildContext context) {
+    final forwardButton = GestureDetector(
+      onTap: onNextPage,
+      child: SizedBox(
+        width: 36,
+        height: 36,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: slidersSize,
+            color: slidersColor,
+          ),
+        ),
+      ),
+    );
+
+    final backButton = GestureDetector(
+      onTap: onPreviousPage,
+      child: SizedBox(
+        width: 36,
+        height: 36,
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            size: slidersSize,
+            color: slidersColor,
+          ),
+        ),
+      ),
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (centerLeadingDate)
-          GestureDetector(
-            onTap: onPreviousPage,
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  CupertinoIcons.chevron_left,
-                  size: slidersSize,
-                  color: slidersColor,
-                ),
-              ),
-            ),
-          ),
+        if (centerLeadingDate) backButton,
         LeadingDate(
           onTap: onDateTap,
           displayedText: displayedDate,
           displayedTextStyle: leadingDateTextStyle,
         ),
         if (centerLeadingDate)
-          GestureDetector(
-            onTap: onNextPage,
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  CupertinoIcons.chevron_right,
-                  size: slidersSize,
-                  color: slidersColor,
-                ),
-              ),
-            ),
-          ),
-        if (!centerLeadingDate)
+          forwardButton
+        else
           Row(
             children: [
-              GestureDetector(
-                onTap: onPreviousPage,
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.chevron_left,
-                      size: slidersSize,
-                      color: slidersColor,
-                    ),
-                  ),
-                ),
-              ),
+              backButton,
               const SizedBox(width: 10),
-              GestureDetector(
-                onTap: onNextPage,
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      CupertinoIcons.chevron_right,
-                      size: slidersSize,
-                      color: slidersColor,
-                    ),
-                  ),
-                ),
-              ),
+              forwardButton,
             ],
-          )
+          ),
       ],
     );
   }

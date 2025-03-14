@@ -1,7 +1,7 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'picker_grid_delegate.dart';
+import 'utils.dart';
 
 /// Displays the years of a given range and allows choosing a year.
 ///
@@ -40,7 +40,8 @@ class YearView extends StatelessWidget {
       final max = DateUtilsX.yearOnly(maxDate);
       final min = DateUtilsX.yearOnly(minDate);
       final selected = DateUtilsX.yearOnly(selectedDate!);
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
@@ -128,7 +129,8 @@ class YearView extends StatelessWidget {
 
     int i = 0;
     while (i < numberOfYears) {
-      final bool isDisabled = yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
+      final bool isDisabled =
+          yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 
@@ -174,7 +176,7 @@ class YearView extends StatelessWidget {
         final date = DateTime(yearsName[i]);
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
-          radius: splashRadius ?? 60 / 2 + 4,
+          radius: splashRadius,
           splashColor: splashColor,
           highlightColor: highlightColor,
           child: Semantics(
@@ -192,14 +194,9 @@ class YearView extends StatelessWidget {
 
     return GridView.custom(
       padding: EdgeInsets.zero,
-      shrinkWrap: true,
+      shrinkWrap: false,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
-        columnCount: 3,
-        rowPadding: 3,
-        rowExtent: 60,
-        rowStride: 80,
-      ),
+      gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(
         yearWidgetsList,
         addRepaintBoundaries: false,

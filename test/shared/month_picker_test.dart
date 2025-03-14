@@ -1,6 +1,5 @@
 import 'package:date_picker_plus/src/shared/header.dart';
 import 'package:date_picker_plus/src/shared/month_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -119,7 +118,8 @@ void main() {
       );
     });
 
-    testWidgets('should change the page when tapping on the next page icon and update header.', (WidgetTester tester) async {
+    testWidgets('should change the page when tapping on the next page icon and update header.',
+        (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2024, 12, 31);
@@ -153,9 +153,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder nextPageIconFinder = find.byIcon(CupertinoIcons.chevron_right);
+      final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -173,7 +173,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage + 1));
 
@@ -192,7 +192,8 @@ void main() {
       );
     });
 
-    testWidgets('should change the page when tapping on the previous page icon and update header.', (WidgetTester tester) async {
+    testWidgets('should change the page when tapping on the previous page icon and update header.',
+        (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2000, 1, 1);
       final DateTime maxDate = DateTime(2030, 12, 31);
@@ -226,9 +227,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder previousPageIconFinder = find.byIcon(CupertinoIcons.chevron_left);
+      final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -246,7 +247,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage - 1));
 
@@ -265,7 +266,9 @@ void main() {
       );
     });
 
-    testWidgets('should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.', (WidgetTester tester) async {
+    testWidgets(
+        'should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.',
+        (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2020, 6, 1);
       final DateTime minDate = DateTime(2020, 1, 1);
       final DateTime maxDate = DateTime(2020, 12, 31);
@@ -299,9 +302,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder previousPageIconFinder = find.byIcon(CupertinoIcons.chevron_left);
+      final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
       expect(previousPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -319,7 +322,7 @@ void main() {
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -338,7 +341,9 @@ void main() {
       );
     });
 
-    testWidgets('should NOT change the page when tapping on the next page icon when the range in max and min date are one year.', (WidgetTester tester) async {
+    testWidgets(
+        'should NOT change the page when tapping on the next page icon when the range in max and min date are one year.',
+        (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
@@ -372,9 +377,9 @@ void main() {
       final Finder pageViewFinder = find.byType(PageView);
       expect(pageViewFinder, findsOneWidget);
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller.initialPage;
+      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
 
-      final Finder nextPageIconFinder = find.byIcon(CupertinoIcons.chevron_right);
+      final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
       expect(nextPageIconFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
@@ -392,7 +397,7 @@ void main() {
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller.page!.round();
+      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
 
       expect(currentPage, equals(initialPage));
 
@@ -411,7 +416,9 @@ void main() {
       );
     });
 
-    testWidgets('should NOT change the page forward and backward on drag when the range in max and min date are one year.', (WidgetTester tester) async {
+    testWidgets(
+        'should NOT change the page forward and backward on drag when the range in max and min date are one year.',
+        (WidgetTester tester) async {
       final DateTime initialDate = DateTime(2020, 6, 1);
       final DateTime minDate = DateTime(2020, 1, 1);
       final DateTime maxDate = DateTime(2020, 12, 31);
@@ -479,50 +486,6 @@ void main() {
     });
 
     testWidgets(
-      'Should the height of the Sized box be 78 * 4',
-      (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
-        final DateTime minDate = DateTime(2000);
-        final DateTime maxDate = DateTime(2011);
-
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Material(
-              child: MonthPicker(
-                currentDate: initialDate,
-                initialDate: initialDate,
-                minDate: minDate,
-                maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
-              ),
-            ),
-          ),
-        );
-
-        final Finder sizedBoxFinder = find.byKey(const ValueKey<double>(78 * 4));
-        expect(sizedBoxFinder, findsOneWidget);
-
-        const height = 78 * 4;
-
-        final SizedBox sizedBoxWidget = tester.widget<SizedBox>(sizedBoxFinder);
-
-        expect(sizedBoxWidget.height, equals(height));
-      },
-    );
-
-    testWidgets(
       'Should show the correct month on pick',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2010, 2);
@@ -563,7 +526,8 @@ void main() {
 
         final selectedMonthFinder = find.byWidgetPredicate((widget) {
           if (widget is Container && widget.child is Center && (widget.child as Center).child is Text) {
-            return ((widget.child as Center).child as Text).data == 'Jan' && ((widget.child as Center).child as Text).style?.color == selectedYearColor;
+            return ((widget.child as Center).child as Text).data == 'Jan' &&
+                ((widget.child as Center).child as Text).style?.color == selectedYearColor;
           }
           return false;
         });
@@ -666,7 +630,9 @@ void main() {
 
         final leftIconFinder = find.byWidgetPredicate((widget) {
           if (widget is Icon) {
-            return widget.color == slidersColors && widget.size == slidersSize && widget.icon == CupertinoIcons.chevron_left;
+            return widget.color == slidersColors &&
+                widget.size == slidersSize &&
+                widget.icon == Icons.arrow_back_ios_rounded;
           }
           return false;
         });
@@ -675,7 +641,9 @@ void main() {
 
         final rightIconFinder = find.byWidgetPredicate((widget) {
           if (widget is Icon) {
-            return widget.color == slidersColors && widget.size == slidersSize && widget.icon == CupertinoIcons.chevron_right;
+            return widget.color == slidersColors &&
+                widget.size == slidersSize &&
+                widget.icon == Icons.arrow_forward_ios_rounded;
           }
           return false;
         });
@@ -731,7 +699,7 @@ void main() {
         );
 
         final pageViewWidget = tester.widget<PageView>(find.byType(PageView));
-        pageViewWidget.controller.addListener(scrollListener);
+        pageViewWidget.controller!.addListener(scrollListener);
 
         await tester.pumpAndSettle();
 

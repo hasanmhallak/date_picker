@@ -1,8 +1,8 @@
-import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import 'picker_grid_delegate.dart';
+import 'utils.dart';
 
 /// Displays the months of a given year and allows choosing a month.
 ///
@@ -38,7 +38,8 @@ class MonthView extends StatelessWidget {
       final min = DateUtilsX.monthOnly(minDate);
       final selected = DateUtilsX.monthOnly(selectedDate!);
 
-      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) && (selected.isBefore(max) || selected.isAtSameMomentAs(max));
+      return (selected.isAfter(min) || selected.isAtSameMomentAs(min)) &&
+          (selected.isBefore(max) || selected.isAtSameMomentAs(max));
     }(), "selected date should be in the range of min date & max date");
   }
 
@@ -111,7 +112,8 @@ class MonthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
 
     final int year = displayedDate.year;
@@ -125,16 +127,19 @@ class MonthView extends StatelessWidget {
       selectedMonth = DateUtilsX.monthOnly(selectedDate!);
     }
 
-    final monthsNames = DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
+    final monthsNames =
+        DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
     final monthsWidgetList = <Widget>[];
 
     int month = 0;
     while (month < 12) {
       final DateTime monthToBuild = DateTime(year, month + 1);
 
-      final bool isDisabled = monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
+      final bool isDisabled =
+          monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
 
-      final bool isCurrentMonth = monthToBuild == DateUtilsX.monthOnly(currentDate);
+      final bool isCurrentMonth =
+          monthToBuild == DateUtilsX.monthOnly(currentDate);
 
       final bool isSelected = monthToBuild == selectedMonth;
       //
@@ -177,7 +182,7 @@ class MonthView extends StatelessWidget {
       } else {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
-          radius: splashRadius ?? 60 / 2 + 4,
+          radius: splashRadius,
           splashColor: splashColor,
           highlightColor: highlightColor,
           child: Semantics(
@@ -197,12 +202,7 @@ class MonthView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
-        columnCount: 3,
-        rowPadding: 3,
-        rowExtent: 60,
-        rowStride: 80,
-      ),
+      gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(
         monthsWidgetList,
         addRepaintBoundaries: false,
