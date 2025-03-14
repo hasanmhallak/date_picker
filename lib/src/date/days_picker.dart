@@ -300,7 +300,7 @@ class _DaysPickerState extends State<DaysPicker> {
     //
     final TextStyle daysOfTheWeekTextStyle = widget.daysOfTheWeekTextStyle ??
         textTheme.titleSmall!.copyWith(
-          color: colorScheme.onSurface.withOpacity(0.30),
+          color: colorScheme.onSurface.withValues(alpha: 0.30),
           fontWeight: FontWeight.bold,
           fontSize: 14,
         );
@@ -326,7 +326,7 @@ class _DaysPickerState extends State<DaysPicker> {
     final TextStyle disabledCellsTextStyle = widget.disabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
-          color: colorScheme.onSurface.withOpacity(0.30),
+          color: colorScheme.onSurface.withValues(alpha: 0.30),
         );
 
     final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
@@ -382,11 +382,13 @@ class _DaysPickerState extends State<DaysPicker> {
 
     //
     //! splash
-    final splashColor =
-        widget.splashColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final splashColor = widget.splashColor ??
+        selectedCellDecoration.color?.withValues(alpha: 0.3) ??
+        colorScheme.primary.withValues(alpha: 0.3);
 
-    final highlightColor =
-        widget.highlightColor ?? selectedCellDecoration.color?.withOpacity(0.3) ?? colorScheme.primary.withOpacity(0.3);
+    final highlightColor = widget.highlightColor ??
+        selectedCellDecoration.color?.withValues(alpha: 0.3) ??
+        colorScheme.primary.withValues(alpha: 0.3);
     //
     //
 
