@@ -54,6 +54,9 @@ class RangeDatePicker extends StatefulWidget {
     required this.maxDate,
     required this.minDate,
     this.onRangeSelected,
+    this.onLeadingDateTap,
+    this.onStartDateChanged,
+    this.onEndDateChanged,
     this.currentDate,
     this.initialDate,
     this.selectedRange,
@@ -106,6 +109,15 @@ class RangeDatePicker extends StatefulWidget {
 
   /// Called when the user picks a range.
   final ValueChanged<DateTimeRange>? onRangeSelected;
+
+  /// Called when the user selects between months/years/days
+  final VoidCallback? onLeadingDateTap;
+
+  /// Called when the user picks a new start date to the range
+  final ValueChanged<DateTime>? onStartDateChanged;
+
+  /// Called when the user picks an end date to the range
+  final ValueChanged<DateTime>? onEndDateChanged;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -340,12 +352,16 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
               setState(() {
                 _pickerType = PickerType.months;
               });
+
+              widget.onLeadingDateTap?.call();
             },
             onEndDateChanged: (date) {
               setState(() {
                 _selectedEndDate = date;
               });
 
+              widget.onEndDateChanged?.call(date);
+              
               // this should never be null
               if (_selectedStartDate != null) {
                 widget.onRangeSelected?.call(
@@ -361,6 +377,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
                 _selectedStartDate = date;
                 _selectedEndDate = null;
               });
+
+              widget.onStartDateChanged?.call(date);
             },
           ),
         );
