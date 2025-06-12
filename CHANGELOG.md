@@ -1,3 +1,7 @@
+# 4.2.0
+
+- Adding pass-thru callbacks for onLeadingDateTap, onStartDateChanged, and onEndDateChanged for the RangeDatePicker widget. thanks to @coogle [here.](https://github.com/hasanmhallak/date_picker/pull/33)
+
 # 4.1.0
 
 - Add `disabledDayPredicate` to provide a way to disable days with custom logic.
