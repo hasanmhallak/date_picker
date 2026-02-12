@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
 import 'date_picker.dart';
 
@@ -81,57 +82,55 @@ Future<DateTime?> showDatePickerDialog({
     useRootNavigator: useRootNavigator,
     useSafeArea: useSafeArea,
     builder: (context) {
-      return DeviceOrientationBuilder(
-        builder: (context, o) {
-          late final Size size;
-          switch (o) {
-            case Orientation.portrait:
-              size = const Size(328.0, 400.0);
-              break;
-            case Orientation.landscape:
-              size = const Size(328.0, 300.0);
-              break;
-          }
-          return Padding(
-            padding: padding,
-            child: Dialog(
-              insetPadding: EdgeInsets.zero,
-              child: SizedBox(
-                width: width ?? size.width,
-                height: height ?? size.height,
-                child: DatePicker(
-                  centerLeadingDate: centerLeadingDate,
-                  initialDate: initialDate,
-                  maxDate: maxDate,
-                  minDate: minDate,
-                  currentDate: currentDate,
-                  selectedDate: selectedDate,
-                  onDateSelected: (value) => Navigator.pop(context, value),
-                  initialPickerType: initialPickerType,
-                  padding: contentPadding,
-                  currentDateDecoration: currentDateDecoration,
-                  currentDateTextStyle: currentDateTextStyle,
-                  disabledCellsDecoration: disabledCellsDecoration,
-                  disabledCellsTextStyle: disabledCellsTextStyle,
-                  enabledCellsDecoration: enabledCellsDecoration,
-                  enabledCellsTextStyle: enabledCellsTextStyle,
-                  selectedCellDecoration: selectedCellDecoration,
-                  selectedCellTextStyle: selectedCellTextStyle,
-                  daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
-                  leadingDateTextStyle: leadingDateTextStyle,
-                  slidersColor: slidersColor,
-                  slidersSize: slidersSize,
-                  highlightColor: highlightColor,
-                  splashColor: splashColor,
-                  splashRadius: splashRadius,
-                  previousPageSemanticLabel: previousPageSemanticLabel,
-                  nextPageSemanticLabel: nextPageSemanticLabel,
-                ),
+      return DeviceOrientationBuilder(builder: (context, o) {
+        late final Size size;
+        switch (o) {
+          case Orientation.portrait:
+            size = const Size(328.0, 400.0);
+            break;
+          case Orientation.landscape:
+            size = const Size(328.0, 300.0);
+            break;
+        }
+        return Padding(
+          padding: padding,
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: SizedBox(
+              width: width ?? size.width,
+              height: height ?? size.height,
+              child: DatePicker(
+                centerLeadingDate: centerLeadingDate,
+                initialDate: initialDate,
+                maxDate: maxDate,
+                minDate: minDate,
+                currentDate: currentDate,
+                selectedDate: selectedDate,
+                onDateSelected: (value) => Navigator.pop(context, value),
+                initialPickerType: initialPickerType,
+                padding: contentPadding,
+                currentDateDecoration: currentDateDecoration,
+                currentDateTextStyle: currentDateTextStyle,
+                disabledCellsDecoration: disabledCellsDecoration,
+                disabledCellsTextStyle: disabledCellsTextStyle,
+                enabledCellsDecoration: enabledCellsDecoration,
+                enabledCellsTextStyle: enabledCellsTextStyle,
+                selectedCellDecoration: selectedCellDecoration,
+                selectedCellTextStyle: selectedCellTextStyle,
+                daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
+                leadingDateTextStyle: leadingDateTextStyle,
+                slidersColor: slidersColor,
+                slidersSize: slidersSize,
+                highlightColor: highlightColor,
+                splashColor: splashColor,
+                splashRadius: splashRadius,
+                previousPageSemanticLabel: previousPageSemanticLabel,
+                nextPageSemanticLabel: nextPageSemanticLabel,
               ),
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
     },
   );
 }
