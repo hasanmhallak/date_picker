@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DeviceOrientationBuilder;
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
