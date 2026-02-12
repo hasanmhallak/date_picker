@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../shared/device_orientation_builder.dart';
 import '../shared/types.dart';
 import '../shared/utils.dart';
 import 'days_view.dart';
@@ -76,27 +75,29 @@ class DaysPicker extends StatefulWidget {
     this.disabledDayPredicate,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
-    assert(
-      () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+    assert(() {
+      if (initialDate == null) return true;
+      final init = DateTime(
+        initialDate!.year,
+        initialDate!.month,
+        initialDate!.day,
+      );
 
-        final min = DateTime(minDate.year, minDate.month, minDate.day);
+      final min = DateTime(minDate.year, minDate.month, minDate.day);
 
-        return init.isAfter(min) || init.isAtSameMomentAs(min);
-      }(),
-      'initialDate $initialDate must be on or after minDate $minDate.',
-    );
-    assert(
-      () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+      return init.isAfter(min) || init.isAtSameMomentAs(min);
+    }(), 'initialDate $initialDate must be on or after minDate $minDate.');
+    assert(() {
+      if (initialDate == null) return true;
+      final init = DateTime(
+        initialDate!.year,
+        initialDate!.month,
+        initialDate!.day,
+      );
 
-        final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
-        return init.isBefore(max) || init.isAtSameMomentAs(max);
-      }(),
-      'initialDate $initialDate must be on or before maxDate $maxDate.',
-    );
+      final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
+      return init.isBefore(max) || init.isAtSameMomentAs(max);
+    }(), 'initialDate $initialDate must be on or before maxDate $maxDate.');
   }
 
   /// The date which will be displayed on first opening. If not specified, the picker
@@ -251,10 +252,17 @@ class _DaysPickerState extends State<DaysPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
-    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+    final clampedInitailDate = DateUtilsX.clampDateToRange(
+      max: widget.maxDate,
+      min: widget.minDate,
+      date: DateTime.now(),
+    );
+    _displayedMonth = DateUtils.dateOnly(
+      widget.initialDate ?? clampedInitailDate,
+    );
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
@@ -268,9 +276,14 @@ class _DaysPickerState extends State<DaysPicker> {
     // but for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
     if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate =
-          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate,
+        min: widget.minDate,
+        date: DateTime.now(),
+      );
+      _displayedMonth = DateUtils.dateOnly(
+        widget.initialDate ?? clampedInitailDate,
+      );
 
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
@@ -278,7 +291,9 @@ class _DaysPickerState extends State<DaysPicker> {
     }
 
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -298,7 +313,8 @@ class _DaysPickerState extends State<DaysPicker> {
     //! days of the week
     //
     //
-    final TextStyle daysOfTheWeekTextStyle = widget.daysOfTheWeekTextStyle ??
+    final TextStyle daysOfTheWeekTextStyle =
+        widget.daysOfTheWeekTextStyle ??
         textTheme.titleSmall!.copyWith(
           color: colorScheme.onSurface.withValues(alpha: 0.30),
           fontWeight: FontWeight.bold,
@@ -310,7 +326,8 @@ class _DaysPickerState extends State<DaysPicker> {
     //
     //
 
-    final TextStyle enabledCellsTextStyle = widget.enabledCellsTextStyle ??
+    final TextStyle enabledCellsTextStyle =
+        widget.enabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onSurface,
@@ -323,26 +340,30 @@ class _DaysPickerState extends State<DaysPicker> {
     //
     //
 
-    final TextStyle disabledCellsTextStyle = widget.disabledCellsTextStyle ??
+    final TextStyle disabledCellsTextStyle =
+        widget.disabledCellsTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onSurface.withValues(alpha: 0.30),
         );
 
-    final BoxDecoration disbaledCellsDecoration = widget.disabledCellsDecoration;
+    final BoxDecoration disbaledCellsDecoration =
+        widget.disabledCellsDecoration;
 
     //
     //! current
     //
     //
 
-    final TextStyle currentDateTextStyle = widget.currentDateTextStyle ??
+    final TextStyle currentDateTextStyle =
+        widget.currentDateTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.primary,
         );
 
-    final BoxDecoration currentDateDecoration = widget.currentDateDecoration ??
+    final BoxDecoration currentDateDecoration =
+        widget.currentDateDecoration ??
         BoxDecoration(
           border: Border.all(color: colorScheme.primary),
           shape: BoxShape.circle,
@@ -353,23 +374,23 @@ class _DaysPickerState extends State<DaysPicker> {
     //
     //
 
-    final TextStyle selectedCellTextStyle = widget.selectedCellTextStyle ??
+    final TextStyle selectedCellTextStyle =
+        widget.selectedCellTextStyle ??
         textTheme.titleLarge!.copyWith(
           fontWeight: FontWeight.normal,
           color: colorScheme.onPrimary,
         );
 
-    final BoxDecoration selectedCellDecoration = widget.selectedCellDecoration ??
-        BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        );
+    final BoxDecoration selectedCellDecoration =
+        widget.selectedCellDecoration ??
+        BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle);
 
     //
     //
     //
     //! header
-    final leadingDateTextStyle = widget.leadingDateTextStyle ??
+    final leadingDateTextStyle =
+        widget.leadingDateTextStyle ??
         TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
@@ -382,117 +403,130 @@ class _DaysPickerState extends State<DaysPicker> {
 
     //
     //! splash
-    final splashColor = widget.splashColor ??
+    final splashColor =
+        widget.splashColor ??
         selectedCellDecoration.color?.withValues(alpha: 0.3) ??
         colorScheme.primary.withValues(alpha: 0.3);
 
-    final highlightColor = widget.highlightColor ??
+    final highlightColor =
+        widget.highlightColor ??
         selectedCellDecoration.color?.withValues(alpha: 0.3) ??
         colorScheme.primary.withValues(alpha: 0.3);
     //
     //
 
-    return DeviceOrientationBuilder(builder: (context, o) {
-      late final Size size;
-      switch (o) {
-        case Orientation.portrait:
-          size = const Size(328.0, 402.0);
-          break;
-        case Orientation.landscape:
-          size = const Size(328.0, 300.0);
-          break;
-      }
+    return DeviceOrientationBuilder(
+      builder: (context, o) {
+        late final Size size;
+        switch (o) {
+          case Orientation.portrait:
+            size = const Size(328.0, 402.0);
+            break;
+          case Orientation.landscape:
+            size = const Size(328.0, 300.0);
+            break;
+        }
 
-      return LimitedBox(
-        maxHeight: size.height,
-        maxWidth: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Header(
-              centerLeadingDate: widget.centerLeadingDate,
-              leadingDateTextStyle: leadingDateTextStyle,
-              slidersColor: slidersColor,
-              slidersSize: slidersSize,
-              onDateTap: () => widget.onLeadingDateTap?.call(),
-              displayedDate: MaterialLocalizations.of(context)
-                  .formatMonthYear(_displayedMonth!)
-                  .replaceAll('٩', '9')
-                  .replaceAll('٨', '8')
-                  .replaceAll('٧', '7')
-                  .replaceAll('٦', '6')
-                  .replaceAll('٥', '5')
-                  .replaceAll('٤', '4')
-                  .replaceAll('٣', '3')
-                  .replaceAll('٢', '2')
-                  .replaceAll('١', '1')
-                  .replaceAll('٠', '0'),
-              onNextPage: () {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease,
-                );
-              },
-              onPreviousPage: () {
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease,
-                );
-              },
-              previousPageSemanticLabel: widget.previousPageSemanticLabel,
-              nextPageSemanticLabel: widget.nextPageSemanticLabel,
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                key: _pageViewKey,
-                controller: _pageController,
-                itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
-                onPageChanged: (monthPage) {
-                  final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
-
-                  setState(() {
-                    _displayedMonth = monthDate;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
-
-                  return DaysView(
-                    key: ValueKey<DateTime>(month),
-                    currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                    maxDate: DateUtils.dateOnly(widget.maxDate),
-                    minDate: DateUtils.dateOnly(widget.minDate),
-                    displayedMonth: month,
-                    selectedDate: _selectedDate,
-                    daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
-                    enabledCellsTextStyle: enabledCellsTextStyle,
-                    enabledCellsDecoration: enabledCellsDecoration,
-                    disabledCellsTextStyle: disabledCellsTextStyle,
-                    disabledCellsDecoration: disbaledCellsDecoration,
-                    currentDateDecoration: currentDateDecoration,
-                    currentDateTextStyle: currentDateTextStyle,
-                    selectedDayDecoration: selectedCellDecoration,
-                    selectedDayTextStyle: selectedCellTextStyle,
-                    highlightColor: highlightColor,
-                    splashColor: splashColor,
-                    splashRadius: widget.splashRadius,
-                    disabledDayPredicate: widget.disabledDayPredicate,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDate = value;
-                      });
-                      widget.onDateSelected?.call(value);
-                    },
+        return LimitedBox(
+          maxHeight: size.height,
+          maxWidth: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Header(
+                centerLeadingDate: widget.centerLeadingDate,
+                leadingDateTextStyle: leadingDateTextStyle,
+                slidersColor: slidersColor,
+                slidersSize: slidersSize,
+                onDateTap: () => widget.onLeadingDateTap?.call(),
+                displayedDate: MaterialLocalizations.of(context)
+                    .formatMonthYear(_displayedMonth!)
+                    .replaceAll('٩', '9')
+                    .replaceAll('٨', '8')
+                    .replaceAll('٧', '7')
+                    .replaceAll('٦', '6')
+                    .replaceAll('٥', '5')
+                    .replaceAll('٤', '4')
+                    .replaceAll('٣', '3')
+                    .replaceAll('٢', '2')
+                    .replaceAll('١', '1')
+                    .replaceAll('٠', '0'),
+                onNextPage: () {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
                   );
                 },
+                onPreviousPage: () {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+                previousPageSemanticLabel: widget.previousPageSemanticLabel,
+                nextPageSemanticLabel: widget.nextPageSemanticLabel,
               ),
-            ),
-          ],
-        ),
-      );
-    });
+              const SizedBox(height: 10),
+              Expanded(
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  key: _pageViewKey,
+                  controller: _pageController,
+                  itemCount:
+                      DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                  onPageChanged: (monthPage) {
+                    final DateTime monthDate = DateUtils.addMonthsToMonthDate(
+                      widget.minDate,
+                      monthPage,
+                    );
+
+                    setState(() {
+                      _displayedMonth = monthDate;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    final DateTime month = DateUtils.addMonthsToMonthDate(
+                      widget.minDate,
+                      index,
+                    );
+
+                    return DaysView(
+                      key: ValueKey<DateTime>(month),
+                      currentDate: DateUtils.dateOnly(
+                        widget.currentDate ?? DateTime.now(),
+                      ),
+                      maxDate: DateUtils.dateOnly(widget.maxDate),
+                      minDate: DateUtils.dateOnly(widget.minDate),
+                      displayedMonth: month,
+                      selectedDate: _selectedDate,
+                      daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
+                      enabledCellsTextStyle: enabledCellsTextStyle,
+                      enabledCellsDecoration: enabledCellsDecoration,
+                      disabledCellsTextStyle: disabledCellsTextStyle,
+                      disabledCellsDecoration: disbaledCellsDecoration,
+                      currentDateDecoration: currentDateDecoration,
+                      currentDateTextStyle: currentDateTextStyle,
+                      selectedDayDecoration: selectedCellDecoration,
+                      selectedDayTextStyle: selectedCellTextStyle,
+                      highlightColor: highlightColor,
+                      splashColor: splashColor,
+                      splashRadius: widget.splashRadius,
+                      disabledDayPredicate: widget.disabledDayPredicate,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDate = value;
+                        });
+                        widget.onDateSelected?.call(value);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
