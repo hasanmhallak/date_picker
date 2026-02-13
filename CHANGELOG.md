@@ -1,3 +1,8 @@
+# 5.0.0
+
+- Remove `DeviceOrientationBuilder` in favor of Flutter Native one interduce in Material Package.
+- Add Flutter v27.0.0 and dart 3.6 constraints.
+
 # 4.2.0
 
 - Adding pass-thru callbacks for onLeadingDateTap, onStartDateChanged, and onEndDateChanged for the RangeDatePicker widget. thanks to @coogle [here.](https://github.com/hasanmhallak/date_picker/pull/33)
