@@ -179,10 +179,12 @@ class Header extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (centerLeadingDate) backButton,
-        LeadingDate(
-          onTap: onDateTap,
-          displayedText: displayedDate,
-          displayedTextStyle: leadingDateTextStyle,
+        Expanded(
+          child: LeadingDate(
+            onTap: onDateTap,
+            displayedText: displayedDate,
+            displayedTextStyle: leadingDateTextStyle,
+          ),
         ),
         if (centerLeadingDate)
           forwardButton

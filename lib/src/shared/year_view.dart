@@ -174,16 +174,22 @@ class YearView extends StatelessWidget {
         );
       } else {
         final date = DateTime(yearsName[i]);
-        monthWidget = InkResponse(
-          onTap: () => onChanged(date),
-          radius: splashRadius,
-          splashColor: splashColor,
-          highlightColor: highlightColor,
-          child: Semantics(
-            label: yearsName[i].toString(),
-            selected: isSelected,
-            excludeSemantics: true,
-            child: monthWidget,
+        monthWidget = Padding(
+          padding: const EdgeInsets.all(4),
+          child: InkResponse(
+            containedInkWell: true,
+            onTap: () => onChanged(date),
+            radius: splashRadius,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            highlightShape: decoration.shape,
+            borderRadius: decoration.borderRadius as BorderRadius,
+            child: Semantics(
+              label: yearsName[i].toString(),
+              selected: isSelected,
+              excludeSemantics: true,
+              child: monthWidget,
+            ),
           ),
         );
       }
