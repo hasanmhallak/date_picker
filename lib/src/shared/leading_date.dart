@@ -26,11 +26,11 @@ class LeadingDate extends StatelessWidget {
   ///
   /// The [displayedText], [onTap], and [displayedTextStyle] parameters are required.
   const LeadingDate({
-    Key? key,
+    super.key,
     required this.displayedText,
     required this.onTap,
     required this.displayedTextStyle,
-  }) : super(key: key);
+  });
 
   /// The year/month whose days are displayed by this picker.
   final String displayedText;

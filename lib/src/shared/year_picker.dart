@@ -66,8 +66,14 @@ class YearsPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel = 'Previous Year',
-    this.nextPageSemanticLabel = 'Next Year',
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
+    this.forwardButtonDecoration = const BoxDecoration(),
+    this.forwardButtonSplashColor = Colors.transparent,
+    this.forwardButtonHighlightColor = Colors.transparent,
+    this.backwardButtonDecoration = const BoxDecoration(),
+    this.backwardButtonSplashColor = Colors.transparent,
+    this.backwardButtonHighlightColor = Colors.transparent,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -222,6 +228,36 @@ class YearsPicker extends StatefulWidget {
 
   /// Semantic label for button to go to the next page.
   final String? nextPageSemanticLabel;
+
+  /// The cell decoration of the forward button.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration forwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color forwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color forwardButtonHighlightColor;
+
+  /// The cell decoration of the backward button.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration backwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color backwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color backwardButtonHighlightColor;
 
   @override
   State<YearsPicker> createState() => _YearsPickerState();
@@ -405,8 +441,15 @@ class _YearsPickerState extends State<YearsPicker> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
-              previousPageSemanticLabel: widget.previousPageSemanticLabel,
-              nextPageSemanticLabel: widget.nextPageSemanticLabel,
+              forwardButtonDecoration: widget.forwardButtonDecoration,
+              forwardButtonSplashColor: widget.forwardButtonSplashColor,
+              forwardButtonHighlightColor: widget.forwardButtonHighlightColor,
+              backwardButtonDecoration: widget.backwardButtonDecoration,
+              backwardButtonSplashColor: widget.backwardButtonSplashColor,
+              backwardButtonHighlightColor: widget.forwardButtonHighlightColor,
+              previousPageSemanticLabel:
+                  widget.previousPageSemanticLabel ?? MaterialLocalizations.of(context).previousPageTooltip,
+              nextPageSemanticLabel: widget.nextPageSemanticLabel ?? MaterialLocalizations.of(context).nextPageTooltip,
               centerLeadingDate: widget.centerLeadingDate,
               leadingDateTextStyle: leadingDateTextStyle,
               slidersColor: slidersColor,

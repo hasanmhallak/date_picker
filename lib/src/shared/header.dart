@@ -50,9 +50,15 @@ class Header extends StatelessWidget {
     required this.slidersColor,
     required this.slidersSize,
     required this.leadingDateTextStyle,
+    required this.previousPageSemanticLabel,
+    required this.nextPageSemanticLabel,
+    required this.forwardButtonDecoration,
+    required this.forwardButtonSplashColor,
+    required this.forwardButtonHighlightColor,
+    required this.backwardButtonDecoration,
+    required this.backwardButtonSplashColor,
+    required this.backwardButtonHighlightColor,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel,
-    this.nextPageSemanticLabel,
   });
 
   /// The currently displayed date. It is typically in a format
@@ -92,44 +98,78 @@ class Header extends StatelessWidget {
   final bool centerLeadingDate;
 
   /// Semantic label for button to go to the previous page.
-  final String? previousPageSemanticLabel;
+  final String previousPageSemanticLabel;
 
   /// Semantic label for button to go to the next page.
-  final String? nextPageSemanticLabel;
+  final String nextPageSemanticLabel;
+
+  /// The cell decoration of the forward button.
+  final BoxDecoration forwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  final Color forwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color forwardButtonHighlightColor;
+
+  /// The cell decoration of the backward button.
+  final BoxDecoration backwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  final Color backwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  final Color backwardButtonHighlightColor;
 
   @override
   Widget build(BuildContext context) {
-    final forwardButton = GestureDetector(
-      onTap: onNextPage,
-      child: SizedBox(
+    final forwardButton = Semantics(
+      label: nextPageSemanticLabel,
+      button: true,
+      child: Container(
         width: 36,
         height: 36,
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: slidersSize,
-            color: slidersColor,
+        clipBehavior: Clip.hardEdge,
+        decoration: forwardButtonDecoration,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: onNextPage,
+            splashColor: forwardButtonSplashColor,
+            highlightColor: forwardButtonHighlightColor,
+            child: ExcludeSemantics(
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: slidersSize,
+                color: slidersColor,
+              ),
+            ),
           ),
         ),
       ),
     );
 
-    final backButton = GestureDetector(
-      onTap: onPreviousPage,
-      child: SizedBox(
+    final backButton = Semantics(
+      label: previousPageSemanticLabel,
+      button: true,
+      child: Container(
         width: 36,
         height: 36,
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.arrow_back_ios_rounded,
-            size: slidersSize,
-            color: slidersColor,
+        clipBehavior: Clip.hardEdge,
+        decoration: backwardButtonDecoration,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: onPreviousPage,
+            splashColor: backwardButtonSplashColor,
+            highlightColor: backwardButtonHighlightColor,
+            child: ExcludeSemantics(
+              child: Icon(
+                Icons.arrow_back_ios_rounded,
+                size: slidersSize,
+                color: slidersColor,
+              ),
+            ),
           ),
         ),
       ),

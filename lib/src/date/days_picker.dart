@@ -70,9 +70,15 @@ class DaysPicker extends StatefulWidget {
     this.splashColor,
     this.splashRadius,
     this.centerLeadingDate = false,
-    this.previousPageSemanticLabel = 'Previous Day',
-    this.nextPageSemanticLabel = 'Next Day',
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
     this.disabledDayPredicate,
+    this.forwardButtonDecoration = const BoxDecoration(),
+    this.forwardButtonSplashColor = Colors.transparent,
+    this.forwardButtonHighlightColor = Colors.transparent,
+    this.backwardButtonDecoration = const BoxDecoration(),
+    this.backwardButtonSplashColor = Colors.transparent,
+    this.backwardButtonHighlightColor = Colors.transparent,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
@@ -235,6 +241,36 @@ class DaysPicker extends StatefulWidget {
 
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
+
+  /// The cell decoration of the forward button.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration forwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color forwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color forwardButtonHighlightColor;
+
+  /// The cell decoration of the backward button.
+  ///
+  /// defaults to empty [BoxDecoration].
+  final BoxDecoration backwardButtonDecoration;
+
+  /// The splash color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color backwardButtonSplashColor;
+
+  /// The highlight color of the ink response when pressed.
+  ///
+  /// defaults to [Colors.transparent].
+  final Color backwardButtonHighlightColor;
 
   @override
   State<DaysPicker> createState() => _DaysPickerState();
@@ -410,6 +446,15 @@ class _DaysPickerState extends State<DaysPicker> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Header(
+              forwardButtonDecoration: widget.forwardButtonDecoration,
+              forwardButtonSplashColor: widget.forwardButtonSplashColor,
+              forwardButtonHighlightColor: widget.forwardButtonHighlightColor,
+              backwardButtonDecoration: widget.backwardButtonDecoration,
+              backwardButtonSplashColor: widget.backwardButtonSplashColor,
+              backwardButtonHighlightColor: widget.forwardButtonHighlightColor,
+              previousPageSemanticLabel:
+                  widget.previousPageSemanticLabel ?? MaterialLocalizations.of(context).previousPageTooltip,
+              nextPageSemanticLabel: widget.nextPageSemanticLabel ?? MaterialLocalizations.of(context).nextPageTooltip,
               centerLeadingDate: widget.centerLeadingDate,
               leadingDateTextStyle: leadingDateTextStyle,
               slidersColor: slidersColor,
@@ -439,8 +484,6 @@ class _DaysPickerState extends State<DaysPicker> {
                   curve: Curves.ease,
                 );
               },
-              previousPageSemanticLabel: widget.previousPageSemanticLabel,
-              nextPageSemanticLabel: widget.nextPageSemanticLabel,
             ),
             const SizedBox(height: 10),
             Expanded(

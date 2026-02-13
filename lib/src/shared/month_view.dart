@@ -112,8 +112,7 @@ class MonthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
 
     final int year = displayedDate.year;
@@ -127,19 +126,16 @@ class MonthView extends StatelessWidget {
       selectedMonth = DateUtilsX.monthOnly(selectedDate!);
     }
 
-    final monthsNames =
-        DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
+    final monthsNames = DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
     final monthsWidgetList = <Widget>[];
 
     int month = 0;
     while (month < 12) {
       final DateTime monthToBuild = DateTime(year, month + 1);
 
-      final bool isDisabled =
-          monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
+      final bool isDisabled = monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
 
-      final bool isCurrentMonth =
-          monthToBuild == DateUtilsX.monthOnly(currentDate);
+      final bool isCurrentMonth = monthToBuild == DateUtilsX.monthOnly(currentDate);
 
       final bool isSelected = monthToBuild == selectedMonth;
       //
@@ -186,7 +182,7 @@ class MonthView extends StatelessWidget {
           splashColor: splashColor,
           highlightColor: highlightColor,
           child: Semantics(
-            label: localizations.formatMediumDate(monthToBuild),
+            label: localizations.formatMonthYear(monthToBuild),
             selected: isSelected,
             excludeSemantics: true,
             child: monthWidget,
