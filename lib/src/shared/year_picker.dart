@@ -424,7 +424,7 @@ class _YearsPickerState extends State<YearsPicker> {
     //
     //
 
-    return DeviceOrientationBuilder(builder: (context, o) {
+    return PickerDeviceOrientationBuilder(builder: (context, o) {
       late final Size size;
       switch (o) {
         case Orientation.portrait:

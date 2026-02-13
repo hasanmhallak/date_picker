@@ -1,3 +1,10 @@
+# 6.0.0
+
+- Revert removing `DeviceOrientationBuilder` in favor of rename it.
+- Fix semantic. fixes [#39](https://github.com/hasanmhallak/date_picker/issues/39)
+- Resolve conflicts with Flutter v3.41.0. fixes [#43](https://github.com/hasanmhallak/date_picker/issues/43)
+- Add decoration to the pageview sliders.
+
 # 5.0.0
 
 - Remove `DeviceOrientationBuilder` in favor of Flutter Native one interduce in Material Package.

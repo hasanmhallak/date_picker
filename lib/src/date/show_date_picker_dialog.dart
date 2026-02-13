@@ -82,7 +82,7 @@ Future<DateTime?> showDatePickerDialog({
     useRootNavigator: useRootNavigator,
     useSafeArea: useSafeArea,
     builder: (context) {
-      return DeviceOrientationBuilder(builder: (context, o) {
+      return PickerDeviceOrientationBuilder(builder: (context, o) {
         late final Size size;
         switch (o) {
           case Orientation.portrait:
