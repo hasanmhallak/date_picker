@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../shared/device_orientation_builder.dart';
 import '../shared/types.dart';
 import '../shared/utils.dart';
 import 'days_view.dart';
