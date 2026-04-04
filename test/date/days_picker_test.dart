@@ -1,5 +1,6 @@
-import 'package:date_picker_plus/src/date/days_picker.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
+import 'package:date_picker_plus/src/shared/leading_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -18,20 +19,6 @@ void main() {
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -58,20 +45,6 @@ void main() {
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -105,61 +78,45 @@ void main() {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
+      late final DatePickerPlusTheme theme;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
-              currentDate: initialDate,
-              initialDate: initialDate,
-              minDate: minDate,
-              maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
-            ),
+            child: Builder(builder: (context) {
+              theme = DatePickerPlusTheme.defaults(context);
+              return DaysPicker(
+                currentDate: initialDate,
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                theme: theme,
+              );
+            }),
           ),
         ),
       );
 
-      final Finder pageViewFinder = find.byType(PageView);
-      expect(pageViewFinder, findsOneWidget);
+      final localizations = MaterialLocalizations.of(tester.element(find.byType(Header)));
 
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
+      final Finder nextPageWidgetFinder = find.byWidget(theme.headerTheme!.forwardArrowWidget!);
 
-      final Finder nextPageIconFinder = find.byIcon(Icons.arrow_forward_ios_rounded);
-      expect(nextPageIconFinder, findsOneWidget);
+      expect(nextPageWidgetFinder, findsOneWidget);
 
       final Finder headerFinder = find.byType(Header);
-      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate));
+      final String expectedHeaderText = localizations.formatMonthYear(initialDate);
+      expect(find.descendant(of: headerFinder, matching: find.text(expectedHeaderText)), findsOneWidget);
 
-      await tester.tap(nextPageIconFinder);
+      await tester.tap(nextPageWidgetFinder);
       await tester.pumpAndSettle();
-
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
-
-      expect(currentPage, equals(initialPage + 1));
 
       final DateTime newDisplayedMonth = DateTime(2022, 7, 1);
 
-      final Finder newHeaderFinder = find.byType(Header);
-      final Text newHeaderTextWidget =
-          tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
-      expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(newDisplayedMonth));
+      final String expectedNewText = localizations.formatMonthYear(newDisplayedMonth);
+      expect(
+        find.descendant(of: headerFinder, matching: find.text(expectedNewText)),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should change the page when tapping on the previous page icon and update header.',
@@ -167,62 +124,45 @@ void main() {
       final DateTime initialDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
+      late final DatePickerPlusTheme theme;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysPicker(
-              currentDate: initialDate,
-              initialDate: initialDate,
-              minDate: minDate,
-              maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
-            ),
+            child: Builder(builder: (context) {
+              theme = DatePickerPlusTheme.defaults(context);
+              return DaysPicker(
+                theme: theme,
+                currentDate: initialDate,
+                initialDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+              );
+            }),
           ),
         ),
       );
 
-      final Finder pageViewFinder = find.byType(PageView);
-      expect(pageViewFinder, findsOneWidget);
-
-      final int initialPage = tester.widget<PageView>(pageViewFinder).controller!.initialPage;
-
-      final Finder previousPageIconFinder = find.byIcon(Icons.arrow_back_ios_rounded);
-      expect(previousPageIconFinder, findsOneWidget);
+      final localizations = MaterialLocalizations.of(tester.element(find.byType(Header)));
 
       final Finder headerFinder = find.byType(Header);
-      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
-      expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate));
+      final String expectedInitialText = localizations.formatMonthYear(initialDate);
+      expect(find.descendant(of: headerFinder, matching: find.text(expectedInitialText)), findsOneWidget);
+
+      final Finder previousPageIconFinder = find.byWidget(theme.headerTheme!.backwardArrowWidget!);
+      expect(previousPageIconFinder, findsOneWidget);
 
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
 
-      final int currentPage = tester.widget<PageView>(pageViewFinder).controller!.page!.round();
-
-      expect(currentPage, equals(initialPage - 1));
-
       final DateTime newDisplayedMonth = DateTime(2022, 5, 1);
-
-      final Finder newHeaderFinder = find.byType(Header);
-      final Text newHeaderTextWidget =
-          tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
-      expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(newDisplayedMonth));
+      final String expectedNewText = localizations.formatMonthYear(newDisplayedMonth);
+      expect(
+        find.descendant(of: headerFinder, matching: find.text(expectedNewText)),
+        findsOneWidget,
+      );
     });
+
     testWidgets(
       'should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
@@ -238,20 +178,6 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -315,20 +241,6 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -392,20 +304,6 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -472,22 +370,11 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(
-                  color: selectedDayColor,
+                theme: DatePickerPlusTheme(
+                  daysPickerTheme: DaysPickerTheme(
+                    selectedCellTextStyle: TextStyle(color: selectedDayColor),
+                  ),
                 ),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
                 onDateSelected: (value) {
                   expectedDay = value;
                 },
@@ -535,22 +422,11 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(
-                  color: leadingDayColor,
+                theme: DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    leadingDateTextStyle: TextStyle(color: leadingDayColor),
+                  ),
                 ),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -568,13 +444,13 @@ void main() {
     );
 
     testWidgets(
-      'Should show the correct color and size for page sliders',
+      'Should show custom arrow widgets for page sliders',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
-        const slidersColors = Colors.green;
-        const slidersSize = 18.0;
+        const backKey = Key('back-arrow');
+        const forwardKey = Key('forward-arrow');
 
         await tester.pumpWidget(
           MaterialApp(
@@ -584,46 +460,19 @@ void main() {
                 initialDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: slidersColors,
-                slidersSize: slidersSize,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
+                theme: const DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    backwardArrowWidget: Icon(Icons.arrow_back, key: backKey),
+                    forwardArrowWidget: Icon(Icons.arrow_forward, key: forwardKey),
+                  ),
+                ),
               ),
             ),
           ),
         );
 
-        final leftIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_back_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(leftIconFinder, findsOneWidget);
-
-        final rightIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_forward_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(rightIconFinder, findsOneWidget);
+        expect(find.byKey(backKey), findsOneWidget);
+        expect(find.byKey(forwardKey), findsOneWidget);
       },
     );
 
@@ -656,5 +505,284 @@ void main() {
         expect(numberOfScrollListenerCalled, equals(0));
       },
     );
+
+    testWidgets('should call onLeadingDateTap when the header date is tapped', (WidgetTester tester) async {
+      final DateTime initialDate = DateTime(2022, 6, 1);
+      bool tapped = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysPicker(
+              currentDate: initialDate,
+              initialDate: initialDate,
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              onLeadingDateTap: () => tapped = true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(LeadingDate));
+      await tester.pump();
+
+      expect(tapped, isTrue);
+    });
+
+    testWidgets('should pre-select a date when selectedDate is provided', (WidgetTester tester) async {
+      final DateTime initialDate = DateTime(2022, 6, 1);
+      final DateTime selectedDate = DateTime(2022, 6, 15);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysPicker(
+              currentDate: initialDate,
+              initialDate: initialDate,
+              selectedDate: selectedDate,
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              theme: DatePickerPlusTheme(
+                daysPickerTheme: DaysPickerTheme(
+                  selectedCellDecoration: const BoxDecoration(
+                    color: Colors.purple,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final selectedCellFinder = find.byWidgetPredicate((widget) {
+        if (widget is Container && widget.decoration is BoxDecoration) {
+          return (widget.decoration as BoxDecoration).color == Colors.purple;
+        }
+        return false;
+      });
+
+      expect(selectedCellFinder, findsOneWidget);
+    });
+
+    testWidgets('should not call onDateSelected when a disabled (predicate) day is tapped',
+        (WidgetTester tester) async {
+      final DateTime initialDate = DateTime(2022, 6, 1);
+      bool callbackCalled = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysPicker(
+              currentDate: initialDate,
+              initialDate: initialDate,
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              disabledDayPredicate: (date) => date.day == 10,
+              onDateSelected: (_) => callbackCalled = true,
+            ),
+          ),
+        ),
+      );
+
+      // Day 10 should be wrapped in ExcludeSemantics (disabled), tap it
+      final disabledDay = find.byWidgetPredicate((widget) {
+        if (widget is ExcludeSemantics) {
+          Widget? inner = widget.child;
+          if (inner is Padding) inner = inner.child;
+          if (inner is Container && inner.child is Center) {
+            final text = (inner.child as Center).child;
+            if (text is Text && text.data == '10') return true;
+          }
+        }
+        return false;
+      });
+
+      expect(disabledDay, findsOneWidget);
+      await tester.tap(disabledDay, warnIfMissed: false);
+      await tester.pump();
+
+      expect(callbackCalled, isFalse);
+    });
+
+    testWidgets('should throw assertion error when initialDate is before minDate', (WidgetTester tester) async {
+      expect(
+        () => DaysPicker(
+          currentDate: DateTime(2022, 6, 1),
+          initialDate: DateTime(2021, 12, 31),
+          minDate: DateTime(2022, 1, 1),
+          maxDate: DateTime(2022, 12, 31),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('should throw assertion error when initialDate is after maxDate', (WidgetTester tester) async {
+      expect(
+        () => DaysPicker(
+          currentDate: DateTime(2022, 6, 1),
+          initialDate: DateTime(2023, 1, 1),
+          minDate: DateTime(2022, 1, 1),
+          maxDate: DateTime(2022, 12, 31),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('should update displayed month when initialDate changes via didUpdateWidget',
+        (WidgetTester tester) async {
+      DateTime initialDate = DateTime(2022, 1, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => setState(() => initialDate = DateTime(2022, 6, 1)),
+                      child: const Text('change'),
+                    ),
+                    DaysPicker(
+                      currentDate: initialDate,
+                      initialDate: initialDate,
+                      minDate: DateTime(2022, 1, 1),
+                      maxDate: DateTime(2022, 12, 31),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      final headerFinder = find.byType(Header);
+      final textBefore = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text))).data;
+      expect(textBefore, contains('January'));
+
+      await tester.tap(find.text('change'));
+      await tester.pumpAndSettle();
+
+      final textAfter = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text))).data;
+      expect(textAfter, contains('June'));
+    });
+
+    testWidgets('should update highlighted cell when selectedDate changes via didUpdateWidget',
+        (WidgetTester tester) async {
+      DateTime? selectedDate;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => setState(() => selectedDate = DateTime(2022, 6, 10)),
+                      child: const Text('select'),
+                    ),
+                    DaysPicker(
+                      currentDate: DateTime(2022, 6, 1),
+                      initialDate: DateTime(2022, 6, 1),
+                      selectedDate: selectedDate,
+                      minDate: DateTime(2022, 1, 1),
+                      maxDate: DateTime(2022, 12, 31),
+                      theme: DatePickerPlusTheme(
+                        daysPickerTheme: DaysPickerTheme(
+                          selectedCellDecoration: const BoxDecoration(
+                            color: Colors.purple,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.purple),
+        findsNothing,
+      );
+
+      await tester.tap(find.text('select'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.purple),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('should not call onDateSelected when theme isEnabled is false', (WidgetTester tester) async {
+      DateTime? result;
+      final DateTime initialDate = DateTime(2022, 6, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysPicker(
+              currentDate: initialDate,
+              initialDate: initialDate,
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              theme: const DatePickerPlusTheme(isEnabled: false),
+              onDateSelected: (date) => result = date,
+            ),
+          ),
+        ),
+      );
+
+      final Finder dayFinder = find.byWidgetPredicate((widget) {
+        if (widget is Semantics && widget.properties.label?.startsWith('10,') == true) {
+          return true;
+        }
+        return false;
+      });
+
+      await tester.tap(dayFinder.first);
+      await tester.pump();
+
+      expect(result, isNull);
+    });
+
+    testWidgets('should not change month on drag when theme isEnabled is false', (WidgetTester tester) async {
+      final DateTime initialDate = DateTime(2020, 6, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysPicker(
+              currentDate: initialDate,
+              initialDate: initialDate,
+              minDate: DateTime(2000, 1, 1),
+              maxDate: DateTime(2030, 12, 31),
+              theme: const DatePickerPlusTheme(isEnabled: false),
+            ),
+          ),
+        ),
+      );
+
+      final Finder pageViewFinder = find.byType(PageView);
+      await tester.drag(pageViewFinder, const Offset(-600, 0));
+      await tester.pumpAndSettle();
+
+      final Finder headerFinder = find.byType(Header);
+      final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
+      expect(
+        headerTextWidget.data,
+        MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate),
+      );
+    });
   });
 }

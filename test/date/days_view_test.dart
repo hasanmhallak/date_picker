@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/src/date/days_view.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
@@ -18,17 +19,6 @@ void main() {
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -57,17 +47,12 @@ void main() {
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
+              theme: DaysPickerTheme(
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                enabledCellsDecoration: const BoxDecoration(),
+                selectedCellDecoration: const BoxDecoration(),
+                disabledCellsDecoration: const BoxDecoration(),
+              ),
             ),
           ),
         ),
@@ -104,17 +89,12 @@ void main() {
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               selectedDate: selectedDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-              selectedDayDecoration: const BoxDecoration(shape: BoxShape.circle),
-              enabledCellsDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
+              theme: DaysPickerTheme(
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                selectedCellDecoration: const BoxDecoration(shape: BoxShape.circle),
+                enabledCellsDecoration: const BoxDecoration(),
+                disabledCellsDecoration: const BoxDecoration(),
+              ),
             ),
           ),
         ),
@@ -160,17 +140,12 @@ void main() {
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               selectedDate: selectedDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(shape: BoxShape.circle),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
+              theme: DaysPickerTheme(
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                selectedCellDecoration: const BoxDecoration(shape: BoxShape.circle),
+                enabledCellsDecoration: const BoxDecoration(),
+                disabledCellsDecoration: const BoxDecoration(),
+              ),
             ),
           ),
         ),
@@ -210,17 +185,6 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 displayedMonth: currentDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -242,18 +206,8 @@ void main() {
               minDate: minDate,
               maxDate: maxDate,
               displayedMonth: currentDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
-              disabledCellsDecoration: const BoxDecoration(
-                color: Colors.green,
+              theme: const DaysPickerTheme(
+                disabledCellsDecoration: BoxDecoration(color: Colors.green),
               ),
             ),
           ),
@@ -261,9 +215,12 @@ void main() {
       );
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
-        if (widget is ExcludeSemantics && widget.child is Container && (widget.child as Container).child is Center) {
-          final container = widget.child as Container;
-          return (container.decoration as BoxDecoration).color == Colors.green;
+        if (widget is ExcludeSemantics) {
+          Widget? inner = widget.child;
+          if (inner is Padding) inner = inner.child;
+          if (inner is Container && inner.child is Center) {
+            return (inner.decoration as BoxDecoration).color == Colors.green;
+          }
         }
         return false;
       });
@@ -284,18 +241,8 @@ void main() {
               minDate: minDate,
               maxDate: maxDate,
               displayedMonth: currentDate,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
-              disabledCellsDecoration: const BoxDecoration(
-                color: Colors.green,
+              theme: const DaysPickerTheme(
+                disabledCellsDecoration: BoxDecoration(color: Colors.green),
               ),
             ),
           ),
@@ -303,9 +250,12 @@ void main() {
       );
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
-        if (widget is ExcludeSemantics && widget.child is Container && (widget.child as Container).child is Center) {
-          final container = widget.child as Container;
-          return (container.decoration as BoxDecoration).color == Colors.green;
+        if (widget is ExcludeSemantics) {
+          Widget? inner = widget.child;
+          if (inner is Padding) inner = inner.child;
+          if (inner is Container && inner.child is Center) {
+            return (inner.decoration as BoxDecoration).color == Colors.green;
+          }
         }
         return false;
       });
@@ -330,18 +280,8 @@ void main() {
               minDate: minDate,
               maxDate: maxDate,
               displayedMonth: displayedMonth,
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
-              disabledCellsDecoration: const BoxDecoration(
-                color: Colors.green,
+              theme: const DaysPickerTheme(
+                disabledCellsDecoration: BoxDecoration(color: Colors.green),
               ),
             ),
           ),
@@ -349,9 +289,12 @@ void main() {
       );
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
-        if (widget is ExcludeSemantics && widget.child is Container && (widget.child as Container).child is Center) {
-          final container = widget.child as Container;
-          return (container.decoration as BoxDecoration).color == Colors.green;
+        if (widget is ExcludeSemantics) {
+          Widget? inner = widget.child;
+          if (inner is Padding) inner = inner.child;
+          if (inner is Container && inner.child is Center) {
+            return (inner.decoration as BoxDecoration).color == Colors.green;
+          }
         }
         return false;
       });
@@ -392,17 +335,6 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 displayedMonth: currentDate,
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedDayTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedDayDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               );
             }),
           ),
@@ -437,19 +369,11 @@ void main() {
               minDate: DateTime(2024),
               maxDate: DateTime(2024),
               displayedMonth: DateTime.now(),
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(
-                color: customColor,
+              theme: DaysPickerTheme(
+                daysOfTheWeekTheme: DaysOfTheWeekTheme(
+                  textStyle: TextStyle(color: customColor),
+                ),
               ),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -484,19 +408,9 @@ void main() {
               minDate: DateTime(2019, 1, 1),
               maxDate: DateTime(2021, 1, 1),
               displayedMonth: DateTime(2020, 1, 1),
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(
-                color: customColor,
+              theme: DaysPickerTheme(
+                enabledCellsTextStyle: TextStyle(color: customColor),
               ),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -529,19 +443,9 @@ void main() {
               minDate: DateTime(2020, 1, 10),
               maxDate: DateTime(2021, 1, 1),
               displayedMonth: DateTime(2020, 1, 1),
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(
-                color: customColor,
+              theme: DaysPickerTheme(
+                disabledCellsTextStyle: TextStyle(color: customColor),
               ),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -573,22 +477,13 @@ void main() {
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2021, 1, 1),
               displayedMonth: DateTime(2020, 1, 1),
-              currentDateTextStyle: const TextStyle(
-                color: customColor,
+              theme: DaysPickerTheme(
+                currentDateTextStyle: TextStyle(color: customColor),
+                currentDateDecoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: customColor),
+                ),
               ),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: BoxDecoration(
-                  border: Border.all(
-                color: customColor,
-              )),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -626,21 +521,10 @@ void main() {
               maxDate: DateTime(2021, 1, 1),
               displayedMonth: DateTime(2020, 1, 1),
               selectedDate: DateTime(2020, 1, 11),
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(
-                color: textColor,
+              theme: DaysPickerTheme(
+                selectedCellTextStyle: TextStyle(color: textColor),
+                selectedCellDecoration: BoxDecoration(color: fillColor),
               ),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(
-                color: fillColor,
-              ),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -677,17 +561,6 @@ void main() {
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2021, 1, 1),
               displayedMonth: DateTime(2020, 1, 1),
-              currentDateTextStyle: const TextStyle(),
-              daysOfTheWeekTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedDayTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedDayDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -713,6 +586,36 @@ void main() {
       await tester.tap(clickbaleWidget.at(dateToSelect.day - 1));
 
       expect(selectedDate, dateToSelect);
+    });
+
+    testWidgets('uses theme cellsPadding for day cells', (WidgetTester tester) async {
+      const customPadding = EdgeInsets.all(6);
+      final DateTime currentDate = DateTime(2020, 1, 15);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: DaysView(
+              currentDate: currentDate,
+              onChanged: (_) {},
+              minDate: DateTime(2020, 1, 1),
+              maxDate: DateTime(2020, 1, 31),
+              displayedMonth: currentDate,
+              theme: const DaysPickerTheme(cellsPadding: customPadding),
+            ),
+          ),
+        ),
+      );
+
+      final paddingFinder = find.byWidgetPredicate((widget) {
+        if (widget is! Padding || widget.padding != customPadding) return false;
+        if (widget.child is! Container) return false;
+        final center = (widget.child as Container).child;
+        if (center is! Center) return false;
+        final text = center.child;
+        return text is Text && text.data == '15';
+      });
+      expect(paddingFinder, findsOneWidget);
     });
   });
 }

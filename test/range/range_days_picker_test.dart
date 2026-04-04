@@ -1,5 +1,7 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/range/range_days_picker.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
+import 'package:date_picker_plus/src/shared/leading_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,38 +24,21 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: Builder(builder: (context) {
-            return Material(
-              child: RangeDaysPicker(
+          home: Material(
+            child: Builder(builder: (context) {
+              return RangeDaysPicker(
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 initialDate: initialDate,
-                leadingDateTextStyle: const TextStyle(),
                 onLeadingDateTap: null,
-                splashRadius: 20,
-                currentDateDecoration: const BoxDecoration(),
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                disabledCellsDecoration: const BoxDecoration(),
-                disabledCellsTextStyle: const TextStyle(),
-                enabledCellsDecoration: const BoxDecoration(),
-                enabledCellsTextStyle: const TextStyle(),
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
-                selectedCellsDecoration: const BoxDecoration(),
-                selectedCellsTextStyle: const TextStyle(),
                 selectedEndDate: null,
                 selectedStartDate: null,
-                singleSelectedCellDecoration: const BoxDecoration(),
-                singleSelectedCellTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       );
 
@@ -88,28 +73,11 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 initialDate: initialDate,
-                leadingDateTextStyle: const TextStyle(),
                 onLeadingDateTap: null,
-                splashRadius: 20,
-                currentDateDecoration: const BoxDecoration(),
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                disabledCellsDecoration: const BoxDecoration(),
-                disabledCellsTextStyle: const TextStyle(),
-                enabledCellsDecoration: const BoxDecoration(),
-                enabledCellsTextStyle: const TextStyle(),
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
-                selectedCellsDecoration: const BoxDecoration(),
-                selectedCellsTextStyle: const TextStyle(),
                 selectedEndDate: null,
                 selectedStartDate: null,
-                singleSelectedCellDecoration: const BoxDecoration(),
-                singleSelectedCellTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               );
             }),
           ),
@@ -163,28 +131,11 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 initialDate: initialDate,
-                leadingDateTextStyle: const TextStyle(),
                 onLeadingDateTap: null,
-                splashRadius: 20,
-                currentDateDecoration: const BoxDecoration(),
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                disabledCellsDecoration: const BoxDecoration(),
-                disabledCellsTextStyle: const TextStyle(),
-                enabledCellsDecoration: const BoxDecoration(),
-                enabledCellsTextStyle: const TextStyle(),
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
-                selectedCellsDecoration: const BoxDecoration(),
-                selectedCellsTextStyle: const TextStyle(),
                 selectedEndDate: null,
                 selectedStartDate: null,
-                singleSelectedCellDecoration: const BoxDecoration(),
-                singleSelectedCellTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               );
             }),
           ),
@@ -244,28 +195,11 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 initialDate: initialDate,
-                leadingDateTextStyle: const TextStyle(),
                 onLeadingDateTap: null,
-                splashRadius: 20,
-                currentDateDecoration: const BoxDecoration(),
-                currentDateTextStyle: const TextStyle(),
-                daysOfTheWeekTextStyle: const TextStyle(),
-                disabledCellsDecoration: const BoxDecoration(),
-                disabledCellsTextStyle: const TextStyle(),
-                enabledCellsDecoration: const BoxDecoration(),
-                enabledCellsTextStyle: const TextStyle(),
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
-                selectedCellsDecoration: const BoxDecoration(),
-                selectedCellsTextStyle: const TextStyle(),
                 selectedEndDate: null,
                 selectedStartDate: null,
-                singleSelectedCellDecoration: const BoxDecoration(),
-                singleSelectedCellTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               );
             }),
           ),
@@ -326,28 +260,11 @@ void main() {
                   minDate: minDate,
                   maxDate: maxDate,
                   initialDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(),
                   onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disabledCellsDecoration: const BoxDecoration(),
-                  disabledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
                   selectedEndDate: null,
                   selectedStartDate: null,
-                  singleSelectedCellDecoration: const BoxDecoration(),
-                  singleSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: Colors.black,
-                  slidersSize: 20,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
                 );
               }),
             ),
@@ -422,28 +339,11 @@ void main() {
                   minDate: minDate,
                   maxDate: maxDate,
                   initialDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(),
                   onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disabledCellsDecoration: const BoxDecoration(),
-                  disabledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
                   selectedEndDate: null,
                   selectedStartDate: null,
-                  singleSelectedCellDecoration: const BoxDecoration(),
-                  singleSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: Colors.black,
-                  slidersSize: 20,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
                 );
               }),
             ),
@@ -518,28 +418,11 @@ void main() {
                   minDate: minDate,
                   maxDate: maxDate,
                   initialDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(),
                   onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disabledCellsDecoration: const BoxDecoration(),
-                  disabledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
                   selectedEndDate: null,
                   selectedStartDate: null,
-                  singleSelectedCellDecoration: const BoxDecoration(),
-                  singleSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: Colors.black,
-                  slidersSize: 20,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
                 );
               }),
             ),
@@ -596,6 +479,7 @@ void main() {
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
         const leadingDayColor = Colors.green;
+        const customTextStyle = TextStyle(color: leadingDayColor);
 
         await tester.pumpWidget(
           MaterialApp(
@@ -609,127 +493,64 @@ void main() {
               GlobalCupertinoLocalizations.delegate,
             ],
             home: Material(
-              child: Builder(builder: (context) {
-                return RangeDaysPicker(
-                  currentDate: initialDate,
-                  minDate: minDate,
-                  maxDate: maxDate,
-                  initialDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(color: leadingDayColor),
-                  onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disabledCellsDecoration: const BoxDecoration(),
-                  disabledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
-                  onEndDateChanged: (value) {},
-                  onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
-                  selectedEndDate: null,
-                  selectedStartDate: null,
-                  singleSelectedCellDecoration: const BoxDecoration(),
-                  singleSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: Colors.black,
-                  slidersSize: 20,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
-                );
-              }),
+              child: Builder(
+                builder: (context) {
+                  return RangeDaysPicker(
+                    currentDate: initialDate,
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    initialDate: initialDate,
+                    theme: const DatePickerPlusTheme(
+                      headerTheme: HeaderTheme(
+                        leadingDateTextStyle: customTextStyle,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         );
 
-        final leadingDayFinder = find.byWidgetPredicate((widget) {
-          if (widget is Text) {
-            return widget.data == 'January 2010' && widget.style?.color == leadingDayColor;
-          }
-          return false;
-        });
-
-        expect(leadingDayFinder, findsOneWidget);
+        // 1. Find the widget visually by its text content
+        final textFinder = find.text('January 2010');
+        expect(textFinder, findsOneWidget);
+        // 2. Extract the specific widget from the widget tree
+        final leadingDateText = tester.widget<Text>(textFinder);
+        // 3. Assert its internal properties
+        expect(leadingDateText.style?.color, equals(leadingDayColor));
       },
     );
 
     testWidgets(
-      'Should show the correct color and size for page sliders',
+      'Should render custom forward and backward arrow widgets from theme',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
-        const slidersColors = Colors.green;
-        const slidersSize = 18.0;
-
+        const customForwardKey = Key('custom_forward');
+        const customBackwardKey = Key('custom_backward');
         await tester.pumpWidget(
           MaterialApp(
-            supportedLocales: const [
-              Locale('en', 'US'),
-              Locale('en', 'GB'),
-            ],
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
             home: Material(
-              child: Builder(builder: (context) {
-                return RangeDaysPicker(
-                  currentDate: initialDate,
-                  minDate: minDate,
-                  maxDate: maxDate,
-                  initialDate: initialDate,
-                  leadingDateTextStyle: const TextStyle(),
-                  onLeadingDateTap: null,
-                  splashRadius: 20,
-                  currentDateDecoration: const BoxDecoration(),
-                  currentDateTextStyle: const TextStyle(),
-                  daysOfTheWeekTextStyle: const TextStyle(),
-                  disabledCellsDecoration: const BoxDecoration(),
-                  disabledCellsTextStyle: const TextStyle(),
-                  enabledCellsDecoration: const BoxDecoration(),
-                  enabledCellsTextStyle: const TextStyle(),
-                  onEndDateChanged: (value) {},
-                  onStartDateChanged: (value) {},
-                  selectedCellsDecoration: const BoxDecoration(),
-                  selectedCellsTextStyle: const TextStyle(),
-                  selectedEndDate: null,
-                  selectedStartDate: null,
-                  singleSelectedCellDecoration: const BoxDecoration(),
-                  singleSelectedCellTextStyle: const TextStyle(),
-                  slidersColor: slidersColors,
-                  slidersSize: slidersSize,
-                  splashColor: Colors.black,
-                  highlightColor: Colors.black,
-                );
-              }),
+              child: RangeDaysPicker(
+                initialDate: initialDate,
+                currentDate: initialDate,
+                minDate: minDate,
+                maxDate: maxDate,
+                theme: const DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    // Use simple placeholders with keys
+                    forwardArrowWidget: SizedBox(key: customForwardKey),
+                    backwardArrowWidget: SizedBox(key: customBackwardKey),
+                  ),
+                ),
+              ),
             ),
           ),
         );
-
-        final leftIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_back_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(leftIconFinder, findsOneWidget);
-
-        final rightIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_forward_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(rightIconFinder, findsOneWidget);
+        expect(find.byKey(customBackwardKey), findsOneWidget);
+        expect(find.byKey(customForwardKey), findsOneWidget);
       },
     );
 
@@ -762,5 +583,220 @@ void main() {
         expect(numberOfScrollListenerCalled, equals(0));
       },
     );
+
+    testWidgets('should call onLeadingDateTap when the header date is tapped', (WidgetTester tester) async {
+      bool tapped = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: RangeDaysPicker(
+              minDate: DateTime(2020, 1, 1),
+              maxDate: DateTime(2025, 12, 31),
+              currentDate: DateTime(2022, 6, 1),
+              initialDate: DateTime(2022, 6, 1),
+              onLeadingDateTap: () => tapped = true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(LeadingDate));
+      await tester.pump();
+
+      expect(tapped, isTrue);
+    });
+
+    testWidgets('should call onStartDateChanged on first tap', (WidgetTester tester) async {
+      DateTime? startDate;
+      final currentDate = DateTime(2022, 6, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: RangeDaysPicker(
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              currentDate: currentDate,
+              initialDate: currentDate,
+              onStartDateChanged: (d) => startDate = d,
+            ),
+          ),
+        ),
+      );
+
+      final day5 = find.byWidgetPredicate((widget) {
+        if (widget is Container && widget.child is Center) {
+          final text = (widget.child as Center).child;
+          if (text is Text && text.data == '5') return true;
+        }
+        return false;
+      });
+
+      await tester.tap(day5.first);
+      await tester.pump();
+
+      expect(startDate, isNotNull);
+      expect(startDate!.day, equals(5));
+    });
+
+    testWidgets('should swap start and end when selected end is before existing start', (WidgetTester tester) async {
+      // When user selects an end date before the existing start, the widget
+      // should swap: the tapped date becomes the new start, the old start becomes the end.
+      DateTime? startDate;
+      DateTime? endDate;
+      final currentDate = DateTime(2022, 6, 1);
+
+      Widget buildWidget(DateTime? start, DateTime? end) => MaterialApp(
+            home: Material(
+              child: RangeDaysPicker(
+                minDate: DateTime(2022, 1, 1),
+                maxDate: DateTime(2022, 12, 31),
+                currentDate: currentDate,
+                initialDate: currentDate,
+                selectedStartDate: start,
+                selectedEndDate: end,
+                onStartDateChanged: (d) => startDate = d,
+                onEndDateChanged: (d) => endDate = d,
+              ),
+            ),
+          );
+
+      await tester.pumpWidget(buildWidget(null, null));
+
+      // First tap: set start = June 15
+      final day15 = find.byWidgetPredicate((w) {
+        if (w is Container && w.child is Center) {
+          final text = (w.child as Center).child;
+          if (text is Text && text.data == '15') return true;
+        }
+        return false;
+      });
+      await tester.tap(day15.first);
+      await tester.pump();
+      expect(startDate!.day, equals(15));
+
+      await tester.pumpWidget(buildWidget(startDate, null));
+
+      // Second tap: tap June 5 (before start) — should set start=5, end=15
+      final day5 = find.byWidgetPredicate((w) {
+        if (w is Container && w.child is Center) {
+          final text = (w.child as Center).child;
+          if (text is Text && text.data == '5') return true;
+        }
+        return false;
+      });
+      await tester.tap(day5.first);
+      await tester.pump();
+
+      expect(startDate!.day, equals(5));
+      expect(endDate!.day, equals(15));
+    });
+
+    testWidgets('should clear range highlights when selectedRange changes to null via didUpdateWidget',
+        (WidgetTester tester) async {
+      DateTime? startDate = DateTime(2022, 6, 5);
+      DateTime? endDate = DateTime(2022, 6, 10);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: StatefulBuilder(
+              builder: (ctx, setState) => Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () => setState(() {
+                      startDate = null;
+                      endDate = null;
+                    }),
+                    child: const Text('clear'),
+                  ),
+                  RangeDaysPicker(
+                    minDate: DateTime(2022, 1, 1),
+                    maxDate: DateTime(2022, 12, 31),
+                    currentDate: DateTime(2022, 6, 1),
+                    initialDate: DateTime(2022, 6, 1),
+                    selectedStartDate: startDate,
+                    selectedEndDate: endDate,
+                    theme: DatePickerPlusTheme(
+                      rangePickerTheme: RangePickerTheme(
+                        selectedCellsDecoration: const BoxDecoration(
+                          color: Colors.deepOrange,
+                          shape: BoxShape.rectangle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container &&
+            w.decoration is BoxDecoration &&
+            (w.decoration as BoxDecoration).color == Colors.deepOrange),
+        findsWidgets,
+      );
+
+      await tester.tap(find.text('clear'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container &&
+            w.decoration is BoxDecoration &&
+            (w.decoration as BoxDecoration).color == Colors.deepOrange),
+        findsNothing,
+      );
+    });
+
+    testWidgets('should not call onStartDateChanged when theme isEnabled is false', (WidgetTester tester) async {
+      DateTime? start;
+      final DateTime initialDate = DateTime(2022, 6, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('en', 'GB'),
+          ],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: Material(
+            child: RangeDaysPicker(
+              currentDate: initialDate,
+              minDate: DateTime(2022, 1, 1),
+              maxDate: DateTime(2022, 12, 31),
+              initialDate: initialDate,
+              theme: const DatePickerPlusTheme(isEnabled: false),
+              onLeadingDateTap: null,
+              onEndDateChanged: (_) {},
+              onStartDateChanged: (value) => start = value,
+              selectedEndDate: null,
+              selectedStartDate: null,
+            ),
+          ),
+        ),
+      );
+
+      final Finder dayFinder = find.byWidgetPredicate((widget) {
+        if (widget is Semantics && widget.properties.label?.startsWith('10,') == true) {
+          return true;
+        }
+        return false;
+      });
+
+      await tester.tap(dayFinder.first);
+      await tester.pump();
+
+      expect(start, isNull);
+    });
   });
 }
