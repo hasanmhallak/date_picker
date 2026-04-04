@@ -29,21 +29,24 @@ class LeadingDate extends StatelessWidget {
     super.key,
     required this.displayedText,
     required this.onTap,
-    required this.displayedTextStyle,
+    this.displayedTextStyle,
   });
 
   /// The year/month whose days are displayed by this picker.
   final String displayedText;
 
   /// The text style of [displayedText].
-  final TextStyle displayedTextStyle;
+  final TextStyle? displayedTextStyle;
 
   /// A callback function that is triggered when the user taps on the displayed date or month.
-  final VoidCallback onTap;
+  ///
+  /// When `null`, the gesture is disabled (no tap feedback).
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Text(
         displayedText,

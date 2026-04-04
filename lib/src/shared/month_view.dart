@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -19,17 +20,8 @@ class MonthView extends StatelessWidget {
     required this.onChanged,
     required this.minDate,
     required this.maxDate,
-    required this.enabledCellsTextStyle,
-    required this.enabledCellsDecoration,
-    required this.disabledCellsTextStyle,
-    required this.disabledCellsDecoration,
-    required this.currentDateTextStyle,
-    required this.currentDateDecoration,
-    required this.selectedCellTextStyle,
-    required this.selectedCellDecoration,
-    required this.highlightColor,
-    required this.splashColor,
-    this.splashRadius,
+    this.theme,
+    this.isEnabled = true,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(() {
@@ -77,43 +69,26 @@ class MonthView extends StatelessWidget {
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime displayedDate;
 
-  /// The text style of months which are selectable.
-  final TextStyle enabledCellsTextStyle;
+  /// The theme to apply to the [DatePicker].
+  ///
+  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
+  /// and the default theme.
+  final MonthsPickerTheme? theme;
 
-  /// The cell decoration of months which are selectable.
-  final BoxDecoration enabledCellsDecoration;
-
-  /// The text style of months which are not selectable.
-  final TextStyle disabledCellsTextStyle;
-
-  /// The cell decoration of months which are not selectable.
-  final BoxDecoration disabledCellsDecoration;
-
-  /// The text style of the current month
-  final TextStyle currentDateTextStyle;
-
-  /// The cell decoration of the current month.
-  final BoxDecoration currentDateDecoration;
-
-  /// The text style of selected month.
-  final TextStyle selectedCellTextStyle;
-
-  /// The cell decoration of selected month.
-  final BoxDecoration selectedCellDecoration;
-
-  /// The splash color of the ink response.
-  final Color splashColor;
-
-  /// The highlight color of the ink response when pressed.
-  final Color highlightColor;
-
-  /// The radius of the ink splash.
-  final double? splashRadius;
+  /// When `false`, months are not selectable and semantics report as disabled.
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
+    final defaultTheme = DatePickerPlusTheme.defaults(context).monthsPickerTheme;
+    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.monthsPickerTheme;
+    final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
+
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+
+    final inkResponseTheme = theme?.inkResponseTheme;
+    final cellsPadding = theme?.cellsPadding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final int year = displayedDate.year;
     // we get rid of the day because if there is any day allowed in
@@ -133,56 +108,68 @@ class MonthView extends StatelessWidget {
     while (month < 12) {
       final DateTime monthToBuild = DateTime(year, month + 1);
 
-      final bool isDisabled = monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
+      final bool isMonthDisabled = monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
 
       final bool isCurrentMonth = monthToBuild == DateUtilsX.monthOnly(currentDate);
 
       final bool isSelected = monthToBuild == selectedMonth;
-      //
-      //
-      BoxDecoration decoration = enabledCellsDecoration;
-      TextStyle style = enabledCellsTextStyle;
 
-      if (isCurrentMonth) {
-        //
-        //
-        style = currentDateTextStyle;
-        decoration = currentDateDecoration;
-      }
-      if (isSelected) {
-        //
-        //
-        style = selectedCellTextStyle;
-        decoration = selectedCellDecoration;
+      CellState state = CellState.enabled;
+      if (isMonthDisabled && isCurrentMonth) {
+        state = CellState.currentAndDisabled;
+      } else if (isMonthDisabled) {
+        state = CellState.disabled;
+      } else if (isSelected) {
+        state = CellState.selected;
+      } else if (isCurrentMonth) {
+        state = CellState.current;
       }
 
-      if (isDisabled) {
-        style = disabledCellsTextStyle;
-        decoration = disabledCellsDecoration;
-      }
+      final style = theme?.resolveTextStyle(state);
+      final decoration = theme?.resolveDecoration(state);
 
-      Widget monthWidget = Container(
-        decoration: decoration,
-        child: Center(
-          child: Text(
-            monthsNames[month],
-            style: style,
+      Widget monthWidget = Padding(
+        padding: cellsPadding,
+        child: Container(
+          decoration: decoration,
+          child: Center(
+            child: Text(
+              monthsNames[month],
+              style: style,
+            ),
           ),
         ),
       );
 
-      if (isDisabled) {
+      final String monthSemanticLabel = localizations.formatMonthYear(monthToBuild);
+
+      if (!isEnabled) {
+        monthWidget = Semantics(
+          label: monthSemanticLabel,
+          selected: isSelected,
+          enabled: false,
+          excludeSemantics: true,
+          child: monthWidget,
+        );
+      } else if (isMonthDisabled) {
         monthWidget = ExcludeSemantics(
           child: monthWidget,
         );
       } else {
         monthWidget = InkResponse(
           onTap: () => onChanged(monthToBuild),
-          radius: splashRadius,
-          splashColor: splashColor,
-          highlightColor: highlightColor,
+          radius: inkResponseTheme?.radius,
+          splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
+          highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+          borderRadius: inkResponseTheme?.borderRadius,
+          containedInkWell: inkResponseTheme?.containedInkWell ?? false,
+          customBorder: inkResponseTheme?.customBorder,
+          highlightShape: inkResponseTheme?.highlightShape ?? BoxShape.circle,
+          splashFactory: inkResponseTheme?.splashFactory,
+          focusColor: inkResponseTheme?.focusColor,
+          hoverColor: inkResponseTheme?.hoverColor,
           child: Semantics(
-            label: localizations.formatMonthYear(monthToBuild),
+            label: monthSemanticLabel,
             selected: isSelected,
             excludeSemantics: true,
             child: monthWidget,
@@ -196,7 +183,6 @@ class MonthView extends StatelessWidget {
 
     return GridView.custom(
       padding: EdgeInsets.zero,
-      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(
