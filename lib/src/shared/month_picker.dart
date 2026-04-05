@@ -26,7 +26,7 @@ import '../date/show_date_picker_dialog.dart';
 class MonthPicker extends StatefulWidget {
   /// Creates a month picker.
   ///
-  /// It will display a grid of months for the [initialDate]'s year. If [initialDate]
+  /// It will display a grid of months for the [displayedDate]'s year. If [displayedDate]
   /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
   /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
   /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
@@ -38,7 +38,7 @@ class MonthPicker extends StatefulWidget {
   /// is selected.
   ///
   /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// allowable date. [displayedDate] and [selectedDate] must either fall between
   /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
@@ -51,7 +51,7 @@ class MonthPicker extends StatefulWidget {
     super.key,
     required this.minDate,
     required this.maxDate,
-    this.initialDate,
+    this.displayedDate,
     this.currentDate,
     this.selectedDate,
     this.theme,
@@ -63,24 +63,24 @@ class MonthPicker extends StatefulWidget {
 
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateUtilsX.monthOnly(initialDate!);
+        if (displayedDate == null) return true;
+        final init = DateUtilsX.monthOnly(displayedDate!);
 
         final min = DateUtilsX.monthOnly(minDate);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
-      'initialDate $initialDate must be on or after minDate $minDate.',
+      'displayedDate $displayedDate must be on or after minDate $minDate.',
     );
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateUtilsX.monthOnly(initialDate!);
+        if (displayedDate == null) return true;
+        final init = DateUtilsX.monthOnly(displayedDate!);
 
         final max = DateUtilsX.monthOnly(maxDate);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
-      'initialDate $initialDate must be on or before maxDate $maxDate.',
+      'displayedDate $displayedDate must be on or before maxDate $maxDate.',
     );
   }
 
@@ -91,7 +91,7 @@ class MonthPicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -148,9 +148,9 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+    _displayedYear = DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
 
     _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
     _pageController = PageController(
@@ -161,10 +161,10 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void didUpdateWidget(covariant MonthPicker oldWidget) {
-    if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate =
+    if (oldWidget.displayedDate != widget.displayedDate) {
+      final clampedDisplayedDate =
           DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.initialDate ?? clampedInitailDate);
+      _displayedYear = DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 

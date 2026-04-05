@@ -26,7 +26,7 @@ import 'range_days_picker.dart';
 class RangeDatePicker extends StatefulWidget {
   /// Creates a calendar range picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. If [initialDate]
+  /// It will display a grid of days for the [displayedDate]'s month. If [displayedDate]
   /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
   /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
   /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
@@ -42,7 +42,7 @@ class RangeDatePicker extends StatefulWidget {
   /// with [initialPickerType].
   ///
   /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-  /// allowable date. [initialDate] and [selectedRange] must either fall between
+  /// allowable date. [displayedDate] and [selectedRange] must either fall between
   /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
@@ -59,8 +59,9 @@ class RangeDatePicker extends StatefulWidget {
     this.onLeadingDateTap,
     this.onStartDateChanged,
     this.onEndDateChanged,
+    this.onDisplayedMonthChanged,
     this.currentDate,
-    this.initialDate,
+    this.displayedDate,
     this.selectedRange,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
@@ -71,7 +72,7 @@ class RangeDatePicker extends StatefulWidget {
   }
 
   /// The initially selected date range when the picker is first opened.
-  /// If the specified range contains the [initialDate], that range will be selected.
+  /// If the specified range contains the [displayedDate], that range will be selected.
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTimeRange? selectedRange;
@@ -89,7 +90,7 @@ class RangeDatePicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// Called when the user picks a range.
   final ValueChanged<DateTimeRange>? onRangeSelected;
@@ -102,6 +103,14 @@ class RangeDatePicker extends StatefulWidget {
 
   /// Called when the user picks an end date to the range
   final ValueChanged<DateTime>? onEndDateChanged;
+
+  /// Called when the displayed month changes in the days grid.
+  ///
+  /// This is called once when the days grid is first shown with the initial month,
+  /// and subsequently whenever the user swipes between pages.
+  ///
+  /// The [DateTime] passed is the first day of the displayed month.
+  final ValueChanged<DateTime>? onDisplayedMonthChanged;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -145,9 +154,9 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
   @override
   void initState() {
     _pickerType = widget.initialPickerType;
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
 
     if (widget.selectedRange != null) {
       _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
@@ -173,10 +182,10 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
       }
     }
 
-    if (widget.initialDate != oldWidget.initialDate) {
-      final clampedInitailDate =
+    if (widget.displayedDate != oldWidget.displayedDate) {
+      final clampedDisplayedDate =
           DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -194,7 +203,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           padding: widget.padding,
           child: RangeDaysPicker(
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
@@ -233,13 +242,14 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
 
               widget.onStartDateChanged?.call(date);
             },
+            onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
           ),
         );
       case PickerType.months:
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             selectedDate: null,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
@@ -270,7 +280,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           padding: widget.padding,
           child: YearsPicker(
             selectedDate: null,
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),

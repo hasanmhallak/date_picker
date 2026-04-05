@@ -27,7 +27,7 @@ import 'show_date_picker_dialog.dart';
 class DatePicker extends StatefulWidget {
   /// Creates a calendar date picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. If [initialDate]
+  /// It will display a grid of days for the [displayedDate]'s month. If [displayedDate]
   /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
   /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
   /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
@@ -43,7 +43,7 @@ class DatePicker extends StatefulWidget {
   /// with [initialPickerType].
   ///
   /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// allowable date. [displayedDate] and [selectedDate] must either fall between
   /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
@@ -57,7 +57,8 @@ class DatePicker extends StatefulWidget {
     required this.maxDate,
     required this.minDate,
     this.onDateSelected,
-    this.initialDate,
+    this.onDisplayedMonthChanged,
+    this.displayedDate,
     this.selectedDate,
     this.currentDate,
     this.padding = const EdgeInsets.all(16),
@@ -76,7 +77,7 @@ class DatePicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -91,6 +92,14 @@ class DatePicker extends StatefulWidget {
 
   /// Called when the user picks a date.
   final ValueChanged<DateTime>? onDateSelected;
+
+  /// Called when the displayed month changes in the days grid.
+  ///
+  /// This is called once when the days grid is first shown with the initial month,
+  /// and subsequently whenever the user swipes between pages.
+  ///
+  /// The [DateTime] passed is the first day of the displayed month.
+  final ValueChanged<DateTime>? onDisplayedMonthChanged;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -135,9 +144,9 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     _pickerType = widget.initialPickerType;
 
     _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
@@ -147,10 +156,10 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
-    if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate =
+    if (oldWidget.displayedDate != widget.displayedDate) {
+      final clampedDisplayedDate =
           DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
       _pickerType = widget.initialPickerType;
@@ -172,7 +181,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: DaysPicker(
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
@@ -192,13 +201,14 @@ class _DatePickerState extends State<DatePicker> {
               });
               widget.onDateSelected?.call(selectedDate);
             },
+            onDisplayedMonthChanged: widget.onDisplayedMonthChanged,
           ),
         );
       case PickerType.months:
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
@@ -228,7 +238,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: YearsPicker(
-            initialDate: _displayedDate,
+            displayedDate: _displayedDate,
             selectedDate: _selectedDate,
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),

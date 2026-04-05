@@ -121,7 +121,7 @@ void main() {
                   minDate: DateTime(2022, 1, 1),
                   maxDate: DateTime(2022, 12, 31),
                   currentDate: current,
-                  initialDate: current,
+                  displayedDate: current,
                 );
               },
             ),
@@ -151,7 +151,7 @@ void main() {
                 return MonthPicker(
                   minDate: DateTime(2020, 1, 1),
                   maxDate: DateTime(2025, 12, 31),
-                  initialDate: DateTime(2022, 6, 1),
+                  displayedDate: DateTime(2022, 6, 1),
                   currentDate: DateTime(2022, 6, 1),
                 );
               },
@@ -181,7 +181,7 @@ void main() {
                   minDate: DateTime(2010, 1, 1),
                   maxDate: DateTime(2030, 12, 31),
                   currentDate: DateTime(2020, 1, 1),
-                  initialDate: DateTime(2020, 1, 1),
+                  displayedDate: DateTime(2020, 1, 1),
                 );
               },
             ),
@@ -246,7 +246,7 @@ void main() {
                   minDate: DateTime(2022, 1, 1),
                   maxDate: DateTime(2022, 12, 31),
                   currentDate: current,
-                  initialDate: current,
+                  displayedDate: current,
                 );
               },
             ),
@@ -376,7 +376,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: current,
-              initialDate: current,
+              displayedDate: current,
             ),
           ),
         ),
@@ -399,7 +399,7 @@ void main() {
             child: MonthPicker(
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2025, 12, 31),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               currentDate: DateTime(2022, 6, 1),
             ),
           ),
@@ -424,7 +424,7 @@ void main() {
               minDate: DateTime(2010, 1, 1),
               maxDate: DateTime(2030, 12, 31),
               currentDate: DateTime(2020, 1, 1),
-              initialDate: DateTime(2020, 1, 1),
+              displayedDate: DateTime(2020, 1, 1),
             ),
           ),
         ),
@@ -448,7 +448,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               disabledDayPredicate: (date) {
                 if (date == DateTime(2022, 6, 2)) return true;
                 return false;
@@ -484,7 +484,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 11, 30),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               theme: extensionTheme().copyWith(
                   monthsPickerTheme: MonthsPickerTheme(disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -516,7 +516,7 @@ void main() {
               minDate: DateTime(2000, 1, 1),
               maxDate: DateTime(2022, 11, 30),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               theme: extensionTheme().copyWith(
                   yearsPickerTheme: YearsPickerTheme(disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -547,7 +547,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 1, 25),
               currentDate: DateTime(2022, 1, 1),
-              initialDate: DateTime(2022, 1, 1),
+              displayedDate: DateTime(2022, 1, 1),
               theme: extensionTheme()
                   .copyWith(daysPickerTheme: DaysPickerTheme(disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -605,7 +605,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: current,
-              initialDate: current,
+              displayedDate: current,
             ),
           ),
         ),
@@ -631,7 +631,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 6, 14),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               theme: extensionTheme().copyWith(
                 rangePickerTheme: RangePickerTheme(
                   disabledCellsTextStyle: TextStyle(color: disabledColor),
@@ -666,7 +666,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
             ),
           ),
         ),
@@ -692,7 +692,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 6, 14),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               theme: extensionTheme().copyWith(
                 rangePickerTheme: RangePickerTheme(
                   disabledCellsTextStyle: TextStyle(color: disabledColor),
@@ -734,7 +734,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               onStartDateChanged: (_) {
                 startDateChanged = true;
               },
@@ -766,7 +766,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               onStartDateChanged: (_) {
                 startDateChanged = true;
               },
@@ -798,7 +798,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               theme: const DatePickerPlusTheme(isEnabled: false),
               onStartDateChanged: (_) {
                 startDateChanged = true;

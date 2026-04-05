@@ -508,7 +508,7 @@ void main() {
     testWidgets(
       'Should not throw assertion when selected date at edge of max or min',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2024, 6, 31);
+        final DateTime displayedDate = DateTime(2024, 6, 31);
         final DateTime minDate = DateTime(2024, 1, 1);
         final DateTime selectedDate = DateTime(2024, 6, 31);
         final DateTime maxDate = DateTime(2024, 6, 29);
@@ -523,7 +523,7 @@ void main() {
                     onChanged: (DateTime date) {},
                     minDate: minDate,
                     maxDate: maxDate,
-                    displayedDate: initialDate,
+                    displayedDate: displayedDate,
                     selectedDate: selectedDate,
                   ),
                 ),

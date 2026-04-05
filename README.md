@@ -78,7 +78,7 @@ DatePicker(
 ```dart
 final date = await showDatePickerDialog(
   context: context,
-  initialDate: DateTime(2022, 10, 10),
+  displayedDate: DateTime(2022, 10, 10),
   minDate: DateTime(2020, 10, 10),
   maxDate: DateTime(2024, 10, 30),
   width: 300,
@@ -111,7 +111,7 @@ final date = await showDatePickerDialog(
 ```dart
 final range = await showRangePickerDialog(
   context: context,
-  initialDate: DateTime(2022, 10, 10),
+  displayedDate: DateTime(2022, 10, 10),
   minDate: DateTime(2020, 10, 10),
   maxDate: DateTime(2024, 10, 30),
   width: 300,

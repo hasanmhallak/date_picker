@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('YearsPicker', () {
     testWidgets('should show the correct leading header date', (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022);
+      final DateTime displayedDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
 
@@ -15,8 +15,8 @@ void main() {
         MaterialApp(
           home: Material(
             child: YearsPicker(
-              initialDate: initialDate,
-              currentDate: initialDate,
+              displayedDate: displayedDate,
+              currentDate: displayedDate,
               minDate: minDate,
               maxDate: maxDate,
             ),
@@ -33,7 +33,7 @@ void main() {
     });
 
     testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022);
+      final DateTime displayedDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
 
@@ -41,8 +41,8 @@ void main() {
         MaterialApp(
           home: Material(
             child: YearsPicker(
-              currentDate: initialDate,
-              initialDate: initialDate,
+              currentDate: displayedDate,
+              displayedDate: displayedDate,
               minDate: minDate,
               maxDate: maxDate,
             ),
@@ -73,7 +73,7 @@ void main() {
 
     testWidgets('should change the page when tapping on the next page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022);
+      final DateTime displayedDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
 
@@ -81,8 +81,8 @@ void main() {
         MaterialApp(
           home: Material(
             child: YearsPicker(
-              initialDate: initialDate,
-              currentDate: initialDate,
+              displayedDate: displayedDate,
+              currentDate: displayedDate,
               minDate: minDate,
               maxDate: maxDate,
             ),
@@ -119,7 +119,7 @@ void main() {
 
     testWidgets('should change the page when tapping on the previous page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022);
+      final DateTime displayedDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);
       final DateTime maxDate = DateTime(2036);
 
@@ -127,8 +127,8 @@ void main() {
         MaterialApp(
           home: Material(
             child: YearsPicker(
-              initialDate: initialDate,
-              currentDate: initialDate,
+              displayedDate: displayedDate,
+              currentDate: displayedDate,
               minDate: minDate,
               maxDate: maxDate,
             ),
@@ -166,7 +166,7 @@ void main() {
     testWidgets(
       'should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
 
@@ -174,8 +174,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
               ),
@@ -224,7 +224,7 @@ void main() {
     testWidgets(
       'should NOT change the page when tapping on the next page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
 
@@ -232,8 +232,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
               ),
@@ -279,7 +279,7 @@ void main() {
     testWidgets(
       'should NOT change the page forward and backward on drag when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
 
@@ -287,8 +287,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
               ),
@@ -333,7 +333,7 @@ void main() {
     testWidgets(
       'Should show the correct year on pick',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
         final DateTime yearToSelect = DateTime(2010);
@@ -344,8 +344,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 onDateSelected: (value) {
@@ -383,7 +383,7 @@ void main() {
     testWidgets(
       'Should show the correct text style for the leading date',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
 
@@ -393,8 +393,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 theme: const DatePickerPlusTheme(
@@ -419,7 +419,7 @@ void main() {
     testWidgets(
       'Should render custom forward and backward arrow widgets from theme',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
         const customForwardKey = Key('custom_forward');
@@ -428,8 +428,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: YearsPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 theme: const DatePickerPlusTheme(
@@ -451,7 +451,7 @@ void main() {
     testWidgets(
       'Should not throw assertion when initial date at edge of max or min',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2025, 6, 31);
+        final DateTime displayedDate = DateTime(2025, 6, 31);
         final DateTime minDate = DateTime(2024, 1, 1);
         final DateTime maxDate = DateTime(2024, 6, 29);
 
@@ -461,8 +461,8 @@ void main() {
               MaterialApp(
                 home: Material(
                   child: YearsPicker(
-                    initialDate: initialDate,
-                    currentDate: initialDate,
+                    displayedDate: displayedDate,
+                    currentDate: displayedDate,
                     minDate: minDate,
                     maxDate: maxDate,
                   ),
@@ -579,7 +579,7 @@ void main() {
                     YearsPicker(
                       minDate: DateTime(2010, 1, 1),
                       maxDate: DateTime(2030, 12, 31),
-                      initialDate: DateTime(2015, 1, 1),
+                      displayedDate: DateTime(2015, 1, 1),
                       currentDate: DateTime(2022, 1, 1),
                       selectedDate: selectedDate,
                       theme: DatePickerPlusTheme(

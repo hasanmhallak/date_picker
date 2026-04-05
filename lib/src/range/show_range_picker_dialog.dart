@@ -11,14 +11,14 @@ import 'range_picker.dart';
 /// The returned [Future] resolves to the range selected by the user or `null` when tap
 /// outside the dialog.
 ///
-/// When the range picker is first displayed, it will show the [initialDate].
+/// When the range picker is first displayed, it will show the [displayedDate].
 ///
 /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-/// allowable date. [initialDate] and [selectedRange] must either fall between these dates,
+/// allowable date. [displayedDate] and [selectedRange] must either fall between these dates,
 /// or be equal to one of them. For each of these [DateTime] parameters, only
 /// their dates are considered. Their time fields are ignored.
 ///
-/// [initialDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
+/// [displayedDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
 ///
 /// The locale for the date picker defaults to the ambient locale
 /// provided by [Localizations].
@@ -41,7 +41,7 @@ Future<DateTimeRange?> showRangePickerDialog({
   required DateTime minDate,
   double? width,
   double? height,
-  DateTime? initialDate,
+  DateTime? displayedDate,
   DateTime? currentDate,
   DateTimeRange? selectedRange,
   EdgeInsets contentPadding = const EdgeInsets.all(16),
@@ -56,6 +56,7 @@ Future<DateTimeRange?> showRangePickerDialog({
   Offset? anchorPoint,
   CellBuilder? cellBuilder,
   DatePickerPlusTheme? theme,
+  ValueChanged<DateTime>? onDisplayedMonthChanged,
 }) async {
   return showDialog<DateTimeRange>(
     context: context,
@@ -88,13 +89,14 @@ Future<DateTimeRange?> showRangePickerDialog({
                 currentDate: currentDate,
                 maxDate: maxDate,
                 minDate: minDate,
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 selectedRange: selectedRange,
                 onRangeSelected: (value) => Navigator.pop(context, value),
                 initialPickerType: initialPickerType,
                 padding: contentPadding,
                 cellBuilder: cellBuilder,
                 theme: theme,
+                onDisplayedMonthChanged: onDisplayedMonthChanged,
               ),
             ),
           ),
