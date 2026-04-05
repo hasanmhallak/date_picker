@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
+import '../shared/types.dart';
 import '../theme/date_picker_plus_theme.dart';
 import 'date_picker.dart';
 
@@ -54,6 +55,7 @@ Future<DateTime?> showDatePickerDialog({
   bool useRootNavigator = true,
   RouteSettings? routeSettings,
   Offset? anchorPoint,
+  CellBuilder? cellBuilder,
   DatePickerPlusTheme? theme,
 }) async {
   return showDialog<DateTime>(
@@ -92,6 +94,7 @@ Future<DateTime?> showDatePickerDialog({
                 onDateSelected: (value) => Navigator.pop(context, value),
                 initialPickerType: initialPickerType,
                 padding: contentPadding,
+                cellBuilder: cellBuilder,
                 theme: theme,
               ),
             ),

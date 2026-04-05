@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 
+import '../shared/cell_data.dart';
 import '../shared/cell_state.dart';
 import '../shared/day_headers.dart';
 import '../shared/picker_grid_delegate.dart';
+import '../shared/types.dart';
 import '../shared/utils.dart';
 import '../theme/date_picker_plus_theme.dart';
 
@@ -27,6 +29,7 @@ class RangeDaysView extends StatelessWidget {
     required this.onStartDateChanged,
     required this.onEndDateChanged,
     required this.displayedMonth,
+    this.cellBuilder,
     this.theme,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -102,6 +105,9 @@ class RangeDaysView extends StatelessWidget {
   /// Note that only dates are considered. time fields are ignored.
   final DateTime displayedMonth;
 
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
+
   /// The theme to apply to the [DatePicker].
   ///
   /// If provided, it will be merged with the context's [DatePickerPlusTheme]
@@ -137,6 +143,19 @@ class RangeDaysView extends StatelessWidget {
     final minDate = DateUtils.dateOnly(this.minDate);
 
     final List<Widget> dayItems = dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
+
+    if (cellBuilder != null) {
+      final startOfWeek = daysOfWeekTheme.startOfWeek!;
+      for (int i = 0; i < dayItems.length; i++) {
+        final isoWeekday = (startOfWeek - 1 + i) % 7 + 1;
+        dayItems[i] = ExcludeSemantics(
+          child: cellBuilder!(
+            context,
+            WeekDayCell(weekDay: isoWeekday, state: CellState.enabled, child: dayItems[i]),
+          ),
+        );
+      }
+    }
 
     int day = -dayOffset;
     while (day < daysInMonth) {
@@ -212,6 +231,12 @@ class RangeDaysView extends StatelessWidget {
           dayWidget = CustomPaint(
             painter: rangeTheme.resolvePainter?.call(Directionality.of(context), decorationColor, isStartDate),
             child: dayWidget,
+          );
+        }
+
+        if (cellBuilder != null) {
+          dayWidget = ExcludeSemantics(
+            child: cellBuilder!(context, DayCell(day: dayToBuild, state: state, child: dayWidget)),
           );
         }
 

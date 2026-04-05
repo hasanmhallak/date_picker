@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/header.dart';
+import '../shared/types.dart';
 import '../shared/utils.dart';
 import '../theme/date_picker_plus_theme.dart';
 import 'range_days_view.dart';
@@ -17,6 +18,7 @@ class RangeDaysPicker extends StatefulWidget {
     this.selectedStartDate,
     this.selectedEndDate,
     this.theme,
+    this.cellBuilder,
     this.onLeadingDateTap,
     this.onStartDateChanged,
     this.onEndDateChanged,
@@ -94,6 +96,9 @@ class RangeDaysPicker extends StatefulWidget {
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -222,6 +227,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                     minDate: DateUtils.dateOnly(widget.minDate),
                     maxDate: DateUtils.dateOnly(widget.maxDate),
                     displayedMonth: month,
+                    cellBuilder: widget.cellBuilder,
                     selectedEndDate:
                         widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
                     selectedStartDate:

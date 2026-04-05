@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../shared/day_headers.dart';
 import '../shared/picker_grid_delegate.dart';
-import '../shared/types.dart';
 import '../shared/utils.dart';
 
 /// Displays the days of a given month and allows choosing a day.
@@ -24,6 +23,7 @@ class DaysView extends StatelessWidget {
     required this.displayedMonth,
     this.selectedDate,
     this.disabledDayPredicate,
+    this.cellBuilder,
     this.theme,
     this.isEnabled = true,
   }) {
@@ -81,6 +81,9 @@ class DaysView extends StatelessWidget {
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
 
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
+
   /// The theme to apply to the [DatePicker].
   ///
   /// If provided, it will be merged with the context's [DatePickerPlusTheme]
@@ -111,6 +114,19 @@ class DaysView extends StatelessWidget {
     final minDate = DateUtils.dateOnly(this.minDate);
 
     final List<Widget> dayItems = dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
+
+    if (cellBuilder != null) {
+      final startOfWeek = daysOfWeekTheme.startOfWeek!;
+      for (int i = 0; i < dayItems.length; i++) {
+        final isoWeekday = (startOfWeek - 1 + i) % 7 + 1;
+        dayItems[i] = ExcludeSemantics(
+          child: cellBuilder!(
+            context,
+            WeekDayCell(weekDay: isoWeekday, state: CellState.enabled, child: dayItems[i]),
+          ),
+        );
+      }
+    }
 
     int day = -dayOffset;
     while (day < daysInMonth) {
@@ -152,6 +168,12 @@ class DaysView extends StatelessWidget {
             ),
           ),
         );
+
+        if (cellBuilder != null) {
+          dayWidget = ExcludeSemantics(
+            child: cellBuilder!(context, DayCell(day: dayToBuild, state: state, child: dayWidget)),
+          );
+        }
 
         final String semanticLabel = '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
 

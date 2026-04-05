@@ -4,6 +4,7 @@ import '../theme/date_picker_plus_theme.dart';
 import 'device_orientation_builder.dart';
 import 'header.dart';
 import 'month_view.dart';
+import 'types.dart';
 import 'utils.dart';
 import '../date/show_date_picker_dialog.dart';
 
@@ -54,6 +55,7 @@ class MonthPicker extends StatefulWidget {
     this.currentDate,
     this.selectedDate,
     this.theme,
+    this.cellBuilder,
     this.onLeadingDateTap,
     this.onDateSelected,
   }) {
@@ -118,6 +120,9 @@ class MonthPicker extends StatefulWidget {
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime maxDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -248,6 +253,7 @@ class _MonthPickerState extends State<MonthPicker> {
                     minDate: DateUtilsX.monthOnly(widget.minDate),
                     displayedDate: year,
                     selectedDate: _selectedDate,
+                    cellBuilder: widget.cellBuilder,
                     theme: theme.monthsPickerTheme,
                     isEnabled: isEnabled,
                     onChanged: (value) {

@@ -19,6 +19,7 @@ class YearView extends StatelessWidget {
     this.selectedDate,
     required this.onChanged,
     required this.displayedYearRange,
+    this.cellBuilder,
     this.theme,
     this.isEnabled = true,
   }) {
@@ -71,6 +72,9 @@ class YearView extends StatelessWidget {
   ///
   /// Note that only year are considered. time, month and day fields are ignored.
   final DateTimeRange displayedYearRange;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// The theme to apply to the [DatePicker].
   ///
@@ -136,6 +140,15 @@ class YearView extends StatelessWidget {
           ),
         ),
       );
+
+      if (cellBuilder != null) {
+        monthWidget = ExcludeSemantics(
+          child: cellBuilder!(
+            context,
+            YearCell(year: yearsName[i], state: state, child: monthWidget),
+          ),
+        );
+      }
 
       final String yearSemanticLabel = yearsName[i].toString();
 

@@ -63,6 +63,7 @@ class DatePicker extends StatefulWidget {
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
     this.disabledDayPredicate,
+    this.cellBuilder,
     this.theme,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -113,6 +114,9 @@ class DatePicker extends StatefulWidget {
 
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// The theme to apply to the [DatePicker].
   ///
@@ -174,6 +178,7 @@ class _DatePickerState extends State<DatePicker> {
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             disabledDayPredicate: widget.disabledDayPredicate,
+            cellBuilder: widget.cellBuilder,
             theme: theme,
             onLeadingDateTap: () {
               setState(() {
@@ -199,6 +204,7 @@ class _DatePickerState extends State<DatePicker> {
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             theme: theme,
+            cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -228,6 +234,7 @@ class _DatePickerState extends State<DatePicker> {
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             theme: theme,
+            cellBuilder: widget.cellBuilder,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(

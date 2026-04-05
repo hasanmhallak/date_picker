@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/month_picker.dart';
 import '../shared/picker_type.dart';
+import '../shared/types.dart';
 import '../shared/utils.dart';
 import '../shared/year_picker.dart';
 import '../theme/date_picker_plus_theme.dart';
@@ -63,6 +64,7 @@ class RangeDatePicker extends StatefulWidget {
     this.selectedRange,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
+    this.cellBuilder,
     this.theme,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -120,6 +122,9 @@ class RangeDatePicker extends StatefulWidget {
 
   /// The amount of padding to be added around the [DatePicker].
   final EdgeInsets padding;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// The theme to apply to the [RangeDatePicker].
   ///
@@ -195,6 +200,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             theme: theme,
+            cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.months;
@@ -239,6 +245,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             theme: theme,
+            cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -268,6 +275,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             theme: theme,
+            cellBuilder: widget.cellBuilder,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(

@@ -58,6 +58,7 @@ class DaysPicker extends StatefulWidget {
     this.onLeadingDateTap,
     this.onDateSelected,
     this.disabledDayPredicate,
+    this.cellBuilder,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
@@ -125,6 +126,9 @@ class DaysPicker extends StatefulWidget {
 
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// The theme to apply to the [DatePicker].
   ///
@@ -259,6 +263,7 @@ class _DaysPickerState extends State<DaysPicker> {
                       displayedMonth: month,
                       selectedDate: _selectedDate,
                       disabledDayPredicate: widget.disabledDayPredicate,
+                      cellBuilder: widget.cellBuilder,
                       theme: theme.daysPickerTheme,
                       isEnabled: isEnabled,
                       onChanged: (value) {

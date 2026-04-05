@@ -4,6 +4,7 @@ import '../theme/date_picker_plus_theme.dart';
 import 'device_orientation_builder.dart';
 import 'header.dart';
 import '../date/show_date_picker_dialog.dart';
+import 'types.dart';
 import 'utils.dart';
 import 'year_view.dart';
 
@@ -52,6 +53,7 @@ class YearsPicker extends StatefulWidget {
     this.currentDate,
     this.selectedDate,
     this.theme,
+    this.cellBuilder,
     this.onLeadingDateTap,
     this.onDateSelected,
   }) {
@@ -116,6 +118,9 @@ class YearsPicker extends StatefulWidget {
   ///
   /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime maxDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -266,6 +271,7 @@ class _YearsPickerState extends State<YearsPicker> {
                     minDate: DateUtilsX.yearOnly(widget.minDate),
                     displayedYearRange: yearRange,
                     selectedDate: _selectedDate,
+                    cellBuilder: widget.cellBuilder,
                     theme: theme.yearsPickerTheme,
                     isEnabled: isEnabled,
                     onChanged: (value) {
