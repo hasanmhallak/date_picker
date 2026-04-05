@@ -246,7 +246,6 @@ class _YearsPickerState extends State<YearsPicker> {
                 );
               },
             ),
-            const SizedBox(height: 10),
             Flexible(
               child: PageView.builder(
                 scrollDirection: Axis.horizontal,

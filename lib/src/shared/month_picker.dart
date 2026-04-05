@@ -222,7 +222,6 @@ class _MonthPickerState extends State<MonthPicker> {
                 );
               },
             ),
-            const SizedBox(height: 10),
             Expanded(
               child: PageView.builder(
                 scrollDirection: Axis.horizontal,
