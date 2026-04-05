@@ -10,7 +10,6 @@ import 'ink_response_theme.dart';
 class RangePickerTheme extends ThemeExtension<RangePickerTheme> with DiagnosticableTreeMixin {
   /// Creates a [RangePickerTheme].
   const RangePickerTheme({
-    this.showPreviousAndNextMonthDays,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration,
     this.disabledCellsTextStyle,
@@ -25,11 +24,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     this.inkResponseTheme,
     this.resolvePainter,
   });
-
-  /// Whether to show the days from previous/next months in the current view.
-  ///
-  /// Defaults to `true`.
-  final bool? showPreviousAndNextMonthDays;
 
   /// The text style of cells which are selectable.
   ///
@@ -118,7 +112,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     final titleLarge = textTheme.titleLarge;
 
     return RangePickerTheme(
-      showPreviousAndNextMonthDays: true,
       enabledCellsTextStyle: titleLarge?.copyWith(
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurface,
@@ -203,7 +196,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
 
   @override
   RangePickerTheme copyWith({
-    bool? showPreviousAndNextMonthDays,
     TextStyle? enabledCellsTextStyle,
     Decoration? enabledCellsDecoration,
     TextStyle? disabledCellsTextStyle,
@@ -219,7 +211,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     ResolvePainter? resolvePainter,
   }) {
     return RangePickerTheme(
-      showPreviousAndNextMonthDays: showPreviousAndNextMonthDays ?? this.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: enabledCellsTextStyle ?? this.enabledCellsTextStyle,
       enabledCellsDecoration: enabledCellsDecoration ?? this.enabledCellsDecoration,
       disabledCellsTextStyle: disabledCellsTextStyle ?? this.disabledCellsTextStyle,
@@ -240,7 +231,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   RangePickerTheme merge(covariant RangePickerTheme? other) {
     if (other == null) return this;
     return copyWith(
-      showPreviousAndNextMonthDays: other.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: other.enabledCellsTextStyle,
       enabledCellsDecoration: other.enabledCellsDecoration,
       disabledCellsTextStyle: other.disabledCellsTextStyle,
@@ -262,7 +252,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     if (other is! RangePickerTheme) return this;
 
     return RangePickerTheme(
-      showPreviousAndNextMonthDays: t < 0.5 ? showPreviousAndNextMonthDays : other.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: TextStyle.lerp(enabledCellsTextStyle, other.enabledCellsTextStyle, t),
       enabledCellsDecoration: Decoration.lerp(enabledCellsDecoration, other.enabledCellsDecoration, t),
       disabledCellsTextStyle: TextStyle.lerp(disabledCellsTextStyle, other.disabledCellsTextStyle, t),
@@ -283,7 +272,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool?>('showPreviousAndNextMonthDays', showPreviousAndNextMonthDays));
     properties.add(DiagnosticsProperty<TextStyle?>('enabledCellsTextStyle', enabledCellsTextStyle));
     properties.add(DiagnosticsProperty<Decoration?>('enabledCellsDecoration', enabledCellsDecoration));
     properties.add(DiagnosticsProperty<TextStyle?>('disabledCellsTextStyle', disabledCellsTextStyle));

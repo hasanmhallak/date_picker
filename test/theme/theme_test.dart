@@ -174,32 +174,29 @@ void main() {
   group('DaysPickerTheme', () {
     test('copyWith preserves unset fields', () {
       const base = DaysPickerTheme(
-        showPreviousAndNextMonthDays: true,
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
+        disabledCellsDecoration: BoxDecoration(color: Colors.grey),
       );
-      final copy = base.copyWith(showPreviousAndNextMonthDays: false);
+      final copy = base.copyWith(disabledCellsDecoration: const BoxDecoration(color: Colors.black));
 
-      expect(copy.showPreviousAndNextMonthDays, isFalse);
       expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
+      expect((copy.disabledCellsDecoration as BoxDecoration).color, equals(Colors.black));
     });
 
     test('merge: null other returns self', () {
-      const theme = DaysPickerTheme(showPreviousAndNextMonthDays: true);
+      const theme = DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
       expect(theme.merge(null), same(theme));
     });
 
     test('merge: other overrides properties', () {
       const a = DaysPickerTheme(
-        showPreviousAndNextMonthDays: true,
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
       );
       const b = DaysPickerTheme(
-        showPreviousAndNextMonthDays: false,
         enabledCellsDecoration: BoxDecoration(color: Colors.blue),
       );
       final m = a.merge(b);
 
-      expect(m.showPreviousAndNextMonthDays, isFalse);
       expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
     });
 
@@ -466,32 +463,29 @@ void main() {
   group('RangePickerTheme', () {
     test('copyWith preserves unset fields', () {
       const base = RangePickerTheme(
-        showPreviousAndNextMonthDays: true,
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
+        disabledCellsDecoration: BoxDecoration(color: Colors.grey),
       );
-      final copy = base.copyWith(showPreviousAndNextMonthDays: false);
+      final copy = base.copyWith(disabledCellsDecoration: const BoxDecoration(color: Colors.black));
 
-      expect(copy.showPreviousAndNextMonthDays, isFalse);
       expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
+      expect((copy.disabledCellsDecoration as BoxDecoration).color, equals(Colors.black));
     });
 
     test('merge: null other returns self', () {
-      const theme = RangePickerTheme(showPreviousAndNextMonthDays: true);
+      const theme = RangePickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
       expect(theme.merge(null), same(theme));
     });
 
     test('merge: other overrides properties', () {
       const a = RangePickerTheme(
-        showPreviousAndNextMonthDays: true,
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
       );
       const b = RangePickerTheme(
-        showPreviousAndNextMonthDays: false,
         enabledCellsDecoration: BoxDecoration(color: Colors.blue),
       );
       final m = a.merge(b);
 
-      expect(m.showPreviousAndNextMonthDays, isFalse);
       expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
     });
 
@@ -570,11 +564,11 @@ void main() {
 
   group('DatePickerPlusTheme', () {
     test('copyWith preserves unset fields', () {
-      const daysTheme = DaysPickerTheme(showPreviousAndNextMonthDays: false);
+      const daysTheme = DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
       const a = DatePickerPlusTheme(daysPickerTheme: daysTheme);
       final copy = a.copyWith();
 
-      expect(copy.daysPickerTheme?.showPreviousAndNextMonthDays, isFalse);
+      expect((copy.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
     });
 
     test('merge: null other returns self', () {
@@ -584,13 +578,13 @@ void main() {
 
     test('merge: other sub-themes are merged', () {
       const a = DatePickerPlusTheme(
-        daysPickerTheme: DaysPickerTheme(showPreviousAndNextMonthDays: true),
+        daysPickerTheme: DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red)),
       );
       const b = DatePickerPlusTheme(
-        daysPickerTheme: DaysPickerTheme(showPreviousAndNextMonthDays: false),
+        daysPickerTheme: DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.blue)),
       );
       final m = a.merge(b);
-      expect(m.daysPickerTheme?.showPreviousAndNextMonthDays, isFalse);
+      expect((m.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
     });
 
     testWidgets('defaults creates non-null sub-themes', (tester) async {

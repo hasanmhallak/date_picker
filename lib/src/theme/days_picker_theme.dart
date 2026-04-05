@@ -11,7 +11,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   /// Creates a [DaysPickerTheme].
   const DaysPickerTheme({
     this.daysOfTheWeekTheme,
-    this.showPreviousAndNextMonthDays,
     this.enabledCellsTextStyle,
     this.enabledCellsDecoration,
     this.disabledCellsTextStyle,
@@ -26,11 +25,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
 
   /// The theme controlling the "Monday, Tuesday..." abbreviated row.
   final DaysOfTheWeekTheme? daysOfTheWeekTheme;
-
-  /// Whether to show the days from previous/next months in the current view.
-  ///
-  /// Defaults to `true`.
-  final bool? showPreviousAndNextMonthDays;
 
   /// The text style of cells which are selectable.
   ///
@@ -98,7 +92,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
 
     return DaysPickerTheme(
       daysOfTheWeekTheme: DaysOfTheWeekTheme.defaults(context),
-      showPreviousAndNextMonthDays: true,
       enabledCellsTextStyle: titleLarge?.copyWith(
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurface,
@@ -167,7 +160,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   @override
   DaysPickerTheme copyWith({
     DaysOfTheWeekTheme? daysOfTheWeekTheme,
-    bool? showPreviousAndNextMonthDays,
     TextStyle? enabledCellsTextStyle,
     Decoration? enabledCellsDecoration,
     TextStyle? disabledCellsTextStyle,
@@ -181,7 +173,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   }) {
     return DaysPickerTheme(
       daysOfTheWeekTheme: daysOfTheWeekTheme ?? this.daysOfTheWeekTheme,
-      showPreviousAndNextMonthDays: showPreviousAndNextMonthDays ?? this.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: enabledCellsTextStyle ?? this.enabledCellsTextStyle,
       enabledCellsDecoration: enabledCellsDecoration ?? this.enabledCellsDecoration,
       disabledCellsTextStyle: disabledCellsTextStyle ?? this.disabledCellsTextStyle,
@@ -200,7 +191,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
     if (other == null) return this;
     return copyWith(
       daysOfTheWeekTheme: daysOfTheWeekTheme?.merge(other.daysOfTheWeekTheme) ?? other.daysOfTheWeekTheme,
-      showPreviousAndNextMonthDays: other.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: other.enabledCellsTextStyle,
       enabledCellsDecoration: other.enabledCellsDecoration,
       disabledCellsTextStyle: other.disabledCellsTextStyle,
@@ -220,7 +210,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
 
     return DaysPickerTheme(
       daysOfTheWeekTheme: daysOfTheWeekTheme?.lerp(other.daysOfTheWeekTheme, t),
-      showPreviousAndNextMonthDays: t < 0.5 ? showPreviousAndNextMonthDays : other.showPreviousAndNextMonthDays,
       enabledCellsTextStyle: TextStyle.lerp(enabledCellsTextStyle, other.enabledCellsTextStyle, t),
       enabledCellsDecoration: Decoration.lerp(enabledCellsDecoration, other.enabledCellsDecoration, t),
       disabledCellsTextStyle: TextStyle.lerp(disabledCellsTextStyle, other.disabledCellsTextStyle, t),
@@ -238,7 +227,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<DaysOfTheWeekTheme?>('daysOfTheWeekTheme', daysOfTheWeekTheme));
-    properties.add(DiagnosticsProperty<bool?>('showPreviousAndNextMonthDays', showPreviousAndNextMonthDays));
     properties.add(DiagnosticsProperty<TextStyle?>('enabledCellsTextStyle', enabledCellsTextStyle));
     properties.add(DiagnosticsProperty<Decoration?>('enabledCellsDecoration', enabledCellsDecoration));
     properties.add(DiagnosticsProperty<TextStyle?>('disabledCellsTextStyle', disabledCellsTextStyle));
