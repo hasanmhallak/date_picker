@@ -26,7 +26,7 @@ import 'show_date_picker_dialog.dart';
 class DaysPicker extends StatefulWidget {
   /// Creates a days picker.
   ///
-  /// It will display a grid of days for the [initialDate]'s month. If [initialDate]
+  /// It will display a grid of days for the [displayedDate]'s month. If [displayedDate]
   /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
   /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
   /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
@@ -38,7 +38,7 @@ class DaysPicker extends StatefulWidget {
   /// is selected.
   ///
   /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// allowable date. [displayedDate] and [selectedDate] must either fall between
   /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
@@ -51,35 +51,37 @@ class DaysPicker extends StatefulWidget {
     super.key,
     required this.maxDate,
     required this.minDate,
-    this.initialDate,
+    this.displayedDate,
     this.currentDate,
     this.selectedDate,
     this.theme,
     this.onLeadingDateTap,
     this.onDateSelected,
+    this.onDisplayedMonthChanged,
     this.disabledDayPredicate,
+    this.cellBuilder,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        if (displayedDate == null) return true;
+        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final min = DateTime(minDate.year, minDate.month, minDate.day);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
-      'initialDate $initialDate must be on or after minDate $minDate.',
+      'displayedDate $displayedDate must be on or after minDate $minDate.',
     );
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        if (displayedDate == null) return true;
+        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
-      'initialDate $initialDate must be on or before maxDate $maxDate.',
+      'displayedDate $displayedDate must be on or before maxDate $maxDate.',
     );
   }
 
@@ -90,7 +92,7 @@ class DaysPicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -105,6 +107,14 @@ class DaysPicker extends StatefulWidget {
 
   /// Called when the user picks a date.
   final ValueChanged<DateTime>? onDateSelected;
+
+  /// Called when the displayed month changes.
+  ///
+  /// This is called once during initialization with the initial month,
+  /// and subsequently whenever the user swipes between pages.
+  ///
+  /// The [DateTime] passed is the first day of the displayed month.
+  final ValueChanged<DateTime>? onDisplayedMonthChanged;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -126,6 +136,9 @@ class DaysPicker extends StatefulWidget {
   /// A predicate function used to determine if a given day should be disabled.
   final DatePredicate? disabledDayPredicate;
 
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
+
   /// The theme to apply to the [DatePicker].
   ///
   /// If provided, it will be merged with the context's [DatePickerPlusTheme]
@@ -144,22 +157,25 @@ class _DaysPickerState extends State<DaysPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
     super.initState();
+    widget.onDisplayedMonthChanged?.call(
+      DateTime(_displayedMonth!.year, _displayedMonth!.month, 1),
+    );
   }
 
   @override
   void didUpdateWidget(covariant DaysPicker oldWidget) {
-    if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate =
+    if (oldWidget.displayedDate != widget.displayedDate) {
+      final clampedDisplayedDate =
           DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
 
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
@@ -247,6 +263,7 @@ class _DaysPickerState extends State<DaysPicker> {
                     setState(() {
                       _displayedMonth = monthDate;
                     });
+                    widget.onDisplayedMonthChanged?.call(monthDate);
                   },
                   itemBuilder: (context, index) {
                     final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
@@ -259,6 +276,7 @@ class _DaysPickerState extends State<DaysPicker> {
                       displayedMonth: month,
                       selectedDate: _selectedDate,
                       disabledDayPredicate: widget.disabledDayPredicate,
+                      cellBuilder: widget.cellBuilder,
                       theme: theme.daysPickerTheme,
                       isEnabled: isEnabled,
                       onChanged: (value) {

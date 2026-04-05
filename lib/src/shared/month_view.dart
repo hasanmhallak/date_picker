@@ -20,6 +20,7 @@ class MonthView extends StatelessWidget {
     required this.onChanged,
     required this.minDate,
     required this.maxDate,
+    this.cellBuilder,
     this.theme,
     this.isEnabled = true,
   }) {
@@ -68,6 +69,9 @@ class MonthView extends StatelessWidget {
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime displayedDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// The theme to apply to the [DatePicker].
   ///
@@ -140,6 +144,15 @@ class MonthView extends StatelessWidget {
           ),
         ),
       );
+
+      if (cellBuilder != null) {
+        monthWidget = ExcludeSemantics(
+          child: cellBuilder!(
+            context,
+            MonthCell(month: monthToBuild.month, year: year, state: state, child: monthWidget),
+          ),
+        );
+      }
 
       final String monthSemanticLabel = localizations.formatMonthYear(monthToBuild);
 

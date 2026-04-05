@@ -49,7 +49,7 @@ void main() {
                   context: context,
                   minDate: DateTime(2022, 6, 1),
                   maxDate: DateTime(2022, 6, 30),
-                  initialDate: DateTime(2022, 6, 1),
+                  displayedDate: DateTime(2022, 6, 1),
                   currentDate: DateTime(2022, 6, 1),
                 );
               },
@@ -182,7 +182,7 @@ void main() {
                   context: context,
                   minDate: DateTime(2022, 6, 1),
                   maxDate: DateTime(2022, 6, 30),
-                  initialDate: DateTime(2022, 6, 1),
+                  displayedDate: DateTime(2022, 6, 1),
                   currentDate: DateTime(2022, 6, 1),
                 );
               },

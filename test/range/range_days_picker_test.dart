@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('RangeDaysPicker', () {
     testWidgets('should show the correct leading header date', (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
+      final DateTime displayedDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
 
@@ -27,10 +27,10 @@ void main() {
           home: Material(
             child: Builder(builder: (context) {
               return RangeDaysPicker(
-                currentDate: initialDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 onLeadingDateTap: null,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
@@ -47,11 +47,11 @@ void main() {
 
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate));
+          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
     });
 
     testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2020, 6, 1);
+      final DateTime displayedDate = DateTime(2020, 6, 1);
       final DateTime minDate = DateTime(2000, 1, 1);
       final DateTime maxDate = DateTime(2030, 12, 31);
 
@@ -69,10 +69,10 @@ void main() {
           home: Material(
             child: Builder(builder: (context) {
               return RangeDaysPicker(
-                currentDate: initialDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 onLeadingDateTap: null,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
@@ -104,12 +104,12 @@ void main() {
       final Text newHeaderTextWidget =
           tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(initialDate));
+          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(displayedDate));
     });
 
     testWidgets('should change the page when tapping on the next page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
+      final DateTime displayedDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
 
@@ -127,10 +127,10 @@ void main() {
           home: Material(
             child: Builder(builder: (context) {
               return RangeDaysPicker(
-                currentDate: initialDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 onLeadingDateTap: null,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
@@ -153,7 +153,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate));
+          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
 
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
@@ -173,7 +173,7 @@ void main() {
 
     testWidgets('should change the page when tapping on the previous page icon and update header.',
         (WidgetTester tester) async {
-      final DateTime initialDate = DateTime(2022, 6, 1);
+      final DateTime displayedDate = DateTime(2022, 6, 1);
       final DateTime minDate = DateTime(2022, 1, 1);
       final DateTime maxDate = DateTime(2022, 12, 31);
 
@@ -191,10 +191,10 @@ void main() {
           home: Material(
             child: Builder(builder: (context) {
               return RangeDaysPicker(
-                currentDate: initialDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 onLeadingDateTap: null,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
@@ -217,7 +217,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate));
+          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
 
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
@@ -238,7 +238,7 @@ void main() {
     testWidgets(
       'should NOT change the page when tapping on the previous page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2020, 1, 5);
+        final DateTime displayedDate = DateTime(2020, 1, 5);
         final DateTime minDate = DateTime(2020, 1, 1);
         final DateTime maxDate = DateTime(2020, 1, 31);
 
@@ -256,10 +256,10 @@ void main() {
             home: Material(
               child: Builder(builder: (context) {
                 return RangeDaysPicker(
-                  currentDate: initialDate,
+                  currentDate: displayedDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initialDate: initialDate,
+                  displayedDate: displayedDate,
                   onLeadingDateTap: null,
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
@@ -288,7 +288,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate),
+          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
         );
 
         await tester.tap(previousPageIconFinder);
@@ -317,7 +317,7 @@ void main() {
     testWidgets(
       'should NOT change the page when tapping on the next page icon when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2022, 1, 1);
+        final DateTime displayedDate = DateTime(2022, 1, 1);
         final DateTime minDate = DateTime(2022, 1, 1);
         final DateTime maxDate = DateTime(2022, 1, 31);
 
@@ -335,10 +335,10 @@ void main() {
             home: Material(
               child: Builder(builder: (context) {
                 return RangeDaysPicker(
-                  currentDate: initialDate,
+                  currentDate: displayedDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initialDate: initialDate,
+                  displayedDate: displayedDate,
                   onLeadingDateTap: null,
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
@@ -367,7 +367,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate),
+          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
         );
 
         await tester.tap(nextPageIconFinder);
@@ -396,7 +396,7 @@ void main() {
     testWidgets(
       'should NOT change the page forward and backward on drag when the range in max and min date are one year.',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2020, 1, 1);
+        final DateTime displayedDate = DateTime(2020, 1, 1);
         final DateTime minDate = DateTime(2020, 1, 1);
         final DateTime maxDate = DateTime(2020, 1, 31);
 
@@ -414,10 +414,10 @@ void main() {
             home: Material(
               child: Builder(builder: (context) {
                 return RangeDaysPicker(
-                  currentDate: initialDate,
+                  currentDate: displayedDate,
                   minDate: minDate,
                   maxDate: maxDate,
-                  initialDate: initialDate,
+                  displayedDate: displayedDate,
                   onLeadingDateTap: null,
                   onEndDateChanged: (value) {},
                   onStartDateChanged: (value) {},
@@ -467,7 +467,7 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(initialDate),
+          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
         );
       },
     );
@@ -475,7 +475,7 @@ void main() {
     testWidgets(
       'Should show the correct text style for the leading date',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
         const leadingDayColor = Colors.green;
@@ -496,10 +496,10 @@ void main() {
               child: Builder(
                 builder: (context) {
                   return RangeDaysPicker(
-                    currentDate: initialDate,
+                    currentDate: displayedDate,
                     minDate: minDate,
                     maxDate: maxDate,
-                    initialDate: initialDate,
+                    displayedDate: displayedDate,
                     theme: const DatePickerPlusTheme(
                       headerTheme: HeaderTheme(
                         leadingDateTextStyle: customTextStyle,
@@ -525,7 +525,7 @@ void main() {
     testWidgets(
       'Should render custom forward and backward arrow widgets from theme',
       (WidgetTester tester) async {
-        final DateTime initialDate = DateTime(2010);
+        final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
         const customForwardKey = Key('custom_forward');
@@ -534,8 +534,8 @@ void main() {
           MaterialApp(
             home: Material(
               child: RangeDaysPicker(
-                initialDate: initialDate,
-                currentDate: initialDate,
+                displayedDate: displayedDate,
+                currentDate: displayedDate,
                 minDate: minDate,
                 maxDate: maxDate,
                 theme: const DatePickerPlusTheme(
@@ -594,7 +594,7 @@ void main() {
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2025, 12, 31),
               currentDate: DateTime(2022, 6, 1),
-              initialDate: DateTime(2022, 6, 1),
+              displayedDate: DateTime(2022, 6, 1),
               onLeadingDateTap: () => tapped = true,
             ),
           ),
@@ -618,7 +618,7 @@ void main() {
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
               currentDate: currentDate,
-              initialDate: currentDate,
+              displayedDate: currentDate,
               onStartDateChanged: (d) => startDate = d,
             ),
           ),
@@ -653,7 +653,7 @@ void main() {
                 minDate: DateTime(2022, 1, 1),
                 maxDate: DateTime(2022, 12, 31),
                 currentDate: currentDate,
-                initialDate: currentDate,
+                displayedDate: currentDate,
                 selectedStartDate: start,
                 selectedEndDate: end,
                 onStartDateChanged: (d) => startDate = d,
@@ -715,7 +715,7 @@ void main() {
                     minDate: DateTime(2022, 1, 1),
                     maxDate: DateTime(2022, 12, 31),
                     currentDate: DateTime(2022, 6, 1),
-                    initialDate: DateTime(2022, 6, 1),
+                    displayedDate: DateTime(2022, 6, 1),
                     selectedStartDate: startDate,
                     selectedEndDate: endDate,
                     theme: DatePickerPlusTheme(
@@ -756,7 +756,7 @@ void main() {
 
     testWidgets('should not call onStartDateChanged when theme isEnabled is false', (WidgetTester tester) async {
       DateTime? start;
-      final DateTime initialDate = DateTime(2022, 6, 1);
+      final DateTime displayedDate = DateTime(2022, 6, 1);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -771,10 +771,10 @@ void main() {
           ],
           home: Material(
             child: RangeDaysPicker(
-              currentDate: initialDate,
+              currentDate: displayedDate,
               minDate: DateTime(2022, 1, 1),
               maxDate: DateTime(2022, 12, 31),
-              initialDate: initialDate,
+              displayedDate: displayedDate,
               theme: const DatePickerPlusTheme(isEnabled: false),
               onLeadingDateTap: null,
               onEndDateChanged: (_) {},
@@ -797,6 +797,247 @@ void main() {
       await tester.pump();
 
       expect(start, isNull);
+    });
+
+    group('onDisplayedMonthChanged', () {
+      testWidgets('calls with first day of initial month on first build', (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        final DateTime displayedDate = DateTime(2022, 6, 1);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: RangeDaysPicker(
+                currentDate: displayedDate,
+                displayedDate: displayedDate,
+                minDate: DateTime(2022, 1, 1),
+                maxDate: DateTime(2022, 12, 31),
+                onStartDateChanged: (_) {},
+                onEndDateChanged: (_) {},
+                onDisplayedMonthChanged: calls.add,
+              ),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 6, 1)]);
+      });
+
+      testWidgets('calls with next month when dragging forward', (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        final DateTime displayedDate = DateTime(2022, 6, 1);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: RangeDaysPicker(
+                currentDate: displayedDate,
+                displayedDate: displayedDate,
+                minDate: DateTime(2000, 1, 1),
+                maxDate: DateTime(2030, 12, 31),
+                onStartDateChanged: (_) {},
+                onEndDateChanged: (_) {},
+                onDisplayedMonthChanged: calls.add,
+              ),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 6, 1)]);
+
+        await tester.drag(find.byType(PageView), const Offset(-600, 0));
+        await tester.pumpAndSettle();
+
+        expect(calls.last, DateTime(2022, 7, 1));
+        expect(calls.length, 2);
+      });
+
+      testWidgets('calls with previous month when dragging backward from July', (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        final DateTime displayedDate = DateTime(2022, 7, 1);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: RangeDaysPicker(
+                currentDate: displayedDate,
+                displayedDate: displayedDate,
+                minDate: DateTime(2000, 1, 1),
+                maxDate: DateTime(2030, 12, 31),
+                onStartDateChanged: (_) {},
+                onEndDateChanged: (_) {},
+                onDisplayedMonthChanged: calls.add,
+              ),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 7, 1)]);
+
+        await tester.drag(find.byType(PageView), const Offset(600, 0));
+        await tester.pumpAndSettle();
+
+        expect(calls.last, DateTime(2022, 6, 1));
+        expect(calls.length, 2);
+      });
+
+      testWidgets('calls with next month when tapping forward arrow', (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        final DateTime displayedDate = DateTime(2022, 6, 1);
+        late final DatePickerPlusTheme theme;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: Builder(builder: (context) {
+                theme = DatePickerPlusTheme.defaults(context);
+                return RangeDaysPicker(
+                  currentDate: displayedDate,
+                  displayedDate: displayedDate,
+                  minDate: DateTime(2022, 1, 1),
+                  maxDate: DateTime(2022, 12, 31),
+                  theme: theme,
+                  onStartDateChanged: (_) {},
+                  onEndDateChanged: (_) {},
+                  onDisplayedMonthChanged: calls.add,
+                );
+              }),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 6, 1)]);
+
+        await tester.tap(find.byWidget(theme.headerTheme!.forwardArrowWidget!));
+        await tester.pumpAndSettle();
+
+        expect(calls.last, DateTime(2022, 7, 1));
+        expect(calls.length, 2);
+      });
+
+      testWidgets('calls with previous month when tapping backward arrow from July',
+          (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        final DateTime displayedDate = DateTime(2022, 7, 1);
+        late final DatePickerPlusTheme theme;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: Builder(builder: (context) {
+                theme = DatePickerPlusTheme.defaults(context);
+                return RangeDaysPicker(
+                  currentDate: displayedDate,
+                  displayedDate: displayedDate,
+                  minDate: DateTime(2022, 1, 1),
+                  maxDate: DateTime(2022, 12, 31),
+                  theme: theme,
+                  onStartDateChanged: (_) {},
+                  onEndDateChanged: (_) {},
+                  onDisplayedMonthChanged: calls.add,
+                );
+              }),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 7, 1)]);
+
+        await tester.tap(find.byWidget(theme.headerTheme!.backwardArrowWidget!));
+        await tester.pumpAndSettle();
+
+        expect(calls.last, DateTime(2022, 6, 1));
+        expect(calls.length, 2);
+      });
+
+      testWidgets('calls when displayedDate changes via didUpdateWidget', (WidgetTester tester) async {
+        final List<DateTime> calls = [];
+        DateTime displayedDate = DateTime(2022, 6, 1);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            supportedLocales: const [
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: Material(
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => setState(() => displayedDate = DateTime(2022, 8, 1)),
+                        child: const Text('jump'),
+                      ),
+                      RangeDaysPicker(
+                        currentDate: displayedDate,
+                        displayedDate: displayedDate,
+                        minDate: DateTime(2022, 1, 1),
+                        maxDate: DateTime(2022, 12, 31),
+                        onStartDateChanged: (_) {},
+                        onEndDateChanged: (_) {},
+                        onDisplayedMonthChanged: calls.add,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+
+        expect(calls, [DateTime(2022, 6, 1)]);
+
+        await tester.tap(find.text('jump'));
+        await tester.pumpAndSettle();
+
+        expect(calls.last, DateTime(2022, 8, 1));
+        expect(calls.length, 2);
+      });
     });
   });
 }

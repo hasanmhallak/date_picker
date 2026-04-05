@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
+import '../shared/types.dart';
 import '../theme/date_picker_plus_theme.dart';
 import 'date_picker.dart';
 
@@ -10,15 +11,15 @@ import 'date_picker.dart';
 /// The returned [Future] resolves to the date selected by the user or `null` when tap
 /// outside the dialog.
 ///
-/// When the date picker is first displayed, it will show the [initialDate].
+/// When the date picker is first displayed, it will show the [displayedDate].
 ///
 /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-/// allowable date. [initialDate] and [selectedDate] must either fall between these dates,
+/// allowable date. [displayedDate] and [selectedDate] must either fall between these dates,
 /// or be equal to one of them. For each of these [DateTime] parameters, only
 /// their dates are considered. Their time fields are ignored. They must all
 /// be non-null.
 ///
-/// [initialDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
+/// [displayedDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
 ///
 /// The locale for the date picker defaults to the ambient locale
 /// provided by [Localizations].
@@ -41,7 +42,7 @@ Future<DateTime?> showDatePickerDialog({
   required DateTime minDate,
   double? width,
   double? height,
-  DateTime? initialDate,
+  DateTime? displayedDate,
   DateTime? currentDate,
   DateTime? selectedDate,
   EdgeInsets contentPadding = const EdgeInsets.all(16),
@@ -54,7 +55,9 @@ Future<DateTime?> showDatePickerDialog({
   bool useRootNavigator = true,
   RouteSettings? routeSettings,
   Offset? anchorPoint,
+  CellBuilder? cellBuilder,
   DatePickerPlusTheme? theme,
+  ValueChanged<DateTime>? onDisplayedMonthChanged,
 }) async {
   return showDialog<DateTime>(
     context: context,
@@ -84,7 +87,7 @@ Future<DateTime?> showDatePickerDialog({
               width: width ?? size.width,
               height: height ?? size.height,
               child: DatePicker(
-                initialDate: initialDate,
+                displayedDate: displayedDate,
                 maxDate: maxDate,
                 minDate: minDate,
                 currentDate: currentDate,
@@ -92,7 +95,9 @@ Future<DateTime?> showDatePickerDialog({
                 onDateSelected: (value) => Navigator.pop(context, value),
                 initialPickerType: initialPickerType,
                 padding: contentPadding,
+                cellBuilder: cellBuilder,
                 theme: theme,
+                onDisplayedMonthChanged: onDisplayedMonthChanged,
               ),
             ),
           ),

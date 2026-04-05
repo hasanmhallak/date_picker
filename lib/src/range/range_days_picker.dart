@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/header.dart';
+import '../shared/types.dart';
 import '../shared/utils.dart';
 import '../theme/date_picker_plus_theme.dart';
 import 'range_days_view.dart';
@@ -12,37 +13,39 @@ class RangeDaysPicker extends StatefulWidget {
     super.key,
     required this.minDate,
     required this.maxDate,
-    this.initialDate,
+    this.displayedDate,
     this.currentDate,
     this.selectedStartDate,
     this.selectedEndDate,
     this.theme,
+    this.cellBuilder,
     this.onLeadingDateTap,
     this.onStartDateChanged,
     this.onEndDateChanged,
+    this.onDisplayedMonthChanged,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        if (displayedDate == null) return true;
+        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final min = DateTime(minDate.year, minDate.month, minDate.day);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
-      'initialDate $initialDate must be on or after minDate $minDate.',
+      'displayedDate $displayedDate must be on or after minDate $minDate.',
     );
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateTime(initialDate!.year, initialDate!.month, initialDate!.day);
+        if (displayedDate == null) return true;
+        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
-      'initialDate $initialDate must be on or before maxDate $maxDate.',
+      'displayedDate $displayedDate must be on or before maxDate $maxDate.',
     );
   }
 
@@ -53,7 +56,7 @@ class RangeDaysPicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only dates are considered. time fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -81,6 +84,14 @@ class RangeDaysPicker extends StatefulWidget {
   /// Called when the user picks an end date.
   final ValueChanged<DateTime>? onEndDateChanged;
 
+  /// Called when the displayed month changes.
+  ///
+  /// This is called once during initialization with the initial month,
+  /// and subsequently whenever the user swipes between pages.
+  ///
+  /// The [DateTime] passed is the first day of the displayed month.
+  final ValueChanged<DateTime>? onDisplayedMonthChanged;
+
   /// The earliest date the user is permitted to pick.
   ///
   /// This date must be on or before the [maxDate].
@@ -94,6 +105,9 @@ class RangeDaysPicker extends StatefulWidget {
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime maxDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -115,22 +129,24 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
   @override
   void initState() {
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
-
     super.initState();
+    widget.onDisplayedMonthChanged?.call(
+      DateTime(_displayedMonth!.year, _displayedMonth!.month, 1),
+    );
   }
 
   @override
   void didUpdateWidget(covariant RangeDaysPicker oldWidget) {
-    if (oldWidget.initialDate != widget.initialDate) {
-      final clampedInitailDate =
+    if (oldWidget.displayedDate != widget.displayedDate) {
+      final clampedDisplayedDate =
           DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedMonth = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
       );
@@ -212,6 +228,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                   setState(() {
                     _displayedMonth = monthDate;
                   });
+                  widget.onDisplayedMonthChanged?.call(monthDate);
                 },
                 itemBuilder: (context, index) {
                   final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
@@ -222,6 +239,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                     minDate: DateUtils.dateOnly(widget.minDate),
                     maxDate: DateUtils.dateOnly(widget.maxDate),
                     displayedMonth: month,
+                    cellBuilder: widget.cellBuilder,
                     selectedEndDate:
                         widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
                     selectedStartDate:

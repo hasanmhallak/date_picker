@@ -4,6 +4,7 @@ import '../theme/date_picker_plus_theme.dart';
 import 'device_orientation_builder.dart';
 import 'header.dart';
 import '../date/show_date_picker_dialog.dart';
+import 'types.dart';
 import 'utils.dart';
 import 'year_view.dart';
 
@@ -25,7 +26,7 @@ import 'year_view.dart';
 class YearsPicker extends StatefulWidget {
   /// Creates a year picker.
   ///
-  /// It will display a grid of years for the [initialDate]'s year. If [initialDate]
+  /// It will display a grid of years for the [displayedDate]'s year. If [displayedDate]
   /// is null, `DateTime.now()` will be used. If `DateTime.now()` does not fall within
   /// the valid range of [minDate] and [maxDate], it will fall back to the nearest
   /// valid date from `DateTime.now()`, selecting the [maxDate] if `DateTime.now()` is
@@ -35,7 +36,7 @@ class YearsPicker extends StatefulWidget {
   /// is selected.
   ///
   /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
-  /// allowable date. [initialDate] and [selectedDate] must either fall between
+  /// allowable date. [displayedDate] and [selectedDate] must either fall between
   /// these dates, or be equal to one of them.
   ///
   /// The [currentDate] represents the current day (i.e. today). This
@@ -48,10 +49,11 @@ class YearsPicker extends StatefulWidget {
     super.key,
     required this.minDate,
     required this.maxDate,
-    this.initialDate,
+    this.displayedDate,
     this.currentDate,
     this.selectedDate,
     this.theme,
+    this.cellBuilder,
     this.onLeadingDateTap,
     this.onDateSelected,
   }) {
@@ -59,24 +61,24 @@ class YearsPicker extends StatefulWidget {
 
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateUtilsX.yearOnly(initialDate!);
+        if (displayedDate == null) return true;
+        final init = DateUtilsX.yearOnly(displayedDate!);
 
         final min = DateUtilsX.yearOnly(minDate);
 
         return init.isAfter(min) || init.isAtSameMomentAs(min);
       }(),
-      'initialDate $initialDate must be on or after minDate $minDate.',
+      'displayedDate $displayedDate must be on or after minDate $minDate.',
     );
     assert(
       () {
-        if (initialDate == null) return true;
-        final init = DateUtilsX.yearOnly(initialDate!);
+        if (displayedDate == null) return true;
+        final init = DateUtilsX.yearOnly(displayedDate!);
 
         final max = DateUtilsX.yearOnly(maxDate);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
       }(),
-      'initialDate $initialDate must be on or before maxDate $maxDate.',
+      'displayedDate $displayedDate must be on or before maxDate $maxDate.',
     );
   }
 
@@ -87,7 +89,7 @@ class YearsPicker extends StatefulWidget {
   /// [minDate] if it is before.
   ///
   /// Note that only year are considered. time, month and day fields are ignored.
-  final DateTime? initialDate;
+  final DateTime? displayedDate;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -116,6 +118,9 @@ class YearsPicker extends StatefulWidget {
   ///
   /// Note that only year are considered. time, month and day fields are ignored.
   final DateTime maxDate;
+
+  /// Optional builder for customizing individual cells.
+  final CellBuilder? cellBuilder;
 
   /// Called when the user tap on the leading date.
   final VoidCallback? onLeadingDateTap;
@@ -153,7 +158,7 @@ class _YearsPickerState extends State<YearsPicker> {
   void didUpdateWidget(covariant YearsPicker oldWidget) {
     // for makeing debuging easy, we will navigate to the initial date again
     // if it changes.
-    if (oldWidget.initialDate != widget.initialDate) {
+    if (oldWidget.displayedDate != widget.displayedDate) {
       _pageController.jumpToPage(initialPageNumber);
 
       _displayedRange = DateTimeRange(
@@ -182,9 +187,9 @@ class _YearsPickerState extends State<YearsPicker> {
   int get pageCount => ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
 
   int get initialPageNumber {
-    final clampedInitailDate =
+    final clampedDisplayedDate =
         DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    final init = widget.initialDate ?? clampedInitailDate;
+    final init = widget.displayedDate ?? clampedDisplayedDate;
 
     final page = ((init.year - widget.minDate.year + 1) / 12).ceil() - 1;
     if (page < 0) return 0;
@@ -266,6 +271,7 @@ class _YearsPickerState extends State<YearsPicker> {
                     minDate: DateUtilsX.yearOnly(widget.minDate),
                     displayedYearRange: yearRange,
                     selectedDate: _selectedDate,
+                    cellBuilder: widget.cellBuilder,
                     theme: theme.yearsPickerTheme,
                     isEnabled: isEnabled,
                     onChanged: (value) {

@@ -15,3 +15,5 @@ export 'src/theme/years_picker_theme.dart';
 export 'src/theme/range_picker_theme.dart';
 export 'src/theme/ink_response_theme.dart';
 export 'src/shared/cell_state.dart';
+export 'src/shared/cell_data.dart';
+export 'src/shared/types.dart';
