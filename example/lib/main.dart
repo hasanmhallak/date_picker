@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                     DatePicker(
                       minDate: DateTime(2020),
                       maxDate: DateTime(2050),
-                      initialDate: DateTime.now(),
+                      displayedDate: DateTime.now(),
                       currentDate: DateTime.now(),
                       selectedDate: DateTime.now(),
                     ),
