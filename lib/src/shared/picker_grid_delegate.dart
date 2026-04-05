@@ -39,12 +39,10 @@ class PickerGridDelegate extends SliverGridDelegate {
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
     final double tileWidth = constraints.crossAxisExtent / columnCount;
-    // vertical padding between cells is 4px
-    final double calculatedTileHeight =
-        (constraints.viewportMainAxisExtent - rowCount * 4) / rowCount;
+    final double calculatedTileHeight = (constraints.viewportMainAxisExtent) / rowCount;
 
     // height should always be equal or less than the width
-    // this is for range decoration.
+    // this is for range decoration painter.
     final double tileHeight = min(calculatedTileHeight, tileWidth);
 
     return SliverGridRegularTileLayout(
@@ -52,13 +50,15 @@ class PickerGridDelegate extends SliverGridDelegate {
       childCrossAxisExtent: _zeroOrGreater(tileWidth),
       crossAxisStride: _zeroOrGreater(tileWidth),
       childMainAxisExtent: _zeroOrGreater(tileHeight),
-      mainAxisStride: _zeroOrGreater(tileHeight + 4),
+      mainAxisStride: _zeroOrGreater(tileHeight),
       reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
     );
   }
 
   @override
-  bool shouldRelayout(PickerGridDelegate oldDelegate) => false;
+  bool shouldRelayout(PickerGridDelegate oldDelegate) {
+    return columnCount != oldDelegate.columnCount || rowCount != oldDelegate.rowCount;
+  }
 
   // for when the keyboard is opened.
   double _zeroOrGreater(double number) {

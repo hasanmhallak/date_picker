@@ -30,4 +30,15 @@ extension DateUtilsX on DateUtils {
     if (date.isAfter(max)) return max;
     return date;
   }
+
+  /// Computes the offset from the first day of the week that the first day of the [month] falls on.
+  ///
+  /// [startOfWeek] is an ISO 8601 weekday number (1 = Monday, 7 = Sunday).
+  static int firstDayOffset(int year, int month, int startOfWeek) {
+    // startOfWeek is ISO 8601: 1 = Monday, 7 = Sunday.
+    // Convert to DateTime.weekday-compatible index (Monday = 0).
+    final int firstDayOfWeekIndexMondayBased = (startOfWeek - 1) % 7;
+    final int weekdayFromMonday = DateTime(year, month).weekday - 1;
+    return (weekdayFromMonday - firstDayOfWeekIndexMondayBased + 7) % 7;
+  }
 }

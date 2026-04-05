@@ -2,16 +2,18 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart' show DateFormat;
-
+import '../shared/cell_state.dart';
+import '../shared/day_headers.dart';
 import '../shared/picker_grid_delegate.dart';
+import '../shared/utils.dart';
+import '../theme/date_picker_plus_theme.dart';
 
 /// Displays the days of a given month and allows choosing days range.
 ///
 /// The days are arranged in a rectangular grid with one column for each day of
 /// the week.
 class RangeDaysView extends StatelessWidget {
-  /// Displays the days of a given month and allows choosing  days range.
+  /// Displays the days of a given month and allows choosing days range.
   ///
   /// The days are arranged in a rectangular grid with one column for each day of
   /// the week.
@@ -25,20 +27,7 @@ class RangeDaysView extends StatelessWidget {
     required this.onStartDateChanged,
     required this.onEndDateChanged,
     required this.displayedMonth,
-    required this.daysOfTheWeekTextStyle,
-    required this.enabledCellsTextStyle,
-    required this.enabledCellsDecoration,
-    required this.disabledCellsTextStyle,
-    required this.disabledCellsDecoration,
-    required this.currentDateTextStyle,
-    required this.currentDateDecoration,
-    required this.selectedCellsTextStyle,
-    required this.selectedCellsDecoration,
-    required this.singleSelectedCellTextStyle,
-    required this.singleSelectedCellDecoration,
-    required this.highlightColor,
-    required this.splashColor,
-    required this.splashRadius,
+    this.theme,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -113,125 +102,41 @@ class RangeDaysView extends StatelessWidget {
   /// Note that only dates are considered. time fields are ignored.
   final DateTime displayedMonth;
 
-  /// The text style of the week days name.
-  final TextStyle daysOfTheWeekTextStyle;
-
-  /// The text style of cells which are selectable.
-  final TextStyle enabledCellsTextStyle;
-
-  /// The cell decoration of cells which are selectable.
-  final BoxDecoration enabledCellsDecoration;
-
-  /// The text style of cells which are not selectable.
-  final TextStyle disabledCellsTextStyle;
-
-  /// The cell decoration of cells which are not selectable.
-  final BoxDecoration disabledCellsDecoration;
-
-  /// The text style of a single selected cell and the
-  /// leading/trailing cell of a selected range.
-  final TextStyle singleSelectedCellTextStyle;
-
-  /// The cell decoration of a single selected cell and the
-  /// leading/trailing cell of a selected range.
-  final BoxDecoration singleSelectedCellDecoration;
-
-  /// The text style of the current date.
-  final TextStyle currentDateTextStyle;
-
-  /// The cell decoration of the current date.
-  final BoxDecoration currentDateDecoration;
-
-  /// The text style of selected cells in a range.
-  final TextStyle selectedCellsTextStyle;
-
-  /// The cell decoration of selected cells in a range.
-  final BoxDecoration selectedCellsDecoration;
-
-  /// The splash color of the ink response.
-  final Color splashColor;
-
-  /// The highlight color of the ink response when pressed.
-  final Color highlightColor;
-
-  /// The radius of the ink splash.
-  final double? splashRadius;
-
-  /// Builds widgets showing abbreviated days of week. The first widget in the
-  /// returned list corresponds to the first day of week for the current locale.
+  /// The theme to apply to the [DatePicker].
   ///
-  /// Examples:
-  ///
-  ///     ┌ Sunday is the first day of week in the US (en_US)
-  ///     |
-  ///     S M T W T F S  ← the returned list contains these widgets
-  ///     _ _ _ _ _ 1 2
-  ///     3 4 5 6 7 8 9
-  ///
-  ///     ┌ But it's Monday in the UK (en_GB)
-  ///     |
-  ///     M T W T F S S  ← the returned list contains these widgets
-  ///     _ _ _ _ 1 2 3
-  ///     4 5 6 7 8 9 10
-  ///
-  List<Widget> _dayHeaders(
-    TextStyle headerStyle,
-    Locale locale,
-    MaterialLocalizations localizations,
-  ) {
-    final List<Widget> result = <Widget>[];
-    final weekdayNames =
-        DateFormat('', locale.toString()).dateSymbols.SHORTWEEKDAYS;
-
-    for (int i = localizations.firstDayOfWeekIndex; true; i = (i + 1) % 7) {
-      // to save space in arabic as arabic don't has short week days.
-      final String weekday = weekdayNames[i].replaceFirst('ال', '');
-      result.add(
-        ExcludeSemantics(
-          child: Center(
-            child: Text(
-              weekday.toUpperCase(),
-              style: daysOfTheWeekTextStyle,
-            ),
-          ),
-        ),
-      );
-      if (i == (localizations.firstDayOfWeekIndex - 1) % 7) {
-        break;
-      }
-    }
-    return result;
-  }
+  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
+  /// and the default theme.
+  final DatePickerPlusTheme? theme;
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
-    //
-    //
-    //
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final defaultTheme = DatePickerPlusTheme.defaults(context);
+    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
+    final theme = defaultTheme.merge(contextTheme).merge(this.theme);
+
+    final bool themeEnabled = theme.isEnabled ?? true;
+
+    final rangeTheme = theme.rangePickerTheme;
+    final inkResponseTheme = rangeTheme!.inkResponseTheme;
+    final cellsPadding = rangeTheme.cellsPadding ?? EdgeInsets.zero;
+    final daysOfWeekTheme = theme.daysPickerTheme?.daysOfTheWeekTheme;
+
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
-    final int daysInMonth =
-        DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
-    final int dayOffset = DateUtils.firstDayOffset(
-        displayedMonth.year, displayedMonth.month, localizations);
+    final int daysInMonth = DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
 
-    DateTime? selectedEndDateOnly =
-        selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
+    final int dayOffset =
+        DateUtilsX.firstDayOffset(displayedMonth.year, displayedMonth.month, daysOfWeekTheme!.startOfWeek!);
 
-    DateTime? selectedStartDateOnly = selectedStartDate != null
-        ? DateUtils.dateOnly(selectedStartDate!)
-        : null;
+    DateTime? selectedEndDateOnly = selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
 
-    final _maxDate = DateUtils.dateOnly(maxDate);
-    final _minDate = DateUtils.dateOnly(minDate);
+    DateTime? selectedStartDateOnly = selectedStartDate != null ? DateUtils.dateOnly(selectedStartDate!) : null;
 
-    final List<Widget> dayItems = _dayHeaders(
-      daysOfTheWeekTextStyle,
-      Localizations.localeOf(context),
-      MaterialLocalizations.of(context),
-    );
+    final maxDate = DateUtils.dateOnly(this.maxDate);
+    final minDate = DateUtils.dateOnly(this.minDate);
+
+    final List<Widget> dayItems = dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
 
     int day = -dayOffset;
     while (day < daysInMonth) {
@@ -240,114 +145,98 @@ class RangeDaysView extends StatelessWidget {
         dayItems.add(const SizedBox.shrink());
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
-        final bool isDisabled =
-            dayToBuild.isAfter(_maxDate) || dayToBuild.isBefore(_minDate);
+        final bool isDateDisabled = dayToBuild.isAfter(maxDate) || dayToBuild.isBefore(minDate);
 
-        final isRangeSelected =
-            selectedStartDateOnly != null && selectedEndDateOnly != null;
+        final isRangeSelected = selectedStartDateOnly != null && selectedEndDateOnly != null;
 
-        final isStartSelectedOnly = selectedStartDateOnly != null &&
-            dayToBuild == selectedStartDateOnly &&
-            selectedEndDateOnly == null;
+        final isStartSelectedOnly =
+            selectedStartDateOnly != null && dayToBuild == selectedStartDateOnly && selectedEndDateOnly == null;
 
-        final isEndSelectedOnly = selectedStartDateOnly == null &&
-            selectedEndDateOnly != null &&
-            dayToBuild == selectedEndDateOnly;
+        final isEndSelectedOnly =
+            selectedStartDateOnly == null && selectedEndDateOnly != null && dayToBuild == selectedEndDateOnly;
 
-        final isRangeOnlyOneDate =
-            selectedStartDateOnly == selectedEndDateOnly &&
-                dayToBuild == selectedStartDateOnly;
+        final isRangeOnlyOneDate = selectedStartDateOnly == selectedEndDateOnly && dayToBuild == selectedStartDateOnly;
 
-        final isSingleCellSelected =
-            isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
+        final isSingleCellSelected = isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
 
         final bool isWithinRange = isRangeSelected &&
             dayToBuild.isAfter(selectedStartDateOnly) &&
             dayToBuild.isBefore(selectedEndDateOnly) &&
             !isRangeOnlyOneDate;
 
-        final isStartDate =
-            DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
+        final isStartDate = DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
 
         final isEndDate = DateUtils.isSameDay(selectedEndDateOnly, dayToBuild);
 
         final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
-        //
-        //
-        BoxDecoration decoration = enabledCellsDecoration;
-        TextStyle style = enabledCellsTextStyle;
 
-        if (isCurrent) {
-          //
-          //
-          style = currentDateTextStyle;
-          decoration = currentDateDecoration;
+        CellState state = CellState.enabled;
+        if (isCurrent && isDateDisabled) {
+          state = CellState.currentAndDisabled;
+        } else if (isDateDisabled) {
+          state = CellState.disabled;
+        } else if (isSingleCellSelected || isStartDate || isEndDate) {
+          state = CellState.selectedEdge;
+        } else if (isWithinRange) {
+          state = CellState.selected;
+        } else if (isCurrent) {
+          state = CellState.current;
         }
 
-        if (isSingleCellSelected || isStartDate || isEndDate) {
-          //
-          //
-          style = singleSelectedCellTextStyle;
-          decoration = singleSelectedCellDecoration;
-        }
+        final style = rangeTheme.resolveTextStyle(state);
+        final decoration = rangeTheme.resolveDecoration(state);
 
-        if (isWithinRange) {
-          //
-          //
-          style = selectedCellsTextStyle;
-          decoration = selectedCellsDecoration;
-        }
-
-        if (isDisabled) {
-          //
-          //
-          style = disabledCellsTextStyle;
-          decoration = disabledCellsDecoration;
-        }
-
-        if (isCurrent && isDisabled) {
-          //
-          //
-          style = disabledCellsTextStyle;
-          decoration = currentDateDecoration;
-        }
-
-        Widget dayWidget = Center(
-          child: Text(
-            localizations.formatDecimal(day),
-            style: style,
+        Widget dayWidget = Padding(
+          padding: cellsPadding,
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: decoration,
+            child: Center(
+              child: Text(
+                localizations.formatDecimal(day),
+                style: style,
+              ),
+            ),
           ),
         );
 
-        dayWidget = Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: decoration,
-          child: dayWidget,
-        );
+        if ((isStartDate || isEndDate) && isRangeSelected && !isRangeOnlyOneDate) {
+          Color? decorationColor;
+          final resolvedDecoration = rangeTheme.resolveDecoration(CellState.selected);
 
-        if ((isStartDate || isEndDate) &&
-            isRangeSelected &&
-            !isRangeOnlyOneDate) {
+          // if any other implementation of Decoration is added, the user must update the resolvePainter method.
+          if (resolvedDecoration case ShapeDecoration(color: final color) || BoxDecoration(color: final color)) {
+            decorationColor = color;
+          }
+
           dayWidget = CustomPaint(
-            painter: _DecorationPainter(
-              textDirection: Directionality.of(context),
-              color: selectedCellsDecoration.color,
-              start: isStartDate,
-            ),
+            painter: rangeTheme.resolvePainter?.call(Directionality.of(context), decorationColor, isStartDate),
             child: dayWidget,
           );
         }
 
-        if (isDisabled) {
-          dayWidget = ExcludeSemantics(
+        String semanticLabel = '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
+        if (isStartDate) {
+          semanticLabel = localizations.dateRangeStartDateSemanticLabel(semanticLabel);
+        } else if (isEndDate) {
+          semanticLabel = localizations.dateRangeEndDateSemanticLabel(semanticLabel);
+        }
+
+        if (!themeEnabled) {
+          dayWidget = Semantics(
+            label: semanticLabel,
+            selected: isSingleCellSelected || isStartDate || isEndDate || isWithinRange,
+            enabled: false,
+            excludeSemantics: true,
             child: dayWidget,
           );
+        } else if (isDateDisabled) {
+          dayWidget = ExcludeSemantics(child: dayWidget);
         } else {
           dayWidget = InkResponse(
             onTap: () {
-              final isStart =
-                  (selectedEndDate == null && selectedStartDate == null) ||
-                      (selectedEndDate != null && selectedStartDate != null);
+              final isStart = (selectedEndDate == null && selectedStartDate == null) ||
+                  (selectedEndDate != null && selectedStartDate != null);
 
               if (isStart) {
                 onStartDateChanged(dayToBuild);
@@ -362,10 +251,22 @@ class RangeDaysView extends StatelessWidget {
 
               onEndDateChanged(dayToBuild);
             },
-            radius: splashRadius,
-            splashColor: splashColor,
-            highlightColor: highlightColor,
-            child: dayWidget,
+            radius: inkResponseTheme?.radius,
+            splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
+            highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+            borderRadius: inkResponseTheme?.borderRadius,
+            containedInkWell: inkResponseTheme?.containedInkWell ?? false,
+            customBorder: inkResponseTheme?.customBorder,
+            highlightShape: inkResponseTheme?.highlightShape ?? BoxShape.circle,
+            splashFactory: inkResponseTheme?.splashFactory,
+            focusColor: inkResponseTheme?.focusColor,
+            hoverColor: inkResponseTheme?.hoverColor,
+            child: Semantics(
+              label: semanticLabel,
+              selected: isSingleCellSelected || isStartDate || isEndDate || isWithinRange,
+              excludeSemantics: true,
+              child: dayWidget,
+            ),
           );
         }
 
@@ -383,94 +284,5 @@ class RangeDaysView extends StatelessWidget {
         addRepaintBoundaries: false,
       ),
     );
-  }
-}
-
-/// A custom painter class for decorating a widget with a colored rectangle.
-///
-/// The [_DecorationPainter] class extends [CustomPainter] and is responsible
-/// for painting a colored rectangle on a canvas based on specified parameters.
-/// This class is typically used as the painter for a [CustomPaint] widget to
-/// achieve a customized visual effect.
-///
-/// ### Example:
-///
-/// ```dart
-/// CustomPaint(
-///   painter: _DecorationPainter(
-///     textDirection: TextDirection.ltr,
-///     color: Colors.blue,
-///     start: true,
-///   ),
-///   child: // Your child widget goes here,
-/// )
-/// ```
-class _DecorationPainter extends CustomPainter {
-  /// Creates a [_DecorationPainter] with the specified parameters.
-  ///
-  /// The `textDirection` parameter is required to determine the positioning
-  /// of the colored rectangle based on the text direction.
-  ///
-  /// The `color` parameter defines the color of the rectangle to be painted.
-  ///
-  /// The `start` parameter is a boolean value indicating whether the rectangle
-  /// should be drawn at the start (left for LTR, right for RTL) or at the zero
-  /// position of the canvas.
-  _DecorationPainter({
-    required this.textDirection,
-    required this.color,
-    required this.start,
-  });
-
-  /// The text direction to determine the positioning of the
-  ///   colored rectangle. The rectangle will be drawn on either the left or
-  ///   right side based on the text direction.
-  final TextDirection textDirection;
-
-  /// The color of the rectangle to be painted on the canvas.
-  final Color? color;
-
-  /// A boolean value indicating whether the rectangle should be drawn
-  ///   at the start (left for LTR, right for RTL) or at the zero position of
-  ///   the canvas.
-  final bool start;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final width = size.width / 2;
-    final height = size.height;
-
-    final painter = Paint();
-
-    if (color != null) {
-      painter.color = color!;
-    }
-
-    late final Offset offset;
-    switch (textDirection) {
-      case TextDirection.ltr:
-        if (start) {
-          offset = Offset(width, 0);
-        } else {
-          offset = Offset.zero;
-        }
-        break;
-      case TextDirection.rtl:
-        if (start) {
-          offset = Offset.zero;
-        } else {
-          offset = Offset(width, 0);
-        }
-        break;
-    }
-
-    canvas.drawRect(offset & Size(width, height), painter);
-  }
-
-  @override
-  bool shouldRepaint(covariant _DecorationPainter oldDelegate) {
-    return oldDelegate.textDirection != textDirection ||
-        oldDelegate.color != color ||
-        oldDelegate.start != start;
   }
 }

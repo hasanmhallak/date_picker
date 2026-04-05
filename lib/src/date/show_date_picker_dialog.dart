@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/device_orientation_builder.dart';
 import '../shared/picker_type.dart';
+import '../theme/date_picker_plus_theme.dart';
 import 'date_picker.dart';
 
 /// Shows a dialog containing a Material Design date picker.
@@ -53,24 +54,7 @@ Future<DateTime?> showDatePickerDialog({
   bool useRootNavigator = true,
   RouteSettings? routeSettings,
   Offset? anchorPoint,
-  TextStyle? daysOfTheWeekTextStyle,
-  TextStyle? enabledCellsTextStyle,
-  BoxDecoration enabledCellsDecoration = const BoxDecoration(),
-  TextStyle? disabledCellsTextStyle,
-  BoxDecoration disabledCellsDecoration = const BoxDecoration(),
-  TextStyle? currentDateTextStyle,
-  BoxDecoration? currentDateDecoration,
-  TextStyle? selectedCellTextStyle,
-  BoxDecoration? selectedCellDecoration,
-  double? slidersSize,
-  Color? slidersColor,
-  TextStyle? leadingDateTextStyle,
-  Color? highlightColor,
-  Color? splashColor,
-  double? splashRadius,
-  bool centerLeadingDate = false,
-  String? previousPageSemanticLabel,
-  String? nextPageSemanticLabel,
+  DatePickerPlusTheme? theme,
 }) async {
   return showDialog<DateTime>(
     context: context,
@@ -100,7 +84,6 @@ Future<DateTime?> showDatePickerDialog({
               width: width ?? size.width,
               height: height ?? size.height,
               child: DatePicker(
-                centerLeadingDate: centerLeadingDate,
                 initialDate: initialDate,
                 maxDate: maxDate,
                 minDate: minDate,
@@ -109,23 +92,7 @@ Future<DateTime?> showDatePickerDialog({
                 onDateSelected: (value) => Navigator.pop(context, value),
                 initialPickerType: initialPickerType,
                 padding: contentPadding,
-                currentDateDecoration: currentDateDecoration,
-                currentDateTextStyle: currentDateTextStyle,
-                disabledCellsDecoration: disabledCellsDecoration,
-                disabledCellsTextStyle: disabledCellsTextStyle,
-                enabledCellsDecoration: enabledCellsDecoration,
-                enabledCellsTextStyle: enabledCellsTextStyle,
-                selectedCellDecoration: selectedCellDecoration,
-                selectedCellTextStyle: selectedCellTextStyle,
-                daysOfTheWeekTextStyle: daysOfTheWeekTextStyle,
-                leadingDateTextStyle: leadingDateTextStyle,
-                slidersColor: slidersColor,
-                slidersSize: slidersSize,
-                highlightColor: highlightColor,
-                splashColor: splashColor,
-                splashRadius: splashRadius,
-                previousPageSemanticLabel: previousPageSemanticLabel,
-                nextPageSemanticLabel: nextPageSemanticLabel,
+                theme: theme,
               ),
             ),
           ),

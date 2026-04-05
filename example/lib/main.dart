@@ -25,26 +25,20 @@ class MyApp extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(),
             body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 400,
-                    child: DatePicker(
-                      centerLeadingDate: true,
+              child: StatefulBuilder(builder: (context, setState) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DatePicker(
                       minDate: DateTime(2020),
-                      maxDate: DateTime(2024),
-                      initialDate: DateTime(2023, 1),
-                      disabledDayPredicate: (date) {
-                        return date.weekday == DateTime.sunday || date.weekday == DateTime.saturday;
-                      },
-                      disabledCellsDecoration: const BoxDecoration(
-                        color: Colors.green,
-                      ),
+                      maxDate: DateTime(2050),
+                      initialDate: DateTime.now(),
+                      currentDate: DateTime.now(),
+                      selectedDate: DateTime.now(),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
             ),
           );
         },

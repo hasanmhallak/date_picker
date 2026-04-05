@@ -59,68 +59,75 @@ final date = await showRangePickerDialog(
 );
 ```
 
-Customize the appearance of the picker by providing optional parameters to the `showDatePickerDialog` or
+Customize the appearance of the picker by providing the `theme` parameter to the `showDatePickerDialog` or
 `showRangePickerDialog` function.
+
+Use `cellsPadding` on `DaysPickerTheme`, `MonthsPickerTheme`, or `YearsPickerTheme` to control inner padding around each grid cell (around the decorated content). Defaults are `EdgeInsets.zero` for days and `EdgeInsets.symmetric(horizontal: 8, vertical: 16)` for months and years.
+
+Set `isEnabled` to `false` on `DatePickerPlusTheme` for a **view-only** picker: selection, header navigation,
+and month swiping are disabled, and accessibility reports controls as disabled.
+
+```dart
+DatePicker(
+  minDate: DateTime(2020, 1, 1),
+  maxDate: DateTime(2025, 12, 31),
+  theme: const DatePickerPlusTheme(isEnabled: false),
+);
+```
 
 ```dart
 final date = await showDatePickerDialog(
-      context: context,
-      initialDate: DateTime(2022, 10, 10),
-      minDate: DateTime(2020, 10, 10),
-      maxDate: DateTime(2024, 10, 30),
-      width: 300,
-      height: 300,
-      currentDate: DateTime(2022, 10, 15),
-      selectedDate: DateTime(2022, 10, 16),
-      currentDateDecoration: const BoxDecoration(),
-      currentDateTextStyle: const TextStyle(),
-      daysOfTheWeekTextStyle: const TextStyle(),
-      disbaledCellsDecoration: const BoxDecoration(),
-      disabledCellsTextStyle: const TextStyle(),
-      enabledCellsDecoration: const BoxDecoration(),
-      enabledCellsTextStyle: const TextStyle(),
-      initialPickerType: PickerType.days,
-      selectedCellDecoration: const BoxDecoration(),
-      selectedCellTextStyle: const TextStyle(),
-      leadingDateTextStyle: const TextStyle(),
-      slidersColor: Colors.lightBlue,
-      highlightColor: Colors.redAccent,
-      slidersSize: 20,
-      splashColor: Colors.lightBlueAccent,
-      splashRadius: 40,
+  context: context,
+  initialDate: DateTime(2022, 10, 10),
+  minDate: DateTime(2020, 10, 10),
+  maxDate: DateTime(2024, 10, 30),
+  width: 300,
+  height: 300,
+  currentDate: DateTime(2022, 10, 15),
+  selectedDate: DateTime(2022, 10, 16),
+  theme: DatePickerPlusTheme(
+    headerTheme: const HeaderTheme(
       centerLeadingDate: true,
+      slidersColor: Colors.lightBlue,
+      slidersSize: 20,
+    ),
+    daysPickerTheme: const DaysPickerTheme(
+      cellsPadding: EdgeInsets.all(4),
+      enabledCellsDecoration: BoxDecoration(
+        color: Colors.transparent,
+      ),
+      disabledCellsTextStyle: TextStyle(color: Colors.grey),
+    ),
+    monthsPickerTheme: const MonthsPickerTheme(
+      cellsPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    ),
+    yearsPickerTheme: const YearsPickerTheme(
+      cellsPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    ),
+  ),
 );
 ```
 
 ```dart
 final range = await showRangePickerDialog(
-      context: context,
-      initialDate: DateTime(2022, 10, 10),
-      minDate: DateTime(2020, 10, 10),
-      maxDate: DateTime(2024, 10, 30),
-      width: 300,
-      height: 300,
-      currentDate: DateTime(2022, 10, 15),
-      selectedRange: DateTimeRange(start: DateTime(2022), end: Dat(2023)),
-      selectedCellsDecoration: const BoxDecoration(),
-      selectedCellsTextStyle: const TextStyle(),
-      singleSelectedCellDecoration: const BoxDecoration(),
-      singleSelectedCellTextStyle: const TextStyle(),
-      currentDateDecoration: const BoxDecoration(),
-      currentDateTextStyle: const TextStyle(),
-      daysOfTheWeekTextStyle: const TextStyle(),
-      disbaledCellsDecoration: const BoxDecoration(),
-      disabledCellsTextStyle: const TextStyle(),
-      enabledCellsDecoration: const BoxDecoration(),
-      enabledCellsTextStyle: const TextStyle(),
-      initialPickerType: PickerType.days,
-      leadingDateTextStyle: const TextStyle(),
-      slidersColor: Colors.lightBlue,
-      highlightColor: Colors.redAccent,
-      slidersSize: 20,
-      splashColor: Colors.lightBlueAccent,
-      splashRadius: 40,
+  context: context,
+  initialDate: DateTime(2022, 10, 10),
+  minDate: DateTime(2020, 10, 10),
+  maxDate: DateTime(2024, 10, 30),
+  width: 300,
+  height: 300,
+  currentDate: DateTime(2022, 10, 15),
+  selectedRange: DateTimeRange(start: DateTime(2022), end: DateTime(2023)),
+  theme: DatePickerPlusTheme(
+    headerTheme: const HeaderTheme(
       centerLeadingDate: true,
+      slidersColor: Colors.lightBlue,
+    ),
+    rangePickerTheme: const RangePickerTheme(
+      selectedCellsDecoration: BoxDecoration(color: Colors.redAccent),
+      selectedCellsTextStyle: TextStyle(color: Colors.white),
+    ),
+  ),
 );
 ```
 

@@ -1,5 +1,6 @@
 import 'package:date_picker_plus/src/shared/header.dart';
-import 'package:date_picker_plus/src/shared/year_picker.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:date_picker_plus/src/shared/leading_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -18,19 +19,6 @@ void main() {
               currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -57,19 +45,6 @@ void main() {
               initialDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -110,19 +85,6 @@ void main() {
               currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -169,19 +131,6 @@ void main() {
               currentDate: initialDate,
               minDate: minDate,
               maxDate: maxDate,
-              currentDateTextStyle: const TextStyle(),
-              enabledCellsTextStyle: const TextStyle(),
-              selectedCellTextStyle: const TextStyle(),
-              disabledCellsTextStyle: const TextStyle(),
-              currentDateDecoration: const BoxDecoration(),
-              enabledCellsDecoration: const BoxDecoration(),
-              selectedCellDecoration: const BoxDecoration(),
-              disabledCellsDecoration: const BoxDecoration(),
-              leadingDateTextStyle: const TextStyle(),
-              slidersColor: Colors.black,
-              slidersSize: 20,
-              splashColor: Colors.black,
-              highlightColor: Colors.black,
             ),
           ),
         ),
@@ -229,19 +178,6 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -300,19 +236,6 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -368,19 +291,6 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
               ),
             ),
           ),
@@ -438,19 +348,6 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
                 onDateSelected: (value) {
                   expectedYear = value;
                 },
@@ -489,8 +386,9 @@ void main() {
         final DateTime initialDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
-        const leadingDayColor = Colors.green;
 
+        const leadingDayColor = Colors.green;
+        const customTextStyle = TextStyle(color: leadingDayColor);
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
@@ -499,44 +397,33 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(color: leadingDayColor),
-                slidersColor: Colors.black,
-                slidersSize: 20,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
+                theme: const DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    leadingDateTextStyle: customTextStyle,
+                  ),
+                ),
               ),
             ),
           ),
         );
-
-        final leadingDayFinder = find.byWidgetPredicate((widget) {
-          if (widget is Text) {
-            return widget.data == '2000 - 2011' && widget.style?.color == leadingDayColor;
-          }
-          return false;
-        });
-
-        expect(leadingDayFinder, findsOneWidget);
+        // 1. Find the widget visually by its text content
+        final textFinder = find.text('2000 - 2011');
+        expect(textFinder, findsOneWidget);
+        // 2. Extract the specific widget from the widget tree
+        final leadingDateText = tester.widget<Text>(textFinder);
+        // 3. Assert its internal properties
+        expect(leadingDateText.style?.color, equals(leadingDayColor));
       },
     );
 
     testWidgets(
-      'Should show the correct color and size for page sliders',
+      'Should render custom forward and backward arrow widgets from theme',
       (WidgetTester tester) async {
         final DateTime initialDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);
         final DateTime maxDate = DateTime(2011);
-        const slidersColors = Colors.green;
-        const slidersSize = 18.0;
-
+        const customForwardKey = Key('custom_forward');
+        const customBackwardKey = Key('custom_backward');
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
@@ -545,45 +432,19 @@ void main() {
                 currentDate: initialDate,
                 minDate: minDate,
                 maxDate: maxDate,
-                currentDateTextStyle: const TextStyle(),
-                enabledCellsTextStyle: const TextStyle(),
-                selectedCellTextStyle: const TextStyle(),
-                disabledCellsTextStyle: const TextStyle(),
-                currentDateDecoration: const BoxDecoration(),
-                enabledCellsDecoration: const BoxDecoration(),
-                selectedCellDecoration: const BoxDecoration(),
-                disabledCellsDecoration: const BoxDecoration(),
-                leadingDateTextStyle: const TextStyle(),
-                slidersColor: slidersColors,
-                slidersSize: slidersSize,
-                splashColor: Colors.black,
-                highlightColor: Colors.black,
+                theme: const DatePickerPlusTheme(
+                  headerTheme: HeaderTheme(
+                    // Use simple placeholders with keys
+                    forwardArrowWidget: SizedBox(key: customForwardKey),
+                    backwardArrowWidget: SizedBox(key: customBackwardKey),
+                  ),
+                ),
               ),
             ),
           ),
         );
-
-        final leftIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_back_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(leftIconFinder, findsOneWidget);
-
-        final rightIconFinder = find.byWidgetPredicate((widget) {
-          if (widget is Icon) {
-            return widget.color == slidersColors &&
-                widget.size == slidersSize &&
-                widget.icon == Icons.arrow_forward_ios_rounded;
-          }
-          return false;
-        });
-
-        expect(rightIconFinder, findsOneWidget);
+        expect(find.byKey(customBackwardKey), findsOneWidget);
+        expect(find.byKey(customForwardKey), findsOneWidget);
       },
     );
 
@@ -643,5 +504,115 @@ void main() {
         expect(numberOfScrollListenerCalled, equals(0));
       },
     );
+
+    testWidgets('should call onLeadingDateTap when the year range header is tapped', (WidgetTester tester) async {
+      bool tapped = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: YearsPicker(
+              minDate: DateTime(2010, 1, 1),
+              maxDate: DateTime(2030, 12, 31),
+              currentDate: DateTime(2022, 1, 1),
+              onLeadingDateTap: () => tapped = true,
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(LeadingDate));
+      await tester.pump();
+
+      expect(tapped, isTrue);
+    });
+
+    testWidgets('should pre-select a year when selectedDate is provided', (WidgetTester tester) async {
+      final selectedDate = DateTime(2022, 1, 1);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: YearsPicker(
+              minDate: DateTime(2010, 1, 1),
+              maxDate: DateTime(2030, 12, 31),
+              currentDate: DateTime(2022, 1, 1),
+              selectedDate: selectedDate,
+              theme: DatePickerPlusTheme(
+                yearsPickerTheme: YearsPickerTheme(
+                  selectedCellDecoration: const BoxDecoration(
+                    color: Colors.indigo,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final selectedCellFinder = find.byWidgetPredicate((widget) {
+        if (widget is Container && widget.decoration is BoxDecoration) {
+          return (widget.decoration as BoxDecoration).color == Colors.indigo;
+        }
+        return false;
+      });
+
+      expect(selectedCellFinder, findsOneWidget);
+    });
+
+    testWidgets('should update highlighted year when selectedDate changes via didUpdateWidget',
+        (WidgetTester tester) async {
+      DateTime? selectedDate;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => setState(() => selectedDate = DateTime(2015, 1, 1)),
+                      child: const Text('select'),
+                    ),
+                    YearsPicker(
+                      minDate: DateTime(2010, 1, 1),
+                      maxDate: DateTime(2030, 12, 31),
+                      initialDate: DateTime(2015, 1, 1),
+                      currentDate: DateTime(2022, 1, 1),
+                      selectedDate: selectedDate,
+                      theme: DatePickerPlusTheme(
+                        yearsPickerTheme: YearsPickerTheme(
+                          selectedCellDecoration: const BoxDecoration(
+                            color: Colors.indigo,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.indigo),
+        findsNothing,
+      );
+
+      await tester.tap(find.text('select'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byWidgetPredicate((w) =>
+            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.indigo),
+        findsOneWidget,
+      );
+    });
   });
 }

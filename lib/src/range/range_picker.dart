@@ -4,6 +4,7 @@ import '../shared/month_picker.dart';
 import '../shared/picker_type.dart';
 import '../shared/utils.dart';
 import '../shared/year_picker.dart';
+import '../theme/date_picker_plus_theme.dart';
 import 'range_days_picker.dart';
 
 /// Displays a grid of days for a given month and allows the user to select a
@@ -62,26 +63,7 @@ class RangeDatePicker extends StatefulWidget {
     this.selectedRange,
     this.padding = const EdgeInsets.all(16),
     this.initialPickerType = PickerType.days,
-    this.daysOfTheWeekTextStyle,
-    this.enabledCellsTextStyle,
-    this.enabledCellsDecoration = const BoxDecoration(),
-    this.disabledCellsTextStyle,
-    this.disabledCellsDecoration = const BoxDecoration(),
-    this.currentDateTextStyle,
-    this.currentDateDecoration,
-    this.selectedCellsTextStyle,
-    this.selectedCellsDecoration,
-    this.singleSelectedCellTextStyle,
-    this.singleSelectedCellDecoration,
-    this.leadingDateTextStyle,
-    this.slidersColor,
-    this.slidersSize,
-    this.highlightColor,
-    this.splashColor,
-    this.splashRadius,
-    this.centerLeadingDate = false,
-    this.previousPageSemanticLabel,
-    this.nextPageSemanticLabel,
+    this.theme,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -139,128 +121,11 @@ class RangeDatePicker extends StatefulWidget {
   /// The amount of padding to be added around the [DatePicker].
   final EdgeInsets padding;
 
-  /// The text style of the week days name in the header.
+  /// The theme to apply to the [RangeDatePicker].
   ///
-  /// defaults to [TextTheme.titleSmall] with a [FontWeight.bold],
-  /// a `14` font size, and a [ColorScheme.onSurface] with 30% opacity.
-  final TextStyle? daysOfTheWeekTextStyle;
-
-  /// The text style of cells which are selectable.
-  ///
-  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.onSurface] color.
-  final TextStyle? enabledCellsTextStyle;
-
-  /// The cell decoration of cells which are selectable.
-  ///
-  /// defaults to empty [BoxDecoration].
-  final BoxDecoration enabledCellsDecoration;
-
-  /// The text style of cells which are not selectable.
-  ///
-  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.onSurface] color with 30% opacity.
-  final TextStyle? disabledCellsTextStyle;
-
-  /// The cell decoration of cells which are not selectable.
-  ///
-  /// defaults to empty [BoxDecoration].
-  final BoxDecoration disabledCellsDecoration;
-
-  /// The text style of the current date.
-  ///
-  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.primary] color.
-  ///
-  /// ### Note:
-  /// If [currentDate] is within the selected range this will
-  /// be override by [selectedCellsTextStyle]
-  final TextStyle? currentDateTextStyle;
-
-  /// The cell decoration of the current date.
-  ///
-  /// defaults to circle stroke border with [ColorScheme.primary] color.
-  ///
-  /// ### Note:
-  /// If [currentDate] is within the selected range this will
-  /// be override by [selectedCellsDecoration]
-  final BoxDecoration? currentDateDecoration;
-
-  /// The text style of selected cells within the range.
-  ///
-  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.onPrimaryContainer] color.
-  final TextStyle? selectedCellsTextStyle;
-
-  /// The cell decoration of selected cells within the range.
-  ///
-  /// defaults to circle with [ColorScheme.primaryContainer] color.
-  final BoxDecoration? selectedCellsDecoration;
-
-  /// The text style for a cell representing:
-  ///
-  /// 1. A single cell when initially selected.
-  /// 2. The leading/trailing cell of a selected range.
-  ///
-  /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
-  /// and [ColorScheme.onPrimary] color
-  final TextStyle? singleSelectedCellTextStyle;
-
-  /// The decoration for a cell representing:
-  ///
-  /// 1. A single cell when initially selected.
-  /// 2. The leading/trailing cell of a selected range.
-  ///
-  /// If not provided, `singleSelectedCellDecoration` is a circle with the color specified
-  /// in `selectedCellsDecoration`, using [ColorScheme.primary].
-  final BoxDecoration? singleSelectedCellDecoration;
-
-  /// The text style of leading date showing in the header.
-  ///
-  /// defaults to `18px` with a [FontWeight.bold]
-  /// and [ColorScheme.primary] color.
-  final TextStyle? leadingDateTextStyle;
-
-  /// The color of the page sliders.
-  ///
-  /// defaults to [ColorScheme.primary] color.
-  final Color? slidersColor;
-
-  /// The size of the page sliders.
-  ///
-  /// defaults to `20px`.
-  final double? slidersSize;
-
-  /// The splash color of the ink response.
-  ///
-  /// defaults to the color of [selectedCellsDecoration],
-  /// if null will fall back to [ColorScheme.onPrimary] with 30% opacity.
-  final Color? splashColor;
-
-  /// The highlight color of the ink response when pressed.
-  ///
-  /// defaults to the color of [selectedCellsDecoration],
-  /// if null will fall back to [ColorScheme.onPrimary] with 30% opacity.
-  final Color? highlightColor;
-
-  /// The radius of the ink splash.
-  final double? splashRadius;
-
-  /// Centring the leading date. e.g:
-  ///
-  /// <       December 2023      >
-  ///
-  final bool centerLeadingDate;
-
-  /// Semantic label for button to go to the previous page.
-  ///
-  /// defaults to `Previous Day/Month/Year` according to picker type.
-  final String? previousPageSemanticLabel;
-
-  /// Semantic label for button to go to the next page.
-  ///
-  /// defaults to `Next Day/Month/Year` according to picker type.
-  final String? nextPageSemanticLabel;
+  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
+  /// and the default theme.
+  final DatePickerPlusTheme? theme;
 
   @override
   State<RangeDatePicker> createState() => _RangeDatePickerState();
@@ -268,17 +133,16 @@ class RangeDatePicker extends StatefulWidget {
 
 class _RangeDatePickerState extends State<RangeDatePicker> {
   PickerType? _pickerType;
-  DateTime? _diplayedDate;
+  DateTime? _displayedDate;
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
 
   @override
   void initState() {
     _pickerType = widget.initialPickerType;
-    final clampedInitailDate = DateUtilsX.clampDateToRange(
-        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _diplayedDate =
-        DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+    final clampedInitailDate =
+        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
 
     if (widget.selectedRange != null) {
       _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
@@ -305,10 +169,9 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
     }
 
     if (widget.initialDate != oldWidget.initialDate) {
-      final clampedInitailDate = DateUtilsX.clampDateToRange(
-          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _diplayedDate =
-          DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
+      final clampedInitailDate =
+          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedDate = DateUtils.dateOnly(widget.initialDate ?? clampedInitailDate);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -316,38 +179,22 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultTheme = DatePickerPlusTheme.defaults(context);
+    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
+    final DatePickerPlusTheme theme = defaultTheme.merge(contextTheme).merge(widget.theme);
+
     switch (_pickerType!) {
       case PickerType.days:
         return Padding(
           padding: widget.padding,
           child: RangeDaysPicker(
-            centerLeadingDate: widget.centerLeadingDate,
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            initialDate: _diplayedDate,
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            initialDate: _displayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            daysOfTheWeekTextStyle: widget.daysOfTheWeekTextStyle,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            selectedCellsDecoration: widget.selectedCellsDecoration,
-            selectedCellsTextStyle: widget.selectedCellsTextStyle,
-            singleSelectedCellTextStyle: widget.singleSelectedCellTextStyle,
-            singleSelectedCellDecoration: widget.singleSelectedCellDecoration,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            previousPageSemanticLabel: widget.previousPageSemanticLabel,
-            nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            theme: theme,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.months;
@@ -361,7 +208,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
               });
 
               widget.onEndDateChanged?.call(date);
-              
+
               // this should never be null
               if (_selectedStartDate != null) {
                 widget.onRangeSelected?.call(
@@ -386,29 +233,12 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         return Padding(
           padding: widget.padding,
           child: MonthPicker(
-            centerLeadingDate: widget.centerLeadingDate,
-            initialDate: _diplayedDate,
+            initialDate: _displayedDate,
             selectedDate: null,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.singleSelectedCellDecoration,
-            selectedCellTextStyle: widget.singleSelectedCellTextStyle,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            previousPageSemanticLabel: widget.previousPageSemanticLabel,
-            nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            theme: theme,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.years;
@@ -422,7 +252,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
                 date: selectedMonth,
               );
               setState(() {
-                _diplayedDate = clampedSelectedMonth;
+                _displayedDate = clampedSelectedMonth;
                 _pickerType = PickerType.days;
               });
             },
@@ -432,29 +262,12 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
         return Padding(
           padding: widget.padding,
           child: YearsPicker(
-            centerLeadingDate: widget.centerLeadingDate,
             selectedDate: null,
-            initialDate: _diplayedDate,
+            initialDate: _displayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate:
-                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            currentDateDecoration: widget.currentDateDecoration,
-            currentDateTextStyle: widget.currentDateTextStyle,
-            disabledCellsDecoration: widget.disabledCellsDecoration,
-            disabledCellsTextStyle: widget.disabledCellsTextStyle,
-            enabledCellsDecoration: widget.enabledCellsDecoration,
-            enabledCellsTextStyle: widget.enabledCellsTextStyle,
-            selectedCellDecoration: widget.singleSelectedCellDecoration,
-            selectedCellTextStyle: widget.singleSelectedCellTextStyle,
-            slidersColor: widget.slidersColor,
-            slidersSize: widget.slidersSize,
-            leadingDateTextStyle: widget.leadingDateTextStyle,
-            splashColor: widget.splashColor,
-            highlightColor: widget.highlightColor,
-            splashRadius: widget.splashRadius,
-            previousPageSemanticLabel: widget.previousPageSemanticLabel,
-            nextPageSemanticLabel: widget.nextPageSemanticLabel,
+            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            theme: theme,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.
               final clampedSelectedYear = DateUtilsX.clampDateToRange(
@@ -463,7 +276,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
                 date: selectedYear,
               );
               setState(() {
-                _diplayedDate = clampedSelectedYear;
+                _displayedDate = clampedSelectedYear;
                 _pickerType = PickerType.months;
               });
             },

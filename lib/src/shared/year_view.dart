@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'picker_grid_delegate.dart';
@@ -18,17 +19,8 @@ class YearView extends StatelessWidget {
     this.selectedDate,
     required this.onChanged,
     required this.displayedYearRange,
-    required this.enabledCellsTextStyle,
-    required this.enabledCellsDecoration,
-    required this.disabledCellsTextStyle,
-    required this.disabledCellsDecoration,
-    required this.currentDateTextStyle,
-    required this.currentDateDecoration,
-    required this.selectedCellTextStyle,
-    required this.selectedCellDecoration,
-    required this.highlightColor,
-    required this.splashColor,
-    this.splashRadius,
+    this.theme,
+    this.isEnabled = true,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
     assert(() {
@@ -80,38 +72,14 @@ class YearView extends StatelessWidget {
   /// Note that only year are considered. time, month and day fields are ignored.
   final DateTimeRange displayedYearRange;
 
-  /// The text style of years which are selectable.
-  final TextStyle enabledCellsTextStyle;
+  /// The theme to apply to the [DatePicker].
+  ///
+  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
+  /// and the default theme.
+  final YearsPickerTheme? theme;
 
-  /// The cell decoration of years which are selectable.
-  final BoxDecoration enabledCellsDecoration;
-
-  /// The text style of years which are not selectable.
-  final TextStyle disabledCellsTextStyle;
-
-  /// The cell decoration of years which are not selectable.
-  final BoxDecoration disabledCellsDecoration;
-
-  /// The text style of the current year
-  final TextStyle currentDateTextStyle;
-
-  /// The cell decoration of the current year.
-  final BoxDecoration currentDateDecoration;
-
-  /// The text style of selected year.
-  final TextStyle selectedCellTextStyle;
-
-  /// The cell decoration of selected year.
-  final BoxDecoration selectedCellDecoration;
-
-  /// The splash color of the ink response.
-  final Color? splashColor;
-
-  /// The highlight color of the ink response when pressed.
-  final Color? highlightColor;
-
-  /// The radius of the ink splash.
-  final double? splashRadius;
+  /// When `false`, years are not selectable and semantics report as disabled.
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +87,13 @@ class YearView extends StatelessWidget {
     final int startYear = displayedYearRange.start.year;
     final int endYear = displayedYearRange.end.year;
     final int numberOfYears = endYear - startYear + 1;
+
+    final defaultTheme = DatePickerPlusTheme.defaults(context).yearsPickerTheme;
+    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.yearsPickerTheme;
+    final currentTheme = defaultTheme?.merge(contextTheme).merge(theme);
+
+    final inkResponseTheme = currentTheme?.inkResponseTheme;
+    final cellsPadding = currentTheme?.cellsPadding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final yearsName = List.generate(
       numberOfYears,
@@ -129,46 +104,50 @@ class YearView extends StatelessWidget {
 
     int i = 0;
     while (i < numberOfYears) {
-      final bool isDisabled =
-          yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
+      final bool isYearDisabled = yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 
       final bool isSelected = yearsName[i] == selectedDate?.year;
-      //
-      //
-      BoxDecoration decoration = enabledCellsDecoration;
-      TextStyle style = enabledCellsTextStyle;
 
-      if (isCurrentYear) {
-        //
-        //
-        style = currentDateTextStyle;
-        decoration = currentDateDecoration;
-      }
-      if (isSelected) {
-        //
-        //
-        style = selectedCellTextStyle;
-        decoration = selectedCellDecoration;
+      CellState state = CellState.enabled;
+      if (isYearDisabled && isCurrentYear) {
+        state = CellState.currentAndDisabled;
+      } else if (isYearDisabled) {
+        state = CellState.disabled;
+      } else if (isSelected) {
+        state = CellState.selected;
+      } else if (isCurrentYear) {
+        state = CellState.current;
       }
 
-      if (isDisabled) {
-        style = disabledCellsTextStyle;
-        decoration = disabledCellsDecoration;
-      }
+      final style = currentTheme?.resolveTextStyle(state);
+      final decoration = currentTheme?.resolveDecoration(state);
 
-      Widget monthWidget = Container(
-        decoration: decoration,
-        child: Center(
-          child: Text(
-            yearsName[i].toString(),
-            style: style,
+      Widget monthWidget = Padding(
+        padding: cellsPadding,
+        child: Container(
+          decoration: decoration,
+          child: Center(
+            child: Text(
+              yearsName[i].toString(),
+              style: style,
+            ),
           ),
         ),
       );
 
-      if (isDisabled) {
+      final String yearSemanticLabel = yearsName[i].toString();
+
+      if (!isEnabled) {
+        monthWidget = Semantics(
+          label: yearSemanticLabel,
+          selected: isSelected,
+          enabled: false,
+          excludeSemantics: true,
+          child: monthWidget,
+        );
+      } else if (isYearDisabled) {
         monthWidget = ExcludeSemantics(
           child: monthWidget,
         );
@@ -176,11 +155,18 @@ class YearView extends StatelessWidget {
         final date = DateTime(yearsName[i]);
         monthWidget = InkResponse(
           onTap: () => onChanged(date),
-          radius: splashRadius,
-          splashColor: splashColor,
-          highlightColor: highlightColor,
+          radius: inkResponseTheme?.radius,
+          splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
+          highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+          borderRadius: inkResponseTheme?.borderRadius,
+          containedInkWell: inkResponseTheme?.containedInkWell ?? false,
+          customBorder: inkResponseTheme?.customBorder,
+          highlightShape: inkResponseTheme?.highlightShape ?? BoxShape.circle,
+          splashFactory: inkResponseTheme?.splashFactory,
+          focusColor: inkResponseTheme?.focusColor,
+          hoverColor: inkResponseTheme?.hoverColor,
           child: Semantics(
-            label: yearsName[i].toString(),
+            label: yearSemanticLabel,
             selected: isSelected,
             excludeSemantics: true,
             child: monthWidget,
@@ -194,7 +180,6 @@ class YearView extends StatelessWidget {
 
     return GridView.custom(
       padding: EdgeInsets.zero,
-      shrinkWrap: false,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const PickerGridDelegate(columnCount: 3, rowCount: 4),
       childrenDelegate: SliverChildListDelegate(

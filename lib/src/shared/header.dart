@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'leading_date.dart';
@@ -12,7 +13,6 @@ import 'leading_date.dart';
 /// ```dart
 /// Header(
 ///   displayedDate: "December 2023",
-///   centerLeadingDate: true,
 ///   onDateTap: () {
 ///     // Handle date tap action
 ///   },
@@ -22,12 +22,7 @@ import 'leading_date.dart';
 ///   onPreviousPage: () {
 ///     // Handle previous page navigation
 ///   },
-///   slidersColor: Colors.blue,
-///   slidersSize: 20.0,
-///   leadingDateTextStyle: TextStyle(
-///     fontWeight: FontWeight.bold,
-///     fontSize: 18.0,
-///   ),
+///   theme: DatePickerPlusTheme.defaults(context),
 /// )
 /// ```
 ///
@@ -38,35 +33,19 @@ import 'leading_date.dart';
 ///
 class Header extends StatelessWidget {
   /// Creates a new [Header] instance.
-  ///
-  /// The [displayedDate], [onDateTap], [onNextPage], [onPreviousPage], [slidersColor],
-  /// [slidersSize], and [leadingDateTextStyle] parameters are required.
   const Header({
     super.key,
     required this.displayedDate,
     required this.onDateTap,
     required this.onNextPage,
     required this.onPreviousPage,
-    required this.slidersColor,
-    required this.slidersSize,
-    required this.leadingDateTextStyle,
-    required this.previousPageSemanticLabel,
-    required this.nextPageSemanticLabel,
-    required this.forwardButtonDecoration,
-    required this.forwardButtonSplashColor,
-    required this.forwardButtonHighlightColor,
-    required this.backwardButtonDecoration,
-    required this.backwardButtonSplashColor,
-    required this.backwardButtonHighlightColor,
-    this.centerLeadingDate = false,
+    required this.theme,
+    this.isEnabled = true,
   });
 
   /// The currently displayed date. It is typically in a format
   /// indicating the month and year.
   final String displayedDate;
-
-  /// the text style for the [displayedDate] in the header.
-  final TextStyle leadingDateTextStyle;
 
   /// Called when the displayed date is tapped. This can
   /// be used to trigger actions related to selecting or
@@ -83,118 +62,100 @@ class Header extends StatelessWidget {
   /// associated with the backward navigation control.
   final VoidCallback onPreviousPage;
 
-  /// The color of the page navigation sliders
-  /// (forward and backward).
-  final Color slidersColor;
-
-  /// The size of the page navigation sliders
-  /// (forward and backward).
-  final double slidersSize;
-
-  /// Centring the leading date. e.g:
+  /// The theme to apply to the [DatePicker].
   ///
-  /// <       December 2023      >
-  ///
-  final bool centerLeadingDate;
+  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
+  /// and the default theme.
+  final HeaderTheme? theme;
 
-  /// Semantic label for button to go to the previous page.
-  final String previousPageSemanticLabel;
-
-  /// Semantic label for button to go to the next page.
-  final String nextPageSemanticLabel;
-
-  /// The cell decoration of the forward button.
-  final BoxDecoration forwardButtonDecoration;
-
-  /// The splash color of the ink response when pressed.
-  final Color forwardButtonSplashColor;
-
-  /// The highlight color of the ink response when pressed.
-  final Color forwardButtonHighlightColor;
-
-  /// The cell decoration of the backward button.
-  final BoxDecoration backwardButtonDecoration;
-
-  /// The splash color of the ink response when pressed.
-  final Color backwardButtonSplashColor;
-
-  /// The highlight color of the ink response when pressed.
-  final Color backwardButtonHighlightColor;
+  /// When `false`, header navigation and leading date taps are disabled.
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
+    final defaultTheme = DatePickerPlusTheme.defaults(context).headerTheme;
+    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.headerTheme;
+    final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
+
+    final headerTheme = theme;
+    final enableHeader = headerTheme?.enableHeader ?? true;
+    if (!enableHeader) {
+      return const SizedBox.shrink();
+    }
+
+    final centerLeadingDate = headerTheme?.centerLeadingDate;
+    final nextPageSemanticLabel = MaterialLocalizations.of(context).nextPageTooltip;
+    final previousPageSemanticLabel = MaterialLocalizations.of(context).previousPageTooltip;
+
+    final forwardButtonStyle = headerTheme?.forwardButtonStyle;
+    final backwardButtonStyle = headerTheme?.backwardButtonStyle;
+
+    final forwardButtonWidget = headerTheme?.forwardArrowWidget;
+    final backwardButtonWidget = headerTheme?.backwardArrowWidget;
+
     final forwardButton = Semantics(
       label: nextPageSemanticLabel,
       button: true,
-      child: Container(
-        width: 36,
-        height: 36,
-        clipBehavior: Clip.hardEdge,
-        decoration: forwardButtonDecoration,
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            onTap: onNextPage,
-            splashColor: forwardButtonSplashColor,
-            highlightColor: forwardButtonHighlightColor,
-            child: ExcludeSemantics(
-              child: Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: slidersSize,
-                color: slidersColor,
-              ),
-            ),
-          ),
-        ),
+      enabled: isEnabled,
+      child: TextButton(
+        onPressed: isEnabled ? onNextPage : null,
+        style: forwardButtonStyle,
+        child: ExcludeSemantics(child: forwardButtonWidget),
       ),
     );
 
     final backButton = Semantics(
       label: previousPageSemanticLabel,
       button: true,
-      child: Container(
-        width: 36,
-        height: 36,
-        clipBehavior: Clip.hardEdge,
-        decoration: backwardButtonDecoration,
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            onTap: onPreviousPage,
-            splashColor: backwardButtonSplashColor,
-            highlightColor: backwardButtonHighlightColor,
-            child: ExcludeSemantics(
-              child: Icon(
-                Icons.arrow_back_ios_rounded,
-                size: slidersSize,
-                color: slidersColor,
-              ),
-            ),
-          ),
-        ),
+      enabled: isEnabled,
+      child: TextButton(
+        onPressed: isEnabled ? onPreviousPage : null,
+        style: backwardButtonStyle,
+        child: ExcludeSemantics(child: backwardButtonWidget),
       ),
     );
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (centerLeadingDate) backButton,
-        LeadingDate(
-          onTap: onDateTap,
-          displayedText: displayedDate,
-          displayedTextStyle: leadingDateTextStyle,
-        ),
-        if (centerLeadingDate)
-          forwardButton
-        else
+    final enableArrowKeys = headerTheme?.enableArrowKeys ?? true;
+
+    final leadingDate = LeadingDate(
+      onTap: isEnabled ? onDateTap : null,
+      displayedText: displayedDate,
+      displayedTextStyle: headerTheme?.leadingDateTextStyle,
+    );
+
+    final List<Widget> trailingArrows = [];
+    if (enableArrowKeys) {
+      if (centerLeadingDate == true) {
+        trailingArrows.add(forwardButton);
+      } else {
+        trailingArrows.add(
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               backButton,
               const SizedBox(width: 10),
               forwardButton,
             ],
           ),
-      ],
+        );
+      }
+    }
+
+    return Material(
+      color: headerTheme?.backgroundColor ?? Colors.transparent,
+      child: Padding(
+        padding: headerTheme?.headerPadding ?? EdgeInsets.zero,
+        child: centerLeadingDate == true && !enableArrowKeys
+            ? Center(child: leadingDate)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (centerLeadingDate == true && enableArrowKeys) backButton,
+                  Flexible(child: leadingDate),
+                  ...trailingArrows,
+                ],
+              ),
+      ),
     );
   }
 }
