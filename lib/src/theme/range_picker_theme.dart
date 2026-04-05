@@ -231,15 +231,18 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   RangePickerTheme merge(covariant RangePickerTheme? other) {
     if (other == null) return this;
     return copyWith(
-      enabledCellsTextStyle: other.enabledCellsTextStyle,
+      enabledCellsTextStyle: enabledCellsTextStyle?.merge(other.enabledCellsTextStyle) ?? other.enabledCellsTextStyle,
       enabledCellsDecoration: other.enabledCellsDecoration,
-      disabledCellsTextStyle: other.disabledCellsTextStyle,
+      disabledCellsTextStyle:
+          disabledCellsTextStyle?.merge(other.disabledCellsTextStyle) ?? other.disabledCellsTextStyle,
       disabledCellsDecoration: other.disabledCellsDecoration,
-      currentDateTextStyle: other.currentDateTextStyle,
+      currentDateTextStyle: currentDateTextStyle?.merge(other.currentDateTextStyle) ?? other.currentDateTextStyle,
       currentDateDecoration: other.currentDateDecoration,
-      selectedCellsTextStyle: other.selectedCellsTextStyle,
+      selectedCellsTextStyle:
+          selectedCellsTextStyle?.merge(other.selectedCellsTextStyle) ?? other.selectedCellsTextStyle,
       selectedCellsDecoration: other.selectedCellsDecoration,
-      selectedEdgeCellTextStyle: other.selectedEdgeCellTextStyle,
+      selectedEdgeCellTextStyle:
+          selectedEdgeCellTextStyle?.merge(other.selectedEdgeCellTextStyle) ?? other.selectedEdgeCellTextStyle,
       selectedEdgeCellDecoration: other.selectedEdgeCellDecoration,
       cellsPadding: other.cellsPadding,
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,

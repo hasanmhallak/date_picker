@@ -80,7 +80,7 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme> with Diagnos
     if (other == null) return this;
     return copyWith(
       startOfWeek: other.startOfWeek,
-      textStyle: other.textStyle,
+      textStyle: textStyle?.merge(other.textStyle) ?? other.textStyle,
       decoration: other.decoration,
       weekdayLength: other.weekdayLength,
     );

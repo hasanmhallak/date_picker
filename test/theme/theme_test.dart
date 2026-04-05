@@ -72,6 +72,26 @@ void main() {
       expect(merged.backgroundColor, Colors.teal);
     });
 
+    test('merge: leadingDateTextStyle is merged, not replaced', () {
+      const a = HeaderTheme(
+        leadingDateTextStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          color: Colors.red,
+        ),
+      );
+      const b = HeaderTheme(
+        leadingDateTextStyle: TextStyle(
+          fontSize: 18,
+          color: Colors.blue,
+        ),
+      );
+      final merged = a.merge(b);
+
+      expect(merged.leadingDateTextStyle?.fontWeight, FontWeight.w700);
+      expect(merged.leadingDateTextStyle?.fontSize, 18);
+      expect(merged.leadingDateTextStyle?.color, Colors.blue);
+    });
+
     test('lerp at t=0 returns self', () {
       const a = HeaderTheme(enableHeader: true);
       const b = HeaderTheme(enableHeader: false);
@@ -156,6 +176,26 @@ void main() {
       expect(m.weekdayLength, equals(WeekdayLength.long));
     });
 
+    test('merge: textStyle is merged, not replaced', () {
+      const a = DaysOfTheWeekTheme(
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.red,
+        ),
+      );
+      const b = DaysOfTheWeekTheme(
+        textStyle: TextStyle(
+          fontSize: 14,
+          color: Colors.blue,
+        ),
+      );
+      final m = a.merge(b);
+
+      expect(m.textStyle?.fontWeight, FontWeight.bold);
+      expect(m.textStyle?.fontSize, 14);
+      expect(m.textStyle?.color, Colors.blue);
+    });
+
     test('lerp(not DaysOfTheWeekTheme) returns self', () {
       const a = DaysOfTheWeekTheme(startOfWeek: 1);
       expect(a.lerp(null, 0.5), same(a));
@@ -198,6 +238,31 @@ void main() {
       final m = a.merge(b);
 
       expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
+    });
+
+    test('merge: cell text styles are merged, not replaced', () {
+      const a = DaysPickerTheme(
+        enabledCellsTextStyle: TextStyle(fontWeight: FontWeight.w700),
+        disabledCellsTextStyle: TextStyle(letterSpacing: 1),
+        currentDateTextStyle: TextStyle(fontStyle: FontStyle.italic),
+        selectedCellTextStyle: TextStyle(decoration: TextDecoration.underline),
+      );
+      const b = DaysPickerTheme(
+        enabledCellsTextStyle: TextStyle(color: Colors.green),
+        disabledCellsTextStyle: TextStyle(color: Colors.grey),
+        currentDateTextStyle: TextStyle(color: Colors.blue),
+        selectedCellTextStyle: TextStyle(color: Colors.white),
+      );
+      final m = a.merge(b);
+
+      expect(m.enabledCellsTextStyle?.fontWeight, FontWeight.w700);
+      expect(m.enabledCellsTextStyle?.color, Colors.green);
+      expect(m.disabledCellsTextStyle?.letterSpacing, 1);
+      expect(m.disabledCellsTextStyle?.color, Colors.grey);
+      expect(m.currentDateTextStyle?.fontStyle, FontStyle.italic);
+      expect(m.currentDateTextStyle?.color, Colors.blue);
+      expect(m.selectedCellTextStyle?.decoration, TextDecoration.underline);
+      expect(m.selectedCellTextStyle?.color, Colors.white);
     });
 
     test('resolveTextStyle returns correct style for each CellState', () {
@@ -294,6 +359,31 @@ void main() {
       expect((m.selectedCellDecoration as BoxDecoration).color, equals(Colors.teal));
     });
 
+    test('merge: cell text styles are merged, not replaced', () {
+      const a = MonthsPickerTheme(
+        enabledCellsTextStyle: TextStyle(fontWeight: FontWeight.w700),
+        disabledCellsTextStyle: TextStyle(letterSpacing: 1),
+        currentDateTextStyle: TextStyle(fontStyle: FontStyle.italic),
+        selectedCellTextStyle: TextStyle(decoration: TextDecoration.underline),
+      );
+      const b = MonthsPickerTheme(
+        enabledCellsTextStyle: TextStyle(color: Colors.green),
+        disabledCellsTextStyle: TextStyle(color: Colors.grey),
+        currentDateTextStyle: TextStyle(color: Colors.blue),
+        selectedCellTextStyle: TextStyle(color: Colors.white),
+      );
+      final m = a.merge(b);
+
+      expect(m.enabledCellsTextStyle?.fontWeight, FontWeight.w700);
+      expect(m.enabledCellsTextStyle?.color, Colors.green);
+      expect(m.disabledCellsTextStyle?.letterSpacing, 1);
+      expect(m.disabledCellsTextStyle?.color, Colors.grey);
+      expect(m.currentDateTextStyle?.fontStyle, FontStyle.italic);
+      expect(m.currentDateTextStyle?.color, Colors.blue);
+      expect(m.selectedCellTextStyle?.decoration, TextDecoration.underline);
+      expect(m.selectedCellTextStyle?.color, Colors.white);
+    });
+
     test('resolveTextStyle returns correct style for each CellState', () {
       final theme = MonthsPickerTheme(
         enabledCellsTextStyle: const TextStyle(color: Colors.green),
@@ -388,6 +478,31 @@ void main() {
       const b = YearsPickerTheme(selectedCellDecoration: BoxDecoration(color: Colors.indigo));
       final m = a.merge(b);
       expect((m.selectedCellDecoration as BoxDecoration).color, equals(Colors.indigo));
+    });
+
+    test('merge: cell text styles are merged, not replaced', () {
+      const a = YearsPickerTheme(
+        enabledCellsTextStyle: TextStyle(fontWeight: FontWeight.w700),
+        disabledCellsTextStyle: TextStyle(letterSpacing: 1),
+        currentDateTextStyle: TextStyle(fontStyle: FontStyle.italic),
+        selectedCellTextStyle: TextStyle(decoration: TextDecoration.underline),
+      );
+      const b = YearsPickerTheme(
+        enabledCellsTextStyle: TextStyle(color: Colors.green),
+        disabledCellsTextStyle: TextStyle(color: Colors.grey),
+        currentDateTextStyle: TextStyle(color: Colors.blue),
+        selectedCellTextStyle: TextStyle(color: Colors.white),
+      );
+      final m = a.merge(b);
+
+      expect(m.enabledCellsTextStyle?.fontWeight, FontWeight.w700);
+      expect(m.enabledCellsTextStyle?.color, Colors.green);
+      expect(m.disabledCellsTextStyle?.letterSpacing, 1);
+      expect(m.disabledCellsTextStyle?.color, Colors.grey);
+      expect(m.currentDateTextStyle?.fontStyle, FontStyle.italic);
+      expect(m.currentDateTextStyle?.color, Colors.blue);
+      expect(m.selectedCellTextStyle?.decoration, TextDecoration.underline);
+      expect(m.selectedCellTextStyle?.color, Colors.white);
     });
 
     test('resolveTextStyle returns correct style for each CellState', () {
@@ -487,6 +602,35 @@ void main() {
       final m = a.merge(b);
 
       expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
+    });
+
+    test('merge: cell text styles are merged, not replaced', () {
+      const a = RangePickerTheme(
+        enabledCellsTextStyle: TextStyle(fontWeight: FontWeight.w700),
+        disabledCellsTextStyle: TextStyle(letterSpacing: 1),
+        currentDateTextStyle: TextStyle(fontStyle: FontStyle.italic),
+        selectedCellsTextStyle: TextStyle(decoration: TextDecoration.underline),
+        selectedEdgeCellTextStyle: TextStyle(fontStyle: FontStyle.normal),
+      );
+      const b = RangePickerTheme(
+        enabledCellsTextStyle: TextStyle(color: Colors.green),
+        disabledCellsTextStyle: TextStyle(color: Colors.grey),
+        currentDateTextStyle: TextStyle(color: Colors.blue),
+        selectedCellsTextStyle: TextStyle(color: Colors.white),
+        selectedEdgeCellTextStyle: TextStyle(color: Colors.orange),
+      );
+      final m = a.merge(b);
+
+      expect(m.enabledCellsTextStyle?.fontWeight, FontWeight.w700);
+      expect(m.enabledCellsTextStyle?.color, Colors.green);
+      expect(m.disabledCellsTextStyle?.letterSpacing, 1);
+      expect(m.disabledCellsTextStyle?.color, Colors.grey);
+      expect(m.currentDateTextStyle?.fontStyle, FontStyle.italic);
+      expect(m.currentDateTextStyle?.color, Colors.blue);
+      expect(m.selectedCellsTextStyle?.decoration, TextDecoration.underline);
+      expect(m.selectedCellsTextStyle?.color, Colors.white);
+      expect(m.selectedEdgeCellTextStyle?.fontStyle, FontStyle.normal);
+      expect(m.selectedEdgeCellTextStyle?.color, Colors.orange);
     });
 
     test('resolveTextStyle returns correct style for each CellState', () {

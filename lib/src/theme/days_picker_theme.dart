@@ -191,13 +191,14 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
     if (other == null) return this;
     return copyWith(
       daysOfTheWeekTheme: daysOfTheWeekTheme?.merge(other.daysOfTheWeekTheme) ?? other.daysOfTheWeekTheme,
-      enabledCellsTextStyle: other.enabledCellsTextStyle,
+      enabledCellsTextStyle: enabledCellsTextStyle?.merge(other.enabledCellsTextStyle) ?? other.enabledCellsTextStyle,
       enabledCellsDecoration: other.enabledCellsDecoration,
-      disabledCellsTextStyle: other.disabledCellsTextStyle,
+      disabledCellsTextStyle:
+          disabledCellsTextStyle?.merge(other.disabledCellsTextStyle) ?? other.disabledCellsTextStyle,
       disabledCellsDecoration: other.disabledCellsDecoration,
-      currentDateTextStyle: other.currentDateTextStyle,
+      currentDateTextStyle: currentDateTextStyle?.merge(other.currentDateTextStyle) ?? other.currentDateTextStyle,
       currentDateDecoration: other.currentDateDecoration,
-      selectedCellTextStyle: other.selectedCellTextStyle,
+      selectedCellTextStyle: selectedCellTextStyle?.merge(other.selectedCellTextStyle) ?? other.selectedCellTextStyle,
       selectedCellDecoration: other.selectedCellDecoration,
       cellsPadding: other.cellsPadding,
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,

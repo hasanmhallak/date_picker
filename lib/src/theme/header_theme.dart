@@ -155,7 +155,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       forwardArrowWidget: other.forwardArrowWidget,
       backwardArrowWidget: other.backwardArrowWidget,
       centerLeadingDate: other.centerLeadingDate,
-      leadingDateTextStyle: other.leadingDateTextStyle,
+      leadingDateTextStyle: leadingDateTextStyle?.merge(other.leadingDateTextStyle) ?? other.leadingDateTextStyle,
       headerPadding: other.headerPadding,
       backgroundColor: other.backgroundColor,
       forwardButtonStyle: forwardButtonStyle != null
