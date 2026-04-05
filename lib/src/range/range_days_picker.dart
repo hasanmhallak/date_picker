@@ -216,39 +216,42 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
               },
             ),
             Expanded(
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                key: _pageViewKey,
-                controller: _pageController,
-                itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
-                onPageChanged: (monthPage) {
-                  final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+              child: Padding(
+                padding: theme.rangePickerTheme?.padding ?? EdgeInsets.zero,
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                  key: _pageViewKey,
+                  controller: _pageController,
+                  itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                  onPageChanged: (monthPage) {
+                    final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
-                  setState(() {
-                    _displayedMonth = monthDate;
-                  });
-                  widget.onDisplayedMonthChanged?.call(monthDate);
-                },
-                itemBuilder: (context, index) {
-                  final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
+                    setState(() {
+                      _displayedMonth = monthDate;
+                    });
+                    widget.onDisplayedMonthChanged?.call(monthDate);
+                  },
+                  itemBuilder: (context, index) {
+                    final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
-                  return RangeDaysView(
-                    key: ValueKey<DateTime>(month),
-                    currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                    minDate: DateUtils.dateOnly(widget.minDate),
-                    maxDate: DateUtils.dateOnly(widget.maxDate),
-                    displayedMonth: month,
-                    cellBuilder: widget.cellBuilder,
-                    selectedEndDate:
-                        widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
-                    selectedStartDate:
-                        widget.selectedStartDate == null ? null : DateUtils.dateOnly(widget.selectedStartDate!),
-                    theme: theme,
-                    onEndDateChanged: (value) => widget.onEndDateChanged?.call(value),
-                    onStartDateChanged: (value) => widget.onStartDateChanged?.call(value),
-                  );
-                },
+                    return RangeDaysView(
+                      key: ValueKey<DateTime>(month),
+                      currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                      minDate: DateUtils.dateOnly(widget.minDate),
+                      maxDate: DateUtils.dateOnly(widget.maxDate),
+                      displayedMonth: month,
+                      cellBuilder: widget.cellBuilder,
+                      selectedEndDate:
+                          widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
+                      selectedStartDate:
+                          widget.selectedStartDate == null ? null : DateUtils.dateOnly(widget.selectedStartDate!),
+                      theme: theme,
+                      onEndDateChanged: (value) => widget.onEndDateChanged?.call(value),
+                      onStartDateChanged: (value) => widget.onStartDateChanged?.call(value),
+                    );
+                  },
+                ),
               ),
             ),
           ],

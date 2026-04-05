@@ -240,27 +240,27 @@ void main() {
       expect(padding.padding, customPadding);
     });
 
-    testWidgets('should apply backgroundColor from theme', (WidgetTester tester) async {
-      const backgroundColor = Colors.lightBlue;
+    testWidgets('should apply decoration from theme', (WidgetTester tester) async {
+      const decoration = BoxDecoration(color: Colors.lightBlue);
 
       await tester.pumpWidget(
         _buildHeader(
           theme: const HeaderTheme(
-            backgroundColor: backgroundColor,
+            decoration: decoration,
           ),
         ),
       );
 
-      final material = tester.widget<Material>(
+      final decorated = tester.widget<DecoratedBox>(
         find.descendant(
           of: find.byType(Header),
           matching: find.byWidgetPredicate(
-            (widget) => widget is Material && widget.child is Padding,
+            (widget) => widget is DecoratedBox && widget.child is Padding,
           ),
         ),
       );
 
-      expect(material.color, backgroundColor);
+      expect(decorated.decoration, decoration);
     });
 
     testWidgets('should have correct semantic labels on arrow buttons', (WidgetTester tester) async {

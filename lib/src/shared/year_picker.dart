@@ -247,41 +247,44 @@ class _YearsPickerState extends State<YearsPicker> {
               },
             ),
             Flexible(
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                key: _pageViewKey,
-                controller: _pageController,
-                itemCount: pageCount,
-                onPageChanged: (yearPage) {
-                  setState(() {
-                    _displayedRange = calculateDateRange(yearPage);
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final yearRange = calculateDateRange(index);
+              child: Padding(
+                padding: theme.yearsPickerTheme?.padding ?? EdgeInsets.zero,
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                  key: _pageViewKey,
+                  controller: _pageController,
+                  itemCount: pageCount,
+                  onPageChanged: (yearPage) {
+                    setState(() {
+                      _displayedRange = calculateDateRange(yearPage);
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    final yearRange = calculateDateRange(index);
 
-                  return YearView(
-                    key: ValueKey<DateTimeRange>(yearRange),
-                    currentDate: widget.currentDate != null
-                        ? DateUtilsX.yearOnly(widget.currentDate!)
-                        : DateUtilsX.yearOnly(DateTime.now()),
-                    maxDate: DateUtilsX.yearOnly(widget.maxDate),
-                    minDate: DateUtilsX.yearOnly(widget.minDate),
-                    displayedYearRange: yearRange,
-                    selectedDate: _selectedDate,
-                    cellBuilder: widget.cellBuilder,
-                    theme: theme.yearsPickerTheme,
-                    isEnabled: isEnabled,
-                    onChanged: (value) {
-                      final selected = DateUtilsX.yearOnly(value);
-                      widget.onDateSelected?.call(selected);
-                      setState(() {
-                        _selectedDate = selected;
-                      });
-                    },
-                  );
-                },
+                    return YearView(
+                      key: ValueKey<DateTimeRange>(yearRange),
+                      currentDate: widget.currentDate != null
+                          ? DateUtilsX.yearOnly(widget.currentDate!)
+                          : DateUtilsX.yearOnly(DateTime.now()),
+                      maxDate: DateUtilsX.yearOnly(widget.maxDate),
+                      minDate: DateUtilsX.yearOnly(widget.minDate),
+                      displayedYearRange: yearRange,
+                      selectedDate: _selectedDate,
+                      cellBuilder: widget.cellBuilder,
+                      theme: theme.yearsPickerTheme,
+                      isEnabled: isEnabled,
+                      onChanged: (value) {
+                        final selected = DateUtilsX.yearOnly(value);
+                        widget.onDateSelected?.call(selected);
+                        setState(() {
+                          _selectedDate = selected;
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],

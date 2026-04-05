@@ -39,6 +39,40 @@ void main() {
       );
     });
 
+    testWidgets('should apply monthsPickerTheme padding around PageView', (WidgetTester tester) async {
+      const customPadding = EdgeInsets.all(12);
+      final DateTime displayedDate = DateTime(2022, 6, 1);
+      final DateTime minDate = DateTime(2022, 1, 1);
+      final DateTime maxDate = DateTime(2022, 12, 31);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: MonthPicker(
+              displayedDate: displayedDate,
+              currentDate: displayedDate,
+              minDate: minDate,
+              maxDate: maxDate,
+              theme: const DatePickerPlusTheme(
+                monthsPickerTheme: MonthsPickerTheme(padding: customPadding),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final pageView = find.byType(PageView);
+      final padding = tester.widget<Padding>(
+        find.ancestor(
+          of: pageView,
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.child is PageView,
+          ),
+        ),
+      );
+      expect(padding.padding.resolve(TextDirection.ltr), customPadding);
+    });
+
     testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
       final DateTime displayedDate = DateTime(2020, 6, 1);
       final DateTime minDate = DateTime(2000, 1, 1);

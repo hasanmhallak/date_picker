@@ -21,6 +21,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     this.selectedEdgeCellTextStyle,
     this.selectedEdgeCellDecoration,
     this.cellsPadding,
+    this.padding,
     this.inkResponseTheme,
     this.resolvePainter,
   });
@@ -90,6 +91,11 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   /// Defaults to [EdgeInsets.zero].
   final EdgeInsetsGeometry? cellsPadding;
 
+  /// Padding around the range days grid (the [PageView] below the header).
+  ///
+  /// Defaults to [EdgeInsets.zero].
+  final EdgeInsetsGeometry? padding;
+
   /// The splash and highlight theme for the ink response when tapping cells.
   ///
   /// Defaults to the splash color of [selectedCellsDecoration] with 30% opacity,
@@ -147,6 +153,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
         shape: BoxShape.circle,
       ),
       cellsPadding: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
       inkResponseTheme: InkResponseTheme.defaults(context),
       resolvePainter: (textDirection, color, start) {
         return RangeSelectionPainter(
@@ -207,6 +214,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     TextStyle? selectedEdgeCellTextStyle,
     Decoration? selectedEdgeCellDecoration,
     EdgeInsetsGeometry? cellsPadding,
+    EdgeInsetsGeometry? padding,
     InkResponseTheme? inkResponseTheme,
     ResolvePainter? resolvePainter,
   }) {
@@ -222,6 +230,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
       selectedEdgeCellTextStyle: selectedEdgeCellTextStyle ?? this.selectedEdgeCellTextStyle,
       selectedEdgeCellDecoration: selectedEdgeCellDecoration ?? this.selectedEdgeCellDecoration,
       cellsPadding: cellsPadding ?? this.cellsPadding,
+      padding: padding ?? this.padding,
       inkResponseTheme: inkResponseTheme ?? this.inkResponseTheme,
       resolvePainter: resolvePainter ?? this.resolvePainter,
     );
@@ -245,6 +254,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
           selectedEdgeCellTextStyle?.merge(other.selectedEdgeCellTextStyle) ?? other.selectedEdgeCellTextStyle,
       selectedEdgeCellDecoration: other.selectedEdgeCellDecoration,
       cellsPadding: other.cellsPadding,
+      padding: other.padding,
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,
       resolvePainter: other.resolvePainter,
     );
@@ -267,6 +277,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
       selectedEdgeCellDecoration:
           Decoration.lerp(selectedEdgeCellDecoration, other.selectedEdgeCellDecoration, t),
       cellsPadding: EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
+      padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),
       resolvePainter: t < 0.5 ? resolvePainter : other.resolvePainter,
     );
@@ -286,6 +297,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
     properties.add(DiagnosticsProperty<TextStyle?>('selectedEdgeCellTextStyle', selectedEdgeCellTextStyle));
     properties.add(DiagnosticsProperty<Decoration?>('selectedEdgeCellDecoration', selectedEdgeCellDecoration));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('cellsPadding', cellsPadding));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('padding', padding));
     properties.add(DiagnosticsProperty<InkResponseTheme?>('inkResponseTheme', inkResponseTheme));
     properties.add(DiagnosticsProperty<ResolvePainter?>('resolvePainter', resolvePainter));
   }

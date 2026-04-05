@@ -32,6 +32,40 @@ void main() {
       expect(headerTextWidget.data, '2012 - 2023');
     });
 
+    testWidgets('should apply yearsPickerTheme padding around PageView', (WidgetTester tester) async {
+      const customPadding = EdgeInsets.all(12);
+      final DateTime displayedDate = DateTime(2022);
+      final DateTime minDate = DateTime(2000);
+      final DateTime maxDate = DateTime(2036);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: YearsPicker(
+              displayedDate: displayedDate,
+              currentDate: displayedDate,
+              minDate: minDate,
+              maxDate: maxDate,
+              theme: const DatePickerPlusTheme(
+                yearsPickerTheme: YearsPickerTheme(padding: customPadding),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final pageView = find.byType(PageView);
+      final padding = tester.widget<Padding>(
+        find.ancestor(
+          of: pageView,
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.child is PageView,
+          ),
+        ),
+      );
+      expect(padding.padding.resolve(TextDirection.ltr), customPadding);
+    });
+
     testWidgets('should change the page forward and backward on drag.', (WidgetTester tester) async {
       final DateTime displayedDate = DateTime(2022);
       final DateTime minDate = DateTime(2000);

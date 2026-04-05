@@ -15,7 +15,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     this.forwardButtonStyle,
     this.backwardButtonStyle,
     this.headerPadding,
-    this.backgroundColor,
+    this.decoration,
   });
 
   /// Whether the header is enabled and visible.
@@ -71,10 +71,10 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   /// Defaults to `EdgeInsets.only(bottom: 10.0)`.
   final EdgeInsetsGeometry? headerPadding;
 
-  /// The background color of the header.
+  /// The decoration behind the header content (inside [headerPadding]).
   ///
-  /// Defaults to `Colors.transparent`.
-  final Color? backgroundColor;
+  /// Defaults to an empty [BoxDecoration].
+  final Decoration? decoration;
 
   /// Returns a [HeaderTheme] populated with default values.
   static HeaderTheme defaults(BuildContext context) {
@@ -85,7 +85,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       enableHeader: true,
       enableArrowKeys: true,
       headerPadding: const EdgeInsetsDirectional.only(bottom: 10.0),
-      backgroundColor: Colors.transparent,
+      decoration: const BoxDecoration(),
       forwardArrowWidget: Icon(
         Icons.arrow_forward_ios_rounded,
         color: theme.colorScheme.primary,
@@ -130,7 +130,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     ButtonStyle? forwardButtonStyle,
     ButtonStyle? backwardButtonStyle,
     EdgeInsetsGeometry? headerPadding,
-    Color? backgroundColor,
+    Decoration? decoration,
   }) {
     return HeaderTheme(
       enableHeader: enableHeader ?? this.enableHeader,
@@ -142,7 +142,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       forwardButtonStyle: forwardButtonStyle ?? this.forwardButtonStyle,
       backwardButtonStyle: backwardButtonStyle ?? this.backwardButtonStyle,
       headerPadding: headerPadding ?? this.headerPadding,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
+      decoration: decoration ?? this.decoration,
     );
   }
 
@@ -157,7 +157,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       centerLeadingDate: other.centerLeadingDate,
       leadingDateTextStyle: leadingDateTextStyle?.merge(other.leadingDateTextStyle) ?? other.leadingDateTextStyle,
       headerPadding: other.headerPadding,
-      backgroundColor: other.backgroundColor,
+      decoration: other.decoration,
       forwardButtonStyle: forwardButtonStyle != null
           ? forwardButtonStyle!.copyWith(
               textStyle: other.forwardButtonStyle?.textStyle,
@@ -227,7 +227,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       forwardButtonStyle: ButtonStyle.lerp(forwardButtonStyle, other.forwardButtonStyle, t),
       backwardButtonStyle: ButtonStyle.lerp(backwardButtonStyle, other.backwardButtonStyle, t),
       headerPadding: EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
-      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
+      decoration: Decoration.lerp(decoration, other.decoration, t),
     );
   }
 
@@ -243,6 +243,6 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     properties.add(DiagnosticsProperty<ButtonStyle?>('forwardButtonStyle', forwardButtonStyle));
     properties.add(DiagnosticsProperty<ButtonStyle?>('backwardButtonStyle', backwardButtonStyle));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('headerPadding', headerPadding));
-    properties.add(DiagnosticsProperty<Color?>('backgroundColor', backgroundColor));
+    properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
   }
 }

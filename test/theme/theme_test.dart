@@ -29,18 +29,18 @@ void main() {
       expect(copy.centerLeadingDate, isTrue);
     });
 
-    test('copyWith overrides headerPadding and backgroundColor', () {
+    test('copyWith overrides headerPadding and decoration', () {
       const base = HeaderTheme(
         headerPadding: EdgeInsets.all(4),
-        backgroundColor: Colors.red,
+        decoration: BoxDecoration(color: Colors.red),
       );
       final copy = base.copyWith(
         headerPadding: const EdgeInsets.all(16),
-        backgroundColor: Colors.blue,
+        decoration: const BoxDecoration(color: Colors.blue),
       );
 
       expect(copy.headerPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(16));
-      expect(copy.backgroundColor, Colors.blue);
+      expect((copy.decoration as BoxDecoration).color, Colors.blue);
     });
 
     test('merge: null other returns self', () {
@@ -57,19 +57,19 @@ void main() {
       expect(merged.centerLeadingDate, isTrue);
     });
 
-    test('merge: other overrides headerPadding and backgroundColor', () {
+    test('merge: other overrides headerPadding and decoration', () {
       const a = HeaderTheme(
         headerPadding: EdgeInsets.zero,
-        backgroundColor: Colors.red,
+        decoration: BoxDecoration(color: Colors.red),
       );
       const b = HeaderTheme(
         headerPadding: EdgeInsets.all(12),
-        backgroundColor: Colors.teal,
+        decoration: BoxDecoration(color: Colors.teal),
       );
       final merged = a.merge(b);
 
       expect(merged.headerPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
-      expect(merged.backgroundColor, Colors.teal);
+      expect((merged.decoration as BoxDecoration).color, Colors.teal);
     });
 
     test('merge: leadingDateTextStyle is merged, not replaced', () {
@@ -106,14 +106,14 @@ void main() {
       expect(result.enableHeader, isFalse);
     });
 
-    test('lerp interpolates headerPadding and backgroundColor', () {
+    test('lerp interpolates headerPadding and decoration', () {
       const a = HeaderTheme(
         headerPadding: EdgeInsets.zero,
-        backgroundColor: Colors.black,
+        decoration: BoxDecoration(color: Colors.black),
       );
       const b = HeaderTheme(
         headerPadding: EdgeInsets.all(20),
-        backgroundColor: Colors.white,
+        decoration: BoxDecoration(color: Colors.white),
       );
       final result = a.lerp(b, 0.5);
 
@@ -125,7 +125,14 @@ void main() {
           0.5,
         )?.resolve(TextDirection.ltr),
       );
-      expect(result.backgroundColor, Color.lerp(Colors.black, Colors.white, 0.5));
+      expect(
+        result.decoration,
+        Decoration.lerp(
+          const BoxDecoration(color: Colors.black),
+          const BoxDecoration(color: Colors.white),
+          0.5,
+        ),
+      );
     });
 
     test('lerp(null) returns self', () {
@@ -148,7 +155,7 @@ void main() {
           d.headerPadding?.resolve(TextDirection.ltr),
           const EdgeInsetsDirectional.only(bottom: 10.0).resolve(TextDirection.ltr),
         );
-        expect(d.backgroundColor, Colors.transparent);
+        expect(d.decoration, const BoxDecoration());
       });
     });
   });
@@ -307,6 +314,7 @@ void main() {
         expect(d.selectedCellDecoration, isNotNull);
         expect(d.daysOfTheWeekTheme, isNotNull);
         expect(d.cellsPadding?.resolve(TextDirection.ltr), EdgeInsets.zero);
+        expect(d.padding?.resolve(TextDirection.ltr), EdgeInsets.zero);
       });
     });
 
@@ -328,6 +336,28 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+      );
+    });
+
+    test('copyWith overrides padding', () {
+      const base = DaysPickerTheme(padding: EdgeInsets.all(4));
+      final copy = base.copyWith(padding: const EdgeInsets.all(10));
+      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+    });
+
+    test('merge applies other padding', () {
+      const a = DaysPickerTheme(padding: EdgeInsets.zero);
+      const b = DaysPickerTheme(padding: EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+    });
+
+    test('lerp interpolates padding', () {
+      const a = DaysPickerTheme(padding: EdgeInsets.zero);
+      const b = DaysPickerTheme(padding: EdgeInsets.all(20));
+      final result = a.lerp(b, 0.5);
+      expect(
+        result.padding?.resolve(TextDirection.ltr),
         EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
       );
     });
@@ -428,6 +458,7 @@ void main() {
           d.cellsPadding?.resolve(TextDirection.ltr),
           const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         );
+        expect(d.padding?.resolve(TextDirection.ltr), EdgeInsets.zero);
       });
     });
 
@@ -449,6 +480,28 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+      );
+    });
+
+    test('copyWith overrides padding', () {
+      const base = MonthsPickerTheme(padding: EdgeInsets.all(4));
+      final copy = base.copyWith(padding: const EdgeInsets.all(12));
+      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+    });
+
+    test('merge applies other padding', () {
+      const a = MonthsPickerTheme(padding: EdgeInsets.zero);
+      const b = MonthsPickerTheme(padding: EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+    });
+
+    test('lerp interpolates padding', () {
+      const a = MonthsPickerTheme(padding: EdgeInsets.zero);
+      const b = MonthsPickerTheme(padding: EdgeInsets.all(20));
+      final result = a.lerp(b, 0.5);
+      expect(
+        result.padding?.resolve(TextDirection.ltr),
         EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
       );
     });
@@ -549,6 +602,7 @@ void main() {
           d.cellsPadding?.resolve(TextDirection.ltr),
           const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         );
+        expect(d.padding?.resolve(TextDirection.ltr), EdgeInsets.zero);
       });
     });
 
@@ -570,6 +624,28 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+      );
+    });
+
+    test('copyWith overrides padding', () {
+      const base = YearsPickerTheme(padding: EdgeInsets.all(4));
+      final copy = base.copyWith(padding: const EdgeInsets.all(12));
+      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+    });
+
+    test('merge applies other padding', () {
+      const a = YearsPickerTheme(padding: EdgeInsets.zero);
+      const b = YearsPickerTheme(padding: EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+    });
+
+    test('lerp interpolates padding', () {
+      const a = YearsPickerTheme(padding: EdgeInsets.zero);
+      const b = YearsPickerTheme(padding: EdgeInsets.all(20));
+      final result = a.lerp(b, 0.5);
+      expect(
+        result.padding?.resolve(TextDirection.ltr),
         EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
       );
     });
@@ -680,6 +756,7 @@ void main() {
         expect(d.selectedCellsDecoration, isNotNull);
         expect(d.selectedEdgeCellDecoration, isNotNull);
         expect(d.cellsPadding?.resolve(TextDirection.ltr), EdgeInsets.zero);
+        expect(d.padding?.resolve(TextDirection.ltr), EdgeInsets.zero);
       });
     });
 
@@ -701,6 +778,28 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+      );
+    });
+
+    test('copyWith overrides padding', () {
+      const base = RangePickerTheme(padding: EdgeInsets.all(4));
+      final copy = base.copyWith(padding: const EdgeInsets.all(10));
+      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+    });
+
+    test('merge applies other padding', () {
+      const a = RangePickerTheme(padding: EdgeInsets.zero);
+      const b = RangePickerTheme(padding: EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+    });
+
+    test('lerp interpolates padding', () {
+      const a = RangePickerTheme(padding: EdgeInsets.zero);
+      const b = RangePickerTheme(padding: EdgeInsets.all(20));
+      final result = a.lerp(b, 0.5);
+      expect(
+        result.padding?.resolve(TextDirection.ltr),
         EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
       );
     });

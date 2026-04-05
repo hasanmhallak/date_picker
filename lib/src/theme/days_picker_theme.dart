@@ -20,6 +20,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
     this.selectedCellTextStyle,
     this.selectedCellDecoration,
     this.cellsPadding,
+    this.padding,
     this.inkResponseTheme,
   });
 
@@ -76,6 +77,11 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   /// Defaults to [EdgeInsets.zero].
   final EdgeInsetsGeometry? cellsPadding;
 
+  /// Padding around the days grid (the [PageView] below the header).
+  ///
+  /// Defaults to [EdgeInsets.zero].
+  final EdgeInsetsGeometry? padding;
+
   /// The splash and highlight theme for the ink response when tapping cells.
   ///
   /// Defaults to the splash color of [selectedCellDecoration] with 30% opacity,
@@ -119,6 +125,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
         shape: BoxShape.circle,
       ),
       cellsPadding: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
       inkResponseTheme: InkResponseTheme.defaults(context),
     );
   }
@@ -169,6 +176,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
     TextStyle? selectedCellTextStyle,
     Decoration? selectedCellDecoration,
     EdgeInsetsGeometry? cellsPadding,
+    EdgeInsetsGeometry? padding,
     InkResponseTheme? inkResponseTheme,
   }) {
     return DaysPickerTheme(
@@ -182,6 +190,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
       selectedCellTextStyle: selectedCellTextStyle ?? this.selectedCellTextStyle,
       selectedCellDecoration: selectedCellDecoration ?? this.selectedCellDecoration,
       cellsPadding: cellsPadding ?? this.cellsPadding,
+      padding: padding ?? this.padding,
       inkResponseTheme: inkResponseTheme ?? this.inkResponseTheme,
     );
   }
@@ -201,6 +210,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
       selectedCellTextStyle: selectedCellTextStyle?.merge(other.selectedCellTextStyle) ?? other.selectedCellTextStyle,
       selectedCellDecoration: other.selectedCellDecoration,
       cellsPadding: other.cellsPadding,
+      padding: other.padding,
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,
     );
   }
@@ -220,6 +230,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
       selectedCellTextStyle: TextStyle.lerp(selectedCellTextStyle, other.selectedCellTextStyle, t),
       selectedCellDecoration: Decoration.lerp(selectedCellDecoration, other.selectedCellDecoration, t),
       cellsPadding: EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
+      padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),
     );
   }
@@ -237,6 +248,7 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
     properties.add(DiagnosticsProperty<TextStyle?>('selectedCellTextStyle', selectedCellTextStyle));
     properties.add(DiagnosticsProperty<Decoration?>('selectedCellDecoration', selectedCellDecoration));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('cellsPadding', cellsPadding));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('padding', padding));
     properties.add(DiagnosticsProperty<InkResponseTheme?>('inkResponseTheme', inkResponseTheme));
   }
 }

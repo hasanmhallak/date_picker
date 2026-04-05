@@ -141,8 +141,8 @@ class Header extends StatelessWidget {
       }
     }
 
-    return Material(
-      color: headerTheme?.backgroundColor ?? Colors.transparent,
+    return DecoratedBox(
+      decoration: headerTheme?.decoration ?? const BoxDecoration(),
       child: Padding(
         padding: headerTheme?.headerPadding ?? EdgeInsets.zero,
         child: centerLeadingDate == true && !enableArrowKeys

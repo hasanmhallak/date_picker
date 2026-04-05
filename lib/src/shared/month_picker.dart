@@ -223,47 +223,50 @@ class _MonthPickerState extends State<MonthPicker> {
               },
             ),
             Expanded(
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                key: _pageViewKey,
-                controller: _pageController,
-                itemCount: yearsCount,
-                onPageChanged: (yearPage) {
-                  final DateTime year = DateTime(
-                    widget.minDate.year + yearPage,
-                  );
+              child: Padding(
+                padding: theme.monthsPickerTheme?.padding ?? EdgeInsets.zero,
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                  key: _pageViewKey,
+                  controller: _pageController,
+                  itemCount: yearsCount,
+                  onPageChanged: (yearPage) {
+                    final DateTime year = DateTime(
+                      widget.minDate.year + yearPage,
+                    );
 
-                  setState(() {
-                    _displayedYear = year;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final DateTime year = DateTime(
-                    widget.minDate.year + index,
-                  );
+                    setState(() {
+                      _displayedYear = year;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    final DateTime year = DateTime(
+                      widget.minDate.year + index,
+                    );
 
-                  return MonthView(
-                    key: ValueKey<DateTime>(year),
-                    currentDate: widget.currentDate != null
-                        ? DateUtilsX.monthOnly(widget.currentDate!)
-                        : DateUtilsX.monthOnly(DateTime.now()),
-                    maxDate: DateUtilsX.monthOnly(widget.maxDate),
-                    minDate: DateUtilsX.monthOnly(widget.minDate),
-                    displayedDate: year,
-                    selectedDate: _selectedDate,
-                    cellBuilder: widget.cellBuilder,
-                    theme: theme.monthsPickerTheme,
-                    isEnabled: isEnabled,
-                    onChanged: (value) {
-                      final selected = DateUtilsX.monthOnly(value);
-                      widget.onDateSelected?.call(selected);
-                      setState(() {
-                        _selectedDate = selected;
-                      });
-                    },
-                  );
-                },
+                    return MonthView(
+                      key: ValueKey<DateTime>(year),
+                      currentDate: widget.currentDate != null
+                          ? DateUtilsX.monthOnly(widget.currentDate!)
+                          : DateUtilsX.monthOnly(DateTime.now()),
+                      maxDate: DateUtilsX.monthOnly(widget.maxDate),
+                      minDate: DateUtilsX.monthOnly(widget.minDate),
+                      displayedDate: year,
+                      selectedDate: _selectedDate,
+                      cellBuilder: widget.cellBuilder,
+                      theme: theme.monthsPickerTheme,
+                      isEnabled: isEnabled,
+                      onChanged: (value) {
+                        final selected = DateUtilsX.monthOnly(value);
+                        widget.onDateSelected?.call(selected);
+                        setState(() {
+                          _selectedDate = selected;
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],

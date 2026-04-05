@@ -18,6 +18,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
     this.selectedCellTextStyle,
     this.selectedCellDecoration,
     this.cellsPadding,
+    this.padding,
     this.inkResponseTheme,
   });
 
@@ -71,6 +72,11 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
   /// Defaults to `EdgeInsets.symmetric(horizontal: 8, vertical: 16)`.
   final EdgeInsetsGeometry? cellsPadding;
 
+  /// Padding around the months grid (the [PageView] below the header).
+  ///
+  /// Defaults to [EdgeInsets.zero].
+  final EdgeInsetsGeometry? padding;
+
   /// The splash and highlight theme for the ink response when tapping cells.
   final InkResponseTheme? inkResponseTheme;
 
@@ -108,6 +114,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
         borderRadius: BorderRadius.circular(12),
       ),
       cellsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: EdgeInsets.zero,
       inkResponseTheme: InkResponseTheme.defaults(context),
     );
   }
@@ -157,6 +164,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
     TextStyle? selectedCellTextStyle,
     Decoration? selectedCellDecoration,
     EdgeInsetsGeometry? cellsPadding,
+    EdgeInsetsGeometry? padding,
     InkResponseTheme? inkResponseTheme,
   }) {
     return MonthsPickerTheme(
@@ -169,6 +177,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
       selectedCellTextStyle: selectedCellTextStyle ?? this.selectedCellTextStyle,
       selectedCellDecoration: selectedCellDecoration ?? this.selectedCellDecoration,
       cellsPadding: cellsPadding ?? this.cellsPadding,
+      padding: padding ?? this.padding,
       inkResponseTheme: inkResponseTheme ?? this.inkResponseTheme,
     );
   }
@@ -187,6 +196,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
       selectedCellTextStyle: selectedCellTextStyle?.merge(other.selectedCellTextStyle) ?? other.selectedCellTextStyle,
       selectedCellDecoration: other.selectedCellDecoration,
       cellsPadding: other.cellsPadding,
+      padding: other.padding,
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,
     );
   }
@@ -205,6 +215,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
       selectedCellTextStyle: TextStyle.lerp(selectedCellTextStyle, other.selectedCellTextStyle, t),
       selectedCellDecoration: Decoration.lerp(selectedCellDecoration, other.selectedCellDecoration, t),
       cellsPadding: EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
+      padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),
     );
   }
@@ -221,6 +232,7 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme> with Diagnosti
     properties.add(DiagnosticsProperty<TextStyle?>('selectedCellTextStyle', selectedCellTextStyle));
     properties.add(DiagnosticsProperty<Decoration?>('selectedCellDecoration', selectedCellDecoration));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('cellsPadding', cellsPadding));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('padding', padding));
     properties.add(DiagnosticsProperty<InkResponseTheme?>('inkResponseTheme', inkResponseTheme));
   }
 }

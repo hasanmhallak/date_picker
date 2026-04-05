@@ -251,42 +251,45 @@ class _DaysPickerState extends State<DaysPicker> {
                 },
               ),
               Expanded(
-                child: PageView.builder(
-                  scrollDirection: Axis.horizontal,
-                  physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                  key: _pageViewKey,
-                  controller: _pageController,
-                  itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
-                  onPageChanged: (monthPage) {
-                    final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+                child: Padding(
+                  padding: theme.daysPickerTheme?.padding ?? EdgeInsets.zero,
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                    key: _pageViewKey,
+                    controller: _pageController,
+                    itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                    onPageChanged: (monthPage) {
+                      final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
-                    setState(() {
-                      _displayedMonth = monthDate;
-                    });
-                    widget.onDisplayedMonthChanged?.call(monthDate);
-                  },
-                  itemBuilder: (context, index) {
-                    final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
+                      setState(() {
+                        _displayedMonth = monthDate;
+                      });
+                      widget.onDisplayedMonthChanged?.call(monthDate);
+                    },
+                    itemBuilder: (context, index) {
+                      final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
-                    return DaysView(
-                      key: ValueKey<DateTime>(month),
-                      currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                      maxDate: DateUtils.dateOnly(widget.maxDate),
-                      minDate: DateUtils.dateOnly(widget.minDate),
-                      displayedMonth: month,
-                      selectedDate: _selectedDate,
-                      disabledDayPredicate: widget.disabledDayPredicate,
-                      cellBuilder: widget.cellBuilder,
-                      theme: theme.daysPickerTheme,
-                      isEnabled: isEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDate = value;
-                        });
-                        widget.onDateSelected?.call(value);
-                      },
-                    );
-                  },
+                      return DaysView(
+                        key: ValueKey<DateTime>(month),
+                        currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                        maxDate: DateUtils.dateOnly(widget.maxDate),
+                        minDate: DateUtils.dateOnly(widget.minDate),
+                        displayedMonth: month,
+                        selectedDate: _selectedDate,
+                        disabledDayPredicate: widget.disabledDayPredicate,
+                        cellBuilder: widget.cellBuilder,
+                        theme: theme.daysPickerTheme,
+                        isEnabled: isEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedDate = value;
+                          });
+                          widget.onDateSelected?.call(value);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
