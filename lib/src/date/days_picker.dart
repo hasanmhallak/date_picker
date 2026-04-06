@@ -202,100 +202,104 @@ class _DaysPickerState extends State<DaysPicker> {
 
     final bool isEnabled = theme.isEnabled ?? true;
 
-    return PickerDeviceOrientationBuilder(
-      builder: (context, o) {
-        late final Size size;
-        switch (o) {
-          case Orientation.portrait:
-            size = const Size(328.0, 402.0);
-            break;
-          case Orientation.landscape:
-            size = const Size(328.0, 300.0);
-            break;
-        }
+    return Material(
+      type: MaterialType.transparency,
+      clipBehavior: Clip.hardEdge,
+      child: PickerDeviceOrientationBuilder(
+        builder: (context, o) {
+          late final Size size;
+          switch (o) {
+            case Orientation.portrait:
+              size = const Size(328.0, 402.0);
+              break;
+            case Orientation.landscape:
+              size = const Size(328.0, 300.0);
+              break;
+          }
 
-        return LimitedBox(
-          maxHeight: size.height,
-          maxWidth: size.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Header(
-                theme: theme.headerTheme,
-                isEnabled: isEnabled,
-                onDateTap: () => widget.onLeadingDateTap?.call(),
-                displayedDate: MaterialLocalizations.of(context)
-                    .formatMonthYear(_displayedMonth!)
-                    .replaceAll('٩', '9')
-                    .replaceAll('٨', '8')
-                    .replaceAll('٧', '7')
-                    .replaceAll('٦', '6')
-                    .replaceAll('٥', '5')
-                    .replaceAll('٤', '4')
-                    .replaceAll('٣', '3')
-                    .replaceAll('٢', '2')
-                    .replaceAll('١', '1')
-                    .replaceAll('٠', '0'),
-                onNextPage: () {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.ease,
-                  );
-                },
-                onPreviousPage: () {
-                  _pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.ease,
-                  );
-                },
-              ),
-              Expanded(
-                child: Padding(
-                  padding: theme.daysPickerTheme?.padding ?? EdgeInsets.zero,
-                  child: PageView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                    key: _pageViewKey,
-                    controller: _pageController,
-                    itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
-                    onPageChanged: (monthPage) {
-                      final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+          return LimitedBox(
+            maxHeight: size.height,
+            maxWidth: size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Header(
+                  theme: theme.headerTheme,
+                  isEnabled: isEnabled,
+                  onDateTap: () => widget.onLeadingDateTap?.call(),
+                  displayedDate: MaterialLocalizations.of(context)
+                      .formatMonthYear(_displayedMonth!)
+                      .replaceAll('٩', '9')
+                      .replaceAll('٨', '8')
+                      .replaceAll('٧', '7')
+                      .replaceAll('٦', '6')
+                      .replaceAll('٥', '5')
+                      .replaceAll('٤', '4')
+                      .replaceAll('٣', '3')
+                      .replaceAll('٢', '2')
+                      .replaceAll('١', '1')
+                      .replaceAll('٠', '0'),
+                  onNextPage: () {
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
+                  },
+                  onPreviousPage: () {
+                    _pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
+                  },
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: theme.daysPickerTheme?.padding ?? EdgeInsets.zero,
+                    child: PageView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                      key: _pageViewKey,
+                      controller: _pageController,
+                      itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                      onPageChanged: (monthPage) {
+                        final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
 
-                      setState(() {
-                        _displayedMonth = monthDate;
-                      });
-                      widget.onDisplayedMonthChanged?.call(monthDate);
-                    },
-                    itemBuilder: (context, index) {
-                      final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
+                        setState(() {
+                          _displayedMonth = monthDate;
+                        });
+                        widget.onDisplayedMonthChanged?.call(monthDate);
+                      },
+                      itemBuilder: (context, index) {
+                        final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
-                      return DaysView(
-                        key: ValueKey<DateTime>(month),
-                        currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-                        maxDate: DateUtils.dateOnly(widget.maxDate),
-                        minDate: DateUtils.dateOnly(widget.minDate),
-                        displayedMonth: month,
-                        selectedDate: _selectedDate,
-                        disabledDayPredicate: widget.disabledDayPredicate,
-                        cellBuilder: widget.cellBuilder,
-                        theme: theme.daysPickerTheme,
-                        isEnabled: isEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedDate = value;
-                          });
-                          widget.onDateSelected?.call(value);
-                        },
-                      );
-                    },
+                        return DaysView(
+                          key: ValueKey<DateTime>(month),
+                          currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                          maxDate: DateUtils.dateOnly(widget.maxDate),
+                          minDate: DateUtils.dateOnly(widget.minDate),
+                          displayedMonth: month,
+                          selectedDate: _selectedDate,
+                          disabledDayPredicate: widget.disabledDayPredicate,
+                          cellBuilder: widget.cellBuilder,
+                          theme: theme.daysPickerTheme,
+                          isEnabled: isEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedDate = value;
+                            });
+                            widget.onDateSelected?.call(value);
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,9 @@
+import 'dart:ui' show lerpDouble;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the header in picker views.
 @immutable
@@ -12,8 +16,15 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     this.backwardArrowWidget,
     this.centerLeadingDate,
     this.leadingDateTextStyle,
-    this.forwardButtonStyle,
-    this.backwardButtonStyle,
+    this.forwardButtonDecoration,
+    this.backwardButtonDecoration,
+    this.forwardButtonWidth,
+    this.backwardButtonWidth,
+    this.forwardButtonHeight,
+    this.backwardButtonHeight,
+    this.forwardButtonInkResponseTheme,
+    this.backwardButtonInkResponseTheme,
+    this.slidersSpace,
     this.headerPadding,
     this.decoration,
   });
@@ -54,17 +65,48 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   /// and [ColorScheme.primary] color.
   final TextStyle? leadingDateTextStyle;
 
-  /// The button style for the forward arrow button.
+  /// Background decoration for the forward (next page) slider control.
   ///
-  /// Defaults to a [TextButton] style with no padding, circular shape,
-  /// and the primary color as the foreground color.
-  final ButtonStyle? forwardButtonStyle;
+  /// Defaults to a circular [ShapeDecoration]. Use [ShapeDecoration.shape] so
+  /// ink splashes match the painted outline.
+  final ShapeDecoration? forwardButtonDecoration;
 
-  /// The button style for the backward arrow button.
+  /// Background decoration for the backward (previous page) slider control.
   ///
-  /// Defaults to a [TextButton] style with no padding, circular shape,
-  /// and the primary color as the foreground color.
-  final ButtonStyle? backwardButtonStyle;
+  /// Defaults to a circular [ShapeDecoration]. Use [ShapeDecoration.shape] so
+  /// ink splashes match the painted outline.
+  final ShapeDecoration? backwardButtonDecoration;
+
+  /// Width of the forward slider control.
+  ///
+  /// Defaults to `36`.
+  final double? forwardButtonWidth;
+
+  /// Width of the backward slider control.
+  ///
+  /// Defaults to `36`.
+  final double? backwardButtonWidth;
+
+  /// Height of the forward slider control.
+  ///
+  /// Defaults to `36`.
+  final double? forwardButtonHeight;
+
+  /// Height of the backward slider control.
+  ///
+  /// Defaults to `36`.
+  final double? backwardButtonHeight;
+
+  /// Splash and highlight for the forward slider [InkResponse].
+  final InkResponseTheme? forwardButtonInkResponseTheme;
+
+  /// Splash and highlight for the backward slider [InkResponse].
+  final InkResponseTheme? backwardButtonInkResponseTheme;
+
+  /// Horizontal gap between the backward and forward sliders when both are on the same side.
+  ///
+  /// Defaults to `10`.
+  final double? slidersSpace;
 
   /// The padding of the header.
   ///
@@ -80,6 +122,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   static HeaderTheme defaults(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final inkDefaults = InkResponseTheme.defaults(context).copyWith(containedInkWell: true);
 
     return HeaderTheme(
       enableHeader: true,
@@ -102,20 +145,15 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
         fontWeight: FontWeight.bold,
         color: theme.colorScheme.primary,
       ),
-      forwardButtonStyle: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: const Size(36, 36),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const CircleBorder(),
-        foregroundColor: theme.colorScheme.primary,
-      ),
-      backwardButtonStyle: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: const Size(36, 36),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const CircleBorder(),
-        foregroundColor: theme.colorScheme.primary,
-      ),
+      forwardButtonDecoration: const ShapeDecoration(shape: CircleBorder()),
+      backwardButtonDecoration: const ShapeDecoration(shape: CircleBorder()),
+      forwardButtonWidth: 36,
+      backwardButtonWidth: 36,
+      forwardButtonHeight: 36,
+      backwardButtonHeight: 36,
+      forwardButtonInkResponseTheme: inkDefaults,
+      backwardButtonInkResponseTheme: inkDefaults,
+      slidersSpace: 10,
     );
   }
 
@@ -127,8 +165,15 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     Widget? backwardArrowWidget,
     bool? centerLeadingDate,
     TextStyle? leadingDateTextStyle,
-    ButtonStyle? forwardButtonStyle,
-    ButtonStyle? backwardButtonStyle,
+    ShapeDecoration? forwardButtonDecoration,
+    ShapeDecoration? backwardButtonDecoration,
+    double? forwardButtonWidth,
+    double? backwardButtonWidth,
+    double? forwardButtonHeight,
+    double? backwardButtonHeight,
+    InkResponseTheme? forwardButtonInkResponseTheme,
+    InkResponseTheme? backwardButtonInkResponseTheme,
+    double? slidersSpace,
     EdgeInsetsGeometry? headerPadding,
     Decoration? decoration,
   }) {
@@ -139,8 +184,15 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardArrowWidget: backwardArrowWidget ?? this.backwardArrowWidget,
       centerLeadingDate: centerLeadingDate ?? this.centerLeadingDate,
       leadingDateTextStyle: leadingDateTextStyle ?? this.leadingDateTextStyle,
-      forwardButtonStyle: forwardButtonStyle ?? this.forwardButtonStyle,
-      backwardButtonStyle: backwardButtonStyle ?? this.backwardButtonStyle,
+      forwardButtonDecoration: forwardButtonDecoration ?? this.forwardButtonDecoration,
+      backwardButtonDecoration: backwardButtonDecoration ?? this.backwardButtonDecoration,
+      forwardButtonWidth: forwardButtonWidth ?? this.forwardButtonWidth,
+      backwardButtonWidth: backwardButtonWidth ?? this.backwardButtonWidth,
+      forwardButtonHeight: forwardButtonHeight ?? this.forwardButtonHeight,
+      backwardButtonHeight: backwardButtonHeight ?? this.backwardButtonHeight,
+      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme ?? this.forwardButtonInkResponseTheme,
+      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme ?? this.backwardButtonInkResponseTheme,
+      slidersSpace: slidersSpace ?? this.slidersSpace,
       headerPadding: headerPadding ?? this.headerPadding,
       decoration: decoration ?? this.decoration,
     );
@@ -158,58 +210,17 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       leadingDateTextStyle: leadingDateTextStyle?.merge(other.leadingDateTextStyle) ?? other.leadingDateTextStyle,
       headerPadding: other.headerPadding,
       decoration: other.decoration,
-      forwardButtonStyle: forwardButtonStyle != null
-          ? forwardButtonStyle!.copyWith(
-              textStyle: other.forwardButtonStyle?.textStyle,
-              backgroundColor: other.forwardButtonStyle?.backgroundColor,
-              foregroundColor: other.forwardButtonStyle?.foregroundColor,
-              overlayColor: other.forwardButtonStyle?.overlayColor,
-              shadowColor: other.forwardButtonStyle?.shadowColor,
-              surfaceTintColor: other.forwardButtonStyle?.surfaceTintColor,
-              elevation: other.forwardButtonStyle?.elevation,
-              padding: other.forwardButtonStyle?.padding,
-              minimumSize: other.forwardButtonStyle?.minimumSize,
-              fixedSize: other.forwardButtonStyle?.fixedSize,
-              maximumSize: other.forwardButtonStyle?.maximumSize,
-              iconColor: other.forwardButtonStyle?.iconColor,
-              iconSize: other.forwardButtonStyle?.iconSize,
-              side: other.forwardButtonStyle?.side,
-              shape: other.forwardButtonStyle?.shape,
-              mouseCursor: other.forwardButtonStyle?.mouseCursor,
-              visualDensity: other.forwardButtonStyle?.visualDensity,
-              tapTargetSize: other.forwardButtonStyle?.tapTargetSize,
-              animationDuration: other.forwardButtonStyle?.animationDuration,
-              enableFeedback: other.forwardButtonStyle?.enableFeedback,
-              alignment: other.forwardButtonStyle?.alignment,
-              splashFactory: other.forwardButtonStyle?.splashFactory,
-            )
-          : other.forwardButtonStyle,
-      backwardButtonStyle: backwardButtonStyle != null
-          ? backwardButtonStyle!.copyWith(
-              textStyle: other.backwardButtonStyle?.textStyle,
-              backgroundColor: other.backwardButtonStyle?.backgroundColor,
-              foregroundColor: other.backwardButtonStyle?.foregroundColor,
-              overlayColor: other.backwardButtonStyle?.overlayColor,
-              shadowColor: other.backwardButtonStyle?.shadowColor,
-              surfaceTintColor: other.backwardButtonStyle?.surfaceTintColor,
-              elevation: other.backwardButtonStyle?.elevation,
-              padding: other.backwardButtonStyle?.padding,
-              minimumSize: other.backwardButtonStyle?.minimumSize,
-              fixedSize: other.backwardButtonStyle?.fixedSize,
-              maximumSize: other.backwardButtonStyle?.maximumSize,
-              iconColor: other.backwardButtonStyle?.iconColor,
-              iconSize: other.backwardButtonStyle?.iconSize,
-              side: other.backwardButtonStyle?.side,
-              shape: other.backwardButtonStyle?.shape,
-              mouseCursor: other.backwardButtonStyle?.mouseCursor,
-              visualDensity: other.backwardButtonStyle?.visualDensity,
-              tapTargetSize: other.backwardButtonStyle?.tapTargetSize,
-              animationDuration: other.backwardButtonStyle?.animationDuration,
-              enableFeedback: other.backwardButtonStyle?.enableFeedback,
-              alignment: other.backwardButtonStyle?.alignment,
-              splashFactory: other.backwardButtonStyle?.splashFactory,
-            )
-          : other.backwardButtonStyle,
+      forwardButtonDecoration: other.forwardButtonDecoration,
+      backwardButtonDecoration: other.backwardButtonDecoration,
+      forwardButtonWidth: other.forwardButtonWidth,
+      backwardButtonWidth: other.backwardButtonWidth,
+      forwardButtonHeight: other.forwardButtonHeight,
+      backwardButtonHeight: other.backwardButtonHeight,
+      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.merge(other.forwardButtonInkResponseTheme) ??
+          other.forwardButtonInkResponseTheme,
+      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.merge(other.backwardButtonInkResponseTheme) ??
+          other.backwardButtonInkResponseTheme,
+      slidersSpace: other.slidersSpace,
     );
   }
 
@@ -224,8 +235,15 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardArrowWidget: t < 0.5 ? backwardArrowWidget : other.backwardArrowWidget,
       centerLeadingDate: t < 0.5 ? centerLeadingDate : other.centerLeadingDate,
       leadingDateTextStyle: TextStyle.lerp(leadingDateTextStyle, other.leadingDateTextStyle, t),
-      forwardButtonStyle: ButtonStyle.lerp(forwardButtonStyle, other.forwardButtonStyle, t),
-      backwardButtonStyle: ButtonStyle.lerp(backwardButtonStyle, other.backwardButtonStyle, t),
+      forwardButtonDecoration: ShapeDecoration.lerp(forwardButtonDecoration, other.forwardButtonDecoration, t),
+      backwardButtonDecoration: ShapeDecoration.lerp(backwardButtonDecoration, other.backwardButtonDecoration, t),
+      forwardButtonWidth: lerpDouble(forwardButtonWidth, other.forwardButtonWidth, t),
+      backwardButtonWidth: lerpDouble(backwardButtonWidth, other.backwardButtonWidth, t),
+      forwardButtonHeight: lerpDouble(forwardButtonHeight, other.forwardButtonHeight, t),
+      backwardButtonHeight: lerpDouble(backwardButtonHeight, other.backwardButtonHeight, t),
+      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.lerp(other.forwardButtonInkResponseTheme, t),
+      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.lerp(other.backwardButtonInkResponseTheme, t),
+      slidersSpace: lerpDouble(slidersSpace, other.slidersSpace, t),
       headerPadding: EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
       decoration: Decoration.lerp(decoration, other.decoration, t),
     );
@@ -240,8 +258,17 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     properties.add(DiagnosticsProperty<Widget?>('backwardArrowWidget', backwardArrowWidget));
     properties.add(DiagnosticsProperty<bool?>('centerLeadingDate', centerLeadingDate));
     properties.add(DiagnosticsProperty<TextStyle?>('leadingDateTextStyle', leadingDateTextStyle));
-    properties.add(DiagnosticsProperty<ButtonStyle?>('forwardButtonStyle', forwardButtonStyle));
-    properties.add(DiagnosticsProperty<ButtonStyle?>('backwardButtonStyle', backwardButtonStyle));
+    properties.add(DiagnosticsProperty<ShapeDecoration?>('forwardButtonDecoration', forwardButtonDecoration));
+    properties.add(DiagnosticsProperty<ShapeDecoration?>('backwardButtonDecoration', backwardButtonDecoration));
+    properties.add(DoubleProperty('forwardButtonWidth', forwardButtonWidth));
+    properties.add(DoubleProperty('backwardButtonWidth', backwardButtonWidth));
+    properties.add(DoubleProperty('forwardButtonHeight', forwardButtonHeight));
+    properties.add(DoubleProperty('backwardButtonHeight', backwardButtonHeight));
+    properties
+        .add(DiagnosticsProperty<InkResponseTheme?>('forwardButtonInkResponseTheme', forwardButtonInkResponseTheme));
+    properties
+        .add(DiagnosticsProperty<InkResponseTheme?>('backwardButtonInkResponseTheme', backwardButtonInkResponseTheme));
+    properties.add(DoubleProperty('slidersSpace', slidersSpace));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('headerPadding', headerPadding));
     properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
   }

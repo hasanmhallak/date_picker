@@ -149,8 +149,15 @@ void main() {
         expect(d.leadingDateTextStyle, isNotNull);
         expect(d.forwardArrowWidget, isNotNull);
         expect(d.backwardArrowWidget, isNotNull);
-        expect(d.forwardButtonStyle, isNotNull);
-        expect(d.backwardButtonStyle, isNotNull);
+        expect(d.forwardButtonDecoration, isA<ShapeDecoration>());
+        expect(d.backwardButtonDecoration, isA<ShapeDecoration>());
+        expect(d.forwardButtonWidth, 36);
+        expect(d.backwardButtonWidth, 36);
+        expect(d.forwardButtonHeight, 36);
+        expect(d.backwardButtonHeight, 36);
+        expect(d.forwardButtonInkResponseTheme, isNotNull);
+        expect(d.backwardButtonInkResponseTheme, isNotNull);
+        expect(d.slidersSpace, 10);
         expect(
           d.headerPadding?.resolve(TextDirection.ltr),
           const EdgeInsetsDirectional.only(bottom: 10.0).resolve(TextDirection.ltr),

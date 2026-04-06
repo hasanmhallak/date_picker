@@ -36,7 +36,7 @@ void main() {
       );
 
       expect(find.byType(LeadingDate), findsNothing);
-      expect(find.byType(TextButton), findsNothing);
+      expect(find.byType(InkResponse), findsNothing);
     });
 
     testWidgets('should hide both arrow buttons when enableArrowKeys is false', (WidgetTester tester) async {
@@ -48,8 +48,7 @@ void main() {
 
       // Leading date is still visible
       expect(find.byType(LeadingDate), findsOneWidget);
-      // But no TextButton (arrow buttons) should be present
-      expect(find.byType(TextButton), findsNothing);
+      expect(find.byType(InkResponse), findsNothing);
     });
 
     testWidgets(
@@ -118,11 +117,9 @@ void main() {
         ),
       );
 
-      // The forward button is inside a Semantics with the nextPageTooltip label
-      // Use TextButton finders — there are two (back and forward); tap last
-      final textButtons = find.byType(TextButton);
-      expect(textButtons, findsNWidgets(2));
-      await tester.tap(textButtons.last);
+      final inkResponses = find.byType(InkResponse);
+      expect(inkResponses, findsNWidgets(2));
+      await tester.tap(inkResponses.last);
       await tester.pump();
 
       expect(nextPageCalled, isTrue);
@@ -137,9 +134,9 @@ void main() {
         ),
       );
 
-      final textButtons = find.byType(TextButton);
-      expect(textButtons, findsNWidgets(2));
-      await tester.tap(textButtons.first);
+      final inkResponses = find.byType(InkResponse);
+      expect(inkResponses, findsNWidgets(2));
+      await tester.tap(inkResponses.first);
       await tester.pump();
 
       expect(prevPageCalled, isTrue);
@@ -153,11 +150,10 @@ void main() {
         ),
       );
 
-      final backButtonOffset = tester.getTopLeft(find.byType(TextButton).first);
+      final backInkOffset = tester.getTopLeft(find.byType(InkResponse).first);
       final leadingDateOffset = tester.getTopLeft(find.byType(LeadingDate));
 
-      // Back button should be to the LEFT of the leading date
-      expect(backButtonOffset.dx, lessThan(leadingDateOffset.dx));
+      expect(backInkOffset.dx, lessThan(leadingDateOffset.dx));
     });
 
     testWidgets('should place both arrows to the right of leading date when centerLeadingDate is false (default)',
@@ -169,46 +165,85 @@ void main() {
       );
 
       final leadingDateOffset = tester.getTopLeft(find.byType(LeadingDate));
-      final backButtonOffset = tester.getTopLeft(find.byType(TextButton).first);
+      final backInkOffset = tester.getTopLeft(find.byType(InkResponse).first);
 
-      // Both arrow buttons grouped to the RIGHT of the leading date
-      expect(backButtonOffset.dx, greaterThan(leadingDateOffset.dx));
+      expect(backInkOffset.dx, greaterThan(leadingDateOffset.dx));
     });
 
-    testWidgets('should apply forwardButtonStyle to the forward button', (WidgetTester tester) async {
-      final customStyle = TextButton.styleFrom(foregroundColor: Colors.red);
+    testWidgets('should apply forwardButtonDecoration to the forward slider', (WidgetTester tester) async {
+      const decoration = ShapeDecoration(color: Colors.red, shape: CircleBorder());
 
       await tester.pumpWidget(
         _buildHeader(
-          theme: HeaderTheme(
-            forwardButtonStyle: customStyle,
+          theme: const HeaderTheme(
+            forwardButtonDecoration: decoration,
           ),
         ),
       );
 
-      final textButtons = find.byType(TextButton);
-      expect(textButtons, findsNWidgets(2));
-
-      final forwardButton = tester.widget<TextButton>(textButtons.last);
-      expect(forwardButton.style?.foregroundColor, customStyle.foregroundColor);
+      final forwardInk = find.byType(InkResponse).last;
+      final container = tester.widget<Ink>(
+        find.ancestor(of: forwardInk, matching: find.byType(Ink)),
+      );
+      expect(container.decoration, decoration);
+      expect(tester.widget<InkResponse>(forwardInk).customBorder, decoration.shape);
     });
 
-    testWidgets('should apply backwardButtonStyle to the backward button', (WidgetTester tester) async {
-      final customStyle = TextButton.styleFrom(foregroundColor: Colors.blue);
+    testWidgets('should apply backwardButtonDecoration to the backward slider', (WidgetTester tester) async {
+      const decoration = ShapeDecoration(color: Colors.blue, shape: CircleBorder());
 
       await tester.pumpWidget(
         _buildHeader(
-          theme: HeaderTheme(
-            backwardButtonStyle: customStyle,
+          theme: const HeaderTheme(
+            backwardButtonDecoration: decoration,
           ),
         ),
       );
 
-      final textButtons = find.byType(TextButton);
-      expect(textButtons, findsNWidgets(2));
+      final backwardInk = find.byType(InkResponse).first;
+      final container = tester.widget<Ink>(
+        find.ancestor(of: backwardInk, matching: find.byType(Ink)),
+      );
+      expect(container.decoration, decoration);
+    });
 
-      final backwardButton = tester.widget<TextButton>(textButtons.first);
-      expect(backwardButton.style?.foregroundColor, customStyle.foregroundColor);
+    testWidgets('should apply slidersSpace between backward and forward sliders', (WidgetTester tester) async {
+      const space = 24.0;
+
+      await tester.pumpWidget(
+        _buildHeader(
+          theme: const HeaderTheme(slidersSpace: space),
+        ),
+      );
+
+      final sizedBox = tester.widget<SizedBox>(
+        find.descendant(
+          of: find.byType(Header),
+          matching: find.byWidgetPredicate(
+            (w) => w is SizedBox && w.width == space,
+          ),
+        ),
+      );
+      expect(sizedBox.width, space);
+    });
+
+    testWidgets('should apply forwardButtonInkResponseTheme splash to forward InkResponse',
+        (WidgetTester tester) async {
+      const customSplash = Colors.red;
+
+      await tester.pumpWidget(
+        _buildHeader(
+          theme: HeaderTheme(
+            forwardButtonInkResponseTheme: InkResponseTheme(
+              splashColor: customSplash,
+              highlightColor: Colors.transparent,
+            ),
+          ),
+        ),
+      );
+
+      final forwardInk = tester.widget<InkResponse>(find.byType(InkResponse).last);
+      expect(forwardInk.splashColor, customSplash);
     });
 
     testWidgets('should display the provided displayedDate text in the leading date', (WidgetTester tester) async {
@@ -255,7 +290,7 @@ void main() {
         find.descendant(
           of: find.byType(Header),
           matching: find.byWidgetPredicate(
-            (widget) => widget is DecoratedBox && widget.child is Padding,
+            (widget) => widget is DecoratedBox && widget.decoration == decoration,
           ),
         ),
       );

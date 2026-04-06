@@ -3,6 +3,50 @@ import 'package:flutter/material.dart';
 
 import 'leading_date.dart';
 
+Widget _headerSliderButton({
+  required BuildContext context,
+  required HeaderTheme? theme,
+  required bool forward,
+  required bool isEnabled,
+  required VoidCallback onPressed,
+  required Widget? child,
+  required String semanticsLabel,
+}) {
+  final ink = forward ? theme?.forwardButtonInkResponseTheme : theme?.backwardButtonInkResponseTheme;
+  final fallbackInk = InkResponseTheme.defaults(context);
+  final i = ink ?? fallbackInk;
+  final decoration = forward ? theme?.forwardButtonDecoration : theme?.backwardButtonDecoration;
+  final width = forward ? theme?.forwardButtonWidth : theme?.backwardButtonWidth;
+  final height = forward ? theme?.forwardButtonHeight : theme?.backwardButtonHeight;
+  final resolvedDecoration = decoration ?? const ShapeDecoration(shape: CircleBorder());
+  final materialShape = i.customBorder ?? (decoration?.shape ?? const CircleBorder());
+
+  return Semantics(
+    label: semanticsLabel,
+    button: true,
+    enabled: isEnabled,
+    child: Ink(
+      width: width ?? 36,
+      height: height ?? 36,
+      decoration: resolvedDecoration,
+      child: InkResponse(
+        onTap: isEnabled ? onPressed : null,
+        radius: i.radius,
+        splashColor: i.splashColor,
+        highlightColor: i.highlightColor,
+        borderRadius: i.borderRadius,
+        containedInkWell: i.containedInkWell ?? true,
+        customBorder: materialShape,
+        highlightShape: i.highlightShape ?? BoxShape.circle,
+        splashFactory: i.splashFactory,
+        focusColor: i.focusColor,
+        hoverColor: i.hoverColor,
+        child: ExcludeSemantics(child: child ?? const SizedBox.shrink()),
+      ),
+    ),
+  );
+}
+
 /// The `Header` class represents the header widget that is displayed above the calendar grid.
 ///
 /// This widget includes information about the currently displayed date, as well as navigation controls
@@ -87,35 +131,31 @@ class Header extends StatelessWidget {
     final nextPageSemanticLabel = MaterialLocalizations.of(context).nextPageTooltip;
     final previousPageSemanticLabel = MaterialLocalizations.of(context).previousPageTooltip;
 
-    final forwardButtonStyle = headerTheme?.forwardButtonStyle;
-    final backwardButtonStyle = headerTheme?.backwardButtonStyle;
-
     final forwardButtonWidget = headerTheme?.forwardArrowWidget;
     final backwardButtonWidget = headerTheme?.backwardArrowWidget;
 
-    final forwardButton = Semantics(
-      label: nextPageSemanticLabel,
-      button: true,
-      enabled: isEnabled,
-      child: TextButton(
-        onPressed: isEnabled ? onNextPage : null,
-        style: forwardButtonStyle,
-        child: ExcludeSemantics(child: forwardButtonWidget),
-      ),
+    final forwardButton = _headerSliderButton(
+      context: context,
+      theme: headerTheme,
+      forward: true,
+      isEnabled: isEnabled,
+      onPressed: onNextPage,
+      child: forwardButtonWidget,
+      semanticsLabel: nextPageSemanticLabel,
     );
 
-    final backButton = Semantics(
-      label: previousPageSemanticLabel,
-      button: true,
-      enabled: isEnabled,
-      child: TextButton(
-        onPressed: isEnabled ? onPreviousPage : null,
-        style: backwardButtonStyle,
-        child: ExcludeSemantics(child: backwardButtonWidget),
-      ),
+    final backButton = _headerSliderButton(
+      context: context,
+      theme: headerTheme,
+      forward: false,
+      isEnabled: isEnabled,
+      onPressed: onPreviousPage,
+      child: backwardButtonWidget,
+      semanticsLabel: previousPageSemanticLabel,
     );
 
     final enableArrowKeys = headerTheme?.enableArrowKeys ?? true;
+    final slidersSpace = headerTheme?.slidersSpace ?? 10;
 
     final leadingDate = LeadingDate(
       onTap: isEnabled ? onDateTap : null,
@@ -133,7 +173,7 @@ class Header extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               backButton,
-              const SizedBox(width: 10),
+              SizedBox(width: slidersSpace),
               forwardButton,
             ],
           ),

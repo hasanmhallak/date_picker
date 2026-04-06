@@ -211,85 +211,89 @@ class _YearsPickerState extends State<YearsPicker> {
 
     final bool isEnabled = theme.isEnabled ?? true;
 
-    return PickerDeviceOrientationBuilder(builder: (context, o) {
-      late final Size size;
-      switch (o) {
-        case Orientation.portrait:
-          size = const Size(328.0, 402.0);
-          break;
-        case Orientation.landscape:
-          size = const Size(328.0, 300.0);
-          break;
-      }
-      return LimitedBox(
-        maxHeight: size.height,
-        maxWidth: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Header(
-              theme: theme.headerTheme,
-              isEnabled: isEnabled,
-              onDateTap: () => widget.onLeadingDateTap?.call(),
-              displayedDate: '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
-              onNextPage: () {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease,
-                );
-              },
-              onPreviousPage: () {
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease,
-                );
-              },
-            ),
-            Flexible(
-              child: Padding(
-                padding: theme.yearsPickerTheme?.padding ?? EdgeInsets.zero,
-                child: PageView.builder(
-                  scrollDirection: Axis.horizontal,
-                  physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
-                  key: _pageViewKey,
-                  controller: _pageController,
-                  itemCount: pageCount,
-                  onPageChanged: (yearPage) {
-                    setState(() {
-                      _displayedRange = calculateDateRange(yearPage);
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    final yearRange = calculateDateRange(index);
+    return Material(
+      type: MaterialType.transparency,
+      clipBehavior: Clip.hardEdge,
+      child: PickerDeviceOrientationBuilder(builder: (context, o) {
+        late final Size size;
+        switch (o) {
+          case Orientation.portrait:
+            size = const Size(328.0, 402.0);
+            break;
+          case Orientation.landscape:
+            size = const Size(328.0, 300.0);
+            break;
+        }
+        return LimitedBox(
+          maxHeight: size.height,
+          maxWidth: size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Header(
+                theme: theme.headerTheme,
+                isEnabled: isEnabled,
+                onDateTap: () => widget.onLeadingDateTap?.call(),
+                displayedDate: '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
+                onNextPage: () {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+                onPreviousPage: () {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+              ),
+              Flexible(
+                child: Padding(
+                  padding: theme.yearsPickerTheme?.padding ?? EdgeInsets.zero,
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                    key: _pageViewKey,
+                    controller: _pageController,
+                    itemCount: pageCount,
+                    onPageChanged: (yearPage) {
+                      setState(() {
+                        _displayedRange = calculateDateRange(yearPage);
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final yearRange = calculateDateRange(index);
 
-                    return YearView(
-                      key: ValueKey<DateTimeRange>(yearRange),
-                      currentDate: widget.currentDate != null
-                          ? DateUtilsX.yearOnly(widget.currentDate!)
-                          : DateUtilsX.yearOnly(DateTime.now()),
-                      maxDate: DateUtilsX.yearOnly(widget.maxDate),
-                      minDate: DateUtilsX.yearOnly(widget.minDate),
-                      displayedYearRange: yearRange,
-                      selectedDate: _selectedDate,
-                      cellBuilder: widget.cellBuilder,
-                      theme: theme.yearsPickerTheme,
-                      isEnabled: isEnabled,
-                      onChanged: (value) {
-                        final selected = DateUtilsX.yearOnly(value);
-                        widget.onDateSelected?.call(selected);
-                        setState(() {
-                          _selectedDate = selected;
-                        });
-                      },
-                    );
-                  },
+                      return YearView(
+                        key: ValueKey<DateTimeRange>(yearRange),
+                        currentDate: widget.currentDate != null
+                            ? DateUtilsX.yearOnly(widget.currentDate!)
+                            : DateUtilsX.yearOnly(DateTime.now()),
+                        maxDate: DateUtilsX.yearOnly(widget.maxDate),
+                        minDate: DateUtilsX.yearOnly(widget.minDate),
+                        displayedYearRange: yearRange,
+                        selectedDate: _selectedDate,
+                        cellBuilder: widget.cellBuilder,
+                        theme: theme.yearsPickerTheme,
+                        isEnabled: isEnabled,
+                        onChanged: (value) {
+                          final selected = DateUtilsX.yearOnly(value);
+                          widget.onDateSelected?.call(selected);
+                          setState(() {
+                            _selectedDate = selected;
+                          });
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      }),
+    );
   }
 }
