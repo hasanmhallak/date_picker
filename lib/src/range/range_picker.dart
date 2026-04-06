@@ -16,11 +16,11 @@ import 'range_days_picker.dart';
 /// showing.
 ///
 /// The range picker widget is rarely used directly. Instead, consider using
-/// [showRangeDatePickerDialog], which will create a dialog that uses this.
+/// [showRangePickerDialog], which will create a dialog that uses this.
 ///
 /// See also:
 ///
-///  * [showRangeDatePickerDialog], which creates a Dialog that contains a
+///  * [showRangePickerDialog], which creates a Dialog that contains a
 ///    [RangeDatePicker].
 ///
 class RangeDatePicker extends StatefulWidget {

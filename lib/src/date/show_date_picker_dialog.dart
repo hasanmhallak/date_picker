@@ -16,8 +16,7 @@ import 'date_picker.dart';
 /// The [minDate] is the earliest allowable date. The [maxDate] is the latest
 /// allowable date. [displayedDate] and [selectedDate] must either fall between these dates,
 /// or be equal to one of them. For each of these [DateTime] parameters, only
-/// their dates are considered. Their time fields are ignored. They must all
-/// be non-null.
+/// their dates are considered. Their time fields are ignored.
 ///
 /// [displayedDate] and [currentDate], If not specified, they will default to `DateTime.now()` date.
 ///
