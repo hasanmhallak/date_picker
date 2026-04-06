@@ -185,7 +185,7 @@ class _MonthPickerState extends State<MonthPicker> {
     final defaultTheme = DatePickerPlusTheme.defaults(context);
     final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
     final theme = defaultTheme.merge(contextTheme).merge(widget.theme);
-    final bool isEnabled = widget.theme?.isEnabled ?? true;
+    final bool isEnabled = theme.isEnabled ?? true;
 
     return Material(
       type: MaterialType.transparency,
