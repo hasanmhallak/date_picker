@@ -70,7 +70,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   /// Defaults to rectangle with [ColorScheme.primaryContainer] color.
   ///
   /// Note: If you provide a custom [Decoration] that is not a [BoxDecoration]
-  /// or [ShapeDecoration], you must also provide a custom [resolvePainter] 
+  /// or [ShapeDecoration], you must also provide a custom [resolvePainter]
   /// to correctly handle painting the range highlight color.
   final Decoration? selectedCellsDecoration;
 
@@ -83,6 +83,24 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
   /// The decoration for a selected edge cell (start/end of range or single selection).
   ///
   /// Defaults to circle with [ColorScheme.primary] color.
+  ///
+  /// **Note:** When the picker's grid cells are taller than they are wide
+  /// (non-square aspect ratio), the default [CircleBorder] decoration will be
+  /// inscribed in the cell's shorter dimension (width), leaving vertical space
+  /// that the [RangeSelectionPainter] still fills with a full-height rectangle.
+  /// This creates a visible gap between the range highlight and the edge circle.
+  ///
+  /// To fix this, use a shape that stretches to fill the cell, such as:
+  ///
+  /// ```dart
+  /// selectedEdgeCellDecoration: ShapeDecoration(
+  ///   color: colorScheme.primary,
+  ///   shape: const OvalBorder(),   // or StadiumBorder()
+  /// ),
+  /// ```
+  ///
+  /// Alternatively, provide a custom [resolvePainter] that adjusts the
+  /// painted rectangle to match the decoration height.
   final Decoration? selectedEdgeCellDecoration;
 
   /// Padding around each day cell's content (inside the grid tile, around the
@@ -274,8 +292,7 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme> with Diagnostica
       selectedCellsTextStyle: TextStyle.lerp(selectedCellsTextStyle, other.selectedCellsTextStyle, t),
       selectedCellsDecoration: Decoration.lerp(selectedCellsDecoration, other.selectedCellsDecoration, t),
       selectedEdgeCellTextStyle: TextStyle.lerp(selectedEdgeCellTextStyle, other.selectedEdgeCellTextStyle, t),
-      selectedEdgeCellDecoration:
-          Decoration.lerp(selectedEdgeCellDecoration, other.selectedEdgeCellDecoration, t),
+      selectedEdgeCellDecoration: Decoration.lerp(selectedEdgeCellDecoration, other.selectedEdgeCellDecoration, t),
       cellsPadding: EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),

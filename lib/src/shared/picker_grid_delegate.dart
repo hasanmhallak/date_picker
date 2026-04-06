@@ -1,15 +1,24 @@
-import 'dart:math' show min;
-
 import 'package:flutter/rendering.dart';
 
-/// A [SliverGridLayout] that uses equally sized and spaced tiles.
+/// A [SliverGridDelegate] that divides the viewport into a fixed number of
+/// equally sized rows and columns.
 ///
-/// Rather that providing a grid with a [SliverGridLayout] directly, you instead
-/// provide the grid a [SliverGridDelegate], which can compute a
-/// [SliverGridLayout] given the current [SliverConstraints].
+/// Tile width is derived from the cross-axis extent and [columnCount]; tile
+/// height is derived from the main-axis extent and [rowCount]. The two
+/// dimensions are independent, so tiles may be non-square when the picker's
+/// aspect ratio is not `columnCount / rowCount`.
 ///
-/// This layout is used by [SliverGridDelegateWithFixedCrossAxisCount] and
-/// [SliverGridDelegateWithMaxCrossAxisExtent].
+/// **Non-square tiles and the range picker.** When tiles are taller than they
+/// are wide the default circle decoration on selected edge cells will be
+/// smaller than the rectangle painted by [RangeSelectionPainter], because the
+/// circle is inscribed in the cell's shorter dimension. To avoid this visual
+/// mismatch you can:
+///
+///  * Use an oval [OvalBorder] (or [StadiumBorder]) for
+///    [RangePickerTheme.selectedEdgeCellDecoration] so the decoration fills
+///    the full cell bounds.
+///  * Provide a custom [RangePickerTheme.resolvePainter] that accounts for the
+///    cell aspect ratio.
 ///
 /// See also:
 ///
@@ -41,16 +50,12 @@ class PickerGridDelegate extends SliverGridDelegate {
     final double tileWidth = constraints.crossAxisExtent / columnCount;
     final double calculatedTileHeight = (constraints.viewportMainAxisExtent) / rowCount;
 
-    // height should always be equal or less than the width
-    // this is for range decoration painter.
-    final double tileHeight = min(calculatedTileHeight, tileWidth);
-
     return SliverGridRegularTileLayout(
       crossAxisCount: columnCount,
       childCrossAxisExtent: _zeroOrGreater(tileWidth),
       crossAxisStride: _zeroOrGreater(tileWidth),
-      childMainAxisExtent: _zeroOrGreater(tileHeight),
-      mainAxisStride: _zeroOrGreater(tileHeight),
+      childMainAxisExtent: _zeroOrGreater(calculatedTileHeight),
+      mainAxisStride: _zeroOrGreater(calculatedTileHeight),
       reverseCrossAxis: axisDirectionIsReversed(constraints.crossAxisDirection),
     );
   }

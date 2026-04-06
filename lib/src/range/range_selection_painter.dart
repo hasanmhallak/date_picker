@@ -39,6 +39,13 @@ abstract class RangeDecorationPainter extends CustomPainter {
 /// This class is typically used as the painter for a [CustomPaint] widget to
 /// achieve a customized visual effect.
 ///
+/// The painted rectangle always uses the full cell height. When grid cells are
+/// taller than they are wide (non-square aspect ratio), this rectangle will be
+/// taller than the default [CircleBorder] edge decoration. Consider using an
+/// [OvalBorder] or [StadiumBorder] for the edge decoration, or providing a
+/// custom [RangeDecorationPainter] via [RangePickerTheme.resolvePainter] that
+/// accounts for the cell aspect ratio.
+///
 /// ### Example:
 ///
 /// ```dart
