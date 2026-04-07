@@ -1,9 +1,134 @@
+# 7.0.0 [Breaking]
+
+## Theming API
+
+All per-widget styling parameters on `DatePicker`, `RangeDatePicker`, `DaysPicker`, `RangeDaysPicker`, `MonthPicker`, `YearsPicker`, `showDatePickerDialog`, and `showRangePickerDialog` were removed. Use a single `theme` argument of type `DatePickerPlusTheme` instead.
+
+Removed parameters (names vary slightly between single-date and range pickers):
+
+- `daysOfTheWeekTextStyle`
+- `enabledCellsTextStyle` / `enabledCellsDecoration`
+- `disabledCellsTextStyle` / `disabledCellsDecoration`
+- `currentDateTextStyle` / `currentDateDecoration`
+- `selectedCellTextStyle` / `selectedCellDecoration`
+- On range pickers: `selectedCellsTextStyle` / `selectedCellsDecoration`, `singleSelectedCellTextStyle` / `singleSelectedCellDecoration`
+- `leadingDateTextStyle`
+- `slidersColor` / `slidersSize`
+- `highlightColor` / `splashColor` / `splashRadius`
+- `centerLeadingDate`
+
+**How to fix:** Build a `DatePickerPlusTheme` and pass it as `theme:`. It merges with `DatePickerPlusTheme.defaults(context)` and any `Theme.of(context).extension<DatePickerPlusTheme>()`.
+
+```dart
+// Before (v6)
+DatePicker(
+  minDate: minDate,
+  maxDate: maxDate,
+  initialDate: DateTime.now(),
+  slidersColor: Colors.blue,
+  centerLeadingDate: true,
+  selectedCellDecoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+);
+
+// After (v7)
+DatePicker(
+  minDate: minDate,
+  maxDate: maxDate,
+  displayedDate: DateTime.now(),
+  theme: const DatePickerPlusTheme(
+    headerTheme: HeaderTheme(
+      centerLeadingDate: true,
+    ),
+    daysPickerTheme: DaysPickerTheme(
+      selectedCellDecoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+    ),
+    // Notice how each picker has its own theme now.
+    monthsPickerTheme: MonthsPickerTheme(
+      selectedCellDecoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+    ),
+    yearsPickerTheme: YearsPickerTheme(
+      selectedCellDecoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+    ),
+    rangePickerTheme: RangePickerTheme(
+      selectedCellsDecoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+    ),
+  ),
+);
+```
+
+You can also register defaults app-wide via `ThemeData.extensions`:
+
+```dart
+MaterialApp(
+  theme: ThemeData(
+    extensions: const <ThemeExtension<dynamic>>[
+      DatePickerPlusTheme(
+        headerTheme: HeaderTheme(centerLeadingDate: true),
+      ),
+    ],
+  ),
+);
+```
+
+For defaults that depend on `ColorScheme` / `TextTheme`, build the extension where you have a `BuildContext` (e.g. inside `build`) or merge `DatePickerPlusTheme.defaults(context)` with your overrides on each picker’s `theme` argument.
+
+## `initialDate` renamed to `displayedDate`
+
+On all pickers and on `showDatePickerDialog` / `showRangePickerDialog`, rename `initialDate` to `displayedDate`. Behavior is unchanged: it controls which month/year grid is shown first.
+
+```dart
+// Before
+showDatePickerDialog(context: context, minDate: minDate, maxDate: maxDate, initialDate: someDate);
+
+// After
+showDatePickerDialog(context: context, minDate: minDate, maxDate: maxDate, displayedDate: someDate);
+```
+
+## Removed `previousPageSemanticLabel` & `nextPageSemanticLabel`
+
+All semantic labels are now managed internally using Material localizations.
+
+## New in v7
+
+- **`onDisplayedMonthChanged`:** Fires when the days grid’s visible month changes (including initial build and page swipes). Argument is the first day of that month. Available on `DatePicker`, `RangeDatePicker`, `DaysPicker`, `RangeDaysPicker`, and both dialog helpers.
+
+- **`cellBuilder`:** Optional `CellBuilder` to customize cells. Uses `CellData` variants (`WeekDayCell`, `DayCell`, `MonthCell`, `YearCell`) and `CellState`.
+
+- **`DatePickerPlusTheme.isEnabled`:** When `false`, the picker is view-only (no taps, header navigation, or page swipes).
+
+- **`HeaderTheme.forwardButtonDecoration` / `backwardButtonDecoration` narrowed to `ShapeDecoration` [Breaking]:** The type was `Decoration?` and is now `ShapeDecoration?`. This eliminates an internal conversion heuristic that could not reliably derive an ink-clip shape from arbitrary `Decoration` subclasses. Migrate by replacing any `BoxDecoration` passed to these fields with an equivalent `ShapeDecoration`:
+
+  ```dart
+  // Before
+  forwardButtonDecoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(6),
+    color: Colors.red,
+  ),
+
+  // After
+  forwardButtonDecoration: ShapeDecoration(
+    color: Colors.red,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+  ),
+  ```
+
+- **Non-square grid cells and the range picker:** Grid cell width and height are now fully independent (width from `columnCount`, height from `rowCount`), enabling taller cells for content such as event dots below the day number. When cells are taller than they are wide, the default circle edge decoration will be smaller than the full-height range highlight rectangle painted by `RangeSelectionPainter`. Use `OvalBorder` or `StadiumBorder` for `RangePickerTheme.selectedEdgeCellDecoration` to match the highlight, or supply a custom painter via `RangePickerTheme.resolvePainter`:
+
+  ```dart
+  rangePickerTheme: RangePickerTheme(
+    selectedEdgeCellDecoration: ShapeDecoration(
+      color: colorScheme.primary,
+      shape: const OvalBorder(),
+    ),
+  ),
+  ```
+
 # 6.0.0
 
 - Revert removing `DeviceOrientationBuilder` in favor of rename it.
 - Fix semantic. fixes [#39](https://github.com/hasanmhallak/date_picker/issues/39)
 - Resolve conflicts with Flutter v3.41.0. fixes [#43](https://github.com/hasanmhallak/date_picker/issues/43)
-- Add decoration to the pageview sliders.
+- Add decoration to the pageview arrow buttons.
 
 # 5.0.0
 
@@ -67,7 +192,7 @@ final date = await showDatePickerDialog(
 
 - Fixed an overflow issue when displaying the picker dialog with the keyboard open.
 - Fixed an overflow issue when the device orientation is set to portrait mode.
-- Fixed forward & back sliders button in RTL.
+- Fixed forward & back arrow buttons in RTL.
 
 # 3.0.2
 
