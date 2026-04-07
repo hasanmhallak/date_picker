@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'leading_date.dart';
 
-Widget _headerSliderButton({
+Widget _headerArrowButton({
   required BuildContext context,
   required HeaderTheme? theme,
   required bool forward,
@@ -134,7 +134,7 @@ class Header extends StatelessWidget {
     final forwardButtonWidget = headerTheme?.forwardArrowWidget;
     final backwardButtonWidget = headerTheme?.backwardArrowWidget;
 
-    final forwardButton = _headerSliderButton(
+    final forwardButton = _headerArrowButton(
       context: context,
       theme: headerTheme,
       forward: true,
@@ -144,7 +144,7 @@ class Header extends StatelessWidget {
       semanticsLabel: nextPageSemanticLabel,
     );
 
-    final backButton = _headerSliderButton(
+    final backButton = _headerArrowButton(
       context: context,
       theme: headerTheme,
       forward: false,
@@ -155,7 +155,7 @@ class Header extends StatelessWidget {
     );
 
     final enableArrowKeys = headerTheme?.enableArrowKeys ?? true;
-    final slidersSpace = headerTheme?.slidersSpace ?? 10;
+    final arrowButtonsSpace = headerTheme?.arrowButtonsSpace ?? 10;
 
     final leadingDate = LeadingDate(
       onTap: isEnabled ? onDateTap : null,
@@ -173,7 +173,7 @@ class Header extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               backButton,
-              SizedBox(width: slidersSpace),
+              SizedBox(width: arrowButtonsSpace),
               forwardButton,
             ],
           ),

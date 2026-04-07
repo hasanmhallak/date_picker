@@ -5,6 +5,7 @@ export 'src/shared/month_picker.dart';
 export 'src/shared/year_picker.dart';
 export 'src/range/range_picker.dart';
 export 'src/range/show_range_picker_dialog.dart';
+export 'src/range/range_selection_painter.dart';
 export 'src/shared/picker_type.dart';
 export 'src/theme/date_picker_plus_theme.dart';
 export 'src/theme/header_theme.dart';

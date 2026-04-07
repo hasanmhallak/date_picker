@@ -24,7 +24,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     this.backwardButtonHeight,
     this.forwardButtonInkResponseTheme,
     this.backwardButtonInkResponseTheme,
-    this.slidersSpace,
+    this.arrowButtonsSpace,
     this.headerPadding,
     this.decoration,
   });
@@ -34,7 +34,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   /// Defaults to `true`.
   final bool? enableHeader;
 
-  /// Whether to show the forward/backward page sliders (arrow buttons)
+  /// Whether to show the forward/backward arrow buttons
   /// for changing the month/year being displayed.
   ///
   /// Defaults to `true`.
@@ -65,48 +65,48 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   /// and [ColorScheme.primary] color.
   final TextStyle? leadingDateTextStyle;
 
-  /// Background decoration for the forward (next page) slider control.
+  /// Background decoration for the forward (next page) arrow button.
   ///
   /// Defaults to a circular [ShapeDecoration]. Use [ShapeDecoration.shape] so
   /// ink splashes match the painted outline.
   final ShapeDecoration? forwardButtonDecoration;
 
-  /// Background decoration for the backward (previous page) slider control.
+  /// Background decoration for the backward (previous page) arrow button.
   ///
   /// Defaults to a circular [ShapeDecoration]. Use [ShapeDecoration.shape] so
   /// ink splashes match the painted outline.
   final ShapeDecoration? backwardButtonDecoration;
 
-  /// Width of the forward slider control.
+  /// Width of the forward arrow button.
   ///
   /// Defaults to `36`.
   final double? forwardButtonWidth;
 
-  /// Width of the backward slider control.
+  /// Width of the backward arrow button.
   ///
   /// Defaults to `36`.
   final double? backwardButtonWidth;
 
-  /// Height of the forward slider control.
+  /// Height of the forward arrow button.
   ///
   /// Defaults to `36`.
   final double? forwardButtonHeight;
 
-  /// Height of the backward slider control.
+  /// Height of the backward arrow button.
   ///
   /// Defaults to `36`.
   final double? backwardButtonHeight;
 
-  /// Splash and highlight for the forward slider [InkResponse].
+  /// Splash and highlight for the forward arrow button [InkResponse].
   final InkResponseTheme? forwardButtonInkResponseTheme;
 
-  /// Splash and highlight for the backward slider [InkResponse].
+  /// Splash and highlight for the backward arrow button [InkResponse].
   final InkResponseTheme? backwardButtonInkResponseTheme;
 
-  /// Horizontal gap between the backward and forward sliders when both are on the same side.
+  /// Horizontal gap between the backward and forward arrow buttons when both are on the same side.
   ///
   /// Defaults to `10`.
-  final double? slidersSpace;
+  final double? arrowButtonsSpace;
 
   /// The padding of the header.
   ///
@@ -153,7 +153,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardButtonHeight: 36,
       forwardButtonInkResponseTheme: inkDefaults,
       backwardButtonInkResponseTheme: inkDefaults,
-      slidersSpace: 10,
+      arrowButtonsSpace: 10,
     );
   }
 
@@ -173,7 +173,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     double? backwardButtonHeight,
     InkResponseTheme? forwardButtonInkResponseTheme,
     InkResponseTheme? backwardButtonInkResponseTheme,
-    double? slidersSpace,
+    double? arrowButtonsSpace,
     EdgeInsetsGeometry? headerPadding,
     Decoration? decoration,
   }) {
@@ -192,7 +192,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardButtonHeight: backwardButtonHeight ?? this.backwardButtonHeight,
       forwardButtonInkResponseTheme: forwardButtonInkResponseTheme ?? this.forwardButtonInkResponseTheme,
       backwardButtonInkResponseTheme: backwardButtonInkResponseTheme ?? this.backwardButtonInkResponseTheme,
-      slidersSpace: slidersSpace ?? this.slidersSpace,
+      arrowButtonsSpace: arrowButtonsSpace ?? this.arrowButtonsSpace,
       headerPadding: headerPadding ?? this.headerPadding,
       decoration: decoration ?? this.decoration,
     );
@@ -220,7 +220,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
           other.forwardButtonInkResponseTheme,
       backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.merge(other.backwardButtonInkResponseTheme) ??
           other.backwardButtonInkResponseTheme,
-      slidersSpace: other.slidersSpace,
+      arrowButtonsSpace: other.arrowButtonsSpace,
     );
   }
 
@@ -243,7 +243,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardButtonHeight: lerpDouble(backwardButtonHeight, other.backwardButtonHeight, t),
       forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.lerp(other.forwardButtonInkResponseTheme, t),
       backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.lerp(other.backwardButtonInkResponseTheme, t),
-      slidersSpace: lerpDouble(slidersSpace, other.slidersSpace, t),
+      arrowButtonsSpace: lerpDouble(arrowButtonsSpace, other.arrowButtonsSpace, t),
       headerPadding: EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
       decoration: Decoration.lerp(decoration, other.decoration, t),
     );
@@ -268,7 +268,7 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
         .add(DiagnosticsProperty<InkResponseTheme?>('forwardButtonInkResponseTheme', forwardButtonInkResponseTheme));
     properties
         .add(DiagnosticsProperty<InkResponseTheme?>('backwardButtonInkResponseTheme', backwardButtonInkResponseTheme));
-    properties.add(DoubleProperty('slidersSpace', slidersSpace));
+    properties.add(DoubleProperty('arrowButtonsSpace', arrowButtonsSpace));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('headerPadding', headerPadding));
     properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
   }

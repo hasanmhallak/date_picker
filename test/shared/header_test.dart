@@ -170,7 +170,7 @@ void main() {
       expect(backInkOffset.dx, greaterThan(leadingDateOffset.dx));
     });
 
-    testWidgets('should apply forwardButtonDecoration to the forward slider', (WidgetTester tester) async {
+    testWidgets('should apply forwardButtonDecoration to the forward arrow button', (WidgetTester tester) async {
       const decoration = ShapeDecoration(color: Colors.red, shape: CircleBorder());
 
       await tester.pumpWidget(
@@ -189,7 +189,7 @@ void main() {
       expect(tester.widget<InkResponse>(forwardInk).customBorder, decoration.shape);
     });
 
-    testWidgets('should apply backwardButtonDecoration to the backward slider', (WidgetTester tester) async {
+    testWidgets('should apply backwardButtonDecoration to the backward arrow button', (WidgetTester tester) async {
       const decoration = ShapeDecoration(color: Colors.blue, shape: CircleBorder());
 
       await tester.pumpWidget(
@@ -207,12 +207,12 @@ void main() {
       expect(container.decoration, decoration);
     });
 
-    testWidgets('should apply slidersSpace between backward and forward sliders', (WidgetTester tester) async {
+    testWidgets('should apply arrowButtonsSpace between backward and forward arrow buttons', (WidgetTester tester) async {
       const space = 24.0;
 
       await tester.pumpWidget(
         _buildHeader(
-          theme: const HeaderTheme(slidersSpace: space),
+          theme: const HeaderTheme(arrowButtonsSpace: space),
         ),
       );
 

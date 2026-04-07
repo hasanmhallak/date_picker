@@ -478,7 +478,7 @@ void main() {
     );
 
     testWidgets(
-      'Should show custom arrow widgets for page sliders',
+      'Should show custom arrow widgets for page arrow buttons',
       (WidgetTester tester) async {
         final DateTime displayedDate = DateTime(2010);
         final DateTime minDate = DateTime(2000);

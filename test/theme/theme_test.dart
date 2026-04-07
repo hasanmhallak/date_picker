@@ -157,7 +157,7 @@ void main() {
         expect(d.backwardButtonHeight, 36);
         expect(d.forwardButtonInkResponseTheme, isNotNull);
         expect(d.backwardButtonInkResponseTheme, isNotNull);
-        expect(d.slidersSpace, 10);
+        expect(d.arrowButtonsSpace, 10);
         expect(
           d.headerPadding?.resolve(TextDirection.ltr),
           const EdgeInsetsDirectional.only(bottom: 10.0).resolve(TextDirection.ltr),
