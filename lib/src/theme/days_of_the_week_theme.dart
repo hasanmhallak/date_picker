@@ -15,7 +15,8 @@ enum WeekdayLength {
 
 /// A theme that controls the visual appearance of the "M T W T F S S" row.
 @immutable
-class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme> with DiagnosticableTreeMixin {
+class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
+    with DiagnosticableTreeMixin {
   /// Creates a [DaysOfTheWeekTheme].
   const DaysOfTheWeekTheme({
     this.startOfWeek,
@@ -87,7 +88,8 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme> with Diagnos
   }
 
   @override
-  DaysOfTheWeekTheme lerp(covariant ThemeExtension<DaysOfTheWeekTheme>? other, double t) {
+  DaysOfTheWeekTheme lerp(
+      covariant ThemeExtension<DaysOfTheWeekTheme>? other, double t) {
     if (other is! DaysOfTheWeekTheme) return this;
 
     return DaysOfTheWeekTheme(
@@ -104,6 +106,7 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme> with Diagnos
     properties.add(IntProperty('startOfWeek', startOfWeek));
     properties.add(DiagnosticsProperty<TextStyle?>('textStyle', textStyle));
     properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
-    properties.add(EnumProperty<WeekdayLength?>('weekdayLength', weekdayLength));
+    properties
+        .add(EnumProperty<WeekdayLength?>('weekdayLength', weekdayLength));
   }
 }

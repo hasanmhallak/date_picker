@@ -12,7 +12,8 @@ import 'years_picker_theme.dart';
 /// Contains themes for the header, days of the week, days grid,
 /// months grid, years grid, and range picker days grid.
 @immutable
-class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme> with DiagnosticableTreeMixin {
+class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
+    with DiagnosticableTreeMixin {
   /// Creates a [DatePickerPlusTheme].
   const DatePickerPlusTheme({
     this.headerTheme,
@@ -80,16 +81,21 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme> with Diagn
     if (other == null) return this;
     return copyWith(
       headerTheme: headerTheme?.merge(other.headerTheme) ?? other.headerTheme,
-      daysPickerTheme: daysPickerTheme?.merge(other.daysPickerTheme) ?? other.daysPickerTheme,
-      monthsPickerTheme: monthsPickerTheme?.merge(other.monthsPickerTheme) ?? other.monthsPickerTheme,
-      yearsPickerTheme: yearsPickerTheme?.merge(other.yearsPickerTheme) ?? other.yearsPickerTheme,
-      rangePickerTheme: rangePickerTheme?.merge(other.rangePickerTheme) ?? other.rangePickerTheme,
+      daysPickerTheme: daysPickerTheme?.merge(other.daysPickerTheme) ??
+          other.daysPickerTheme,
+      monthsPickerTheme: monthsPickerTheme?.merge(other.monthsPickerTheme) ??
+          other.monthsPickerTheme,
+      yearsPickerTheme: yearsPickerTheme?.merge(other.yearsPickerTheme) ??
+          other.yearsPickerTheme,
+      rangePickerTheme: rangePickerTheme?.merge(other.rangePickerTheme) ??
+          other.rangePickerTheme,
       isEnabled: other.isEnabled ?? isEnabled,
     );
   }
 
   @override
-  DatePickerPlusTheme lerp(covariant ThemeExtension<DatePickerPlusTheme>? other, double t) {
+  DatePickerPlusTheme lerp(
+      covariant ThemeExtension<DatePickerPlusTheme>? other, double t) {
     if (other is! DatePickerPlusTheme) return this;
 
     return DatePickerPlusTheme(
@@ -105,11 +111,16 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme> with Diagn
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<HeaderTheme?>('headerTheme', headerTheme));
-    properties.add(DiagnosticsProperty<DaysPickerTheme?>('daysPickerTheme', daysPickerTheme));
-    properties.add(DiagnosticsProperty<MonthsPickerTheme?>('monthsPickerTheme', monthsPickerTheme));
-    properties.add(DiagnosticsProperty<YearsPickerTheme?>('yearsPickerTheme', yearsPickerTheme));
-    properties.add(DiagnosticsProperty<RangePickerTheme?>('rangePickerTheme', rangePickerTheme));
+    properties
+        .add(DiagnosticsProperty<HeaderTheme?>('headerTheme', headerTheme));
+    properties.add(DiagnosticsProperty<DaysPickerTheme?>(
+        'daysPickerTheme', daysPickerTheme));
+    properties.add(DiagnosticsProperty<MonthsPickerTheme?>(
+        'monthsPickerTheme', monthsPickerTheme));
+    properties.add(DiagnosticsProperty<YearsPickerTheme?>(
+        'yearsPickerTheme', yearsPickerTheme));
+    properties.add(DiagnosticsProperty<RangePickerTheme?>(
+        'rangePickerTheme', rangePickerTheme));
     properties.add(DiagnosticsProperty<bool?>('isEnabled', isEnabled));
   }
 }

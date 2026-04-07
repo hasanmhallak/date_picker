@@ -116,7 +116,8 @@ class RangeDaysView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     final defaultTheme = DatePickerPlusTheme.defaults(context);
     final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
     final theme = defaultTheme.merge(contextTheme).merge(this.theme);
@@ -130,19 +131,24 @@ class RangeDaysView extends StatelessWidget {
 
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
-    final int daysInMonth = DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
+    final int daysInMonth =
+        DateUtils.getDaysInMonth(displayedMonth.year, displayedMonth.month);
 
-    final int dayOffset =
-        DateUtilsX.firstDayOffset(displayedMonth.year, displayedMonth.month, daysOfWeekTheme!.startOfWeek!);
+    final int dayOffset = DateUtilsX.firstDayOffset(displayedMonth.year,
+        displayedMonth.month, daysOfWeekTheme!.startOfWeek!);
 
-    DateTime? selectedEndDateOnly = selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
+    DateTime? selectedEndDateOnly =
+        selectedEndDate != null ? DateUtils.dateOnly(selectedEndDate!) : null;
 
-    DateTime? selectedStartDateOnly = selectedStartDate != null ? DateUtils.dateOnly(selectedStartDate!) : null;
+    DateTime? selectedStartDateOnly = selectedStartDate != null
+        ? DateUtils.dateOnly(selectedStartDate!)
+        : null;
 
     final maxDate = DateUtils.dateOnly(this.maxDate);
     final minDate = DateUtils.dateOnly(this.minDate);
 
-    final List<Widget> dayItems = dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
+    final List<Widget> dayItems =
+        dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
 
     if (cellBuilder != null) {
       final startOfWeek = daysOfWeekTheme.startOfWeek!;
@@ -151,7 +157,10 @@ class RangeDaysView extends StatelessWidget {
         dayItems[i] = ExcludeSemantics(
           child: cellBuilder!(
             context,
-            WeekDayCell(weekDay: isoWeekday, state: CellState.enabled, child: dayItems[i]),
+            WeekDayCell(
+                weekDay: isoWeekday,
+                state: CellState.enabled,
+                child: dayItems[i]),
           ),
         );
       }
@@ -164,26 +173,34 @@ class RangeDaysView extends StatelessWidget {
         dayItems.add(const SizedBox.shrink());
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
-        final bool isDateDisabled = dayToBuild.isAfter(maxDate) || dayToBuild.isBefore(minDate);
+        final bool isDateDisabled =
+            dayToBuild.isAfter(maxDate) || dayToBuild.isBefore(minDate);
 
-        final isRangeSelected = selectedStartDateOnly != null && selectedEndDateOnly != null;
+        final isRangeSelected =
+            selectedStartDateOnly != null && selectedEndDateOnly != null;
 
-        final isStartSelectedOnly =
-            selectedStartDateOnly != null && dayToBuild == selectedStartDateOnly && selectedEndDateOnly == null;
+        final isStartSelectedOnly = selectedStartDateOnly != null &&
+            dayToBuild == selectedStartDateOnly &&
+            selectedEndDateOnly == null;
 
-        final isEndSelectedOnly =
-            selectedStartDateOnly == null && selectedEndDateOnly != null && dayToBuild == selectedEndDateOnly;
+        final isEndSelectedOnly = selectedStartDateOnly == null &&
+            selectedEndDateOnly != null &&
+            dayToBuild == selectedEndDateOnly;
 
-        final isRangeOnlyOneDate = selectedStartDateOnly == selectedEndDateOnly && dayToBuild == selectedStartDateOnly;
+        final isRangeOnlyOneDate =
+            selectedStartDateOnly == selectedEndDateOnly &&
+                dayToBuild == selectedStartDateOnly;
 
-        final isSingleCellSelected = isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
+        final isSingleCellSelected =
+            isStartSelectedOnly || isEndSelectedOnly || isRangeOnlyOneDate;
 
         final bool isWithinRange = isRangeSelected &&
             dayToBuild.isAfter(selectedStartDateOnly) &&
             dayToBuild.isBefore(selectedEndDateOnly) &&
             !isRangeOnlyOneDate;
 
-        final isStartDate = DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
+        final isStartDate =
+            DateUtils.isSameDay(selectedStartDateOnly, dayToBuild);
 
         final isEndDate = DateUtils.isSameDay(selectedEndDateOnly, dayToBuild);
 
@@ -216,17 +233,23 @@ class RangeDaysView extends StatelessWidget {
           ),
         );
 
-        if ((isStartDate || isEndDate) && isRangeSelected && !isRangeOnlyOneDate) {
+        if ((isStartDate || isEndDate) &&
+            isRangeSelected &&
+            !isRangeOnlyOneDate) {
           Color? decorationColor;
-          final resolvedDecoration = rangeTheme.resolveDecoration(CellState.selected);
+          final resolvedDecoration =
+              rangeTheme.resolveDecoration(CellState.selected);
 
           // if any other implementation of Decoration is added, the user must update the resolvePainter method.
-          if (resolvedDecoration case ShapeDecoration(color: final color) || BoxDecoration(color: final color)) {
+          if (resolvedDecoration
+              case ShapeDecoration(color: final color) ||
+                  BoxDecoration(color: final color)) {
             decorationColor = color;
           }
 
           dayWidget = CustomPaint(
-            painter: rangeTheme.resolvePainter?.call(Directionality.of(context), decorationColor, isStartDate),
+            painter: rangeTheme.resolvePainter?.call(
+                Directionality.of(context), decorationColor, isStartDate),
             child: dayWidget,
           );
         }
@@ -235,21 +258,28 @@ class RangeDaysView extends StatelessWidget {
 
         if (cellBuilder != null) {
           dayWidget = ExcludeSemantics(
-            child: cellBuilder!(context, DayCell(day: dayToBuild, state: state, child: dayWidget)),
+            child: cellBuilder!(context,
+                DayCell(day: dayToBuild, state: state, child: dayWidget)),
           );
         }
 
-        String semanticLabel = '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
+        String semanticLabel =
+            '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
         if (isStartDate) {
-          semanticLabel = localizations.dateRangeStartDateSemanticLabel(semanticLabel);
+          semanticLabel =
+              localizations.dateRangeStartDateSemanticLabel(semanticLabel);
         } else if (isEndDate) {
-          semanticLabel = localizations.dateRangeEndDateSemanticLabel(semanticLabel);
+          semanticLabel =
+              localizations.dateRangeEndDateSemanticLabel(semanticLabel);
         }
 
         if (!themeEnabled) {
           dayWidget = Semantics(
             label: semanticLabel,
-            selected: isSingleCellSelected || isStartDate || isEndDate || isWithinRange,
+            selected: isSingleCellSelected ||
+                isStartDate ||
+                isEndDate ||
+                isWithinRange,
             enabled: false,
             excludeSemantics: true,
             child: dayWidget,
@@ -259,8 +289,9 @@ class RangeDaysView extends StatelessWidget {
         } else {
           dayWidget = InkResponse(
             onTap: () {
-              final isStart = (selectedEndDate == null && selectedStartDate == null) ||
-                  (selectedEndDate != null && selectedStartDate != null);
+              final isStart =
+                  (selectedEndDate == null && selectedStartDate == null) ||
+                      (selectedEndDate != null && selectedStartDate != null);
 
               if (isStart) {
                 onStartDateChanged(dayToBuild);
@@ -277,7 +308,8 @@ class RangeDaysView extends StatelessWidget {
             },
             radius: inkResponseTheme?.radius,
             splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
-            highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+            highlightColor:
+                inkResponseTheme?.highlightColor ?? Colors.transparent,
             borderRadius: inkResponseTheme?.borderRadius,
             containedInkWell: inkResponseTheme?.containedInkWell ?? false,
             customBorder: inkResponseTheme?.customBorder,
@@ -287,7 +319,10 @@ class RangeDaysView extends StatelessWidget {
             hoverColor: inkResponseTheme?.hoverColor,
             child: Semantics(
               label: semanticLabel,
-              selected: isSingleCellSelected || isStartDate || isEndDate || isWithinRange,
+              selected: isSingleCellSelected ||
+                  isStartDate ||
+                  isEndDate ||
+                  isWithinRange,
               excludeSemantics: true,
               child: dayWidget,
             ),

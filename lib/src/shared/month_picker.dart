@@ -148,11 +148,14 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   void initState() {
-    final clampedDisplayedDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedYear = DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
+    final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedYear =
+        DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
 
-    _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtilsX.monthOnly(widget.selectedDate!)
+        : null;
     _pageController = PageController(
       initialPage: (_displayedYear!.year - widget.minDate.year),
     );
@@ -162,14 +165,17 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   void didUpdateWidget(covariant MonthPicker oldWidget) {
     if (oldWidget.displayedDate != widget.displayedDate) {
-      final clampedDisplayedDate =
-          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedYear = DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
+      final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedYear =
+          DateUtilsX.yearOnly(widget.displayedDate ?? clampedDisplayedDate);
       _pageController.jumpToPage(_displayedYear!.year - widget.minDate.year);
     }
 
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtilsX.monthOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtilsX.monthOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -230,7 +236,8 @@ class _MonthPickerState extends State<MonthPicker> {
                   padding: theme.monthsPickerTheme?.padding ?? EdgeInsets.zero,
                   child: PageView.builder(
                     scrollDirection: Axis.horizontal,
-                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                    physics:
+                        isEnabled ? null : const NeverScrollableScrollPhysics(),
                     key: _pageViewKey,
                     controller: _pageController,
                     itemCount: yearsCount,

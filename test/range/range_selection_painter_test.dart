@@ -84,7 +84,8 @@ void main() {
       expect(painter.shouldRepaint(oldPainter), isFalse);
     });
 
-    testWidgets('paints LTR start: rectangle on the right half', (WidgetTester tester) async {
+    testWidgets('paints LTR start: rectangle on the right half',
+        (WidgetTester tester) async {
       final painter = RangeSelectionPainter(
         textDirection: TextDirection.ltr,
         color: Colors.red,
@@ -109,7 +110,8 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('paints RTL start: rectangle on the left half', (WidgetTester tester) async {
+    testWidgets('paints RTL start: rectangle on the left half',
+        (WidgetTester tester) async {
       final painter = RangeSelectionPainter(
         textDirection: TextDirection.rtl,
         color: Colors.blue,
@@ -136,7 +138,8 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('paints with null color without throwing', (WidgetTester tester) async {
+    testWidgets('paints with null color without throwing',
+        (WidgetTester tester) async {
       final painter = RangeSelectionPainter(
         textDirection: TextDirection.ltr,
         color: null,

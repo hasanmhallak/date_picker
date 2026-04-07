@@ -154,9 +154,10 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
   @override
   void initState() {
     _pickerType = widget.initialPickerType;
-    final clampedDisplayedDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+    final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedDate =
+        DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
 
     if (widget.selectedRange != null) {
       _selectedStartDate = DateUtils.dateOnly(widget.selectedRange!.start);
@@ -183,9 +184,10 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
     }
 
     if (widget.displayedDate != oldWidget.displayedDate) {
-      final clampedDisplayedDate =
-          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+      final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedDate =
+          DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -195,14 +197,16 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
   Widget build(BuildContext context) {
     final defaultTheme = DatePickerPlusTheme.defaults(context);
     final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final DatePickerPlusTheme theme = defaultTheme.merge(contextTheme).merge(widget.theme);
+    final DatePickerPlusTheme theme =
+        defaultTheme.merge(contextTheme).merge(widget.theme);
 
     switch (_pickerType!) {
       case PickerType.days:
         return Padding(
           padding: widget.padding,
           child: RangeDaysPicker(
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             displayedDate: _displayedDate,
             selectedEndDate: _selectedEndDate,
             selectedStartDate: _selectedStartDate,
@@ -253,7 +257,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             selectedDate: null,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             theme: theme,
             cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
@@ -283,7 +288,8 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             displayedDate: _displayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             theme: theme,
             cellBuilder: widget.cellBuilder,
             onDateSelected: (selectedYear) {

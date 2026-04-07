@@ -84,15 +84,19 @@ class MonthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context).monthsPickerTheme;
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.monthsPickerTheme;
+    final defaultTheme =
+        DatePickerPlusTheme.defaults(context).monthsPickerTheme;
+    final contextTheme =
+        Theme.of(context).extension<DatePickerPlusTheme>()?.monthsPickerTheme;
     final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
 
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     final locale = Localizations.localeOf(context);
 
     final inkResponseTheme = theme?.inkResponseTheme;
-    final cellsPadding = theme?.cellsPadding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
+    final cellsPadding = theme?.cellsPadding ??
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final int year = displayedDate.year;
     // we get rid of the day because if there is any day allowed in
@@ -105,16 +109,19 @@ class MonthView extends StatelessWidget {
       selectedMonth = DateUtilsX.monthOnly(selectedDate!);
     }
 
-    final monthsNames = DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
+    final monthsNames =
+        DateFormat('', locale.toString()).dateSymbols.STANDALONESHORTMONTHS;
     final monthsWidgetList = <Widget>[];
 
     int month = 0;
     while (month < 12) {
       final DateTime monthToBuild = DateTime(year, month + 1);
 
-      final bool isMonthDisabled = monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
+      final bool isMonthDisabled =
+          monthToBuild.isAfter(endMonth) || monthToBuild.isBefore(startMonth);
 
-      final bool isCurrentMonth = monthToBuild == DateUtilsX.monthOnly(currentDate);
+      final bool isCurrentMonth =
+          monthToBuild == DateUtilsX.monthOnly(currentDate);
 
       final bool isSelected = monthToBuild == selectedMonth;
 
@@ -149,12 +156,17 @@ class MonthView extends StatelessWidget {
         monthWidget = ExcludeSemantics(
           child: cellBuilder!(
             context,
-            MonthCell(month: monthToBuild.month, year: year, state: state, child: monthWidget),
+            MonthCell(
+                month: monthToBuild.month,
+                year: year,
+                state: state,
+                child: monthWidget),
           ),
         );
       }
 
-      final String monthSemanticLabel = localizations.formatMonthYear(monthToBuild);
+      final String monthSemanticLabel =
+          localizations.formatMonthYear(monthToBuild);
 
       if (!isEnabled) {
         monthWidget = Semantics(
@@ -173,7 +185,8 @@ class MonthView extends StatelessWidget {
           onTap: () => onChanged(monthToBuild),
           radius: inkResponseTheme?.radius,
           splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
-          highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+          highlightColor:
+              inkResponseTheme?.highlightColor ?? Colors.transparent,
           borderRadius: inkResponseTheme?.borderRadius,
           containedInkWell: inkResponseTheme?.containedInkWell ?? false,
           customBorder: inkResponseTheme?.customBorder,

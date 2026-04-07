@@ -4,10 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Helper: build a [BuildContext] that has a full [MaterialApp] above it
 /// so theme-related `.defaults()` methods work.
-Widget _wrap(Widget child) => MaterialApp(home: Material(child: Scaffold(body: child)));
+Widget _wrap(Widget child) =>
+    MaterialApp(home: Material(child: Scaffold(body: child)));
 
 /// Run [fn] inside a widget test and give it a valid [BuildContext].
-Future<void> _withContext(WidgetTester tester, void Function(BuildContext ctx) fn) async {
+Future<void> _withContext(
+    WidgetTester tester, void Function(BuildContext ctx) fn) async {
   late BuildContext captured;
   await tester.pumpWidget(
     _wrap(Builder(builder: (ctx) {
@@ -21,7 +23,8 @@ Future<void> _withContext(WidgetTester tester, void Function(BuildContext ctx) f
 void main() {
   group('HeaderTheme', () {
     test('copyWith overrides only supplied properties', () {
-      const base = HeaderTheme(enableHeader: true, enableArrowKeys: true, centerLeadingDate: false);
+      const base = HeaderTheme(
+          enableHeader: true, enableArrowKeys: true, centerLeadingDate: false);
       final copy = base.copyWith(centerLeadingDate: true);
 
       expect(copy.enableHeader, isTrue);
@@ -39,7 +42,8 @@ void main() {
         decoration: const BoxDecoration(color: Colors.blue),
       );
 
-      expect(copy.headerPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(16));
+      expect(copy.headerPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(16));
       expect((copy.decoration as BoxDecoration).color, Colors.blue);
     });
 
@@ -68,7 +72,8 @@ void main() {
       );
       final merged = a.merge(b);
 
-      expect(merged.headerPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+      expect(merged.headerPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(12));
       expect((merged.decoration as BoxDecoration).color, Colors.teal);
     });
 
@@ -160,7 +165,8 @@ void main() {
         expect(d.arrowButtonsSpace, 10);
         expect(
           d.headerPadding?.resolve(TextDirection.ltr),
-          const EdgeInsetsDirectional.only(bottom: 10.0).resolve(TextDirection.ltr),
+          const EdgeInsetsDirectional.only(bottom: 10.0)
+              .resolve(TextDirection.ltr),
         );
         expect(d.decoration, const BoxDecoration());
       });
@@ -169,7 +175,8 @@ void main() {
 
   group('DaysOfTheWeekTheme', () {
     test('copyWith preserves unset fields', () {
-      const base = DaysOfTheWeekTheme(startOfWeek: 1, weekdayLength: WeekdayLength.short);
+      const base = DaysOfTheWeekTheme(
+          startOfWeek: 1, weekdayLength: WeekdayLength.short);
       final copy = base.copyWith(startOfWeek: 7);
 
       expect(copy.startOfWeek, equals(7));
@@ -182,8 +189,10 @@ void main() {
     });
 
     test('merge: other values override base', () {
-      const a = DaysOfTheWeekTheme(startOfWeek: 1, weekdayLength: WeekdayLength.short);
-      const b = DaysOfTheWeekTheme(startOfWeek: 7, weekdayLength: WeekdayLength.long);
+      const a = DaysOfTheWeekTheme(
+          startOfWeek: 1, weekdayLength: WeekdayLength.short);
+      const b =
+          DaysOfTheWeekTheme(startOfWeek: 7, weekdayLength: WeekdayLength.long);
       final m = a.merge(b);
 
       expect(m.startOfWeek, equals(7));
@@ -231,14 +240,18 @@ void main() {
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
         disabledCellsDecoration: BoxDecoration(color: Colors.grey),
       );
-      final copy = base.copyWith(disabledCellsDecoration: const BoxDecoration(color: Colors.black));
+      final copy = base.copyWith(
+          disabledCellsDecoration: const BoxDecoration(color: Colors.black));
 
-      expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
-      expect((copy.disabledCellsDecoration as BoxDecoration).color, equals(Colors.black));
+      expect((copy.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.red));
+      expect((copy.disabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.black));
     });
 
     test('merge: null other returns self', () {
-      const theme = DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
+      const theme = DaysPickerTheme(
+          enabledCellsDecoration: BoxDecoration(color: Colors.red));
       expect(theme.merge(null), same(theme));
     });
 
@@ -251,7 +264,8 @@ void main() {
       );
       final m = a.merge(b);
 
-      expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
+      expect((m.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.blue));
     });
 
     test('merge: cell text styles are merged, not replaced', () {
@@ -287,11 +301,16 @@ void main() {
         selectedCellTextStyle: const TextStyle(color: Colors.white),
       );
 
-      expect(theme.resolveTextStyle(CellState.enabled)?.color, equals(Colors.green));
-      expect(theme.resolveTextStyle(CellState.disabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.current)?.color, equals(Colors.blue));
-      expect(theme.resolveTextStyle(CellState.selected)?.color, equals(Colors.white));
+      expect(theme.resolveTextStyle(CellState.enabled)?.color,
+          equals(Colors.green));
+      expect(theme.resolveTextStyle(CellState.disabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.current)?.color,
+          equals(Colors.blue));
+      expect(theme.resolveTextStyle(CellState.selected)?.color,
+          equals(Colors.white));
     });
 
     test('resolveDecoration returns correct decoration for each CellState', () {
@@ -309,7 +328,8 @@ void main() {
 
       expect(theme.resolveDecoration(CellState.enabled), equals(enabled));
       expect(theme.resolveDecoration(CellState.disabled), equals(disabled));
-      expect(theme.resolveDecoration(CellState.currentAndDisabled), equals(current));
+      expect(theme.resolveDecoration(CellState.currentAndDisabled),
+          equals(current));
       expect(theme.resolveDecoration(CellState.current), equals(current));
       expect(theme.resolveDecoration(CellState.selected), equals(selected));
     });
@@ -328,13 +348,15 @@ void main() {
     test('copyWith overrides cellsPadding', () {
       const base = DaysPickerTheme(cellsPadding: EdgeInsets.all(4));
       final copy = base.copyWith(cellsPadding: const EdgeInsets.all(10));
-      expect(copy.cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+      expect(copy.cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(10));
     });
 
     test('merge applies other cellsPadding', () {
       const a = DaysPickerTheme(cellsPadding: EdgeInsets.zero);
       const b = DaysPickerTheme(cellsPadding: EdgeInsets.all(8));
-      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates cellsPadding', () {
@@ -343,20 +365,23 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
 
     test('copyWith overrides padding', () {
       const base = DaysPickerTheme(padding: EdgeInsets.all(4));
       final copy = base.copyWith(padding: const EdgeInsets.all(10));
-      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+      expect(
+          copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
     });
 
     test('merge applies other padding', () {
       const a = DaysPickerTheme(padding: EdgeInsets.zero);
       const b = DaysPickerTheme(padding: EdgeInsets.all(8));
-      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates padding', () {
@@ -365,7 +390,8 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.padding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
   });
@@ -380,8 +406,10 @@ void main() {
         enabledCellsDecoration: const BoxDecoration(color: Colors.green),
       );
 
-      expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.green));
-      expect((copy.selectedCellDecoration as BoxDecoration).color, equals(Colors.blue));
+      expect((copy.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.green));
+      expect((copy.selectedCellDecoration as BoxDecoration).color,
+          equals(Colors.blue));
     });
 
     test('merge: null other returns self', () {
@@ -390,10 +418,13 @@ void main() {
     });
 
     test('merge: other overrides properties', () {
-      const a = MonthsPickerTheme(selectedCellDecoration: BoxDecoration(color: Colors.red));
-      const b = MonthsPickerTheme(selectedCellDecoration: BoxDecoration(color: Colors.teal));
+      const a = MonthsPickerTheme(
+          selectedCellDecoration: BoxDecoration(color: Colors.red));
+      const b = MonthsPickerTheme(
+          selectedCellDecoration: BoxDecoration(color: Colors.teal));
       final m = a.merge(b);
-      expect((m.selectedCellDecoration as BoxDecoration).color, equals(Colors.teal));
+      expect((m.selectedCellDecoration as BoxDecoration).color,
+          equals(Colors.teal));
     });
 
     test('merge: cell text styles are merged, not replaced', () {
@@ -429,11 +460,16 @@ void main() {
         selectedCellTextStyle: const TextStyle(color: Colors.white),
       );
 
-      expect(theme.resolveTextStyle(CellState.enabled)?.color, equals(Colors.green));
-      expect(theme.resolveTextStyle(CellState.disabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.current)?.color, equals(Colors.blue));
-      expect(theme.resolveTextStyle(CellState.selected)?.color, equals(Colors.white));
+      expect(theme.resolveTextStyle(CellState.enabled)?.color,
+          equals(Colors.green));
+      expect(theme.resolveTextStyle(CellState.disabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.current)?.color,
+          equals(Colors.blue));
+      expect(theme.resolveTextStyle(CellState.selected)?.color,
+          equals(Colors.white));
     });
 
     test('resolveDecoration returns correct decoration for each CellState', () {
@@ -451,7 +487,8 @@ void main() {
 
       expect(theme.resolveDecoration(CellState.enabled), equals(enabled));
       expect(theme.resolveDecoration(CellState.disabled), equals(disabled));
-      expect(theme.resolveDecoration(CellState.currentAndDisabled), equals(current));
+      expect(theme.resolveDecoration(CellState.currentAndDisabled),
+          equals(current));
       expect(theme.resolveDecoration(CellState.current), equals(current));
       expect(theme.resolveDecoration(CellState.selected), equals(selected));
     });
@@ -472,13 +509,15 @@ void main() {
     test('copyWith overrides cellsPadding', () {
       const base = MonthsPickerTheme(cellsPadding: EdgeInsets.all(4));
       final copy = base.copyWith(cellsPadding: const EdgeInsets.all(12));
-      expect(copy.cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+      expect(copy.cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(12));
     });
 
     test('merge applies other cellsPadding', () {
       const a = MonthsPickerTheme(cellsPadding: EdgeInsets.zero);
       const b = MonthsPickerTheme(cellsPadding: EdgeInsets.all(8));
-      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates cellsPadding', () {
@@ -487,20 +526,23 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
 
     test('copyWith overrides padding', () {
       const base = MonthsPickerTheme(padding: EdgeInsets.all(4));
       final copy = base.copyWith(padding: const EdgeInsets.all(12));
-      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+      expect(
+          copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
     });
 
     test('merge applies other padding', () {
       const a = MonthsPickerTheme(padding: EdgeInsets.zero);
       const b = MonthsPickerTheme(padding: EdgeInsets.all(8));
-      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates padding', () {
@@ -509,7 +551,8 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.padding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
   });
@@ -524,8 +567,10 @@ void main() {
         enabledCellsDecoration: const BoxDecoration(color: Colors.green),
       );
 
-      expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.green));
-      expect((copy.selectedCellDecoration as BoxDecoration).color, equals(Colors.blue));
+      expect((copy.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.green));
+      expect((copy.selectedCellDecoration as BoxDecoration).color,
+          equals(Colors.blue));
     });
 
     test('merge: null other returns self', () {
@@ -534,10 +579,13 @@ void main() {
     });
 
     test('merge: other overrides properties', () {
-      const a = YearsPickerTheme(selectedCellDecoration: BoxDecoration(color: Colors.red));
-      const b = YearsPickerTheme(selectedCellDecoration: BoxDecoration(color: Colors.indigo));
+      const a = YearsPickerTheme(
+          selectedCellDecoration: BoxDecoration(color: Colors.red));
+      const b = YearsPickerTheme(
+          selectedCellDecoration: BoxDecoration(color: Colors.indigo));
       final m = a.merge(b);
-      expect((m.selectedCellDecoration as BoxDecoration).color, equals(Colors.indigo));
+      expect((m.selectedCellDecoration as BoxDecoration).color,
+          equals(Colors.indigo));
     });
 
     test('merge: cell text styles are merged, not replaced', () {
@@ -573,11 +621,16 @@ void main() {
         selectedCellTextStyle: const TextStyle(color: Colors.white),
       );
 
-      expect(theme.resolveTextStyle(CellState.enabled)?.color, equals(Colors.green));
-      expect(theme.resolveTextStyle(CellState.disabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.current)?.color, equals(Colors.blue));
-      expect(theme.resolveTextStyle(CellState.selected)?.color, equals(Colors.white));
+      expect(theme.resolveTextStyle(CellState.enabled)?.color,
+          equals(Colors.green));
+      expect(theme.resolveTextStyle(CellState.disabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.current)?.color,
+          equals(Colors.blue));
+      expect(theme.resolveTextStyle(CellState.selected)?.color,
+          equals(Colors.white));
     });
 
     test('resolveDecoration returns correct decoration for each CellState', () {
@@ -595,7 +648,8 @@ void main() {
 
       expect(theme.resolveDecoration(CellState.enabled), equals(enabled));
       expect(theme.resolveDecoration(CellState.disabled), equals(disabled));
-      expect(theme.resolveDecoration(CellState.currentAndDisabled), equals(current));
+      expect(theme.resolveDecoration(CellState.currentAndDisabled),
+          equals(current));
       expect(theme.resolveDecoration(CellState.current), equals(current));
       expect(theme.resolveDecoration(CellState.selected), equals(selected));
     });
@@ -616,13 +670,15 @@ void main() {
     test('copyWith overrides cellsPadding', () {
       const base = YearsPickerTheme(cellsPadding: EdgeInsets.all(4));
       final copy = base.copyWith(cellsPadding: const EdgeInsets.all(12));
-      expect(copy.cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+      expect(copy.cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(12));
     });
 
     test('merge applies other cellsPadding', () {
       const a = YearsPickerTheme(cellsPadding: EdgeInsets.zero);
       const b = YearsPickerTheme(cellsPadding: EdgeInsets.all(8));
-      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates cellsPadding', () {
@@ -631,20 +687,23 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
 
     test('copyWith overrides padding', () {
       const base = YearsPickerTheme(padding: EdgeInsets.all(4));
       final copy = base.copyWith(padding: const EdgeInsets.all(12));
-      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
+      expect(
+          copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(12));
     });
 
     test('merge applies other padding', () {
       const a = YearsPickerTheme(padding: EdgeInsets.zero);
       const b = YearsPickerTheme(padding: EdgeInsets.all(8));
-      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates padding', () {
@@ -653,7 +712,8 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.padding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
   });
@@ -664,14 +724,18 @@ void main() {
         enabledCellsDecoration: BoxDecoration(color: Colors.red),
         disabledCellsDecoration: BoxDecoration(color: Colors.grey),
       );
-      final copy = base.copyWith(disabledCellsDecoration: const BoxDecoration(color: Colors.black));
+      final copy = base.copyWith(
+          disabledCellsDecoration: const BoxDecoration(color: Colors.black));
 
-      expect((copy.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
-      expect((copy.disabledCellsDecoration as BoxDecoration).color, equals(Colors.black));
+      expect((copy.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.red));
+      expect((copy.disabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.black));
     });
 
     test('merge: null other returns self', () {
-      const theme = RangePickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
+      const theme = RangePickerTheme(
+          enabledCellsDecoration: BoxDecoration(color: Colors.red));
       expect(theme.merge(null), same(theme));
     });
 
@@ -684,7 +748,8 @@ void main() {
       );
       final m = a.merge(b);
 
-      expect((m.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
+      expect((m.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.blue));
     });
 
     test('merge: cell text styles are merged, not replaced', () {
@@ -725,12 +790,18 @@ void main() {
         selectedEdgeCellTextStyle: const TextStyle(color: Colors.orange),
       );
 
-      expect(theme.resolveTextStyle(CellState.enabled)?.color, equals(Colors.green));
-      expect(theme.resolveTextStyle(CellState.disabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color, equals(Colors.grey));
-      expect(theme.resolveTextStyle(CellState.current)?.color, equals(Colors.blue));
-      expect(theme.resolveTextStyle(CellState.selected)?.color, equals(Colors.white));
-      expect(theme.resolveTextStyle(CellState.selectedEdge)?.color, equals(Colors.orange));
+      expect(theme.resolveTextStyle(CellState.enabled)?.color,
+          equals(Colors.green));
+      expect(theme.resolveTextStyle(CellState.disabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.currentAndDisabled)?.color,
+          equals(Colors.grey));
+      expect(theme.resolveTextStyle(CellState.current)?.color,
+          equals(Colors.blue));
+      expect(theme.resolveTextStyle(CellState.selected)?.color,
+          equals(Colors.white));
+      expect(theme.resolveTextStyle(CellState.selectedEdge)?.color,
+          equals(Colors.orange));
     });
 
     test('resolveDecoration returns correct decoration for each CellState', () {
@@ -750,10 +821,12 @@ void main() {
 
       expect(theme.resolveDecoration(CellState.enabled), equals(enabled));
       expect(theme.resolveDecoration(CellState.disabled), equals(disabled));
-      expect(theme.resolveDecoration(CellState.currentAndDisabled), equals(current));
+      expect(theme.resolveDecoration(CellState.currentAndDisabled),
+          equals(current));
       expect(theme.resolveDecoration(CellState.current), equals(current));
       expect(theme.resolveDecoration(CellState.selected), equals(selected));
-      expect(theme.resolveDecoration(CellState.selectedEdge), equals(selectedEdge));
+      expect(theme.resolveDecoration(CellState.selectedEdge),
+          equals(selectedEdge));
     });
 
     testWidgets('defaults returns non-null values', (tester) async {
@@ -770,13 +843,15 @@ void main() {
     test('copyWith overrides cellsPadding', () {
       const base = RangePickerTheme(cellsPadding: EdgeInsets.all(4));
       final copy = base.copyWith(cellsPadding: const EdgeInsets.all(10));
-      expect(copy.cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+      expect(copy.cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(10));
     });
 
     test('merge applies other cellsPadding', () {
       const a = RangePickerTheme(cellsPadding: EdgeInsets.zero);
       const b = RangePickerTheme(cellsPadding: EdgeInsets.all(8));
-      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).cellsPadding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates cellsPadding', () {
@@ -785,20 +860,23 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.cellsPadding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
 
     test('copyWith overrides padding', () {
       const base = RangePickerTheme(padding: EdgeInsets.all(4));
       final copy = base.copyWith(padding: const EdgeInsets.all(10));
-      expect(copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
+      expect(
+          copy.padding?.resolve(TextDirection.ltr), const EdgeInsets.all(10));
     });
 
     test('merge applies other padding', () {
       const a = RangePickerTheme(padding: EdgeInsets.zero);
       const b = RangePickerTheme(padding: EdgeInsets.all(8));
-      expect(a.merge(b).padding?.resolve(TextDirection.ltr), const EdgeInsets.all(8));
+      expect(a.merge(b).padding?.resolve(TextDirection.ltr),
+          const EdgeInsets.all(8));
     });
 
     test('lerp interpolates padding', () {
@@ -807,18 +885,22 @@ void main() {
       final result = a.lerp(b, 0.5);
       expect(
         result.padding?.resolve(TextDirection.ltr),
-        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)?.resolve(TextDirection.ltr),
+        EdgeInsetsGeometry.lerp(EdgeInsets.zero, const EdgeInsets.all(20), 0.5)
+            ?.resolve(TextDirection.ltr),
       );
     });
   });
 
   group('DatePickerPlusTheme', () {
     test('copyWith preserves unset fields', () {
-      const daysTheme = DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red));
+      const daysTheme = DaysPickerTheme(
+          enabledCellsDecoration: BoxDecoration(color: Colors.red));
       const a = DatePickerPlusTheme(daysPickerTheme: daysTheme);
       final copy = a.copyWith();
 
-      expect((copy.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color, equals(Colors.red));
+      expect(
+          (copy.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.red));
     });
 
     test('merge: null other returns self', () {
@@ -828,13 +910,16 @@ void main() {
 
     test('merge: other sub-themes are merged', () {
       const a = DatePickerPlusTheme(
-        daysPickerTheme: DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.red)),
+        daysPickerTheme: DaysPickerTheme(
+            enabledCellsDecoration: BoxDecoration(color: Colors.red)),
       );
       const b = DatePickerPlusTheme(
-        daysPickerTheme: DaysPickerTheme(enabledCellsDecoration: BoxDecoration(color: Colors.blue)),
+        daysPickerTheme: DaysPickerTheme(
+            enabledCellsDecoration: BoxDecoration(color: Colors.blue)),
       );
       final m = a.merge(b);
-      expect((m.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color, equals(Colors.blue));
+      expect((m.daysPickerTheme?.enabledCellsDecoration as BoxDecoration).color,
+          equals(Colors.blue));
     });
 
     testWidgets('defaults creates non-null sub-themes', (tester) async {

@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 /// It takes the [textDirection] for layout purposes, the base [color] for
 /// the decoration, and a [start] flag indicating if the cell is the
 /// start or end date of the range.
-typedef ResolvePainter = RangeDecorationPainter? Function(TextDirection textDirection, Color? color, bool start);
+typedef ResolvePainter = RangeDecorationPainter? Function(
+    TextDirection textDirection, Color? color, bool start);
 
 /// An abstract base class for custom painters that decorate range selections.
 ///
@@ -95,6 +96,8 @@ class RangeSelectionPainter extends RangeDecorationPainter {
 
   @override
   bool shouldRepaint(covariant RangeDecorationPainter oldDelegate) {
-    return oldDelegate.textDirection != textDirection || oldDelegate.color != color || oldDelegate.start != start;
+    return oldDelegate.textDirection != textDirection ||
+        oldDelegate.color != color ||
+        oldDelegate.start != start;
   }
 }

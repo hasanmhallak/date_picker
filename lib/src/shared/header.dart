@@ -12,14 +12,22 @@ Widget _headerArrowButton({
   required Widget? child,
   required String semanticsLabel,
 }) {
-  final ink = forward ? theme?.forwardButtonInkResponseTheme : theme?.backwardButtonInkResponseTheme;
+  final ink = forward
+      ? theme?.forwardButtonInkResponseTheme
+      : theme?.backwardButtonInkResponseTheme;
   final fallbackInk = InkResponseTheme.defaults(context);
   final i = ink ?? fallbackInk;
-  final decoration = forward ? theme?.forwardButtonDecoration : theme?.backwardButtonDecoration;
-  final width = forward ? theme?.forwardButtonWidth : theme?.backwardButtonWidth;
-  final height = forward ? theme?.forwardButtonHeight : theme?.backwardButtonHeight;
-  final resolvedDecoration = decoration ?? const ShapeDecoration(shape: CircleBorder());
-  final materialShape = i.customBorder ?? (decoration?.shape ?? const CircleBorder());
+  final decoration = forward
+      ? theme?.forwardButtonDecoration
+      : theme?.backwardButtonDecoration;
+  final width =
+      forward ? theme?.forwardButtonWidth : theme?.backwardButtonWidth;
+  final height =
+      forward ? theme?.forwardButtonHeight : theme?.backwardButtonHeight;
+  final resolvedDecoration =
+      decoration ?? const ShapeDecoration(shape: CircleBorder());
+  final materialShape =
+      i.customBorder ?? (decoration?.shape ?? const CircleBorder());
 
   return Semantics(
     label: semanticsLabel,
@@ -118,7 +126,8 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultTheme = DatePickerPlusTheme.defaults(context).headerTheme;
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.headerTheme;
+    final contextTheme =
+        Theme.of(context).extension<DatePickerPlusTheme>()?.headerTheme;
     final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
 
     final headerTheme = theme;
@@ -128,8 +137,10 @@ class Header extends StatelessWidget {
     }
 
     final centerLeadingDate = headerTheme?.centerLeadingDate;
-    final nextPageSemanticLabel = MaterialLocalizations.of(context).nextPageTooltip;
-    final previousPageSemanticLabel = MaterialLocalizations.of(context).previousPageTooltip;
+    final nextPageSemanticLabel =
+        MaterialLocalizations.of(context).nextPageTooltip;
+    final previousPageSemanticLabel =
+        MaterialLocalizations.of(context).previousPageTooltip;
 
     final forwardButtonWidget = headerTheme?.forwardArrowWidget;
     final backwardButtonWidget = headerTheme?.backwardArrowWidget;

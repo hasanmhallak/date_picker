@@ -8,7 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('DaysView cellBuilder', () {
-    testWidgets('receives DayCell with correct date, state, and bare widget', (WidgetTester tester) async {
+    testWidgets('receives DayCell with correct date, state, and bare widget',
+        (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
@@ -48,7 +49,8 @@ void main() {
       expect(day1.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)',
+        (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
@@ -76,7 +78,8 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided',
+        (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
@@ -108,7 +111,8 @@ void main() {
       expect(selected, DateTime(2020, 1, 4));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
@@ -135,7 +139,8 @@ void main() {
       expect(find.byIcon(Icons.star), findsNWidgets(31));
     });
 
-    testWidgets('disabled day still receives correct state and is not tappable', (WidgetTester tester) async {
+    testWidgets('disabled day still receives correct state and is not tappable',
+        (WidgetTester tester) async {
       CellState? disabledState;
       bool tapped = false;
 
@@ -171,7 +176,8 @@ void main() {
   });
 
   group('DaysView weekday headers cellBuilder', () {
-    testWidgets('receives WeekDayCell with correct weekDay values', (WidgetTester tester) async {
+    testWidgets('receives WeekDayCell with correct weekDay values',
+        (WidgetTester tester) async {
       final List<WeekDayCell> weekDayCells = [];
 
       await tester.pumpWidget(
@@ -207,7 +213,8 @@ void main() {
   });
 
   group('MonthView cellBuilder', () {
-    testWidgets('receives MonthCell with correct month, year, and state', (WidgetTester tester) async {
+    testWidgets('receives MonthCell with correct month, year, and state',
+        (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
@@ -243,7 +250,8 @@ void main() {
       expect(june.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)',
+        (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
@@ -271,7 +279,8 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided',
+        (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
@@ -303,7 +312,8 @@ void main() {
       expect(selected, DateTime(2020, 2));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
@@ -331,7 +341,8 @@ void main() {
   });
 
   group('YearView cellBuilder', () {
-    testWidgets('receives YearCell with correct year and state', (WidgetTester tester) async {
+    testWidgets('receives YearCell with correct year and state',
+        (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
@@ -342,7 +353,8 @@ void main() {
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange:
+                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               selectedDate: DateTime(2022),
               cellBuilder: (context, data) {
                 recorded.add(data);
@@ -366,7 +378,8 @@ void main() {
       expect(year2021.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)',
+        (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
@@ -377,7 +390,8 @@ void main() {
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange:
+                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
                 if (data is YearCell && data.year == 2021) {
                   capturedChild = data.child;
@@ -394,7 +408,8 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided',
+        (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
@@ -405,7 +420,8 @@ void main() {
               onChanged: (date) => selected = date,
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange:
+                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
                 return Stack(
                   children: [
@@ -426,7 +442,8 @@ void main() {
       expect(selected, DateTime(2021));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
@@ -435,7 +452,8 @@ void main() {
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange:
+                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
                 return Stack(
                   children: [
@@ -454,7 +472,8 @@ void main() {
   });
 
   group('RangeDaysView cellBuilder', () {
-    testWidgets('receives DayCell with correct date and state', (WidgetTester tester) async {
+    testWidgets('receives DayCell with correct date and state',
+        (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
@@ -494,7 +513,8 @@ void main() {
       expect(day20.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)',
+        (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
@@ -525,7 +545,8 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires start/end date callbacks when cellBuilder is provided',
+    testWidgets(
+        'tapping still fires start/end date callbacks when cellBuilder is provided',
         (WidgetTester tester) async {
       DateTime? startDate;
       DateTime? endDate;
@@ -563,7 +584,8 @@ void main() {
       expect(endDate, isNull);
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(

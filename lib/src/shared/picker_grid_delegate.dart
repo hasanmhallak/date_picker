@@ -48,7 +48,8 @@ class PickerGridDelegate extends SliverGridDelegate {
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
     final double tileWidth = constraints.crossAxisExtent / columnCount;
-    final double calculatedTileHeight = (constraints.viewportMainAxisExtent) / rowCount;
+    final double calculatedTileHeight =
+        (constraints.viewportMainAxisExtent) / rowCount;
 
     return SliverGridRegularTileLayout(
       crossAxisCount: columnCount,
@@ -62,7 +63,8 @@ class PickerGridDelegate extends SliverGridDelegate {
 
   @override
   bool shouldRelayout(PickerGridDelegate oldDelegate) {
-    return columnCount != oldDelegate.columnCount || rowCount != oldDelegate.rowCount;
+    return columnCount != oldDelegate.columnCount ||
+        rowCount != oldDelegate.rowCount;
   }
 
   // for when the keyboard is opened.

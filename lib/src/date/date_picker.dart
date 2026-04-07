@@ -144,12 +144,15 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
-    final clampedDisplayedDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+    final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedDate =
+        DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     _pickerType = widget.initialPickerType;
 
-    _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtils.dateOnly(widget.selectedDate!)
+        : null;
 
     super.initState();
   }
@@ -157,15 +160,18 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didUpdateWidget(covariant DatePicker oldWidget) {
     if (oldWidget.displayedDate != widget.displayedDate) {
-      final clampedDisplayedDate =
-          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedDate = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+      final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedDate =
+          DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     }
     if (oldWidget.initialPickerType != widget.initialPickerType) {
       _pickerType = widget.initialPickerType;
     }
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtils.dateOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtils.dateOnly(widget.selectedDate!)
+          : null;
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -183,7 +189,8 @@ class _DatePickerState extends State<DatePicker> {
           child: DaysPicker(
             displayedDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             disabledDayPredicate: widget.disabledDayPredicate,
@@ -210,7 +217,8 @@ class _DatePickerState extends State<DatePicker> {
           child: MonthPicker(
             displayedDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             theme: theme,
@@ -240,7 +248,8 @@ class _DatePickerState extends State<DatePicker> {
           child: YearsPicker(
             displayedDate: _displayedDate,
             selectedDate: _selectedDate,
-            currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+            currentDate:
+                DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
             theme: theme,

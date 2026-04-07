@@ -96,9 +96,11 @@ class DaysView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultTheme = DatePickerPlusTheme.defaults(context).daysPickerTheme;
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.daysPickerTheme;
+    final contextTheme =
+        Theme.of(context).extension<DatePickerPlusTheme>()?.daysPickerTheme;
     final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
 
     final daysTheme = theme;
     final inkResponseTheme = daysTheme?.inkResponseTheme;
@@ -108,12 +110,14 @@ class DaysView extends StatelessWidget {
     final int year = displayedMonth.year;
     final int month = displayedMonth.month;
     final int daysInMonth = DateUtils.getDaysInMonth(year, month);
-    final int dayOffset = DateUtilsX.firstDayOffset(year, month, daysOfWeekTheme!.startOfWeek!);
+    final int dayOffset =
+        DateUtilsX.firstDayOffset(year, month, daysOfWeekTheme!.startOfWeek!);
 
     final maxDate = DateUtils.dateOnly(this.maxDate);
     final minDate = DateUtils.dateOnly(this.minDate);
 
-    final List<Widget> dayItems = dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
+    final List<Widget> dayItems =
+        dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
 
     if (cellBuilder != null) {
       final startOfWeek = daysOfWeekTheme.startOfWeek!;
@@ -122,7 +126,10 @@ class DaysView extends StatelessWidget {
         dayItems[i] = ExcludeSemantics(
           child: cellBuilder!(
             context,
-            WeekDayCell(weekDay: isoWeekday, state: CellState.enabled, child: dayItems[i]),
+            WeekDayCell(
+                weekDay: isoWeekday,
+                state: CellState.enabled,
+                child: dayItems[i]),
           ),
         );
       }
@@ -139,7 +146,8 @@ class DaysView extends StatelessWidget {
             dayToBuild.isBefore(minDate) ||
             (disabledDayPredicate?.call(dayToBuild) ?? false);
 
-        final bool isSelectedDay = DateUtils.isSameDay(selectedDate, dayToBuild);
+        final bool isSelectedDay =
+            DateUtils.isSameDay(selectedDate, dayToBuild);
         final bool isCurrent = DateUtils.isSameDay(currentDate, dayToBuild);
 
         CellState state = CellState.enabled;
@@ -171,11 +179,13 @@ class DaysView extends StatelessWidget {
 
         if (cellBuilder != null) {
           dayWidget = ExcludeSemantics(
-            child: cellBuilder!(context, DayCell(day: dayToBuild, state: state, child: dayWidget)),
+            child: cellBuilder!(context,
+                DayCell(day: dayToBuild, state: state, child: dayWidget)),
           );
         }
 
-        final String semanticLabel = '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
+        final String semanticLabel =
+            '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
 
         if (!isEnabled) {
           dayWidget = Semantics(

@@ -7,7 +7,8 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the grid of days.
 @immutable
-class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with DiagnosticableTreeMixin {
+class DaysPickerTheme extends ThemeExtension<DaysPickerTheme>
+    with DiagnosticableTreeMixin {
   /// Creates a [DaysPickerTheme].
   const DaysPickerTheme({
     this.daysOfTheWeekTheme,
@@ -181,14 +182,21 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   }) {
     return DaysPickerTheme(
       daysOfTheWeekTheme: daysOfTheWeekTheme ?? this.daysOfTheWeekTheme,
-      enabledCellsTextStyle: enabledCellsTextStyle ?? this.enabledCellsTextStyle,
-      enabledCellsDecoration: enabledCellsDecoration ?? this.enabledCellsDecoration,
-      disabledCellsTextStyle: disabledCellsTextStyle ?? this.disabledCellsTextStyle,
-      disabledCellsDecoration: disabledCellsDecoration ?? this.disabledCellsDecoration,
+      enabledCellsTextStyle:
+          enabledCellsTextStyle ?? this.enabledCellsTextStyle,
+      enabledCellsDecoration:
+          enabledCellsDecoration ?? this.enabledCellsDecoration,
+      disabledCellsTextStyle:
+          disabledCellsTextStyle ?? this.disabledCellsTextStyle,
+      disabledCellsDecoration:
+          disabledCellsDecoration ?? this.disabledCellsDecoration,
       currentDateTextStyle: currentDateTextStyle ?? this.currentDateTextStyle,
-      currentDateDecoration: currentDateDecoration ?? this.currentDateDecoration,
-      selectedCellTextStyle: selectedCellTextStyle ?? this.selectedCellTextStyle,
-      selectedCellDecoration: selectedCellDecoration ?? this.selectedCellDecoration,
+      currentDateDecoration:
+          currentDateDecoration ?? this.currentDateDecoration,
+      selectedCellTextStyle:
+          selectedCellTextStyle ?? this.selectedCellTextStyle,
+      selectedCellDecoration:
+          selectedCellDecoration ?? this.selectedCellDecoration,
       cellsPadding: cellsPadding ?? this.cellsPadding,
       padding: padding ?? this.padding,
       inkResponseTheme: inkResponseTheme ?? this.inkResponseTheme,
@@ -199,37 +207,56 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   DaysPickerTheme merge(covariant DaysPickerTheme? other) {
     if (other == null) return this;
     return copyWith(
-      daysOfTheWeekTheme: daysOfTheWeekTheme?.merge(other.daysOfTheWeekTheme) ?? other.daysOfTheWeekTheme,
-      enabledCellsTextStyle: enabledCellsTextStyle?.merge(other.enabledCellsTextStyle) ?? other.enabledCellsTextStyle,
+      daysOfTheWeekTheme: daysOfTheWeekTheme?.merge(other.daysOfTheWeekTheme) ??
+          other.daysOfTheWeekTheme,
+      enabledCellsTextStyle:
+          enabledCellsTextStyle?.merge(other.enabledCellsTextStyle) ??
+              other.enabledCellsTextStyle,
       enabledCellsDecoration: other.enabledCellsDecoration,
       disabledCellsTextStyle:
-          disabledCellsTextStyle?.merge(other.disabledCellsTextStyle) ?? other.disabledCellsTextStyle,
+          disabledCellsTextStyle?.merge(other.disabledCellsTextStyle) ??
+              other.disabledCellsTextStyle,
       disabledCellsDecoration: other.disabledCellsDecoration,
-      currentDateTextStyle: currentDateTextStyle?.merge(other.currentDateTextStyle) ?? other.currentDateTextStyle,
+      currentDateTextStyle:
+          currentDateTextStyle?.merge(other.currentDateTextStyle) ??
+              other.currentDateTextStyle,
       currentDateDecoration: other.currentDateDecoration,
-      selectedCellTextStyle: selectedCellTextStyle?.merge(other.selectedCellTextStyle) ?? other.selectedCellTextStyle,
+      selectedCellTextStyle:
+          selectedCellTextStyle?.merge(other.selectedCellTextStyle) ??
+              other.selectedCellTextStyle,
       selectedCellDecoration: other.selectedCellDecoration,
       cellsPadding: other.cellsPadding,
       padding: other.padding,
-      inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ?? other.inkResponseTheme,
+      inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ??
+          other.inkResponseTheme,
     );
   }
 
   @override
-  DaysPickerTheme lerp(covariant ThemeExtension<DaysPickerTheme>? other, double t) {
+  DaysPickerTheme lerp(
+      covariant ThemeExtension<DaysPickerTheme>? other, double t) {
     if (other is! DaysPickerTheme) return this;
 
     return DaysPickerTheme(
       daysOfTheWeekTheme: daysOfTheWeekTheme?.lerp(other.daysOfTheWeekTheme, t),
-      enabledCellsTextStyle: TextStyle.lerp(enabledCellsTextStyle, other.enabledCellsTextStyle, t),
-      enabledCellsDecoration: Decoration.lerp(enabledCellsDecoration, other.enabledCellsDecoration, t),
-      disabledCellsTextStyle: TextStyle.lerp(disabledCellsTextStyle, other.disabledCellsTextStyle, t),
-      disabledCellsDecoration: Decoration.lerp(disabledCellsDecoration, other.disabledCellsDecoration, t),
-      currentDateTextStyle: TextStyle.lerp(currentDateTextStyle, other.currentDateTextStyle, t),
-      currentDateDecoration: Decoration.lerp(currentDateDecoration, other.currentDateDecoration, t),
-      selectedCellTextStyle: TextStyle.lerp(selectedCellTextStyle, other.selectedCellTextStyle, t),
-      selectedCellDecoration: Decoration.lerp(selectedCellDecoration, other.selectedCellDecoration, t),
-      cellsPadding: EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
+      enabledCellsTextStyle:
+          TextStyle.lerp(enabledCellsTextStyle, other.enabledCellsTextStyle, t),
+      enabledCellsDecoration: Decoration.lerp(
+          enabledCellsDecoration, other.enabledCellsDecoration, t),
+      disabledCellsTextStyle: TextStyle.lerp(
+          disabledCellsTextStyle, other.disabledCellsTextStyle, t),
+      disabledCellsDecoration: Decoration.lerp(
+          disabledCellsDecoration, other.disabledCellsDecoration, t),
+      currentDateTextStyle:
+          TextStyle.lerp(currentDateTextStyle, other.currentDateTextStyle, t),
+      currentDateDecoration: Decoration.lerp(
+          currentDateDecoration, other.currentDateDecoration, t),
+      selectedCellTextStyle:
+          TextStyle.lerp(selectedCellTextStyle, other.selectedCellTextStyle, t),
+      selectedCellDecoration: Decoration.lerp(
+          selectedCellDecoration, other.selectedCellDecoration, t),
+      cellsPadding:
+          EdgeInsetsGeometry.lerp(cellsPadding, other.cellsPadding, t),
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),
     );
@@ -238,17 +265,29 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme> with Diagnosticabl
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<DaysOfTheWeekTheme?>('daysOfTheWeekTheme', daysOfTheWeekTheme));
-    properties.add(DiagnosticsProperty<TextStyle?>('enabledCellsTextStyle', enabledCellsTextStyle));
-    properties.add(DiagnosticsProperty<Decoration?>('enabledCellsDecoration', enabledCellsDecoration));
-    properties.add(DiagnosticsProperty<TextStyle?>('disabledCellsTextStyle', disabledCellsTextStyle));
-    properties.add(DiagnosticsProperty<Decoration?>('disabledCellsDecoration', disabledCellsDecoration));
-    properties.add(DiagnosticsProperty<TextStyle?>('currentDateTextStyle', currentDateTextStyle));
-    properties.add(DiagnosticsProperty<Decoration?>('currentDateDecoration', currentDateDecoration));
-    properties.add(DiagnosticsProperty<TextStyle?>('selectedCellTextStyle', selectedCellTextStyle));
-    properties.add(DiagnosticsProperty<Decoration?>('selectedCellDecoration', selectedCellDecoration));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('cellsPadding', cellsPadding));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('padding', padding));
-    properties.add(DiagnosticsProperty<InkResponseTheme?>('inkResponseTheme', inkResponseTheme));
+    properties.add(DiagnosticsProperty<DaysOfTheWeekTheme?>(
+        'daysOfTheWeekTheme', daysOfTheWeekTheme));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'enabledCellsTextStyle', enabledCellsTextStyle));
+    properties.add(DiagnosticsProperty<Decoration?>(
+        'enabledCellsDecoration', enabledCellsDecoration));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'disabledCellsTextStyle', disabledCellsTextStyle));
+    properties.add(DiagnosticsProperty<Decoration?>(
+        'disabledCellsDecoration', disabledCellsDecoration));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'currentDateTextStyle', currentDateTextStyle));
+    properties.add(DiagnosticsProperty<Decoration?>(
+        'currentDateDecoration', currentDateDecoration));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'selectedCellTextStyle', selectedCellTextStyle));
+    properties.add(DiagnosticsProperty<Decoration?>(
+        'selectedCellDecoration', selectedCellDecoration));
+    properties.add(
+        DiagnosticsProperty<EdgeInsetsGeometry?>('cellsPadding', cellsPadding));
+    properties
+        .add(DiagnosticsProperty<EdgeInsetsGeometry?>('padding', padding));
+    properties.add(DiagnosticsProperty<InkResponseTheme?>(
+        'inkResponseTheme', inkResponseTheme));
   }
 }

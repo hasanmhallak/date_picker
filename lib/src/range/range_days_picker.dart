@@ -29,7 +29,8 @@ class RangeDaysPicker extends StatefulWidget {
     assert(
       () {
         if (displayedDate == null) return true;
-        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
+        final init = DateTime(
+            displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final min = DateTime(minDate.year, minDate.month, minDate.day);
 
@@ -40,7 +41,8 @@ class RangeDaysPicker extends StatefulWidget {
     assert(
       () {
         if (displayedDate == null) return true;
-        final init = DateTime(displayedDate!.year, displayedDate!.month, displayedDate!.day);
+        final init = DateTime(
+            displayedDate!.year, displayedDate!.month, displayedDate!.day);
 
         final max = DateTime(maxDate.year, maxDate.month, maxDate.day);
         return init.isBefore(max) || init.isAtSameMomentAs(max);
@@ -129,9 +131,10 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
   @override
   void initState() {
-    final clampedDisplayedDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-    _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+    final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    _displayedMonth =
+        DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
@@ -144,9 +147,10 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
   @override
   void didUpdateWidget(covariant RangeDaysPicker oldWidget) {
     if (oldWidget.displayedDate != widget.displayedDate) {
-      final clampedDisplayedDate =
-          DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
-      _displayedMonth = DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
+      final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+          max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+      _displayedMonth =
+          DateUtils.dateOnly(widget.displayedDate ?? clampedDisplayedDate);
       _pageController.jumpToPage(
         DateUtils.monthDelta(widget.minDate, _displayedMonth!),
       );
@@ -223,12 +227,16 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                   padding: theme.rangePickerTheme?.padding ?? EdgeInsets.zero,
                   child: PageView.builder(
                     scrollDirection: Axis.horizontal,
-                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                    physics:
+                        isEnabled ? null : const NeverScrollableScrollPhysics(),
                     key: _pageViewKey,
                     controller: _pageController,
-                    itemCount: DateUtils.monthDelta(widget.minDate, widget.maxDate) + 1,
+                    itemCount:
+                        DateUtils.monthDelta(widget.minDate, widget.maxDate) +
+                            1,
                     onPageChanged: (monthPage) {
-                      final DateTime monthDate = DateUtils.addMonthsToMonthDate(widget.minDate, monthPage);
+                      final DateTime monthDate = DateUtils.addMonthsToMonthDate(
+                          widget.minDate, monthPage);
 
                       setState(() {
                         _displayedMonth = monthDate;
@@ -236,22 +244,28 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                       widget.onDisplayedMonthChanged?.call(monthDate);
                     },
                     itemBuilder: (context, index) {
-                      final DateTime month = DateUtils.addMonthsToMonthDate(widget.minDate, index);
+                      final DateTime month =
+                          DateUtils.addMonthsToMonthDate(widget.minDate, index);
 
                       return RangeDaysView(
                         key: ValueKey<DateTime>(month),
-                        currentDate: DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
+                        currentDate: DateUtils.dateOnly(
+                            widget.currentDate ?? DateTime.now()),
                         minDate: DateUtils.dateOnly(widget.minDate),
                         maxDate: DateUtils.dateOnly(widget.maxDate),
                         displayedMonth: month,
                         cellBuilder: widget.cellBuilder,
-                        selectedEndDate:
-                            widget.selectedEndDate == null ? null : DateUtils.dateOnly(widget.selectedEndDate!),
-                        selectedStartDate:
-                            widget.selectedStartDate == null ? null : DateUtils.dateOnly(widget.selectedStartDate!),
+                        selectedEndDate: widget.selectedEndDate == null
+                            ? null
+                            : DateUtils.dateOnly(widget.selectedEndDate!),
+                        selectedStartDate: widget.selectedStartDate == null
+                            ? null
+                            : DateUtils.dateOnly(widget.selectedStartDate!),
                         theme: theme,
-                        onEndDateChanged: (value) => widget.onEndDateChanged?.call(value),
-                        onStartDateChanged: (value) => widget.onStartDateChanged?.call(value),
+                        onEndDateChanged: (value) =>
+                            widget.onEndDateChanged?.call(value),
+                        onStartDateChanged: (value) =>
+                            widget.onStartDateChanged?.call(value),
                       );
                     },
                   ),

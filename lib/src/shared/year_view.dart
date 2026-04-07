@@ -93,11 +93,13 @@ class YearView extends StatelessWidget {
     final int numberOfYears = endYear - startYear + 1;
 
     final defaultTheme = DatePickerPlusTheme.defaults(context).yearsPickerTheme;
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.yearsPickerTheme;
+    final contextTheme =
+        Theme.of(context).extension<DatePickerPlusTheme>()?.yearsPickerTheme;
     final currentTheme = defaultTheme?.merge(contextTheme).merge(theme);
 
     final inkResponseTheme = currentTheme?.inkResponseTheme;
-    final cellsPadding = currentTheme?.cellsPadding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
+    final cellsPadding = currentTheme?.cellsPadding ??
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final yearsName = List.generate(
       numberOfYears,
@@ -108,7 +110,8 @@ class YearView extends StatelessWidget {
 
     int i = 0;
     while (i < numberOfYears) {
-      final bool isYearDisabled = yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
+      final bool isYearDisabled =
+          yearsName[i] > maxDate.year || yearsName[i] < minDate.year;
 
       final bool isCurrentYear = yearsName[i] == currentYear;
 
@@ -170,7 +173,8 @@ class YearView extends StatelessWidget {
           onTap: () => onChanged(date),
           radius: inkResponseTheme?.radius,
           splashColor: inkResponseTheme?.splashColor ?? Colors.transparent,
-          highlightColor: inkResponseTheme?.highlightColor ?? Colors.transparent,
+          highlightColor:
+              inkResponseTheme?.highlightColor ?? Colors.transparent,
           borderRadius: inkResponseTheme?.borderRadius,
           containedInkWell: inkResponseTheme?.containedInkWell ?? false,
           customBorder: inkResponseTheme?.customBorder,

@@ -44,7 +44,8 @@ void main() {
       },
     );
 
-    testWidgets('should show MonthPicker when initialPickerType is months', (WidgetTester tester) async {
+    testWidgets('should show MonthPicker when initialPickerType is months',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
@@ -61,7 +62,8 @@ void main() {
       expect(find.byType(DaysPicker), findsNothing);
     });
 
-    testWidgets('should show YearsPicker when initialPickerType is years', (WidgetTester tester) async {
+    testWidgets('should show YearsPicker when initialPickerType is years',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
@@ -78,7 +80,9 @@ void main() {
       expect(find.byType(DaysPicker), findsNothing);
     });
 
-    testWidgets('should call onDateSelected with the correct date when a day is tapped', (WidgetTester tester) async {
+    testWidgets(
+        'should call onDateSelected with the correct date when a day is tapped',
+        (WidgetTester tester) async {
       DateTime? result;
       final displayedDate = DateTime(2022, 6, 1);
 
@@ -97,7 +101,8 @@ void main() {
       );
 
       final dayFinder = find.byWidgetPredicate((widget) {
-        if (widget is Semantics && widget.properties.label?.startsWith('10,') == true) {
+        if (widget is Semantics &&
+            widget.properties.label?.startsWith('10,') == true) {
           return true;
         }
         return false;
@@ -112,7 +117,8 @@ void main() {
       expect(result!.year, equals(2022));
     });
 
-    testWidgets('should pre-select a day when selectedDate is provided', (WidgetTester tester) async {
+    testWidgets('should pre-select a day when selectedDate is provided',
+        (WidgetTester tester) async {
       final displayedDate = DateTime(2022, 6, 1);
 
       await tester.pumpWidget(
@@ -138,12 +144,16 @@ void main() {
       );
 
       final selectedCell = find.byWidgetPredicate((w) =>
-          w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.purple);
+          w is Container &&
+          w.decoration is BoxDecoration &&
+          (w.decoration as BoxDecoration).color == Colors.purple);
 
       expect(selectedCell, findsOneWidget);
     });
 
-    testWidgets('should not call onDateSelected when a predicate-disabled day is tapped', (WidgetTester tester) async {
+    testWidgets(
+        'should not call onDateSelected when a predicate-disabled day is tapped',
+        (WidgetTester tester) async {
       bool called = false;
       final displayedDate = DateTime(2022, 6, 1);
 
@@ -181,7 +191,8 @@ void main() {
       expect(called, isFalse);
     });
 
-    testWidgets('should not navigate or select when theme isEnabled is false', (WidgetTester tester) async {
+    testWidgets('should not navigate or select when theme isEnabled is false',
+        (WidgetTester tester) async {
       DateTime? result;
       final displayedDate = DateTime(2022, 6, 1);
 
@@ -207,7 +218,8 @@ void main() {
       expect(find.byType(MonthPicker), findsNothing);
 
       final Finder dayFinder = find.byWidgetPredicate((widget) {
-        if (widget is Semantics && widget.properties.label?.startsWith('15,') == true) {
+        if (widget is Semantics &&
+            widget.properties.label?.startsWith('15,') == true) {
           return true;
         }
         return false;
@@ -218,7 +230,8 @@ void main() {
       expect(result, isNull);
     });
 
-    testWidgets('should navigate days → months → years → months → days', (WidgetTester tester) async {
+    testWidgets('should navigate days → months → years → months → days',
+        (WidgetTester tester) async {
       final displayedDate = DateTime(2022, 6, 1);
 
       await tester.pumpWidget(
@@ -253,7 +266,10 @@ void main() {
       expect(find.byType(DaysPicker), findsOneWidget);
 
       final header = find.byType(LeadingDate);
-      final headerText = tester.widget<Text>(find.descendant(of: header, matching: find.byType(Text))).data;
+      final headerText = tester
+          .widget<Text>(
+              find.descendant(of: header, matching: find.byType(Text)))
+          .data;
       expect(headerText, contains('March'));
     });
 
@@ -277,7 +293,8 @@ void main() {
       expect(hasPadding, isTrue);
     });
 
-    testWidgets('should throw assertion error when minDate is after maxDate', (WidgetTester tester) async {
+    testWidgets('should throw assertion error when minDate is after maxDate',
+        (WidgetTester tester) async {
       expect(
         () => DatePicker(
           minDate: DateTime(2025, 1, 1),
@@ -287,7 +304,8 @@ void main() {
       );
     });
 
-    testWidgets('should update selectedDate highlight via didUpdateWidget', (WidgetTester tester) async {
+    testWidgets('should update selectedDate highlight via didUpdateWidget',
+        (WidgetTester tester) async {
       DateTime? selectedDate;
       final displayedDate = DateTime(2022, 6, 1);
 
@@ -299,7 +317,8 @@ void main() {
                 return Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () => setState(() => selectedDate = DateTime(2022, 6, 10)),
+                      onPressed: () =>
+                          setState(() => selectedDate = DateTime(2022, 6, 10)),
                       child: const Text('select'),
                     ),
                     DatePicker(
@@ -327,7 +346,9 @@ void main() {
 
       expect(
         find.byWidgetPredicate((w) =>
-            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.purple),
+            w is Container &&
+            w.decoration is BoxDecoration &&
+            (w.decoration as BoxDecoration).color == Colors.purple),
         findsNothing,
       );
 
@@ -336,13 +357,17 @@ void main() {
 
       expect(
         find.byWidgetPredicate((w) =>
-            w is Container && w.decoration is BoxDecoration && (w.decoration as BoxDecoration).color == Colors.purple),
+            w is Container &&
+            w.decoration is BoxDecoration &&
+            (w.decoration as BoxDecoration).color == Colors.purple),
         findsOneWidget,
       );
     });
 
     group('onDisplayedMonthChanged', () {
-      testWidgets('calls with first day of initial month when days grid is first shown', (WidgetTester tester) async {
+      testWidgets(
+          'calls with first day of initial month when days grid is first shown',
+          (WidgetTester tester) async {
         final List<DateTime> calls = [];
         final DateTime displayedDate = DateTime(2022, 6, 1);
 
@@ -363,7 +388,8 @@ void main() {
         expect(calls, [DateTime(2022, 6, 1)]);
       });
 
-      testWidgets('calls with next month when dragging forward on days grid', (WidgetTester tester) async {
+      testWidgets('calls with next month when dragging forward on days grid',
+          (WidgetTester tester) async {
         final List<DateTime> calls = [];
         final DateTime displayedDate = DateTime(2022, 6, 1);
 
@@ -390,7 +416,8 @@ void main() {
         expect(calls.length, 2);
       });
 
-      testWidgets('calls when displayedDate changes via didUpdateWidget', (WidgetTester tester) async {
+      testWidgets('calls when displayedDate changes via didUpdateWidget',
+          (WidgetTester tester) async {
         final List<DateTime> calls = [];
         DateTime displayedDate = DateTime(2022, 6, 1);
 
@@ -402,7 +429,8 @@ void main() {
                   return Column(
                     children: [
                       ElevatedButton(
-                        onPressed: () => setState(() => displayedDate = DateTime(2022, 8, 1)),
+                        onPressed: () => setState(
+                            () => displayedDate = DateTime(2022, 8, 1)),
                         child: const Text('jump'),
                       ),
                       DatePicker(

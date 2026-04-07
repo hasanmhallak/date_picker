@@ -5,11 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-RangeDecorationPainter? _nullPainter(TextDirection textDirection, Color? color, bool start) => null;
+RangeDecorationPainter? _nullPainter(
+        TextDirection textDirection, Color? color, bool start) =>
+    null;
 
 void main() {
   group('RangeRangeDaysView', () {
-    testWidgets('should have no selected day when selectedEndDate & selectedStartDate is null',
+    testWidgets(
+        'should have no selected day when selectedEndDate & selectedStartDate is null',
         (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
 
@@ -18,8 +21,10 @@ void main() {
           home: Material(
             child: RangeDaysView(
               currentDate: currentDate,
-              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(
+                  currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(
+                  currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               onEndDateChanged: (value) {},
               onStartDateChanged: (value) {},
@@ -33,7 +38,9 @@ void main() {
       final Finder selectedDayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border == null && decoration.shape == BoxShape.circle && decoration.color == null;
+          return decoration.border == null &&
+              decoration.shape == BoxShape.circle &&
+              decoration.color == null;
         }
         return false;
       });
@@ -41,10 +48,14 @@ void main() {
       expect(selectedDayFinder, findsNothing);
     });
 
-    testWidgets('current date should be the only cell that highlighted with border.', (WidgetTester tester) async {
+    testWidgets(
+        'current date should be the only cell that highlighted with border.',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
-      final DateTime max = DateTime(currentDate.year + 2, currentDate.month, currentDate.day);
-      final DateTime min = DateTime(currentDate.year - 2, currentDate.month, currentDate.day);
+      final DateTime max =
+          DateTime(currentDate.year + 2, currentDate.month, currentDate.day);
+      final DateTime min =
+          DateTime(currentDate.year - 2, currentDate.month, currentDate.day);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -60,7 +71,8 @@ void main() {
               onStartDateChanged: (value) {},
               theme: DatePickerPlusTheme(
                 rangePickerTheme: RangePickerTheme(
-                  currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                  currentDateDecoration: BoxDecoration(
+                      shape: BoxShape.circle, border: Border.all()),
                   enabledCellsDecoration: const BoxDecoration(),
                   selectedCellsDecoration: const BoxDecoration(),
                   selectedEdgeCellDecoration: const BoxDecoration(),
@@ -75,7 +87,9 @@ void main() {
       final Finder todayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border != null && decoration.shape == BoxShape.circle && decoration.color == null;
+          return decoration.border != null &&
+              decoration.shape == BoxShape.circle &&
+              decoration.color == null;
         }
         return false;
       });
@@ -83,7 +97,9 @@ void main() {
       expect(todayFinder, findsOneWidget);
     });
 
-    testWidgets('current day should be ignored when it is within the selected range', (WidgetTester tester) async {
+    testWidgets(
+        'current day should be ignored when it is within the selected range',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 2);
       final DateTime startDate = DateTime(2023, 1, 1);
       final DateTime endDate = DateTime(2023, 1, 10);
@@ -93,8 +109,10 @@ void main() {
           home: Material(
             child: RangeDaysView(
               currentDate: currentDate,
-              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(
+                  currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(
+                  currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               selectedEndDate: endDate,
               selectedStartDate: startDate,
@@ -102,8 +120,10 @@ void main() {
               onStartDateChanged: (value) {},
               theme: DatePickerPlusTheme(
                 rangePickerTheme: RangePickerTheme(
-                  currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-                  selectedCellsDecoration: const BoxDecoration(shape: BoxShape.rectangle),
+                  currentDateDecoration: BoxDecoration(
+                      shape: BoxShape.circle, border: Border.all()),
+                  selectedCellsDecoration:
+                      const BoxDecoration(shape: BoxShape.rectangle),
                 ),
               ),
             ),
@@ -114,7 +134,8 @@ void main() {
       final Finder currentDay = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final decoration = widget.decoration as BoxDecoration?;
-          return decoration?.border != null && decoration?.shape == BoxShape.circle;
+          return decoration?.border != null &&
+              decoration?.shape == BoxShape.circle;
         }
         return false;
       });
@@ -122,7 +143,9 @@ void main() {
       expect(currentDay, findsNothing);
     });
 
-    testWidgets('current day should not be ignored when it is outside the selected range', (WidgetTester tester) async {
+    testWidgets(
+        'current day should not be ignored when it is outside the selected range',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 1);
       final DateTime startDate = DateTime(2023, 1, 2);
       final DateTime endDate = DateTime(2023, 1, 10);
@@ -132,8 +155,10 @@ void main() {
           home: Material(
             child: RangeDaysView(
               currentDate: currentDate,
-              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(
+                  currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(
+                  currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               selectedEndDate: endDate,
               selectedStartDate: startDate,
@@ -141,8 +166,10 @@ void main() {
               onStartDateChanged: (value) {},
               theme: DatePickerPlusTheme(
                 rangePickerTheme: RangePickerTheme(
-                  currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-                  selectedCellsDecoration: const BoxDecoration(shape: BoxShape.rectangle),
+                  currentDateDecoration: BoxDecoration(
+                      shape: BoxShape.circle, border: Border.all()),
+                  selectedCellsDecoration:
+                      const BoxDecoration(shape: BoxShape.rectangle),
                 ),
               ),
             ),
@@ -153,7 +180,8 @@ void main() {
       final Finder currentDay = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final decoration = widget.decoration as BoxDecoration?;
-          return decoration?.border != null && decoration?.shape == BoxShape.circle;
+          return decoration?.border != null &&
+              decoration?.shape == BoxShape.circle;
         }
         return false;
       });
@@ -161,7 +189,8 @@ void main() {
       expect(currentDay, findsOneWidget);
     });
 
-    testWidgets('should be one widget highlighted, when selected day is not in the month displayed.',
+    testWidgets(
+        'should be one widget highlighted, when selected day is not in the month displayed.',
         (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 1);
       final DateTime startDate = DateTime(2023, 2, 2);
@@ -172,8 +201,10 @@ void main() {
           home: Material(
             child: RangeDaysView(
               currentDate: currentDate,
-              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(
+                  currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(
+                  currentDate.year + 2, currentDate.month, currentDate.day),
               displayedMonth: currentDate,
               selectedEndDate: endDate,
               selectedStartDate: startDate,
@@ -181,8 +212,10 @@ void main() {
               onStartDateChanged: (value) {},
               theme: DatePickerPlusTheme(
                 rangePickerTheme: RangePickerTheme(
-                  currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-                  selectedCellsDecoration: const BoxDecoration(shape: BoxShape.rectangle),
+                  currentDateDecoration: BoxDecoration(
+                      shape: BoxShape.circle, border: Border.all()),
+                  selectedCellsDecoration:
+                      const BoxDecoration(shape: BoxShape.rectangle),
                 ),
               ),
             ),
@@ -193,7 +226,8 @@ void main() {
       final Finder currentDay = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final decoration = widget.decoration as BoxDecoration?;
-          return decoration?.border != null && decoration?.shape == BoxShape.circle;
+          return decoration?.border != null &&
+              decoration?.shape == BoxShape.circle;
         }
         return false;
       });
@@ -203,7 +237,8 @@ void main() {
       final Finder rangeDays = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final decoration = widget.decoration as BoxDecoration?;
-          return decoration?.border != null && decoration?.shape == BoxShape.rectangle;
+          return decoration?.border != null &&
+              decoration?.shape == BoxShape.rectangle;
         }
         return false;
       });
@@ -211,7 +246,8 @@ void main() {
       expect(rangeDays, findsNothing);
     });
 
-    testWidgets('should show the correct highlight to the range', (WidgetTester tester) async {
+    testWidgets('should show the correct highlight to the range',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 1);
       final DateTime startDate = DateTime(2023, 1, 1);
       final DateTime endDate = DateTime(2023, 1, 10);
@@ -241,7 +277,8 @@ void main() {
               onStartDateChanged: (value) {},
               theme: const DatePickerPlusTheme(
                 rangePickerTheme: RangePickerTheme(
-                  currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border()),
+                  currentDateDecoration:
+                      BoxDecoration(shape: BoxShape.circle, border: Border()),
                   selectedCellsDecoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Colors.red,
@@ -260,7 +297,8 @@ void main() {
       final Finder currentDay = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final decoration = widget.decoration as BoxDecoration?;
-          return decoration?.border != null && decoration!.shape == BoxShape.circle;
+          return decoration?.border != null &&
+              decoration!.shape == BoxShape.circle;
         }
         return false;
       });
@@ -291,10 +329,13 @@ void main() {
 
       expect(leadingAndTrailing, findsNWidgets(numberOfLeadingAndTrailing));
       await expectLater(
-          find.byType(RangeDaysView), matchesGoldenFile('should_show_the_correct_highlight_to_the_range.png'));
+          find.byType(RangeDaysView),
+          matchesGoldenFile(
+              'should_show_the_correct_highlight_to_the_range.png'));
     });
 
-    testWidgets('should throw assertion error if minDate > maxDate', (WidgetTester tester) async {
+    testWidgets('should throw assertion error if minDate > maxDate',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 1);
       final DateTime min = DateTime(2023, 1, 1);
       final DateTime max = DateTime(2020, 1, 10);
@@ -319,7 +360,9 @@ void main() {
       }, throwsAssertionError);
     });
 
-    testWidgets('should throw assertion error if selected Range bigger the max/min', (WidgetTester tester) async {
+    testWidgets(
+        'should throw assertion error if selected Range bigger the max/min',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 1);
       final DateTime max = DateTime(2023, 1, 1);
       final DateTime min = DateTime(2020, 1, 10);
@@ -346,7 +389,8 @@ void main() {
       }, throwsAssertionError);
     });
 
-    testWidgets('should disbale all the days before min date.', (WidgetTester tester) async {
+    testWidgets('should disbale all the days before min date.',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 1, 25);
       final DateTime minDate = DateTime(2020, 1, 10);
       final DateTime maxDate = DateTime(2020, 1, 31);
@@ -376,9 +420,11 @@ void main() {
       final disabledDayFinder = find.byWidgetPredicate((widget) {
         if (widget is ExcludeSemantics && widget.child is Padding) {
           final padding = widget.child as Padding;
-          if (padding.child is Container && (padding.child as Container).child is Center) {
+          if (padding.child is Container &&
+              (padding.child as Container).child is Center) {
             final container = padding.child as Container;
-            return (container.decoration as BoxDecoration).color == Colors.green;
+            return (container.decoration as BoxDecoration).color ==
+                Colors.green;
           }
         }
         return false;
@@ -386,7 +432,8 @@ void main() {
       expect(disabledDayFinder, findsNWidgets(9));
     });
 
-    testWidgets('should disbale all the days after max date.', (WidgetTester tester) async {
+    testWidgets('should disbale all the days after max date.',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 1, 25);
       final DateTime minDate = DateTime(2020, 1, 1);
       final DateTime maxDate = DateTime(2020, 1, 21);
@@ -416,9 +463,11 @@ void main() {
       final disabledDayFinder = find.byWidgetPredicate((widget) {
         if (widget is ExcludeSemantics && widget.child is Padding) {
           final padding = widget.child as Padding;
-          if (padding.child is Container && (padding.child as Container).child is Center) {
+          if (padding.child is Container &&
+              (padding.child as Container).child is Center) {
             final container = padding.child as Container;
-            return (container.decoration as BoxDecoration).color == Colors.green;
+            return (container.decoration as BoxDecoration).color ==
+                Colors.green;
           }
         }
         return false;
@@ -426,7 +475,9 @@ void main() {
       expect(disabledDayFinder, findsNWidgets(9));
     });
 
-    testWidgets('should show the correct first day of the week based on locale.', (WidgetTester tester) async {
+    testWidgets(
+        'should show the correct first day of the week based on locale.',
+        (WidgetTester tester) async {
       const uSLocale = Locale('en', 'US');
 
       await GlobalMaterialLocalizations.delegate.load(uSLocale);
@@ -435,7 +486,8 @@ void main() {
       final DateTime minDate = DateTime(2020, 1, 1);
       final DateTime maxDate = DateTime(2020, 1, 20);
 
-      final List<String> weekdayNames = intl.DateFormat('', 'en').dateSymbols.SHORTWEEKDAYS;
+      final List<String> weekdayNames =
+          intl.DateFormat('', 'en').dateSymbols.SHORTWEEKDAYS;
 
       late final MaterialLocalizations localizations;
 
@@ -470,22 +522,27 @@ void main() {
       );
 
       final int firstDayOfWeekIndex = localizations.firstDayOfWeekIndex;
-      final String expectedFirstDayOfWeek = weekdayNames[firstDayOfWeekIndex].toUpperCase();
+      final String expectedFirstDayOfWeek =
+          weekdayNames[firstDayOfWeekIndex].toUpperCase();
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
-        if (widget is Center && widget.child is Text && (widget.child as Text).data == expectedFirstDayOfWeek) {
+        if (widget is Center &&
+            widget.child is Text &&
+            (widget.child as Text).data == expectedFirstDayOfWeek) {
           return true;
         }
         return false;
       });
 
-      final RenderBox renderBox = tester.renderObject<RenderBox>(disabledDayFinder);
+      final RenderBox renderBox =
+          tester.renderObject<RenderBox>(disabledDayFinder);
       final Offset topLeft = renderBox.localToGlobal(Offset.zero);
 
       expect(topLeft, equals(Offset.zero));
     });
 
-    testWidgets('should display days\' names with the correct color', (WidgetTester tester) async {
+    testWidgets('should display days\' names with the correct color',
+        (WidgetTester tester) async {
       const Color customColor = Colors.blue; // Replace with your specific color
 
       final DateTime currentDate = DateTime(2020, 1, 15);
@@ -522,17 +579,20 @@ void main() {
         return false;
       });
 
-      expect(dayNameFinder, findsNWidgets(7)); // Assuming there are 7 days in a week
+      expect(dayNameFinder,
+          findsNWidgets(7)); // Assuming there are 7 days in a week
 
       // Verify that all day names have the correct color
       await tester.ensureVisible(dayNameFinder.first);
-      expect(tester.widget<Text>(dayNameFinder.first).style?.color, customColor);
+      expect(
+          tester.widget<Text>(dayNameFinder.first).style?.color, customColor);
 
       await tester.ensureVisible(dayNameFinder.last);
       expect(tester.widget<Text>(dayNameFinder.last).style?.color, customColor);
     });
 
-    testWidgets('should display enabled days with the correct color', (WidgetTester tester) async {
+    testWidgets('should display enabled days with the correct color',
+        (WidgetTester tester) async {
       const Color customColor = Colors.green;
       final DateTime currentDate = DateTime(2020, 1, 31);
       final DateTime minDate = DateTime(2020, 1, 1);
@@ -575,7 +635,8 @@ void main() {
       await tester.ensureVisible(enabledDayFinder.last);
     });
 
-    testWidgets('should select the right date range when tap.', (WidgetTester tester) async {
+    testWidgets('should select the right date range when tap.',
+        (WidgetTester tester) async {
       final rangeToSelect = DateTimeRange(
         start: DateTime(2020, 1, 1),
         end: DateTime(2020, 1, 30),
@@ -647,7 +708,9 @@ void main() {
       expect(selectedEndDate, rangeToSelect.end);
     });
 
-    testWidgets('should not paint range decoration when resolvePainter returns null', (WidgetTester tester) async {
+    testWidgets(
+        'should not paint range decoration when resolvePainter returns null',
+        (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2023, 1, 15);
       final DateTime startDate = DateTime(2023, 1, 5);
       final DateTime endDate = DateTime(2023, 1, 20);
@@ -684,7 +747,8 @@ void main() {
       expect(painterFinder, findsNothing);
     });
 
-    testWidgets('cellsPadding wraps the CustomPaint for range edge cells', (WidgetTester tester) async {
+    testWidgets('cellsPadding wraps the CustomPaint for range edge cells',
+        (WidgetTester tester) async {
       const customPadding = EdgeInsets.all(4);
       final DateTime currentDate = DateTime(2023, 1, 15);
       final DateTime startDate = DateTime(2023, 1, 5);
@@ -719,7 +783,8 @@ void main() {
       expect(paddingFinder, findsNWidgets(2));
     });
 
-    testWidgets('uses theme cellsPadding for day cells', (WidgetTester tester) async {
+    testWidgets('uses theme cellsPadding for day cells',
+        (WidgetTester tester) async {
       const customPadding = EdgeInsets.all(6);
       final DateTime currentDate = DateTime(2020, 1, 15);
 

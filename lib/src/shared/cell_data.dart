@@ -36,7 +36,8 @@ class WeekDayCell extends CellData {
   final int weekDay;
 
   /// Creates a weekday descriptor for the given [weekDay].
-  const WeekDayCell({required this.weekDay, required super.state, required super.child})
+  const WeekDayCell(
+      {required this.weekDay, required super.state, required super.child})
       : assert(weekDay >= 1 && weekDay <= 7);
 }
 
@@ -51,7 +52,8 @@ class DayCell extends CellData {
   final DateTime day;
 
   /// Creates a day descriptor for the given [day].
-  const DayCell({required this.day, required super.state, required super.child});
+  const DayCell(
+      {required this.day, required super.state, required super.child});
 }
 
 /// Describes a cell representing a specific month within a year.
@@ -67,7 +69,11 @@ class MonthCell extends CellData {
   /// Creates a month descriptor.
   ///
   /// Example: MonthCell(month: 2, year: 2026) -> February 2026.
-  const MonthCell({required this.month, required this.year, required super.state, required super.child})
+  const MonthCell(
+      {required this.month,
+      required this.year,
+      required super.state,
+      required super.child})
       : assert(month >= 1 && month <= 12);
 }
 
@@ -79,5 +85,6 @@ class YearCell extends CellData {
   final int year;
 
   /// Creates a year descriptor.
-  const YearCell({required this.year, required super.state, required super.child});
+  const YearCell(
+      {required this.year, required super.state, required super.child});
 }

@@ -7,7 +7,8 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the header in picker views.
 @immutable
-class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMixin {
+class HeaderTheme extends ThemeExtension<HeaderTheme>
+    with DiagnosticableTreeMixin {
   /// Creates a [HeaderTheme].
   const HeaderTheme({
     this.enableHeader,
@@ -122,7 +123,8 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   static HeaderTheme defaults(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final inkDefaults = InkResponseTheme.defaults(context).copyWith(containedInkWell: true);
+    final inkDefaults =
+        InkResponseTheme.defaults(context).copyWith(containedInkWell: true);
 
     return HeaderTheme(
       enableHeader: true,
@@ -184,14 +186,18 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardArrowWidget: backwardArrowWidget ?? this.backwardArrowWidget,
       centerLeadingDate: centerLeadingDate ?? this.centerLeadingDate,
       leadingDateTextStyle: leadingDateTextStyle ?? this.leadingDateTextStyle,
-      forwardButtonDecoration: forwardButtonDecoration ?? this.forwardButtonDecoration,
-      backwardButtonDecoration: backwardButtonDecoration ?? this.backwardButtonDecoration,
+      forwardButtonDecoration:
+          forwardButtonDecoration ?? this.forwardButtonDecoration,
+      backwardButtonDecoration:
+          backwardButtonDecoration ?? this.backwardButtonDecoration,
       forwardButtonWidth: forwardButtonWidth ?? this.forwardButtonWidth,
       backwardButtonWidth: backwardButtonWidth ?? this.backwardButtonWidth,
       forwardButtonHeight: forwardButtonHeight ?? this.forwardButtonHeight,
       backwardButtonHeight: backwardButtonHeight ?? this.backwardButtonHeight,
-      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme ?? this.forwardButtonInkResponseTheme,
-      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme ?? this.backwardButtonInkResponseTheme,
+      forwardButtonInkResponseTheme:
+          forwardButtonInkResponseTheme ?? this.forwardButtonInkResponseTheme,
+      backwardButtonInkResponseTheme:
+          backwardButtonInkResponseTheme ?? this.backwardButtonInkResponseTheme,
       arrowButtonsSpace: arrowButtonsSpace ?? this.arrowButtonsSpace,
       headerPadding: headerPadding ?? this.headerPadding,
       decoration: decoration ?? this.decoration,
@@ -207,7 +213,9 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       forwardArrowWidget: other.forwardArrowWidget,
       backwardArrowWidget: other.backwardArrowWidget,
       centerLeadingDate: other.centerLeadingDate,
-      leadingDateTextStyle: leadingDateTextStyle?.merge(other.leadingDateTextStyle) ?? other.leadingDateTextStyle,
+      leadingDateTextStyle:
+          leadingDateTextStyle?.merge(other.leadingDateTextStyle) ??
+              other.leadingDateTextStyle,
       headerPadding: other.headerPadding,
       decoration: other.decoration,
       forwardButtonDecoration: other.forwardButtonDecoration,
@@ -216,9 +224,11 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
       backwardButtonWidth: other.backwardButtonWidth,
       forwardButtonHeight: other.forwardButtonHeight,
       backwardButtonHeight: other.backwardButtonHeight,
-      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.merge(other.forwardButtonInkResponseTheme) ??
+      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme
+              ?.merge(other.forwardButtonInkResponseTheme) ??
           other.forwardButtonInkResponseTheme,
-      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.merge(other.backwardButtonInkResponseTheme) ??
+      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme
+              ?.merge(other.backwardButtonInkResponseTheme) ??
           other.backwardButtonInkResponseTheme,
       arrowButtonsSpace: other.arrowButtonsSpace,
     );
@@ -231,20 +241,33 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
     return HeaderTheme(
       enableHeader: t < 0.5 ? enableHeader : other.enableHeader,
       enableArrowKeys: t < 0.5 ? enableArrowKeys : other.enableArrowKeys,
-      forwardArrowWidget: t < 0.5 ? forwardArrowWidget : other.forwardArrowWidget,
-      backwardArrowWidget: t < 0.5 ? backwardArrowWidget : other.backwardArrowWidget,
+      forwardArrowWidget:
+          t < 0.5 ? forwardArrowWidget : other.forwardArrowWidget,
+      backwardArrowWidget:
+          t < 0.5 ? backwardArrowWidget : other.backwardArrowWidget,
       centerLeadingDate: t < 0.5 ? centerLeadingDate : other.centerLeadingDate,
-      leadingDateTextStyle: TextStyle.lerp(leadingDateTextStyle, other.leadingDateTextStyle, t),
-      forwardButtonDecoration: ShapeDecoration.lerp(forwardButtonDecoration, other.forwardButtonDecoration, t),
-      backwardButtonDecoration: ShapeDecoration.lerp(backwardButtonDecoration, other.backwardButtonDecoration, t),
-      forwardButtonWidth: lerpDouble(forwardButtonWidth, other.forwardButtonWidth, t),
-      backwardButtonWidth: lerpDouble(backwardButtonWidth, other.backwardButtonWidth, t),
-      forwardButtonHeight: lerpDouble(forwardButtonHeight, other.forwardButtonHeight, t),
-      backwardButtonHeight: lerpDouble(backwardButtonHeight, other.backwardButtonHeight, t),
-      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.lerp(other.forwardButtonInkResponseTheme, t),
-      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.lerp(other.backwardButtonInkResponseTheme, t),
-      arrowButtonsSpace: lerpDouble(arrowButtonsSpace, other.arrowButtonsSpace, t),
-      headerPadding: EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
+      leadingDateTextStyle:
+          TextStyle.lerp(leadingDateTextStyle, other.leadingDateTextStyle, t),
+      forwardButtonDecoration: ShapeDecoration.lerp(
+          forwardButtonDecoration, other.forwardButtonDecoration, t),
+      backwardButtonDecoration: ShapeDecoration.lerp(
+          backwardButtonDecoration, other.backwardButtonDecoration, t),
+      forwardButtonWidth:
+          lerpDouble(forwardButtonWidth, other.forwardButtonWidth, t),
+      backwardButtonWidth:
+          lerpDouble(backwardButtonWidth, other.backwardButtonWidth, t),
+      forwardButtonHeight:
+          lerpDouble(forwardButtonHeight, other.forwardButtonHeight, t),
+      backwardButtonHeight:
+          lerpDouble(backwardButtonHeight, other.backwardButtonHeight, t),
+      forwardButtonInkResponseTheme: forwardButtonInkResponseTheme?.lerp(
+          other.forwardButtonInkResponseTheme, t),
+      backwardButtonInkResponseTheme: backwardButtonInkResponseTheme?.lerp(
+          other.backwardButtonInkResponseTheme, t),
+      arrowButtonsSpace:
+          lerpDouble(arrowButtonsSpace, other.arrowButtonsSpace, t),
+      headerPadding:
+          EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
       decoration: Decoration.lerp(decoration, other.decoration, t),
     );
   }
@@ -253,23 +276,32 @@ class HeaderTheme extends ThemeExtension<HeaderTheme> with DiagnosticableTreeMix
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<bool?>('enableHeader', enableHeader));
-    properties.add(DiagnosticsProperty<bool?>('enableArrowKeys', enableArrowKeys));
-    properties.add(DiagnosticsProperty<Widget?>('forwardArrowWidget', forwardArrowWidget));
-    properties.add(DiagnosticsProperty<Widget?>('backwardArrowWidget', backwardArrowWidget));
-    properties.add(DiagnosticsProperty<bool?>('centerLeadingDate', centerLeadingDate));
-    properties.add(DiagnosticsProperty<TextStyle?>('leadingDateTextStyle', leadingDateTextStyle));
-    properties.add(DiagnosticsProperty<ShapeDecoration?>('forwardButtonDecoration', forwardButtonDecoration));
-    properties.add(DiagnosticsProperty<ShapeDecoration?>('backwardButtonDecoration', backwardButtonDecoration));
+    properties
+        .add(DiagnosticsProperty<bool?>('enableArrowKeys', enableArrowKeys));
+    properties.add(
+        DiagnosticsProperty<Widget?>('forwardArrowWidget', forwardArrowWidget));
+    properties.add(DiagnosticsProperty<Widget?>(
+        'backwardArrowWidget', backwardArrowWidget));
+    properties.add(
+        DiagnosticsProperty<bool?>('centerLeadingDate', centerLeadingDate));
+    properties.add(DiagnosticsProperty<TextStyle?>(
+        'leadingDateTextStyle', leadingDateTextStyle));
+    properties.add(DiagnosticsProperty<ShapeDecoration?>(
+        'forwardButtonDecoration', forwardButtonDecoration));
+    properties.add(DiagnosticsProperty<ShapeDecoration?>(
+        'backwardButtonDecoration', backwardButtonDecoration));
     properties.add(DoubleProperty('forwardButtonWidth', forwardButtonWidth));
     properties.add(DoubleProperty('backwardButtonWidth', backwardButtonWidth));
     properties.add(DoubleProperty('forwardButtonHeight', forwardButtonHeight));
-    properties.add(DoubleProperty('backwardButtonHeight', backwardButtonHeight));
     properties
-        .add(DiagnosticsProperty<InkResponseTheme?>('forwardButtonInkResponseTheme', forwardButtonInkResponseTheme));
-    properties
-        .add(DiagnosticsProperty<InkResponseTheme?>('backwardButtonInkResponseTheme', backwardButtonInkResponseTheme));
+        .add(DoubleProperty('backwardButtonHeight', backwardButtonHeight));
+    properties.add(DiagnosticsProperty<InkResponseTheme?>(
+        'forwardButtonInkResponseTheme', forwardButtonInkResponseTheme));
+    properties.add(DiagnosticsProperty<InkResponseTheme?>(
+        'backwardButtonInkResponseTheme', backwardButtonInkResponseTheme));
     properties.add(DoubleProperty('arrowButtonsSpace', arrowButtonsSpace));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>('headerPadding', headerPadding));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>(
+        'headerPadding', headerPadding));
     properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
   }
 }

@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 /// This provides a convenient way to configure the splash and highlight behavior
 /// for all interactive elements within the DatePicker.
 @immutable
-class InkResponseTheme extends ThemeExtension<InkResponseTheme> with DiagnosticableTreeMixin {
+class InkResponseTheme extends ThemeExtension<InkResponseTheme>
+    with DiagnosticableTreeMixin {
   /// Creates an [InkResponseTheme].
   const InkResponseTheme({
     this.radius,
@@ -116,7 +117,8 @@ class InkResponseTheme extends ThemeExtension<InkResponseTheme> with Diagnostica
   }
 
   @override
-  InkResponseTheme lerp(covariant ThemeExtension<InkResponseTheme>? other, double t) {
+  InkResponseTheme lerp(
+      covariant ThemeExtension<InkResponseTheme>? other, double t) {
     if (other is! InkResponseTheme) {
       return this;
     }
@@ -140,11 +142,16 @@ class InkResponseTheme extends ThemeExtension<InkResponseTheme> with Diagnostica
     properties.add(DoubleProperty('radius', radius));
     properties.add(ColorProperty('splashColor', splashColor));
     properties.add(ColorProperty('highlightColor', highlightColor));
-    properties.add(DiagnosticsProperty<BorderRadius?>('borderRadius', borderRadius));
-    properties.add(DiagnosticsProperty<bool?>('containedInkWell', containedInkWell));
-    properties.add(DiagnosticsProperty<ShapeBorder?>('customBorder', customBorder));
-    properties.add(DiagnosticsProperty<BoxShape?>('highlightShape', highlightShape));
-    properties.add(DiagnosticsProperty<InteractiveInkFeatureFactory?>('splashFactory', splashFactory));
+    properties
+        .add(DiagnosticsProperty<BorderRadius?>('borderRadius', borderRadius));
+    properties
+        .add(DiagnosticsProperty<bool?>('containedInkWell', containedInkWell));
+    properties
+        .add(DiagnosticsProperty<ShapeBorder?>('customBorder', customBorder));
+    properties
+        .add(DiagnosticsProperty<BoxShape?>('highlightShape', highlightShape));
+    properties.add(DiagnosticsProperty<InteractiveInkFeatureFactory?>(
+        'splashFactory', splashFactory));
     properties.add(ColorProperty('focusColor', focusColor));
     properties.add(ColorProperty('hoverColor', hoverColor));
   }

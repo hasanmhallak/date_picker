@@ -28,7 +28,8 @@ Widget _buildHeader({
 
 void main() {
   group('Header', () {
-    testWidgets('should hide everything when enableHeader is false', (WidgetTester tester) async {
+    testWidgets('should hide everything when enableHeader is false',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         _buildHeader(
           theme: const HeaderTheme(enableHeader: false),
@@ -39,7 +40,8 @@ void main() {
       expect(find.byType(InkResponse), findsNothing);
     });
 
-    testWidgets('should hide both arrow buttons when enableArrowKeys is false', (WidgetTester tester) async {
+    testWidgets('should hide both arrow buttons when enableArrowKeys is false',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         _buildHeader(
           theme: const HeaderTheme(enableArrowKeys: false),
@@ -83,7 +85,8 @@ void main() {
         );
 
         expect(
-          find.descendant(of: find.byType(Header), matching: find.byType(Center)),
+          find.descendant(
+              of: find.byType(Header), matching: find.byType(Center)),
           findsNothing,
         );
         expect(
@@ -93,7 +96,8 @@ void main() {
       },
     );
 
-    testWidgets('should call onDateTap when the leading date is tapped', (WidgetTester tester) async {
+    testWidgets('should call onDateTap when the leading date is tapped',
+        (WidgetTester tester) async {
       bool tapped = false;
 
       await tester.pumpWidget(
@@ -108,7 +112,8 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('should call onNextPage when the forward button is tapped', (WidgetTester tester) async {
+    testWidgets('should call onNextPage when the forward button is tapped',
+        (WidgetTester tester) async {
       bool nextPageCalled = false;
 
       await tester.pumpWidget(
@@ -125,7 +130,8 @@ void main() {
       expect(nextPageCalled, isTrue);
     });
 
-    testWidgets('should call onPreviousPage when the backward button is tapped', (WidgetTester tester) async {
+    testWidgets('should call onPreviousPage when the backward button is tapped',
+        (WidgetTester tester) async {
       bool prevPageCalled = false;
 
       await tester.pumpWidget(
@@ -142,7 +148,8 @@ void main() {
       expect(prevPageCalled, isTrue);
     });
 
-    testWidgets('should place back button before leading date when centerLeadingDate is true',
+    testWidgets(
+        'should place back button before leading date when centerLeadingDate is true',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         _buildHeader(
@@ -156,7 +163,8 @@ void main() {
       expect(backInkOffset.dx, lessThan(leadingDateOffset.dx));
     });
 
-    testWidgets('should place both arrows to the right of leading date when centerLeadingDate is false (default)',
+    testWidgets(
+        'should place both arrows to the right of leading date when centerLeadingDate is false (default)',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         _buildHeader(
@@ -170,8 +178,11 @@ void main() {
       expect(backInkOffset.dx, greaterThan(leadingDateOffset.dx));
     });
 
-    testWidgets('should apply forwardButtonDecoration to the forward arrow button', (WidgetTester tester) async {
-      const decoration = ShapeDecoration(color: Colors.red, shape: CircleBorder());
+    testWidgets(
+        'should apply forwardButtonDecoration to the forward arrow button',
+        (WidgetTester tester) async {
+      const decoration =
+          ShapeDecoration(color: Colors.red, shape: CircleBorder());
 
       await tester.pumpWidget(
         _buildHeader(
@@ -186,11 +197,15 @@ void main() {
         find.ancestor(of: forwardInk, matching: find.byType(Ink)),
       );
       expect(container.decoration, decoration);
-      expect(tester.widget<InkResponse>(forwardInk).customBorder, decoration.shape);
+      expect(tester.widget<InkResponse>(forwardInk).customBorder,
+          decoration.shape);
     });
 
-    testWidgets('should apply backwardButtonDecoration to the backward arrow button', (WidgetTester tester) async {
-      const decoration = ShapeDecoration(color: Colors.blue, shape: CircleBorder());
+    testWidgets(
+        'should apply backwardButtonDecoration to the backward arrow button',
+        (WidgetTester tester) async {
+      const decoration =
+          ShapeDecoration(color: Colors.blue, shape: CircleBorder());
 
       await tester.pumpWidget(
         _buildHeader(
@@ -207,7 +222,9 @@ void main() {
       expect(container.decoration, decoration);
     });
 
-    testWidgets('should apply arrowButtonsSpace between backward and forward arrow buttons', (WidgetTester tester) async {
+    testWidgets(
+        'should apply arrowButtonsSpace between backward and forward arrow buttons',
+        (WidgetTester tester) async {
       const space = 24.0;
 
       await tester.pumpWidget(
@@ -227,7 +244,8 @@ void main() {
       expect(sizedBox.width, space);
     });
 
-    testWidgets('should apply forwardButtonInkResponseTheme splash to forward InkResponse',
+    testWidgets(
+        'should apply forwardButtonInkResponseTheme splash to forward InkResponse',
         (WidgetTester tester) async {
       const customSplash = Colors.red;
 
@@ -242,11 +260,14 @@ void main() {
         ),
       );
 
-      final forwardInk = tester.widget<InkResponse>(find.byType(InkResponse).last);
+      final forwardInk =
+          tester.widget<InkResponse>(find.byType(InkResponse).last);
       expect(forwardInk.splashColor, customSplash);
     });
 
-    testWidgets('should display the provided displayedDate text in the leading date', (WidgetTester tester) async {
+    testWidgets(
+        'should display the provided displayedDate text in the leading date',
+        (WidgetTester tester) async {
       const date = 'January 2025';
 
       await tester.pumpWidget(_buildHeader(displayedDate: date));
@@ -254,7 +275,8 @@ void main() {
       expect(find.text(date), findsOneWidget);
     });
 
-    testWidgets('should apply headerPadding from theme', (WidgetTester tester) async {
+    testWidgets('should apply headerPadding from theme',
+        (WidgetTester tester) async {
       const customPadding = EdgeInsets.all(20);
 
       await tester.pumpWidget(
@@ -275,7 +297,8 @@ void main() {
       expect(padding.padding, customPadding);
     });
 
-    testWidgets('should apply decoration from theme', (WidgetTester tester) async {
+    testWidgets('should apply decoration from theme',
+        (WidgetTester tester) async {
       const decoration = BoxDecoration(color: Colors.lightBlue);
 
       await tester.pumpWidget(
@@ -290,7 +313,8 @@ void main() {
         find.descendant(
           of: find.byType(Header),
           matching: find.byWidgetPredicate(
-            (widget) => widget is DecoratedBox && widget.decoration == decoration,
+            (widget) =>
+                widget is DecoratedBox && widget.decoration == decoration,
           ),
         ),
       );
@@ -298,7 +322,8 @@ void main() {
       expect(decorated.decoration, decoration);
     });
 
-    testWidgets('should have correct semantic labels on arrow buttons', (WidgetTester tester) async {
+    testWidgets('should have correct semantic labels on arrow buttons',
+        (WidgetTester tester) async {
       await tester.pumpWidget(_buildHeader());
 
       final element = tester.element(find.byType(Header));

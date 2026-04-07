@@ -150,7 +150,9 @@ class _YearsPickerState extends State<YearsPicker> {
       start: DateTime(widget.minDate.year + initialPageNumber * 12),
       end: DateTime(widget.minDate.year + initialPageNumber * 12 - 1 + 12),
     );
-    _selectedDate = widget.selectedDate != null ? DateUtilsX.yearOnly(widget.selectedDate!) : null;
+    _selectedDate = widget.selectedDate != null
+        ? DateUtilsX.yearOnly(widget.selectedDate!)
+        : null;
     super.initState();
   }
 
@@ -168,7 +170,9 @@ class _YearsPickerState extends State<YearsPicker> {
     }
 
     if (oldWidget.selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate != null ? DateUtilsX.yearOnly(widget.selectedDate!) : null;
+      _selectedDate = widget.selectedDate != null
+          ? DateUtilsX.yearOnly(widget.selectedDate!)
+          : null;
     }
 
     super.didUpdateWidget(oldWidget);
@@ -184,11 +188,12 @@ class _YearsPickerState extends State<YearsPicker> {
   /// between [minDate] and [maxDate].
   ///
   /// Each page will contains 12 years in a 3 x 4 grid.
-  int get pageCount => ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
+  int get pageCount =>
+      ((widget.maxDate.year - widget.minDate.year + 1) / 12).ceil();
 
   int get initialPageNumber {
-    final clampedDisplayedDate =
-        DateUtilsX.clampDateToRange(max: widget.maxDate, min: widget.minDate, date: DateTime.now());
+    final clampedDisplayedDate = DateUtilsX.clampDateToRange(
+        max: widget.maxDate, min: widget.minDate, date: DateTime.now());
     final init = widget.displayedDate ?? clampedDisplayedDate;
 
     final page = ((init.year - widget.minDate.year + 1) / 12).ceil() - 1;
@@ -235,7 +240,8 @@ class _YearsPickerState extends State<YearsPicker> {
                 theme: theme.headerTheme,
                 isEnabled: isEnabled,
                 onDateTap: () => widget.onLeadingDateTap?.call(),
-                displayedDate: '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
+                displayedDate:
+                    '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
                 onNextPage: () {
                   _pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
@@ -254,7 +260,8 @@ class _YearsPickerState extends State<YearsPicker> {
                   padding: theme.yearsPickerTheme?.padding ?? EdgeInsets.zero,
                   child: PageView.builder(
                     scrollDirection: Axis.horizontal,
-                    physics: isEnabled ? null : const NeverScrollableScrollPhysics(),
+                    physics:
+                        isEnabled ? null : const NeverScrollableScrollPhysics(),
                     key: _pageViewKey,
                     controller: _pageController,
                     itemCount: pageCount,
