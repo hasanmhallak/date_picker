@@ -102,7 +102,9 @@ void main() {
 
       final target = find.byWidgetPredicate((widget) {
         if (widget is Semantics &&
-            widget.properties.label?.startsWith('5,') == true) return true;
+            widget.properties.label?.startsWith('5,') == true) {
+          return true;
+        }
         return false;
       });
 
