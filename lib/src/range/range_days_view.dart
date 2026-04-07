@@ -205,16 +205,13 @@ class RangeDaysView extends StatelessWidget {
         final style = rangeTheme.resolveTextStyle(state);
         final decoration = rangeTheme.resolveDecoration(state);
 
-        Widget dayWidget = Padding(
-          padding: cellsPadding,
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: decoration,
-            child: Center(
-              child: Text(
-                localizations.formatDecimal(day),
-                style: style,
-              ),
+        Widget dayWidget = Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: decoration,
+          child: Center(
+            child: Text(
+              localizations.formatDecimal(day),
+              style: style,
             ),
           ),
         );
@@ -233,6 +230,8 @@ class RangeDaysView extends StatelessWidget {
             child: dayWidget,
           );
         }
+
+        dayWidget = Padding(padding: cellsPadding, child: dayWidget);
 
         if (cellBuilder != null) {
           dayWidget = ExcludeSemantics(

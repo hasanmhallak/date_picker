@@ -1,5 +1,4 @@
 import 'package:date_picker_plus/src/range/range_days_view.dart';
-import 'package:date_picker_plus/src/range/range_selection_painter.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -683,6 +682,41 @@ void main() {
       });
 
       expect(painterFinder, findsNothing);
+    });
+
+    testWidgets('cellsPadding wraps the CustomPaint for range edge cells', (WidgetTester tester) async {
+      const customPadding = EdgeInsets.all(4);
+      final DateTime currentDate = DateTime(2023, 1, 15);
+      final DateTime startDate = DateTime(2023, 1, 5);
+      final DateTime endDate = DateTime(2023, 1, 20);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Material(
+            child: RangeDaysView(
+              currentDate: currentDate,
+              minDate: DateTime(2020, 1, 1),
+              maxDate: DateTime(2025, 12, 31),
+              displayedMonth: currentDate,
+              selectedStartDate: startDate,
+              selectedEndDate: endDate,
+              onStartDateChanged: (value) {},
+              onEndDateChanged: (value) {},
+              theme: const DatePickerPlusTheme(
+                rangePickerTheme: RangePickerTheme(cellsPadding: customPadding),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final paddingFinder = find.byWidgetPredicate((widget) {
+        if (widget is! Padding || widget.padding != customPadding) return false;
+        final child = widget.child;
+        return child is CustomPaint && child.painter is RangeDecorationPainter;
+      });
+
+      expect(paddingFinder, findsNWidgets(2));
     });
 
     testWidgets('uses theme cellsPadding for day cells', (WidgetTester tester) async {
