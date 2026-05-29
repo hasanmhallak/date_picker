@@ -68,40 +68,43 @@ Future<DateTimeRange?> showRangePickerDialog({
     useRootNavigator: useRootNavigator,
     useSafeArea: useSafeArea,
     builder: (context) {
-      return PickerDeviceOrientationBuilder(builder: (context, o) {
-        late final Size size;
-        switch (o) {
-          case Orientation.portrait:
-            size = const Size(328.0, 400.0);
-            break;
-          case Orientation.landscape:
-            size = const Size(328.0, 300.0);
-            break;
-        }
-        return Padding(
-          padding: padding,
-          child: Dialog(
-            insetPadding: EdgeInsets.zero,
-            child: SizedBox(
-              width: width ?? size.width,
-              height: height ?? size.height,
-              child: RangeDatePicker(
-                currentDate: currentDate,
-                maxDate: maxDate,
-                minDate: minDate,
-                displayedDate: displayedDate,
-                selectedRange: selectedRange,
-                onRangeSelected: (value) => Navigator.pop(context, value),
-                initialPickerType: initialPickerType,
-                padding: contentPadding,
-                cellBuilder: cellBuilder,
-                theme: theme,
-                onDisplayedMonthChanged: onDisplayedMonthChanged,
+      return PickerDeviceOrientationBuilder(
+        builder: (context, o) {
+          late final Size size;
+          switch (o) {
+            case Orientation.portrait:
+              size = const Size(328.0, 400.0);
+              break;
+            case Orientation.landscape:
+              size = const Size(328.0, 300.0);
+              break;
+          }
+          return Padding(
+            padding: padding,
+            child: Dialog(
+              backgroundColor: Colors.white,
+              insetPadding: EdgeInsets.zero,
+              child: SizedBox(
+                width: width ?? size.width,
+                height: height ?? size.height,
+                child: RangeDatePicker(
+                  currentDate: currentDate,
+                  maxDate: maxDate,
+                  minDate: minDate,
+                  displayedDate: displayedDate,
+                  selectedRange: selectedRange,
+                  onRangeSelected: (value) => Navigator.pop(context, value),
+                  initialPickerType: initialPickerType,
+                  padding: contentPadding,
+                  cellBuilder: cellBuilder,
+                  theme: theme,
+                  onDisplayedMonthChanged: onDisplayedMonthChanged,
+                ),
               ),
             ),
-          ),
-        );
-      });
+          );
+        },
+      );
     },
   );
 }
