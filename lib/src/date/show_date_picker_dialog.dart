@@ -31,6 +31,10 @@ import 'date_picker.dart';
 /// [initialPickerType.month] or [initialPickerType.day] mode. It defaults
 /// to [initialPickerType.day].
 ///
+/// An optional [dialogBackground] argument can be used to set the background
+/// color of the dialog. It is passed to [Dialog.backgroundColor]. When null,
+/// the ambient dialog theme background is used.
+///
 /// See also:
 ///
 ///  * [DatePicker], which provides the calendar grid used by the date picker dialog.
@@ -46,6 +50,7 @@ Future<DateTime?> showDatePickerDialog({
   DateTime? selectedDate,
   EdgeInsets contentPadding = const EdgeInsets.all(16),
   EdgeInsets padding = const EdgeInsets.all(36),
+  Color? dialogBackground,
   PickerType initialPickerType = PickerType.days,
   bool barrierDismissible = true,
   Color? barrierColor = Colors.black54,
@@ -81,6 +86,7 @@ Future<DateTime?> showDatePickerDialog({
         return Padding(
           padding: padding,
           child: Dialog(
+            backgroundColor: dialogBackground,
             insetPadding: EdgeInsets.zero,
             child: SizedBox(
               width: width ?? size.width,

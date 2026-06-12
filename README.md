@@ -24,7 +24,7 @@ A Flutter package with highly customizable Material date and range pickers.
 
 ```yaml
 dependencies:
-  date_picker_plus: ^7.0.0
+  date_picker_plus: ^7.0.1
 ```
 
 ```dart
@@ -131,6 +131,21 @@ There are two different paddings:
 
 - `padding`: outside the dialog widget itself (default `EdgeInsets.all(36)`).
 - `contentPadding`: inside the picker content area (default `EdgeInsets.all(16)`).
+
+### Dialog background
+
+Use `dialogBackground` to set the background color of the dialog surface behind the picker:
+
+```dart
+final date = await showDatePickerDialog(
+  context: context,
+  minDate: DateTime(2020, 1, 1),
+  maxDate: DateTime(2030, 12, 31),
+  dialogBackground: Colors.white,
+);
+```
+
+It is available on both `showDatePickerDialog` and `showRangePickerDialog`. When omitted, the ambient `DialogTheme` / Material default background applies.
 
 ## Theming Model
 

@@ -1,3 +1,7 @@
+# 7.0.1
+
+- Add `dialogBackground` to `showDatePickerDialog` and `showRangePickerDialog` to set the background color of the dialog. fixes [#46](https://github.com/hasanmhallak/date_picker/issues/46) [#48](https://github.com/hasanmhallak/date_picker/issues/48)
+
 # 7.0.0 [Breaking]
 
 ## Theming API
