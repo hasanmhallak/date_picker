@@ -4,7 +4,7 @@ import 'package:date_picker_plus/src/range/range_days_picker.dart';
 import 'package:date_picker_plus/src/range/range_days_view.dart';
 import 'package:date_picker_plus/src/shared/month_view.dart';
 import 'package:date_picker_plus/src/shared/year_view.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

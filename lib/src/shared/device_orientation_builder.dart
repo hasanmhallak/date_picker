@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Builds a widget tree that can depend on the device orientation.
 class PickerDeviceOrientationBuilder extends StatelessWidget {

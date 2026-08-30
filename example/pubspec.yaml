@@ -39,6 +39,7 @@ dependencies:
   date_picker_plus:
     path: ../
 
+  material_ui: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

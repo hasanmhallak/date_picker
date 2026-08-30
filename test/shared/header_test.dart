@@ -1,7 +1,7 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
 import 'package:date_picker_plus/src/shared/leading_date.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget _buildHeader({

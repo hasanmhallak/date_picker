@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A function type signature for resolving a custom painter to draw
 /// background decorations for date ranges.

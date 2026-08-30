@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The `LeadingDate` class is a widget that shows an indication of the opened year/month
 /// above a calendar grid. It is typically used as part of a header in a calendar display.

@@ -1,14 +1,12 @@
 import 'package:date_picker_plus/src/shared/month_view.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   group('MonthView', () {
-    testWidgets('should have no selected month when selectedMonth is null',
-        (WidgetTester tester) async {
+    testWidgets('should have no selected month when selectedMonth is null', (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
 
       await tester.pumpWidget(
@@ -17,10 +15,8 @@ void main() {
             child: MonthView(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
-              minDate: DateTime(
-                  currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(
-                  currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedDate: currentDate,
             ),
           ),
@@ -30,8 +26,7 @@ void main() {
       final Finder selectedDayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border == null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border == null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -39,8 +34,7 @@ void main() {
       expect(selectedDayFinder, findsNothing);
     });
 
-    testWidgets('should highlight this month only.',
-        (WidgetTester tester) async {
+    testWidgets('should highlight this month only.', (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
 
       await tester.pumpWidget(
@@ -49,14 +43,11 @@ void main() {
             child: MonthView(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
-              minDate: DateTime(
-                  currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(
-                  currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedDate: currentDate,
               theme: MonthsPickerTheme(
-                currentDateDecoration:
-                    BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
                 enabledCellsDecoration: const BoxDecoration(),
                 selectedCellDecoration: const BoxDecoration(),
                 disabledCellsDecoration: const BoxDecoration(),
@@ -69,8 +60,7 @@ void main() {
       final Finder thisMonthFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border != null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border != null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -78,8 +68,7 @@ void main() {
       expect(thisMonthFinder, findsOneWidget);
     });
 
-    testWidgets(
-        'should be two widget highlighted, thisMonth with border, and selected month with fill color.',
+    testWidgets('should be two widget highlighted, thisMonth with border, and selected month with fill color.',
         (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 2, 1);
       final DateTime selectedMonth = DateTime(2020, 3, 1);
@@ -90,17 +79,13 @@ void main() {
             child: MonthView(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
-              minDate: DateTime(
-                  currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(
-                  currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedDate: currentDate,
               selectedDate: selectedMonth,
               theme: MonthsPickerTheme(
-                currentDateDecoration:
-                    BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-                selectedCellDecoration:
-                    const BoxDecoration(shape: BoxShape.circle),
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                selectedCellDecoration: const BoxDecoration(shape: BoxShape.circle),
                 enabledCellsDecoration: const BoxDecoration(),
                 disabledCellsDecoration: const BoxDecoration(),
               ),
@@ -112,8 +97,7 @@ void main() {
       final Finder selectedDayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border == null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border == null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -121,8 +105,7 @@ void main() {
       final Finder todayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border != null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border != null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -131,8 +114,7 @@ void main() {
       expect(todayFinder, findsOneWidget);
     });
 
-    testWidgets(
-        'should be one widget highlighted, when selected month is not in the year displayed.',
+    testWidgets('should be one widget highlighted, when selected month is not in the year displayed.',
         (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 2, 1);
       final DateTime selectedMonth = DateTime(2021, 3, 1);
@@ -143,17 +125,13 @@ void main() {
             child: MonthView(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
-              minDate: DateTime(
-                  currentDate.year - 2, currentDate.month, currentDate.day),
-              maxDate: DateTime(
-                  currentDate.year + 2, currentDate.month, currentDate.day),
+              minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
+              maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
               displayedDate: currentDate,
               selectedDate: selectedMonth,
               theme: MonthsPickerTheme(
-                currentDateDecoration:
-                    BoxDecoration(shape: BoxShape.circle, border: Border.all()),
-                selectedCellDecoration:
-                    const BoxDecoration(shape: BoxShape.circle),
+                currentDateDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all()),
+                selectedCellDecoration: const BoxDecoration(shape: BoxShape.circle),
                 enabledCellsDecoration: const BoxDecoration(),
                 disabledCellsDecoration: const BoxDecoration(),
               ),
@@ -165,8 +143,7 @@ void main() {
       final Finder selectedDayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border == null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border == null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -174,8 +151,7 @@ void main() {
       final Finder todayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container && widget.decoration != null) {
           final BoxDecoration decoration = widget.decoration as BoxDecoration;
-          return decoration.border != null &&
-              decoration.shape == BoxShape.circle;
+          return decoration.border != null && decoration.shape == BoxShape.circle;
         }
         return false;
       });
@@ -184,13 +160,10 @@ void main() {
       expect(todayFinder, findsOneWidget);
     });
 
-    testWidgets('should throw assertion error if minDate > maxDate',
-        (WidgetTester tester) async {
+    testWidgets('should throw assertion error if minDate > maxDate', (WidgetTester tester) async {
       final DateTime currentDate = DateTime.now();
-      final DateTime maxDate =
-          DateTime.now().subtract(const Duration(days: 365 * 10));
-      final DateTime minDate =
-          DateTime.now().add(const Duration(days: 365 * 10));
+      final DateTime maxDate = DateTime.now().subtract(const Duration(days: 365 * 10));
+      final DateTime minDate = DateTime.now().add(const Duration(days: 365 * 10));
 
       expect(() async {
         await tester.pumpWidget(
@@ -209,8 +182,7 @@ void main() {
       }, throwsAssertionError);
     });
 
-    testWidgets('should disbale all the months before min date.',
-        (WidgetTester tester) async {
+    testWidgets('should disbale all the months before min date.', (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 5, 1);
       final DateTime minDate = DateTime(2020, 4, 1);
       final DateTime maxDate = DateTime(2020, 12, 1);
@@ -245,8 +217,7 @@ void main() {
       expect(disabledDayFinder, findsNWidgets(3));
     });
 
-    testWidgets('should disbale all the months after max date.',
-        (WidgetTester tester) async {
+    testWidgets('should disbale all the months after max date.', (WidgetTester tester) async {
       final DateTime currentDate = DateTime(2020, 5, 1);
       final DateTime minDate = DateTime(2020, 1, 1);
       final DateTime maxDate = DateTime(2020, 10, 1);
@@ -281,8 +252,7 @@ void main() {
       expect(disabledDayFinder, findsNWidgets(2));
     });
 
-    testWidgets('should display enabled months with the correct color',
-        (WidgetTester tester) async {
+    testWidgets('should display enabled months with the correct color', (WidgetTester tester) async {
       const Color customColor = Colors.green;
 
       await tester.pumpWidget(
@@ -317,8 +287,7 @@ void main() {
       await tester.ensureVisible(enabledDayFinder.last);
     });
 
-    testWidgets('should display disabled months with the correct color',
-        (WidgetTester tester) async {
+    testWidgets('should display disabled months with the correct color', (WidgetTester tester) async {
       const Color customColor = Colors.green;
 
       await tester.pumpWidget(
@@ -352,8 +321,7 @@ void main() {
       await tester.ensureVisible(disabledDayFinder.last);
     });
 
-    testWidgets('should display current month with the correct color',
-        (WidgetTester tester) async {
+    testWidgets('should display current month with the correct color', (WidgetTester tester) async {
       const Color customColor = Colors.green;
 
       await tester.pumpWidget(
@@ -379,11 +347,9 @@ void main() {
       final Finder enabledDayFinder = find.byWidgetPredicate((widget) {
         if (widget is Container &&
             widget.decoration != null &&
-            (widget.decoration as BoxDecoration).border ==
-                Border.all(color: customColor) &&
+            (widget.decoration as BoxDecoration).border == Border.all(color: customColor) &&
             (widget.child as Center).child is Text &&
-            ((widget.child as Center).child as Text).style?.color ==
-                customColor) {
+            ((widget.child as Center).child as Text).style?.color == customColor) {
           return true;
         }
         return false;
@@ -396,8 +362,7 @@ void main() {
       await tester.ensureVisible(enabledDayFinder.last);
     });
 
-    testWidgets('should display selected month with the correct color',
-        (WidgetTester tester) async {
+    testWidgets('should display selected month with the correct color', (WidgetTester tester) async {
       const Color textColor = Colors.green;
       const Color fillColor = Colors.red;
 
@@ -426,8 +391,7 @@ void main() {
             (widget.decoration as BoxDecoration).border == null &&
             (widget.decoration as BoxDecoration).color == fillColor &&
             (widget.child as Center).child is Text &&
-            ((widget.child as Center).child as Text).style?.color ==
-                textColor) {
+            ((widget.child as Center).child as Text).style?.color == textColor) {
           return true;
         }
         return false;
@@ -438,16 +402,14 @@ void main() {
       await tester.ensureVisible(enabledDayFinder.first);
     });
 
-    testWidgets('should select the right month when tap.',
-        (WidgetTester tester) async {
+    testWidgets('should select the right month when tap.', (WidgetTester tester) async {
       const uSLocale = Locale('en', 'US');
 
       await GlobalMaterialLocalizations.delegate.load(uSLocale);
       final dateToSelect = DateTime(2020, 2, 1);
       DateTime? selectedMonth;
 
-      final List<String> monthsNames =
-          intl.DateFormat('', 'en').dateSymbols.STANDALONESHORTMONTHS;
+      final List<String> monthsNames = intl.DateFormat('', 'en').dateSymbols.STANDALONESHORTMONTHS;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -456,11 +418,7 @@ void main() {
             Locale('en', 'US'),
             Locale('en', 'GB'),
           ],
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
             child: MonthView(
               currentDate: DateTime(2020, 1, 1),
@@ -477,19 +435,14 @@ void main() {
 
       final selectedMonthName = monthsNames[dateToSelect.month - 1];
 
-      final clickbaleWidget =
-          find.byWidgetPredicate((widget) => widget is InkResponse);
+      final clickbaleWidget = find.byWidgetPredicate((widget) => widget is InkResponse);
 
-      expect(
-          clickbaleWidget,
-          findsNWidgets(
-              12)); // Assuming there are 12 month in the displayed year
+      expect(clickbaleWidget, findsNWidgets(12)); // Assuming there are 12 month in the displayed year
 
       final Finder monthFinder = find.byWidgetPredicate((widget) {
         if (widget is Container &&
             (widget.child as Center).child is Text &&
-            ((widget.child as Center).child as Text).data ==
-                selectedMonthName) {
+            ((widget.child as Center).child as Text).data == selectedMonthName) {
           return true;
         }
         return false;
@@ -504,14 +457,12 @@ void main() {
       expect(selectedMonth, dateToSelect);
     });
 
-    testWidgets('should show the correct names when locale changed.',
-        (WidgetTester tester) async {
+    testWidgets('should show the correct names when locale changed.', (WidgetTester tester) async {
       const arLocale = Locale('ar');
 
       await GlobalMaterialLocalizations.delegate.load(arLocale);
 
-      final List<String> monthName =
-          intl.DateFormat('', 'ar').dateSymbols.STANDALONESHORTMONTHS;
+      final List<String> monthName = intl.DateFormat('', 'ar').dateSymbols.STANDALONESHORTMONTHS;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -520,11 +471,7 @@ void main() {
             Locale('en', 'US'),
             Locale('ar'),
           ],
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
             child: MonthView(
               currentDate: DateTime(2020, 1, 1),
@@ -579,8 +526,7 @@ void main() {
       },
     );
 
-    testWidgets(
-        'should not call onChanged when a disabled month (before minDate) is tapped',
+    testWidgets('should not call onChanged when a disabled month (before minDate) is tapped',
         (WidgetTester tester) async {
       bool callbackCalled = false;
       final DateTime currentDate = DateTime(2020, 5, 1);
@@ -621,8 +567,7 @@ void main() {
       expect(callbackCalled, isFalse);
     });
 
-    testWidgets('uses theme cellsPadding for month cells',
-        (WidgetTester tester) async {
+    testWidgets('uses theme cellsPadding for month cells', (WidgetTester tester) async {
       const customPadding = EdgeInsets.all(20);
       final DateTime currentDate = DateTime(2020, 5, 1);
 
