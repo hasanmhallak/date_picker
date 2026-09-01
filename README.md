@@ -24,7 +24,7 @@ A Flutter package with highly customizable Material date and range pickers.
 
 ```yaml
 dependencies:
-  date_picker_plus: ^7.0.1
+  date_picker_plus: ^8.0.0
 ```
 
 ```dart
