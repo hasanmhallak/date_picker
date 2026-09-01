@@ -7,8 +7,7 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the header in picker views.
 @immutable
-class HeaderTheme extends ThemeExtension<HeaderTheme>
-    with DiagnosticableTreeMixin {
+class HeaderTheme with DiagnosticableTreeMixin {
   /// Creates a [HeaderTheme].
   const HeaderTheme({
     this.enableHeader,
@@ -28,6 +27,8 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
     this.arrowButtonsSpace,
     this.headerPadding,
     this.decoration,
+    this.nextPageSemanticLabel,
+    this.previousPageSemanticLabel,
   });
 
   /// Whether the header is enabled and visible.
@@ -119,10 +120,24 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
   /// Defaults to an empty [BoxDecoration].
   final Decoration? decoration;
 
+  /// Semantics label for the next-page header button.
+  ///
+  /// Defaults to [MaterialLocalizations.nextPageTooltip] when Material
+  /// localizations are present, otherwise `'Next page'`.
+  final String? nextPageSemanticLabel;
+
+  /// Semantics label for the previous-page header button.
+  ///
+  /// Defaults to [MaterialLocalizations.previousPageTooltip] when Material
+  /// localizations are present, otherwise `'Previous page'`.
+  final String? previousPageSemanticLabel;
+
   /// Returns a [HeaderTheme] populated with default values.
   static HeaderTheme defaults(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final materialLocalizations =
+        Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
     final inkDefaults =
         InkResponseTheme.defaults(context).copyWith(containedInkWell: true);
 
@@ -156,10 +171,12 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
       forwardButtonInkResponseTheme: inkDefaults,
       backwardButtonInkResponseTheme: inkDefaults,
       arrowButtonsSpace: 10,
+      nextPageSemanticLabel: materialLocalizations?.nextPageTooltip ?? 'Next page',
+      previousPageSemanticLabel:
+          materialLocalizations?.previousPageTooltip ?? 'Previous page',
     );
   }
 
-  @override
   HeaderTheme copyWith({
     bool? enableHeader,
     bool? enableArrowKeys,
@@ -178,6 +195,8 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
     double? arrowButtonsSpace,
     EdgeInsetsGeometry? headerPadding,
     Decoration? decoration,
+    String? nextPageSemanticLabel,
+    String? previousPageSemanticLabel,
   }) {
     return HeaderTheme(
       enableHeader: enableHeader ?? this.enableHeader,
@@ -201,6 +220,10 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
       arrowButtonsSpace: arrowButtonsSpace ?? this.arrowButtonsSpace,
       headerPadding: headerPadding ?? this.headerPadding,
       decoration: decoration ?? this.decoration,
+      nextPageSemanticLabel:
+          nextPageSemanticLabel ?? this.nextPageSemanticLabel,
+      previousPageSemanticLabel:
+          previousPageSemanticLabel ?? this.previousPageSemanticLabel,
     );
   }
 
@@ -231,12 +254,13 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
               ?.merge(other.backwardButtonInkResponseTheme) ??
           other.backwardButtonInkResponseTheme,
       arrowButtonsSpace: other.arrowButtonsSpace,
+      nextPageSemanticLabel: other.nextPageSemanticLabel,
+      previousPageSemanticLabel: other.previousPageSemanticLabel,
     );
   }
 
-  @override
-  HeaderTheme lerp(covariant ThemeExtension<HeaderTheme>? other, double t) {
-    if (other is! HeaderTheme) return this;
+  HeaderTheme lerp(HeaderTheme? other, double t) {
+    if (other == null) return this;
 
     return HeaderTheme(
       enableHeader: t < 0.5 ? enableHeader : other.enableHeader,
@@ -269,6 +293,10 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
       headerPadding:
           EdgeInsetsGeometry.lerp(headerPadding, other.headerPadding, t),
       decoration: Decoration.lerp(decoration, other.decoration, t),
+      nextPageSemanticLabel:
+          t < 0.5 ? nextPageSemanticLabel : other.nextPageSemanticLabel,
+      previousPageSemanticLabel:
+          t < 0.5 ? previousPageSemanticLabel : other.previousPageSemanticLabel,
     );
   }
 
@@ -303,5 +331,9 @@ class HeaderTheme extends ThemeExtension<HeaderTheme>
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry?>(
         'headerPadding', headerPadding));
     properties.add(DiagnosticsProperty<Decoration?>('decoration', decoration));
+    properties.add(StringProperty(
+        'nextPageSemanticLabel', nextPageSemanticLabel));
+    properties.add(StringProperty(
+        'previousPageSemanticLabel', previousPageSemanticLabel));
   }
 }

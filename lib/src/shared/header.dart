@@ -4,7 +4,6 @@ import 'package:material_ui/material_ui.dart';
 import 'leading_date.dart';
 
 Widget _headerArrowButton({
-  required BuildContext context,
   required HeaderTheme? theme,
   required bool forward,
   required bool isEnabled,
@@ -13,8 +12,7 @@ Widget _headerArrowButton({
   required String semanticsLabel,
 }) {
   final ink = forward ? theme?.forwardButtonInkResponseTheme : theme?.backwardButtonInkResponseTheme;
-  final fallbackInk = InkResponseTheme.defaults(context);
-  final i = ink ?? fallbackInk;
+  final i = ink ?? const InkResponseTheme();
   final decoration = forward ? theme?.forwardButtonDecoration : theme?.backwardButtonDecoration;
   final width = forward ? theme?.forwardButtonWidth : theme?.backwardButtonWidth;
   final height = forward ? theme?.forwardButtonHeight : theme?.backwardButtonHeight;
@@ -66,7 +64,7 @@ Widget _headerArrowButton({
 ///   onPreviousPage: () {
 ///     // Handle previous page navigation
 ///   },
-///   theme: DatePickerPlusTheme.defaults(context),
+///   theme: DatePickerPlusTheme.defaults(context).headerTheme,
 /// )
 /// ```
 ///
@@ -106,36 +104,29 @@ class Header extends StatelessWidget {
   /// associated with the backward navigation control.
   final VoidCallback onPreviousPage;
 
-  /// The theme to apply to the [DatePicker].
-  ///
-  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
-  /// and the default theme.
-  final HeaderTheme? theme;
+  /// Header theme from the parent picker after [DatePickerPlusTheme.resolve].
+  final HeaderTheme theme;
 
   /// When `false`, header navigation and leading date taps are disabled.
   final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context).headerTheme;
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>()?.headerTheme;
-    final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
-
     final headerTheme = theme;
-    final enableHeader = headerTheme?.enableHeader ?? true;
+
+    final enableHeader = headerTheme.enableHeader ?? true;
     if (!enableHeader) {
       return const SizedBox.shrink();
     }
 
-    final centerLeadingDate = headerTheme?.centerLeadingDate;
-    final nextPageSemanticLabel = MaterialLocalizations.of(context).nextPageTooltip;
-    final previousPageSemanticLabel = MaterialLocalizations.of(context).previousPageTooltip;
+    final centerLeadingDate = headerTheme.centerLeadingDate;
+    final nextPageSemanticLabel = headerTheme.nextPageSemanticLabel ?? 'Next page';
+    final previousPageSemanticLabel = headerTheme.previousPageSemanticLabel ?? 'Previous page';
 
-    final forwardButtonWidget = headerTheme?.forwardArrowWidget;
-    final backwardButtonWidget = headerTheme?.backwardArrowWidget;
+    final forwardButtonWidget = headerTheme.forwardArrowWidget;
+    final backwardButtonWidget = headerTheme.backwardArrowWidget;
 
     final forwardButton = _headerArrowButton(
-      context: context,
       theme: headerTheme,
       forward: true,
       isEnabled: isEnabled,
@@ -145,7 +136,6 @@ class Header extends StatelessWidget {
     );
 
     final backButton = _headerArrowButton(
-      context: context,
       theme: headerTheme,
       forward: false,
       isEnabled: isEnabled,
@@ -154,13 +144,13 @@ class Header extends StatelessWidget {
       semanticsLabel: previousPageSemanticLabel,
     );
 
-    final enableArrowKeys = headerTheme?.enableArrowKeys ?? true;
-    final arrowButtonsSpace = headerTheme?.arrowButtonsSpace ?? 10;
+    final enableArrowKeys = headerTheme.enableArrowKeys ?? true;
+    final arrowButtonsSpace = headerTheme.arrowButtonsSpace ?? 10;
 
     final leadingDate = LeadingDate(
       onTap: isEnabled ? onDateTap : null,
       displayedText: displayedDate,
-      displayedTextStyle: headerTheme?.leadingDateTextStyle,
+      displayedTextStyle: headerTheme.leadingDateTextStyle,
     );
 
     final List<Widget> trailingArrows = [];
@@ -182,9 +172,9 @@ class Header extends StatelessWidget {
     }
 
     return DecoratedBox(
-      decoration: headerTheme?.decoration ?? const BoxDecoration(),
+      decoration: headerTheme.decoration ?? const BoxDecoration(),
       child: Padding(
-        padding: headerTheme?.headerPadding ?? EdgeInsets.zero,
+        padding: headerTheme.headerPadding ?? EdgeInsets.zero,
         child: centerLeadingDate == true && !enableArrowKeys
             ? Center(child: leadingDate)
             : Row(

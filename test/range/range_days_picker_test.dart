@@ -1,5 +1,6 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/range/range_days_picker.dart';
+import 'package:date_picker_plus/src/shared/date_formatting.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
 import 'package:date_picker_plus/src/shared/leading_date.dart';
 import 'package:material_ui/material_ui.dart';
@@ -43,7 +44,7 @@ void main() {
 
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
+          headerTextWidget.data, formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate));
     });
 
     testWidgets('should apply rangePickerTheme padding around PageView', (WidgetTester tester) async {
@@ -133,7 +134,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(newDisplayedMonth));
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),newDisplayedMonth));
 
       await tester.drag(pageViewFinder, const Offset(600, 0)); // Drag the page backward
       await tester.pumpAndSettle();
@@ -142,7 +143,7 @@ void main() {
       final Text newHeaderTextWidget =
           tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(displayedDate));
+          formatMonthYearHeader(Localizations.localeOf(tester.element(newHeaderFinder)),displayedDate));
     });
 
     testWidgets('should change the page when tapping on the next page icon and update header.',
@@ -187,7 +188,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
+          headerTextWidget.data, formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate));
 
       await tester.tap(nextPageIconFinder);
       await tester.pumpAndSettle();
@@ -202,7 +203,7 @@ void main() {
       final Text newHeaderTextWidget =
           tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(newDisplayedMonth));
+          formatMonthYearHeader(Localizations.localeOf(tester.element(newHeaderFinder)),newDisplayedMonth));
     });
 
     testWidgets('should change the page when tapping on the previous page icon and update header.',
@@ -247,7 +248,7 @@ void main() {
       final Finder headerFinder = find.byType(Header);
       final Text headerTextWidget = tester.widget<Text>(find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
-          headerTextWidget.data, MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate));
+          headerTextWidget.data, formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate));
 
       await tester.tap(previousPageIconFinder);
       await tester.pumpAndSettle();
@@ -262,7 +263,7 @@ void main() {
       final Text newHeaderTextWidget =
           tester.widget<Text>(find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder)).formatMonthYear(newDisplayedMonth));
+          formatMonthYearHeader(Localizations.localeOf(tester.element(newHeaderFinder)),newDisplayedMonth));
     });
 
     testWidgets(
@@ -314,7 +315,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate),
         );
 
         await tester.tap(previousPageIconFinder);
@@ -335,7 +336,7 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),newDisplayedYear),
         );
       },
     );
@@ -389,7 +390,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate),
         );
 
         await tester.tap(nextPageIconFinder);
@@ -410,7 +411,7 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),newDisplayedYear),
         );
       },
     );
@@ -467,7 +468,7 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),newDisplayedYear),
         );
 
         await tester.drag(
@@ -485,7 +486,7 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder)).formatMonthYear(displayedDate),
+          formatMonthYearHeader(Localizations.localeOf(tester.element(headerFinder)),displayedDate),
         );
       },
     );

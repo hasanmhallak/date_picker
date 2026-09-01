@@ -3,6 +3,40 @@ import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class _ResolveYears extends StatelessWidget {
+  const _ResolveYears({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedYearRange,
+    this.selectedDate,
+    this.theme,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTimeRange displayedYearRange;
+  final DateTime? selectedDate;
+  final YearsPickerTheme? theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return YearView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedYearRange: displayedYearRange,
+      selectedDate: selectedDate,
+      theme: t.yearsPickerTheme!.merge(theme),
+    );
+  }
+}
+
 void main() {
   group('YearView', () {
     testWidgets('should have no selected year when selected year is null',
@@ -12,7 +46,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(
@@ -45,7 +79,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(1950),
@@ -87,7 +121,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(2019),
@@ -139,7 +173,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(2019),
@@ -201,6 +235,7 @@ void main() {
                 maxDate: maxDate,
                 displayedYearRange:
                     DateTimeRange(start: DateTime(2018), end: DateTime(2029)),
+                theme: const YearsPickerTheme(),
               ),
             ),
           ),
@@ -228,6 +263,7 @@ void main() {
                 maxDate: maxDate,
                 displayedYearRange:
                     DateTimeRange(start: DateTime(2018), end: DateTime(2050)),
+                theme: const YearsPickerTheme(),
               ),
             ),
           ),
@@ -244,7 +280,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -281,7 +317,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -316,7 +352,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2017, 1, 1),
@@ -353,7 +389,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2021, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2020, 4, 1),
@@ -389,7 +425,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2020),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019),
@@ -435,7 +471,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2020),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019),
@@ -478,7 +514,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2019),
               onChanged: (DateTime date) {
                 selectedMonth = date;
@@ -536,6 +572,7 @@ void main() {
                     displayedYearRange:
                         DateTimeRange(start: minDate, end: maxDate),
                     selectedDate: selectedDate,
+                    theme: const YearsPickerTheme(),
                   ),
                 ),
               ),
@@ -556,7 +593,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (_) => callbackCalled = true,
               minDate: minDate,
@@ -595,7 +632,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _ResolveYears(
               currentDate: DateTime(2020),
               onChanged: (_) {},
               minDate: DateTime(2017),

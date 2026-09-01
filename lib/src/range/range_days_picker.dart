@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../shared/device_orientation_builder.dart';
 import '../shared/header.dart';
 import '../shared/types.dart';
+import '../shared/date_formatting.dart';
 import '../shared/utils.dart';
 import '../theme/date_picker_plus_theme.dart';
 import 'range_days_view.dart';
@@ -166,9 +167,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final theme = defaultTheme.merge(contextTheme).merge(widget.theme);
+    final theme = DatePickerPlusTheme.resolve(context, widget.theme);
 
     final bool isEnabled = theme.isEnabled ?? true;
 
@@ -194,21 +193,13 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Header(
-                theme: theme.headerTheme,
+                theme: theme.headerTheme!,
                 isEnabled: isEnabled,
                 onDateTap: () => widget.onLeadingDateTap?.call(),
-                displayedDate: MaterialLocalizations.of(context)
-                    .formatMonthYear(_displayedMonth!)
-                    .replaceAll('٩', '9')
-                    .replaceAll('٨', '8')
-                    .replaceAll('٧', '7')
-                    .replaceAll('٦', '6')
-                    .replaceAll('٥', '5')
-                    .replaceAll('٤', '4')
-                    .replaceAll('٣', '3')
-                    .replaceAll('٢', '2')
-                    .replaceAll('١', '1')
-                    .replaceAll('٠', '0'),
+                displayedDate: formatMonthYearHeader(
+                  theme.locale!,
+                  _displayedMonth!,
+                ),
                 onNextPage: () {
                   _pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
@@ -262,6 +253,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                             ? null
                             : DateUtils.dateOnly(widget.selectedStartDate!),
                         theme: theme,
+                        locale: theme.locale!,
                         onEndDateChanged: (value) =>
                             widget.onEndDateChanged?.call(value),
                         onStartDateChanged: (value) =>

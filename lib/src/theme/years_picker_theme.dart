@@ -6,8 +6,7 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the grid of years.
 @immutable
-class YearsPickerTheme extends ThemeExtension<YearsPickerTheme>
-    with DiagnosticableTreeMixin {
+class YearsPickerTheme with DiagnosticableTreeMixin {
   /// Creates a [YearsPickerTheme].
   const YearsPickerTheme({
     this.enabledCellsTextStyle,
@@ -154,7 +153,6 @@ class YearsPickerTheme extends ThemeExtension<YearsPickerTheme>
     }
   }
 
-  @override
   YearsPickerTheme copyWith({
     TextStyle? enabledCellsTextStyle,
     Decoration? enabledCellsDecoration,
@@ -217,10 +215,8 @@ class YearsPickerTheme extends ThemeExtension<YearsPickerTheme>
     );
   }
 
-  @override
-  YearsPickerTheme lerp(
-      covariant ThemeExtension<YearsPickerTheme>? other, double t) {
-    if (other is! YearsPickerTheme) return this;
+  YearsPickerTheme lerp(YearsPickerTheme? other, double t) {
+    if (other == null) return this;
 
     return YearsPickerTheme(
       enabledCellsTextStyle:

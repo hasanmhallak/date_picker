@@ -14,12 +14,16 @@ Widget _buildHeader({
   return MaterialApp(
     home: Material(
       child: Scaffold(
-        body: Header(
-          displayedDate: displayedDate,
-          onDateTap: onDateTap ?? () {},
-          onNextPage: onNextPage ?? () {},
-          onPreviousPage: onPreviousPage ?? () {},
-          theme: theme,
+        body: Builder(
+          builder: (context) {
+            return Header(
+              displayedDate: displayedDate,
+              onDateTap: onDateTap ?? () {},
+              onNextPage: onNextPage ?? () {},
+              onPreviousPage: onPreviousPage ?? () {},
+              theme: DatePickerPlusTheme.of(context).headerTheme!.merge(theme),
+            );
+          },
         ),
       ),
     ),
@@ -338,5 +342,119 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets(
+        'falls back to Next page / Previous page without MaterialLocalizations',
+        (WidgetTester tester) async {
+      final handle = tester.ensureSemantics();
+
+      await tester.pumpWidget(
+        Theme(
+          data: ThemeData(),
+          child: Localizations(
+            locale: const Locale('en', 'US'),
+            delegates: const [DefaultWidgetsLocalizations.delegate],
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: MediaQuery(
+                data: const MediaQueryData(),
+                child: Material(
+                  child: Header(
+                    displayedDate: 'June 2022',
+                    onDateTap: () {},
+                    onNextPage: () {},
+                    onPreviousPage: () {},
+                    theme: const HeaderTheme(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      try {
+        expect(find.bySemanticsLabel('Next page'), findsOneWidget);
+        expect(find.bySemanticsLabel('Previous page'), findsOneWidget);
+      } finally {
+        handle.dispose();
+      }
+    });
+
+    testWidgets(
+        'uses MaterialLocalizations page tooltips when Material delegates are present',
+        (WidgetTester tester) async {
+      final handle = tester.ensureSemantics();
+
+      await tester.pumpWidget(
+        Theme(
+          data: ThemeData(),
+          child: Localizations(
+            locale: const Locale('en', 'US'),
+            delegates: const [
+              _PagingMaterialLocalizationsDelegate(),
+              DefaultWidgetsLocalizations.delegate,
+            ],
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: MediaQuery(
+                data: const MediaQueryData(),
+                child: Material(
+                  child: Builder(
+                    builder: (context) {
+                      return Header(
+                        displayedDate: 'June 2022',
+                        onDateTap: () {},
+                        onNextPage: () {},
+                        onPreviousPage: () {},
+                        theme: HeaderTheme.defaults(context),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      try {
+        final material =
+            MaterialLocalizations.of(tester.element(find.byType(Header)));
+        expect(material.nextPageTooltip, 'Custom next');
+        expect(material.previousPageTooltip, 'Custom previous');
+        expect(find.bySemanticsLabel('Custom next'), findsOneWidget);
+        expect(find.bySemanticsLabel('Custom previous'), findsOneWidget);
+      } finally {
+        handle.dispose();
+      }
+    });
   });
+}
+
+class _PagingMaterialLocalizations extends DefaultMaterialLocalizations {
+  const _PagingMaterialLocalizations();
+
+  @override
+  String get nextPageTooltip => 'Custom next';
+
+  @override
+  String get previousPageTooltip => 'Custom previous';
+}
+
+class _PagingMaterialLocalizationsDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
+  const _PagingMaterialLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => true;
+
+  @override
+  Future<MaterialLocalizations> load(Locale locale) async =>
+      const _PagingMaterialLocalizations();
+
+  @override
+  bool shouldReload(_PagingMaterialLocalizationsDelegate old) => false;
 }

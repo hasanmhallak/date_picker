@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:date_picker_plus/src/shared/date_formatting.dart';
 import 'package:date_picker_plus/src/shared/header.dart';
 import 'package:date_picker_plus/src/shared/leading_date.dart';
 import 'package:material_ui/material_ui.dart';
@@ -32,8 +33,9 @@ void main() {
           find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(displayedDate));
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           displayedDate));
     });
 
     testWidgets('should apply daysPickerTheme padding around PageView',
@@ -104,8 +106,9 @@ void main() {
           find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedMonth));
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           newDisplayedMonth));
 
       await tester.drag(
           pageViewFinder, const Offset(600, 0)); // Drag the page backward
@@ -116,8 +119,9 @@ void main() {
           find.descendant(of: newHeaderFinder, matching: find.byType(Text)));
       expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(newHeaderFinder))
-              .formatMonthYear(displayedDate));
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(newHeaderFinder)),
+           displayedDate));
     });
 
     testWidgets(
@@ -145,9 +149,6 @@ void main() {
         ),
       );
 
-      final localizations =
-          MaterialLocalizations.of(tester.element(find.byType(Header)));
-
       final Finder nextPageWidgetFinder =
           find.byWidget(theme.headerTheme!.forwardArrowWidget!);
 
@@ -155,7 +156,9 @@ void main() {
 
       final Finder headerFinder = find.byType(Header);
       final String expectedHeaderText =
-          localizations.formatMonthYear(displayedDate);
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(find.byType(Header))),
+           displayedDate);
       expect(
           find.descendant(
               of: headerFinder, matching: find.text(expectedHeaderText)),
@@ -167,7 +170,9 @@ void main() {
       final DateTime newDisplayedMonth = DateTime(2022, 7, 1);
 
       final String expectedNewText =
-          localizations.formatMonthYear(newDisplayedMonth);
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(find.byType(Header))),
+           newDisplayedMonth);
       expect(
         find.descendant(of: headerFinder, matching: find.text(expectedNewText)),
         findsOneWidget,
@@ -199,12 +204,11 @@ void main() {
         ),
       );
 
-      final localizations =
-          MaterialLocalizations.of(tester.element(find.byType(Header)));
-
       final Finder headerFinder = find.byType(Header);
       final String expectedInitialText =
-          localizations.formatMonthYear(displayedDate);
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(find.byType(Header))),
+           displayedDate);
       expect(
           find.descendant(
               of: headerFinder, matching: find.text(expectedInitialText)),
@@ -219,7 +223,9 @@ void main() {
 
       final DateTime newDisplayedMonth = DateTime(2022, 5, 1);
       final String expectedNewText =
-          localizations.formatMonthYear(newDisplayedMonth);
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(find.byType(Header))),
+           newDisplayedMonth);
       expect(
         find.descendant(of: headerFinder, matching: find.text(expectedNewText)),
         findsOneWidget,
@@ -265,8 +271,9 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(displayedDate),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           displayedDate),
         );
 
         await tester.tap(previousPageIconFinder);
@@ -288,8 +295,9 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           newDisplayedYear),
         );
       },
     );
@@ -333,8 +341,9 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(displayedDate),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           displayedDate),
         );
 
         await tester.tap(nextPageIconFinder);
@@ -356,8 +365,9 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           newDisplayedYear),
         );
       },
     );
@@ -402,8 +412,9 @@ void main() {
         );
         expect(
           headerTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(newDisplayedYear),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           newDisplayedYear),
         );
 
         await tester.drag(
@@ -421,8 +432,9 @@ void main() {
         );
         expect(
           newHeaderTextWidget.data,
-          MaterialLocalizations.of(tester.element(headerFinder))
-              .formatMonthYear(displayedDate),
+          formatMonthYearHeader(
+            Localizations.localeOf(tester.element(headerFinder)),
+           displayedDate),
         );
       },
     );
@@ -890,8 +902,9 @@ void main() {
           find.descendant(of: headerFinder, matching: find.byType(Text)));
       expect(
         headerTextWidget.data,
-        MaterialLocalizations.of(tester.element(headerFinder))
-            .formatMonthYear(displayedDate),
+        formatMonthYearHeader(
+          Localizations.localeOf(tester.element(headerFinder)),
+         displayedDate),
       );
     });
 

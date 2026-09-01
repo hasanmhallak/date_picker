@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../shared/cell_data.dart';
 import '../shared/cell_state.dart';
+import '../shared/date_formatting.dart';
 import '../shared/day_headers.dart';
 import '../shared/picker_grid_delegate.dart';
 import '../shared/types.dart';
@@ -30,7 +31,8 @@ class RangeDaysView extends StatelessWidget {
     required this.onEndDateChanged,
     required this.displayedMonth,
     this.cellBuilder,
-    this.theme,
+    required this.theme,
+    required this.locale,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -108,24 +110,21 @@ class RangeDaysView extends StatelessWidget {
   /// Optional builder for customizing individual cells.
   final CellBuilder? cellBuilder;
 
-  /// The theme to apply to the [DatePicker].
-  ///
-  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
-  /// and the default theme.
-  final DatePickerPlusTheme? theme;
+  /// Theme from the parent picker after [DatePickerPlusTheme.resolve].
+  final DatePickerPlusTheme theme;
+
+  /// Locale from the parent picker after [DatePickerPlusTheme.resolve].
+  final Locale locale;
 
   @override
   Widget build(BuildContext context) {
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final theme = defaultTheme.merge(contextTheme).merge(this.theme);
+    final theme = this.theme;
+    final locale = this.locale;
 
     final bool themeEnabled = theme.isEnabled ?? true;
 
-    final rangeTheme = theme.rangePickerTheme;
-    final inkResponseTheme = rangeTheme!.inkResponseTheme;
+    final rangeTheme = theme.rangePickerTheme!;
+    final inkResponseTheme = rangeTheme.inkResponseTheme;
     final cellsPadding = rangeTheme.cellsPadding ?? EdgeInsets.zero;
     final daysOfWeekTheme = theme.daysPickerTheme?.daysOfTheWeekTheme;
 
@@ -148,7 +147,7 @@ class RangeDaysView extends StatelessWidget {
     final minDate = DateUtils.dateOnly(this.minDate);
 
     final List<Widget> dayItems =
-        dayHeaders(daysOfWeekTheme, Localizations.localeOf(context));
+        dayHeaders(daysOfWeekTheme, locale);
 
     if (cellBuilder != null) {
       final startOfWeek = daysOfWeekTheme.startOfWeek!;
@@ -227,7 +226,7 @@ class RangeDaysView extends StatelessWidget {
           decoration: decoration,
           child: Center(
             child: Text(
-              localizations.formatDecimal(day),
+              day.toString(),
               style: style,
             ),
           ),
@@ -264,13 +263,15 @@ class RangeDaysView extends StatelessWidget {
         }
 
         String semanticLabel =
-            '${localizations.formatDecimal(day)}, ${localizations.formatFullDate(dayToBuild)}';
+            '${day.toString()}, ${formatFullDate(locale, dayToBuild)}';
         if (isStartDate) {
-          semanticLabel =
-              localizations.dateRangeStartDateSemanticLabel(semanticLabel);
+          semanticLabel = rangeTheme.dateRangeStartDateSemanticLabel!(
+            semanticLabel,
+          );
         } else if (isEndDate) {
-          semanticLabel =
-              localizations.dateRangeEndDateSemanticLabel(semanticLabel);
+          semanticLabel = rangeTheme.dateRangeEndDateSemanticLabel!(
+            semanticLabel,
+          );
         }
 
         if (!themeEnabled) {

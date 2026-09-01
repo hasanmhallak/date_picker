@@ -195,11 +195,6 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final DatePickerPlusTheme theme =
-        defaultTheme.merge(contextTheme).merge(widget.theme);
-
     switch (_pickerType!) {
       case PickerType.days:
         return Padding(
@@ -212,7 +207,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             selectedStartDate: _selectedStartDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            theme: theme,
+            theme: widget.theme,
             cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
@@ -259,7 +254,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDate:
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            theme: theme,
+            theme: widget.theme,
             cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
@@ -290,7 +285,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             minDate: DateUtils.dateOnly(widget.minDate),
             currentDate:
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
-            theme: theme,
+            theme: widget.theme,
             cellBuilder: widget.cellBuilder,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.

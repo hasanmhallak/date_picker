@@ -188,9 +188,7 @@ class _MonthPickerState extends State<MonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final theme = defaultTheme.merge(contextTheme).merge(widget.theme);
+    final theme = DatePickerPlusTheme.resolve(context, widget.theme);
     final bool isEnabled = theme.isEnabled ?? true;
 
     return Material(
@@ -214,7 +212,7 @@ class _MonthPickerState extends State<MonthPicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Header(
-                theme: theme.headerTheme,
+                theme: theme.headerTheme!,
                 isEnabled: isEnabled,
                 onDateTap: () => widget.onLeadingDateTap?.call(),
                 displayedDate: _displayedYear!.year.toString(),
@@ -265,7 +263,8 @@ class _MonthPickerState extends State<MonthPicker> {
                         displayedDate: year,
                         selectedDate: _selectedDate,
                         cellBuilder: widget.cellBuilder,
-                        theme: theme.monthsPickerTheme,
+                        theme: theme.monthsPickerTheme!,
+                        locale: theme.locale!,
                         isEnabled: isEnabled,
                         onChanged: (value) {
                           final selected = DateUtilsX.monthOnly(value);

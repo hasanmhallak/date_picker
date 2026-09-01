@@ -4,6 +4,41 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
 
+class _ResolveMonths extends StatelessWidget {
+  const _ResolveMonths({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedDate,
+    this.selectedDate,
+    this.theme,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime displayedDate;
+  final DateTime? selectedDate;
+  final MonthsPickerTheme? theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return MonthView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedDate: displayedDate,
+      selectedDate: selectedDate,
+      theme: t.monthsPickerTheme!.merge(theme),
+      locale: t.locale!,
+    );
+  }
+}
+
 void main() {
   group('MonthView', () {
     testWidgets('should have no selected month when selectedMonth is null', (WidgetTester tester) async {
@@ -12,7 +47,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -40,7 +75,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -76,7 +111,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -122,7 +157,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -175,6 +210,8 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 displayedDate: currentDate,
+                theme: const MonthsPickerTheme(),
+                locale: const Locale('en'),
               ),
             ),
           ),
@@ -190,7 +227,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -225,7 +262,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -258,7 +295,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019, 1, 1),
@@ -293,7 +330,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2021, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2021, 4, 1),
@@ -327,7 +364,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2020, 5, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2020, 1, 1),
@@ -369,7 +406,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019, 1, 1),
@@ -420,7 +457,7 @@ void main() {
           ],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {
                 selectedMonth = date;
@@ -473,7 +510,7 @@ void main() {
           ],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019, 1, 1),
@@ -516,6 +553,8 @@ void main() {
                     maxDate: maxDate,
                     displayedDate: displayedDate,
                     selectedDate: selectedDate,
+                    theme: const MonthsPickerTheme(),
+                    locale: const Locale('en'),
                   ),
                 ),
               ),
@@ -536,7 +575,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (_) => callbackCalled = true,
               minDate: minDate,
@@ -574,7 +613,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _ResolveMonths(
               currentDate: currentDate,
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),

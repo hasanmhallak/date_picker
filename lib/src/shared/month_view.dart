@@ -2,6 +2,7 @@ import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
+import 'date_formatting.dart';
 import 'picker_grid_delegate.dart';
 import 'utils.dart';
 
@@ -21,7 +22,8 @@ class MonthView extends StatelessWidget {
     required this.minDate,
     required this.maxDate,
     this.cellBuilder,
-    this.theme,
+    required this.theme,
+    required this.locale,
     this.isEnabled = true,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -73,29 +75,22 @@ class MonthView extends StatelessWidget {
   /// Optional builder for customizing individual cells.
   final CellBuilder? cellBuilder;
 
-  /// The theme to apply to the [DatePicker].
-  ///
-  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
-  /// and the default theme.
-  final MonthsPickerTheme? theme;
+  /// Months theme from the parent picker after [DatePickerPlusTheme.resolve].
+  final MonthsPickerTheme theme;
+
+  /// Locale from the parent picker after [DatePickerPlusTheme.resolve].
+  final Locale locale;
 
   /// When `false`, months are not selectable and semantics report as disabled.
   final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme =
-        DatePickerPlusTheme.defaults(context).monthsPickerTheme;
-    final contextTheme =
-        Theme.of(context).extension<DatePickerPlusTheme>()?.monthsPickerTheme;
-    final theme = defaultTheme?.merge(contextTheme).merge(this.theme);
+    final theme = this.theme;
+    final locale = this.locale;
 
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
-    final locale = Localizations.localeOf(context);
-
-    final inkResponseTheme = theme?.inkResponseTheme;
-    final cellsPadding = theme?.cellsPadding ??
+    final inkResponseTheme = theme.inkResponseTheme;
+    final cellsPadding = theme.cellsPadding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final int year = displayedDate.year;
@@ -136,8 +131,8 @@ class MonthView extends StatelessWidget {
         state = CellState.current;
       }
 
-      final style = theme?.resolveTextStyle(state);
-      final decoration = theme?.resolveDecoration(state);
+      final style = theme.resolveTextStyle(state);
+      final decoration = theme.resolveDecoration(state);
 
       Widget monthWidget = Padding(
         padding: cellsPadding,
@@ -165,8 +160,7 @@ class MonthView extends StatelessWidget {
         );
       }
 
-      final String monthSemanticLabel =
-          localizations.formatMonthYear(monthToBuild);
+      final String monthSemanticLabel = formatMonthYear(locale, monthToBuild);
 
       if (!isEnabled) {
         monthWidget = Semantics(

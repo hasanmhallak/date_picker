@@ -97,6 +97,28 @@ void main() {
       expect(merged.leadingDateTextStyle?.color, Colors.blue);
     });
 
+    test('copyWith and merge preserve page semantic labels', () {
+      const a = HeaderTheme(
+        nextPageSemanticLabel: 'Next',
+        previousPageSemanticLabel: 'Previous',
+      );
+      final copy = a.copyWith(nextPageSemanticLabel: 'Forward');
+      expect(copy.nextPageSemanticLabel, 'Forward');
+      expect(copy.previousPageSemanticLabel, 'Previous');
+
+      const b = HeaderTheme(previousPageSemanticLabel: 'Back');
+      final merged = a.merge(b);
+      expect(merged.nextPageSemanticLabel, 'Next');
+      expect(merged.previousPageSemanticLabel, 'Back');
+    });
+
+    test('lerp snaps page semantic labels at t = 0.5', () {
+      const a = HeaderTheme(nextPageSemanticLabel: 'A');
+      const b = HeaderTheme(nextPageSemanticLabel: 'B');
+      expect(a.lerp(b, 0.49).nextPageSemanticLabel, 'A');
+      expect(a.lerp(b, 0.5).nextPageSemanticLabel, 'B');
+    });
+
     test('lerp at t=0 returns self', () {
       const a = HeaderTheme(enableHeader: true);
       const b = HeaderTheme(enableHeader: false);
@@ -931,6 +953,7 @@ void main() {
         expect(d.rangePickerTheme, isNotNull);
         expect(d.headerTheme, isNotNull);
         expect(d.isEnabled, isTrue);
+        expect(d.locale, isNotNull);
       });
     });
 

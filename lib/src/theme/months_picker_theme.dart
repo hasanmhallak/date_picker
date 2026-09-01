@@ -6,8 +6,7 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the grid of months.
 @immutable
-class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme>
-    with DiagnosticableTreeMixin {
+class MonthsPickerTheme with DiagnosticableTreeMixin {
   /// Creates a [MonthsPickerTheme].
   const MonthsPickerTheme({
     this.enabledCellsTextStyle,
@@ -154,7 +153,6 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme>
     }
   }
 
-  @override
   MonthsPickerTheme copyWith({
     TextStyle? enabledCellsTextStyle,
     Decoration? enabledCellsDecoration,
@@ -217,10 +215,8 @@ class MonthsPickerTheme extends ThemeExtension<MonthsPickerTheme>
     );
   }
 
-  @override
-  MonthsPickerTheme lerp(
-      covariant ThemeExtension<MonthsPickerTheme>? other, double t) {
-    if (other is! MonthsPickerTheme) return this;
+  MonthsPickerTheme lerp(MonthsPickerTheme? other, double t) {
+    if (other == null) return this;
 
     return MonthsPickerTheme(
       enabledCellsTextStyle:

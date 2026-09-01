@@ -30,6 +30,8 @@ void main() {
                   maxDate: DateTime(2022, 12, 31),
                   displayedMonth: displayed,
                   onChanged: (_) {},
+                  theme: DatePickerPlusTheme.of(context).daysPickerTheme!,
+                  locale: DatePickerPlusTheme.of(context).locale!,
                 );
               },
             ),
@@ -65,6 +67,8 @@ void main() {
                   maxDate: DateTime(2022, 12, 31),
                   displayedDate: displayed,
                   onChanged: (_) {},
+                  theme: DatePickerPlusTheme.of(context).monthsPickerTheme!,
+                  locale: DatePickerPlusTheme.of(context).locale!,
                 );
               },
             ),
@@ -100,6 +104,7 @@ void main() {
                   displayedYearRange:
                       DateTimeRange(start: DateTime(2019), end: DateTime(2030)),
                   onChanged: (_) {},
+                  theme: DatePickerPlusTheme.of(context).yearsPickerTheme!,
                 );
               },
             ),
@@ -235,6 +240,8 @@ void main() {
                   selectedEndDate: null,
                   onStartDateChanged: (_) {},
                   onEndDateChanged: (_) {},
+                  theme: DatePickerPlusTheme.of(context),
+                  locale: DatePickerPlusTheme.of(context).locale!,
                 );
               },
             ),
@@ -285,30 +292,30 @@ void main() {
   });
 
   group(
-      'Theme from context — ThemeData extension when constructor theme is omitted',
+      'Theme from context — ThemeData.extensions when constructor theme is omitted',
       () {
-    const extensionEnabledColor = Color(0xFFFF00FF);
+    const inheritedEnabledColor = Color(0xFFFF00FF);
 
-    DatePickerPlusTheme extensionTheme() => DatePickerPlusTheme(
+    DatePickerPlusTheme inheritedTheme() => DatePickerPlusTheme(
           daysPickerTheme: DaysPickerTheme(
             enabledCellsTextStyle:
-                const TextStyle(color: extensionEnabledColor),
+                const TextStyle(color: inheritedEnabledColor),
           ),
           monthsPickerTheme: MonthsPickerTheme(
             enabledCellsTextStyle:
-                const TextStyle(color: extensionEnabledColor),
+                const TextStyle(color: inheritedEnabledColor),
           ),
           yearsPickerTheme: YearsPickerTheme(
             enabledCellsTextStyle:
-                const TextStyle(color: extensionEnabledColor),
+                const TextStyle(color: inheritedEnabledColor),
           ),
           rangePickerTheme: RangePickerTheme(
             enabledCellsTextStyle:
-                const TextStyle(color: extensionEnabledColor),
+                const TextStyle(color: inheritedEnabledColor),
           ),
         );
 
-    testWidgets('DaysView uses daysPickerTheme from Theme extension',
+    testWidgets('DaysView uses daysPickerTheme from ThemeData.extensions',
         (WidgetTester tester) async {
       final displayed = DateTime(2022, 6, 1);
       final current = DateTime(2022, 6, 1);
@@ -316,15 +323,22 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
-            child: DaysView(
-              currentDate: current,
-              minDate: DateTime(2022, 1, 1),
-              maxDate: DateTime(2022, 12, 31),
-              displayedMonth: displayed,
-              onChanged: (_) {},
+            child: Builder(
+              builder: (context) {
+                final t = DatePickerPlusTheme.of(context);
+                return DaysView(
+                  currentDate: current,
+                  minDate: DateTime(2022, 1, 1),
+                  maxDate: DateTime(2022, 12, 31),
+                  displayedMonth: displayed,
+                  onChanged: (_) {},
+                  theme: t.daysPickerTheme!,
+                  locale: t.locale!,
+                );
+              },
             ),
           ),
         ),
@@ -335,10 +349,10 @@ void main() {
         matching: find.text('10'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('MonthView uses monthsPickerTheme from Theme extension',
+    testWidgets('MonthView uses monthsPickerTheme from ThemeData.extensions',
         (WidgetTester tester) async {
       final displayed = DateTime(2022, 6, 1);
       final current = DateTime(2022, 6, 1);
@@ -346,15 +360,22 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
-            child: MonthView(
-              currentDate: current,
-              minDate: DateTime(2022, 1, 1),
-              maxDate: DateTime(2022, 12, 31),
-              displayedDate: displayed,
-              onChanged: (_) {},
+            child: Builder(
+              builder: (context) {
+                final t = DatePickerPlusTheme.of(context);
+                return MonthView(
+                  currentDate: current,
+                  minDate: DateTime(2022, 1, 1),
+                  maxDate: DateTime(2022, 12, 31),
+                  displayedDate: displayed,
+                  onChanged: (_) {},
+                  theme: t.monthsPickerTheme!,
+                  locale: t.locale!,
+                );
+              },
             ),
           ),
         ),
@@ -365,26 +386,32 @@ void main() {
         matching: find.text('Mar'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('YearView uses yearsPickerTheme from Theme extension',
+    testWidgets('YearView uses yearsPickerTheme from ThemeData.extensions',
         (WidgetTester tester) async {
       final current = DateTime(2020, 1, 1);
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
-            child: YearView(
-              currentDate: current,
-              minDate: DateTime(1950),
-              maxDate: DateTime(2060),
-              displayedYearRange:
-                  DateTimeRange(start: DateTime(2019), end: DateTime(2030)),
-              onChanged: (_) {},
+            child: Builder(
+              builder: (context) {
+                final t = DatePickerPlusTheme.of(context);
+                return YearView(
+                  currentDate: current,
+                  minDate: DateTime(1950),
+                  maxDate: DateTime(2060),
+                  displayedYearRange:
+                      DateTimeRange(start: DateTime(2019), end: DateTime(2030)),
+                  onChanged: (_) {},
+                  theme: t.yearsPickerTheme!,
+                );
+              },
             ),
           ),
         ),
@@ -395,17 +422,17 @@ void main() {
         matching: find.text('2022'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('DaysPicker uses Theme extension into DaysView',
+    testWidgets('DaysPicker uses ThemeData.extensions into DaysView',
         (WidgetTester tester) async {
       final current = DateTime(2022, 6, 1);
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: DaysPicker(
@@ -423,15 +450,15 @@ void main() {
         matching: find.text('10'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('MonthPicker uses Theme extension into MonthView',
+    testWidgets('MonthPicker uses ThemeData.extensions into MonthView',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: MonthPicker(
@@ -449,15 +476,15 @@ void main() {
         matching: find.text('Mar'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('YearsPicker uses Theme extension into YearView',
+    testWidgets('YearsPicker uses ThemeData.extensions into YearView',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: YearsPicker(
@@ -475,15 +502,15 @@ void main() {
         matching: find.text('2015'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
-    testWidgets('DaysPicker theme overrides Theme extension into DaysView',
+    testWidgets('DaysPicker theme overrides ThemeData.extensions into DaysView',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: DaysPicker(
@@ -495,7 +522,7 @@ void main() {
                 if (date == DateTime(2022, 6, 2)) return true;
                 return false;
               },
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                   daysPickerTheme: DaysPickerTheme(
                       disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -512,17 +539,17 @@ void main() {
         matching: find.text('2'),
       );
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
 
-    testWidgets('MonthPicker theme overrides Theme extension into MonthView',
+    testWidgets('MonthPicker theme overrides ThemeData.extensions into MonthView',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: MonthPicker(
@@ -530,7 +557,7 @@ void main() {
               maxDate: DateTime(2022, 11, 30),
               currentDate: DateTime(2022, 6, 1),
               displayedDate: DateTime(2022, 6, 1),
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                   monthsPickerTheme: MonthsPickerTheme(
                       disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -547,17 +574,17 @@ void main() {
         matching: find.text('Dec'),
       );
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
 
-    testWidgets('YearsPicker theme overrides Theme extension into YearsView',
+    testWidgets('YearsPicker theme overrides ThemeData.extensions into YearsView',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: YearsPicker(
@@ -565,7 +592,7 @@ void main() {
               maxDate: DateTime(2022, 11, 30),
               currentDate: DateTime(2022, 6, 1),
               displayedDate: DateTime(2022, 6, 1),
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                   yearsPickerTheme: YearsPickerTheme(
                       disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -582,16 +609,16 @@ void main() {
         matching: find.text('2023'),
       );
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
-    testWidgets('DatePicker theme overrides Theme extension',
+    testWidgets('DatePicker theme overrides ThemeData.extensions',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: DatePicker(
@@ -599,7 +626,7 @@ void main() {
               maxDate: DateTime(2022, 1, 25),
               currentDate: DateTime(2022, 1, 1),
               displayedDate: DateTime(2022, 1, 1),
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                   daysPickerTheme: DaysPickerTheme(
                       disabledCellsTextStyle: TextStyle(color: disabledColor))),
             ),
@@ -610,11 +637,11 @@ void main() {
       final enabledFinder = find.text('2');
       final disabledFinder = find.text('26');
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
 
-    testWidgets('RangeDaysView uses rangePickerTheme from Theme extension',
+    testWidgets('RangeDaysView uses rangePickerTheme from ThemeData.extensions',
         (WidgetTester tester) async {
       final displayed = DateTime(2022, 6, 1);
       final current = DateTime(2022, 6, 1);
@@ -622,18 +649,25 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
-            child: RangeDaysView(
-              currentDate: current,
-              minDate: DateTime(2022, 1, 1),
-              maxDate: DateTime(2022, 12, 31),
-              displayedMonth: displayed,
-              selectedStartDate: null,
-              selectedEndDate: null,
-              onStartDateChanged: (_) {},
-              onEndDateChanged: (_) {},
+            child: Builder(
+              builder: (context) {
+                final t = DatePickerPlusTheme.of(context);
+                return RangeDaysView(
+                  currentDate: current,
+                  minDate: DateTime(2022, 1, 1),
+                  maxDate: DateTime(2022, 12, 31),
+                  displayedMonth: displayed,
+                  selectedStartDate: null,
+                  selectedEndDate: null,
+                  onStartDateChanged: (_) {},
+                  onEndDateChanged: (_) {},
+                  theme: t,
+                  locale: t.locale!,
+                );
+              },
             ),
           ),
         ),
@@ -644,17 +678,17 @@ void main() {
         matching: find.text('10'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('RangeDaysPicker uses Theme extension into RangeDaysView',
+    testWidgets('RangeDaysPicker uses ThemeData.extensions into RangeDaysView',
         (WidgetTester tester) async {
       final current = DateTime(2022, 6, 1);
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: RangeDaysPicker(
@@ -672,18 +706,18 @@ void main() {
         matching: find.text('10'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
     testWidgets(
-        'RangeDaysPicker theme overrides Theme extension into RangeDaysView',
+        'RangeDaysPicker theme overrides ThemeData.extensions into RangeDaysView',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: RangeDaysPicker(
@@ -691,7 +725,7 @@ void main() {
               maxDate: DateTime(2022, 6, 14),
               currentDate: DateTime(2022, 6, 1),
               displayedDate: DateTime(2022, 6, 1),
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                 rangePickerTheme: RangePickerTheme(
                   disabledCellsTextStyle: TextStyle(color: disabledColor),
                 ),
@@ -711,16 +745,16 @@ void main() {
         matching: find.text('16'),
       );
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
 
-    testWidgets('RangeDatePicker uses Theme extension into RangeDaysView',
+    testWidgets('RangeDatePicker uses ThemeData.extensions into RangeDaysView',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: RangeDatePicker(
@@ -738,17 +772,17 @@ void main() {
         matching: find.text('10'),
       );
       expect(
-          tester.widget<Text>(textFinder).style?.color, extensionEnabledColor);
+          tester.widget<Text>(textFinder).style?.color, inheritedEnabledColor);
     });
 
-    testWidgets('RangeDatePicker theme overrides Theme extension',
+    testWidgets('RangeDatePicker theme overrides ThemeData.extensions',
         (WidgetTester tester) async {
       final disabledColor = Colors.red;
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[extensionTheme()],
+            extensions: <ThemeExtension<dynamic>>[inheritedTheme()],
           ),
           home: Material(
             child: RangeDatePicker(
@@ -756,7 +790,7 @@ void main() {
               maxDate: DateTime(2022, 6, 14),
               currentDate: DateTime(2022, 6, 1),
               displayedDate: DateTime(2022, 6, 1),
-              theme: extensionTheme().copyWith(
+              theme: inheritedTheme().copyWith(
                 rangePickerTheme: RangePickerTheme(
                   disabledCellsTextStyle: TextStyle(color: disabledColor),
                 ),
@@ -775,23 +809,23 @@ void main() {
         matching: find.text('16'),
       );
       expect(tester.widget<Text>(enabledFinder).style?.color,
-          extensionEnabledColor);
+          inheritedEnabledColor);
       expect(tester.widget<Text>(disabledFinder).style?.color, disabledColor);
     });
   });
 
-  group('isEnabled from context — RangeDaysPicker respects Theme extension',
+  group('isEnabled from context — RangeDaysPicker respects ThemeData.extensions',
       () {
     testWidgets(
-        'RangeDaysPicker disables day taps when isEnabled=false is set via Theme extension only (no widget theme)',
+        'RangeDaysPicker disables day taps when isEnabled=false is set via ThemeData.extensions only (no widget theme)',
         (WidgetTester tester) async {
       bool startDateChanged = false;
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[
-              const DatePickerPlusTheme(isEnabled: false),
+            extensions: const <ThemeExtension<dynamic>>[
+              DatePickerPlusTheme(isEnabled: false),
             ],
           ),
           home: Material(
@@ -813,19 +847,19 @@ void main() {
 
       expect(startDateChanged, isFalse,
           reason:
-              'isEnabled=false from Theme extension should suppress taps in RangeDaysPicker');
+              'isEnabled=false from ThemeData.extensions should suppress taps in RangeDaysPicker');
     });
 
     testWidgets(
-        'RangeDaysPicker remains interactive when isEnabled=true is set via Theme extension only',
+        'RangeDaysPicker remains interactive when isEnabled=true is set via ThemeData.extensions only',
         (WidgetTester tester) async {
       bool startDateChanged = false;
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[
-              const DatePickerPlusTheme(isEnabled: true),
+            extensions: const <ThemeExtension<dynamic>>[
+              DatePickerPlusTheme(isEnabled: true),
             ],
           ),
           home: Material(
@@ -847,19 +881,19 @@ void main() {
 
       expect(startDateChanged, isTrue,
           reason:
-              'isEnabled=true from Theme extension should keep RangeDaysPicker interactive');
+              'isEnabled=true from ThemeData.extensions should keep RangeDaysPicker interactive');
     });
 
     testWidgets(
-        'RangeDaysPicker widget theme isEnabled=false overrides isEnabled=true from Theme extension',
+        'RangeDaysPicker widget theme isEnabled=false overrides isEnabled=true from ThemeData.extensions',
         (WidgetTester tester) async {
       bool startDateChanged = false;
 
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(
-            extensions: <ThemeExtension<dynamic>>[
-              const DatePickerPlusTheme(isEnabled: true),
+            extensions: const <ThemeExtension<dynamic>>[
+              DatePickerPlusTheme(isEnabled: true),
             ],
           ),
           home: Material(
@@ -882,7 +916,7 @@ void main() {
 
       expect(startDateChanged, isFalse,
           reason:
-              'widget theme isEnabled=false should override isEnabled=true from Theme extension');
+              'widget theme isEnabled=false should override isEnabled=true from ThemeData.extensions');
     });
   });
 }

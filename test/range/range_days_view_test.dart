@@ -1,10 +1,52 @@
 import 'package:date_picker_plus/src/range/range_days_view.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:date_picker_plus/src/shared/date_formatting.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
 
 RangeDecorationPainter? _nullPainter(TextDirection textDirection, Color? color, bool start) => null;
+
+class _ResolveRangeDays extends StatelessWidget {
+  const _ResolveRangeDays({
+    required this.currentDate,
+    required this.minDate,
+    required this.maxDate,
+    required this.selectedStartDate,
+    required this.selectedEndDate,
+    required this.onStartDateChanged,
+    required this.onEndDateChanged,
+    required this.displayedMonth,
+    this.theme,
+  });
+
+  final DateTime currentDate;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime? selectedStartDate;
+  final DateTime? selectedEndDate;
+  final ValueChanged<DateTime> onStartDateChanged;
+  final ValueChanged<DateTime> onEndDateChanged;
+  final DateTime displayedMonth;
+  final DatePickerPlusTheme? theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context).merge(theme);
+    return RangeDaysView(
+      currentDate: currentDate,
+      minDate: minDate,
+      maxDate: maxDate,
+      selectedStartDate: selectedStartDate,
+      selectedEndDate: selectedEndDate,
+      onStartDateChanged: onStartDateChanged,
+      onEndDateChanged: onEndDateChanged,
+      displayedMonth: displayedMonth,
+      theme: t,
+      locale: t.locale!,
+    );
+  }
+}
 
 void main() {
   group('RangeRangeDaysView', () {
@@ -15,7 +57,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
@@ -48,7 +90,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: min,
               maxDate: max,
@@ -90,7 +132,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
@@ -129,7 +171,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
@@ -169,7 +211,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
               maxDate: DateTime(currentDate.year + 2, currentDate.month, currentDate.day),
@@ -221,7 +263,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               minDate: DateTime(
                 currentDate.year - 2,
                 currentDate.month,
@@ -311,6 +353,8 @@ void main() {
                 selectedStartDate: null,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
+                theme: const DatePickerPlusTheme(),
+                locale: const Locale('en'),
               ),
             ),
           ),
@@ -338,6 +382,8 @@ void main() {
                 selectedStartDate: start,
                 onEndDateChanged: (value) {},
                 onStartDateChanged: (value) {},
+                theme: const DatePickerPlusTheme(),
+                locale: const Locale('en'),
               ),
             ),
           ),
@@ -353,7 +399,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               minDate: minDate,
               maxDate: maxDate,
               currentDate: currentDate,
@@ -393,7 +439,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               minDate: minDate,
               maxDate: maxDate,
               currentDate: currentDate,
@@ -436,7 +482,7 @@ void main() {
 
       final List<String> weekdayNames = intl.DateFormat('', 'en').dateSymbols.SHORTWEEKDAYS;
 
-      late final MaterialLocalizations localizations;
+      late final Locale locale;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -448,8 +494,8 @@ void main() {
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
             child: Builder(builder: (context) {
-              localizations = MaterialLocalizations.of(context);
-              return RangeDaysView(
+              locale = Localizations.localeOf(context);
+              return _ResolveRangeDays(
                 minDate: minDate,
                 maxDate: maxDate,
                 currentDate: currentDate,
@@ -464,7 +510,8 @@ void main() {
         ),
       );
 
-      final int firstDayOfWeekIndex = localizations.firstDayOfWeekIndex;
+      final int startOfWeek = isoStartOfWeek(locale);
+      final int firstDayOfWeekIndex = startOfWeek == 7 ? 0 : startOfWeek;
       final String expectedFirstDayOfWeek = weekdayNames[firstDayOfWeekIndex].toUpperCase();
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
@@ -490,7 +537,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               minDate: minDate,
               maxDate: maxDate,
               currentDate: currentDate,
@@ -536,7 +583,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               minDate: minDate,
               maxDate: maxDate,
               currentDate: currentDate,
@@ -581,7 +628,7 @@ void main() {
 
       Widget widget(DateTime? startDate, DateTime? endDate) => MaterialApp(
             home: Material(
-              child: RangeDaysView(
+              child: _ResolveRangeDays(
                 minDate: DateTime(2019, 1, 1),
                 maxDate: DateTime(2021, 1, 1),
                 currentDate: DateTime(2020, 1, 31),
@@ -650,7 +697,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2025, 12, 31),
@@ -688,7 +735,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2025, 12, 31),
@@ -721,7 +768,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _ResolveRangeDays(
               currentDate: currentDate,
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),

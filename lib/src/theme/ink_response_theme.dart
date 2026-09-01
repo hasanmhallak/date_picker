@@ -7,8 +7,7 @@ import 'package:material_ui/material_ui.dart';
 /// This provides a convenient way to configure the splash and highlight behavior
 /// for all interactive elements within the DatePicker.
 @immutable
-class InkResponseTheme extends ThemeExtension<InkResponseTheme>
-    with DiagnosticableTreeMixin {
+class InkResponseTheme with DiagnosticableTreeMixin {
   /// Creates an [InkResponseTheme].
   const InkResponseTheme({
     this.radius,
@@ -70,7 +69,6 @@ class InkResponseTheme extends ThemeExtension<InkResponseTheme>
     );
   }
 
-  @override
   InkResponseTheme copyWith({
     double? radius,
     Color? splashColor,
@@ -116,10 +114,8 @@ class InkResponseTheme extends ThemeExtension<InkResponseTheme>
     );
   }
 
-  @override
-  InkResponseTheme lerp(
-      covariant ThemeExtension<InkResponseTheme>? other, double t) {
-    if (other is! InkResponseTheme) {
+  InkResponseTheme lerp(InkResponseTheme? other, double t) {
+    if (other == null) {
       return this;
     }
     return InkResponseTheme(

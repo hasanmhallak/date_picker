@@ -11,21 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: const Locale('en', 'US'),
+      locale: const Locale('en', 'GB'),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: const [
-        Locale('en', 'GB'),
-        Locale('en', 'US'),
-        Locale('ar'),
-        Locale('zh'),
-      ],
+      supportedLocales: const [Locale('en', 'GB'), Locale('en', 'US'), Locale('ar'), Locale('zh')],
       home: Builder(
         builder: (context) {
           return Scaffold(
             backgroundColor: const Color.fromARGB(255, 238, 239, 250),
-            appBar: AppBar(
-              title: const Text('Date Picker Plus'),
-            ),
+            appBar: AppBar(title: const Text('Date Picker Plus')),
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -38,9 +31,7 @@ class MyApp extends StatelessWidget {
                         Container(
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                            ),
+                            border: Border.all(strokeAlign: BorderSide.strokeAlignOutside),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: SizedBox(
@@ -76,9 +67,7 @@ class MyApp extends StatelessWidget {
                         Container(
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                            ),
+                            border: Border.all(strokeAlign: BorderSide.strokeAlignOutside),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: SizedBox(
@@ -104,7 +93,9 @@ class MyApp extends StatelessWidget {
                                   cellsPadding: EdgeInsets.zero,
                                   padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                                   daysOfTheWeekTheme: DaysOfTheWeekTheme(
-                                      textStyle: TextStyle(fontSize: 8), weekdayLength: WeekdayLength.narrow),
+                                    textStyle: TextStyle(fontSize: 8),
+                                    weekdayLength: WeekdayLength.narrow,
+                                  ),
                                   currentDateTextStyle: TextStyle(fontSize: 8),
                                   disabledCellsTextStyle: TextStyle(fontSize: 8),
                                   enabledCellsTextStyle: TextStyle(fontSize: 8),
@@ -117,9 +108,7 @@ class MyApp extends StatelessWidget {
                         Container(
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              strokeAlign: BorderSide.strokeAlignOutside,
-                            ),
+                            border: Border.all(strokeAlign: BorderSide.strokeAlignOutside),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: SizedBox(
@@ -159,22 +148,23 @@ class MyApp extends StatelessWidget {
                       width: MediaQuery.of(context).size.width - 80,
                       height: MediaQuery.of(context).size.width - 60,
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 238, 239, 250),
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              spreadRadius: 2,
-                              blurRadius: 6,
-                              offset: const Offset(-2, -2),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.18),
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                              offset: const Offset(4, 4),
-                            ),
-                          ]),
+                        color: const Color.fromARGB(255, 238, 239, 250),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withValues(alpha: 0.8),
+                            spreadRadius: 2,
+                            blurRadius: 6,
+                            offset: const Offset(-2, -2),
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.18),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(4, 4),
+                          ),
+                        ],
+                      ),
                       child: DatePicker(
                         minDate: DateTime(2020),
                         maxDate: DateTime(2050),
@@ -191,10 +181,7 @@ class MyApp extends StatelessWidget {
                                 Positioned(
                                   right: 4,
                                   top: -2,
-                                  child: Badge.count(
-                                    count: 6,
-                                    backgroundColor: const Color.fromARGB(255, 253, 28, 33),
-                                  ),
+                                  child: Badge.count(count: 6, backgroundColor: const Color.fromARGB(255, 253, 28, 33)),
                                 ),
                               ],
                             );
@@ -217,10 +204,7 @@ class MyApp extends StatelessWidget {
                                     Container(
                                       width: 2,
                                       height: 10,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.red,
-                                        shape: BoxShape.rectangle,
-                                      ),
+                                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.rectangle),
                                     ),
                                     const SizedBox(width: 4),
                                     const Flexible(
@@ -241,21 +225,25 @@ class MyApp extends StatelessWidget {
                         theme: DatePickerPlusTheme(
                           daysPickerTheme: DaysPickerTheme(
                             daysOfTheWeekTheme: const DaysOfTheWeekTheme(
-                                textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14)),
+                              textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
+                            ),
                             cellsPadding: const EdgeInsets.all(6),
-                            enabledCellsTextStyle:
-                                const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300),
-                            selectedCellTextStyle:
-                                const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w300),
+                            enabledCellsTextStyle: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                            ),
+                            selectedCellTextStyle: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
                             selectedCellDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               gradient: const LinearGradient(
                                 end: Alignment.centerLeft,
                                 begin: Alignment.centerRight,
-                                colors: [
-                                  Color.fromARGB(255, 251, 79, 80),
-                                  Color.fromARGB(255, 253, 28, 33),
-                                ],
+                                colors: [Color.fromARGB(255, 251, 79, 80), Color.fromARGB(255, 253, 28, 33)],
                               ),
                             ),
                           ),
@@ -264,42 +252,38 @@ class MyApp extends StatelessWidget {
                             centerLeadingDate: false,
                             leadingDateTextStyle: const TextStyle(fontSize: 20, color: Colors.black),
                             decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey[300]!, width: 2),
-                              ),
+                              border: Border(bottom: BorderSide(color: Colors.grey[300]!, width: 2)),
                             ),
                             forwardButtonDecoration: ShapeDecoration(
                               gradient: const LinearGradient(
                                 end: Alignment.centerLeft,
                                 begin: Alignment.centerRight,
-                                colors: [
-                                  Color.fromARGB(255, 251, 79, 80),
-                                  Color.fromARGB(255, 253, 28, 33),
-                                ],
+                                colors: [Color.fromARGB(255, 251, 79, 80), Color.fromARGB(255, 253, 28, 33)],
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             ),
                             forwardButtonHeight: 30,
                             forwardButtonWidth: 38,
-                            forwardArrowWidget:
-                                const Icon(Icons.arrow_forward_ios_rounded, size: 20, color: Colors.white),
+                            forwardArrowWidget: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                              color: Colors.white,
+                            ),
                             backwardButtonDecoration: ShapeDecoration(
                               gradient: const LinearGradient(
                                 end: Alignment.centerLeft,
                                 begin: Alignment.centerRight,
-                                colors: [
-                                  Color.fromARGB(255, 251, 79, 80),
-                                  Color.fromARGB(255, 253, 28, 33),
-                                ],
+                                colors: [Color.fromARGB(255, 251, 79, 80), Color.fromARGB(255, 253, 28, 33)],
                               ),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             ),
                             backwardButtonHeight: 30,
                             backwardButtonWidth: 38,
-                            backwardArrowWidget:
-                                const Icon(Icons.arrow_back_ios_rounded, size: 20, color: Colors.white),
+                            backwardArrowWidget: const Icon(
+                              Icons.arrow_back_ios_rounded,
+                              size: 20,
+                              color: Colors.white,
+                            ),
                             arrowButtonsSpace: 16,
                           ),
                         ),

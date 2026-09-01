@@ -1,3 +1,13 @@
+# 8.0.0 [Breaking]
+
+Requires Flutter 3.47+ (Dart 3.13+).
+
+- Adds `intl` and `material_ui` dependencies.
+- Month names, weekday names, first day of week, and date strings follow the locale and no longer require Material localizations.
+- Adds `DatePickerPlusTheme.locale` to override that locale. Defaults to `Localizations.localeOf`.
+- Adds `HeaderTheme.nextPageSemanticLabel` and `previousPageSemanticLabel`.
+- Adds `RangePickerTheme.dateRangeStartDateSemanticLabel` and `dateRangeEndDateSemanticLabel`.
+
 # 7.0.1
 
 - Add `dialogBackground` to `showDatePickerDialog` and `showRangePickerDialog` to set the background color of the dialog. fixes [#46](https://github.com/hasanmhallak/date_picker/issues/46) [#48](https://github.com/hasanmhallak/date_picker/issues/48)

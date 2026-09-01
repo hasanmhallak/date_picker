@@ -178,10 +178,6 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final theme = defaultTheme.merge(contextTheme).merge(widget.theme);
-
     switch (_pickerType!) {
       case PickerType.days:
         return Padding(
@@ -195,7 +191,7 @@ class _DatePickerState extends State<DatePicker> {
             minDate: DateUtils.dateOnly(widget.minDate),
             disabledDayPredicate: widget.disabledDayPredicate,
             cellBuilder: widget.cellBuilder,
-            theme: theme,
+            theme: widget.theme,
             onLeadingDateTap: () {
               setState(() {
                 _pickerType = PickerType.months;
@@ -221,7 +217,7 @@ class _DatePickerState extends State<DatePicker> {
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            theme: theme,
+            theme: widget.theme,
             cellBuilder: widget.cellBuilder,
             onLeadingDateTap: () {
               setState(() {
@@ -252,7 +248,7 @@ class _DatePickerState extends State<DatePicker> {
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
-            theme: theme,
+            theme: widget.theme,
             cellBuilder: widget.cellBuilder,
             onDateSelected: (selectedYear) {
               // clamped the initial date to fall between min and max date.

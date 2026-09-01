@@ -20,7 +20,7 @@ class YearView extends StatelessWidget {
     required this.onChanged,
     required this.displayedYearRange,
     this.cellBuilder,
-    this.theme,
+    required this.theme,
     this.isEnabled = true,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
@@ -76,11 +76,8 @@ class YearView extends StatelessWidget {
   /// Optional builder for customizing individual cells.
   final CellBuilder? cellBuilder;
 
-  /// The theme to apply to the [DatePicker].
-  ///
-  /// If provided, it will be merged with the context's [DatePickerPlusTheme]
-  /// and the default theme.
-  final YearsPickerTheme? theme;
+  /// Years theme from the parent picker after [DatePickerPlusTheme.resolve].
+  final YearsPickerTheme theme;
 
   /// When `false`, years are not selectable and semantics report as disabled.
   final bool isEnabled;
@@ -92,13 +89,10 @@ class YearView extends StatelessWidget {
     final int endYear = displayedYearRange.end.year;
     final int numberOfYears = endYear - startYear + 1;
 
-    final defaultTheme = DatePickerPlusTheme.defaults(context).yearsPickerTheme;
-    final contextTheme =
-        Theme.of(context).extension<DatePickerPlusTheme>()?.yearsPickerTheme;
-    final currentTheme = defaultTheme?.merge(contextTheme).merge(theme);
+    final currentTheme = theme;
 
-    final inkResponseTheme = currentTheme?.inkResponseTheme;
-    final cellsPadding = currentTheme?.cellsPadding ??
+    final inkResponseTheme = currentTheme.inkResponseTheme;
+    final cellsPadding = currentTheme.cellsPadding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 16);
 
     final yearsName = List.generate(
@@ -128,8 +122,8 @@ class YearView extends StatelessWidget {
         state = CellState.current;
       }
 
-      final style = currentTheme?.resolveTextStyle(state);
-      final decoration = currentTheme?.resolveDecoration(state);
+      final style = currentTheme.resolveTextStyle(state);
+      final decoration = currentTheme.resolveDecoration(state);
 
       Widget monthWidget = Padding(
         padding: cellsPadding,

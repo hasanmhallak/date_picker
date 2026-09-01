@@ -7,10 +7,9 @@ import 'months_picker_theme.dart';
 import 'range_picker_theme.dart';
 import 'years_picker_theme.dart';
 
-/// The top-level theme for `date_picker_plus`.
+/// Token bag for `date_picker_plus`.
 ///
-/// Contains themes for the header, days of the week, days grid,
-/// months grid, years grid, and range picker days grid.
+/// Passed as picker `theme:` overrides or via [ThemeData.extensions].
 @immutable
 class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
     with DiagnosticableTreeMixin {
@@ -22,6 +21,7 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
     this.yearsPickerTheme,
     this.rangePickerTheme,
     this.isEnabled,
+    this.locale,
   });
 
   /// When `false`, the picker is view-only: no taps, navigation, or swipes.
@@ -44,7 +44,12 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
   /// The theme controlling the grid of days in a range selection.
   final RangePickerTheme? rangePickerTheme;
 
-  /// Returns a [DatePickerPlusTheme] populated with default internal themes.
+  /// Locale used for `intl` formatting and weekday names.
+  ///
+  /// Defaults to [Localizations.localeOf].
+  final Locale? locale;
+
+  /// Returns a [DatePickerPlusTheme] populated with default values.
   static DatePickerPlusTheme defaults(BuildContext context) {
     return DatePickerPlusTheme(
       headerTheme: HeaderTheme.defaults(context),
@@ -53,7 +58,31 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
       yearsPickerTheme: YearsPickerTheme.defaults(context),
       rangePickerTheme: RangePickerTheme.defaults(context),
       isEnabled: true,
+      locale: Localizations.localeOf(context),
     );
+  }
+
+  /// Inherited overrides from [ThemeData.extensions], or `null` if none.
+  static DatePickerPlusTheme? maybeOf(BuildContext context) {
+    return Theme.of(context).extension<DatePickerPlusTheme>();
+  }
+
+  /// [defaults] merged with [ThemeData.extensions] overrides.
+  static DatePickerPlusTheme of(BuildContext context) {
+    return defaults(context).merge(maybeOf(context));
+  }
+
+  /// [of] merged with optional widget-level overrides.
+  ///
+  /// Call this from the public picker the app built (`DaysPicker`,
+  /// `MonthPicker`, `YearsPicker`, `RangeDaysPicker`). Composite widgets
+  /// (`DatePicker`, `RangeDatePicker`) pass [theme] through instead of
+  /// resolving again.
+  static DatePickerPlusTheme resolve(
+    BuildContext context,
+    DatePickerPlusTheme? theme,
+  ) {
+    return of(context).merge(theme);
   }
 
   @override
@@ -64,6 +93,7 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
     YearsPickerTheme? yearsPickerTheme,
     RangePickerTheme? rangePickerTheme,
     bool? isEnabled,
+    Locale? locale,
   }) {
     return DatePickerPlusTheme(
       headerTheme: headerTheme ?? this.headerTheme,
@@ -72,12 +102,13 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
       yearsPickerTheme: yearsPickerTheme ?? this.yearsPickerTheme,
       rangePickerTheme: rangePickerTheme ?? this.rangePickerTheme,
       isEnabled: isEnabled ?? this.isEnabled,
+      locale: locale ?? this.locale,
     );
   }
 
   /// Merges the properties of [other] into this theme, recursively
   /// merging each sub-theme.
-  DatePickerPlusTheme merge(covariant DatePickerPlusTheme? other) {
+  DatePickerPlusTheme merge(DatePickerPlusTheme? other) {
     if (other == null) return this;
     return copyWith(
       headerTheme: headerTheme?.merge(other.headerTheme) ?? other.headerTheme,
@@ -90,12 +121,15 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
       rangePickerTheme: rangePickerTheme?.merge(other.rangePickerTheme) ??
           other.rangePickerTheme,
       isEnabled: other.isEnabled ?? isEnabled,
+      locale: other.locale ?? locale,
     );
   }
 
   @override
   DatePickerPlusTheme lerp(
-      covariant ThemeExtension<DatePickerPlusTheme>? other, double t) {
+    covariant ThemeExtension<DatePickerPlusTheme>? other,
+    double t,
+  ) {
     if (other is! DatePickerPlusTheme) return this;
 
     return DatePickerPlusTheme(
@@ -105,6 +139,7 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
       yearsPickerTheme: yearsPickerTheme?.lerp(other.yearsPickerTheme, t),
       rangePickerTheme: rangePickerTheme?.lerp(other.rangePickerTheme, t),
       isEnabled: t < 0.5 ? isEnabled : other.isEnabled,
+      locale: t < 0.5 ? locale : other.locale,
     );
   }
 
@@ -122,5 +157,6 @@ class DatePickerPlusTheme extends ThemeExtension<DatePickerPlusTheme>
     properties.add(DiagnosticsProperty<RangePickerTheme?>(
         'rangePickerTheme', rangePickerTheme));
     properties.add(DiagnosticsProperty<bool?>('isEnabled', isEnabled));
+    properties.add(DiagnosticsProperty<Locale?>('locale', locale));
   }
 }

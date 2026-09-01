@@ -210,9 +210,7 @@ class _YearsPickerState extends State<YearsPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTheme = DatePickerPlusTheme.defaults(context);
-    final contextTheme = Theme.of(context).extension<DatePickerPlusTheme>();
-    final theme = defaultTheme.merge(contextTheme).merge(widget.theme);
+    final theme = DatePickerPlusTheme.resolve(context, widget.theme);
 
     final bool isEnabled = theme.isEnabled ?? true;
 
@@ -237,7 +235,7 @@ class _YearsPickerState extends State<YearsPicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Header(
-                theme: theme.headerTheme,
+                theme: theme.headerTheme!,
                 isEnabled: isEnabled,
                 onDateTap: () => widget.onLeadingDateTap?.call(),
                 displayedDate:
@@ -283,7 +281,7 @@ class _YearsPickerState extends State<YearsPicker> {
                         displayedYearRange: yearRange,
                         selectedDate: _selectedDate,
                         cellBuilder: widget.cellBuilder,
-                        theme: theme.yearsPickerTheme,
+                        theme: theme.yearsPickerTheme!,
                         isEnabled: isEnabled,
                         onChanged: (value) {
                           final selected = DateUtilsX.yearOnly(value);

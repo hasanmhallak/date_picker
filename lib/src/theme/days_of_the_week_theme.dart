@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../shared/date_formatting.dart';
+
 /// The length of the weekday strings to display.
 enum WeekdayLength {
   /// e.g. "Monday"
@@ -15,8 +17,7 @@ enum WeekdayLength {
 
 /// A theme that controls the visual appearance of the "M T W T F S S" row.
 @immutable
-class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
-    with DiagnosticableTreeMixin {
+class DaysOfTheWeekTheme with DiagnosticableTreeMixin {
   /// Creates a [DaysOfTheWeekTheme].
   const DaysOfTheWeekTheme({
     this.startOfWeek,
@@ -27,7 +28,7 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
 
   /// ISO 8601 weekday number (1 = Monday, 7 = Sunday) to start the week.
   ///
-  /// Defaults to the value from [MaterialLocalizations.firstDayOfWeekIndex].
+  /// Defaults to the first day of the week from `intl` for the ambient locale.
   final int? startOfWeek;
 
   /// The text style of the days of the week in the header.
@@ -47,10 +48,10 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
   /// Returns a [DaysOfTheWeekTheme] populated with default values.
   static DaysOfTheWeekTheme defaults(BuildContext context) {
     final theme = Theme.of(context);
-    final startOfWeek = MaterialLocalizations.of(context).firstDayOfWeekIndex;
+    final locale = Localizations.localeOf(context);
 
     return DaysOfTheWeekTheme(
-      startOfWeek: startOfWeek == 0 ? 7 : startOfWeek,
+      startOfWeek: isoStartOfWeek(locale),
       textStyle: theme.textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.bold,
         fontSize: 14,
@@ -61,7 +62,6 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
     );
   }
 
-  @override
   DaysOfTheWeekTheme copyWith({
     int? startOfWeek,
     TextStyle? textStyle,
@@ -87,10 +87,8 @@ class DaysOfTheWeekTheme extends ThemeExtension<DaysOfTheWeekTheme>
     );
   }
 
-  @override
-  DaysOfTheWeekTheme lerp(
-      covariant ThemeExtension<DaysOfTheWeekTheme>? other, double t) {
-    if (other is! DaysOfTheWeekTheme) return this;
+  DaysOfTheWeekTheme lerp(DaysOfTheWeekTheme? other, double t) {
+    if (other == null) return this;
 
     return DaysOfTheWeekTheme(
       startOfWeek: t < 0.5 ? startOfWeek : other.startOfWeek,

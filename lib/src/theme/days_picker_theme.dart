@@ -7,8 +7,7 @@ import 'ink_response_theme.dart';
 
 /// A theme that controls the visual appearance of the grid of days.
 @immutable
-class DaysPickerTheme extends ThemeExtension<DaysPickerTheme>
-    with DiagnosticableTreeMixin {
+class DaysPickerTheme with DiagnosticableTreeMixin {
   /// Creates a [DaysPickerTheme].
   const DaysPickerTheme({
     this.daysOfTheWeekTheme,
@@ -165,7 +164,6 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme>
     }
   }
 
-  @override
   DaysPickerTheme copyWith({
     DaysOfTheWeekTheme? daysOfTheWeekTheme,
     TextStyle? enabledCellsTextStyle,
@@ -232,10 +230,8 @@ class DaysPickerTheme extends ThemeExtension<DaysPickerTheme>
     );
   }
 
-  @override
-  DaysPickerTheme lerp(
-      covariant ThemeExtension<DaysPickerTheme>? other, double t) {
-    if (other is! DaysPickerTheme) return this;
+  DaysPickerTheme lerp(DaysPickerTheme? other, double t) {
+    if (other == null) return this;
 
     return DaysPickerTheme(
       daysOfTheWeekTheme: daysOfTheWeekTheme?.lerp(other.daysOfTheWeekTheme, t),

@@ -1,25 +1,23 @@
 name: date_picker_plus
 description: A Flutter library that provides a customizable Material Design date and range picker widgets.
-version: 7.0.1
+version: 8.0.0
 
 repository: https://github.com/hasanmhallak/date_picker
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
-  flutter: ">=3.27.0"
+  sdk: ">=3.13.0 <4.0.0"
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: ">=0.19.0 <1.0.0"
+  material_ui: ^1.1.0
 
-  material_ui: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ">=2.0.0 < 20.0.0"
-  flutter_localizations:
-    sdk: flutter
 
 screenshots:
   - description: "1 Examples of range picker."

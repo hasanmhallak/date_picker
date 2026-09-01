@@ -149,7 +149,7 @@ It is available on both `showDatePickerDialog` and `showRangePickerDialog`. When
 
 ## Theming Model
 
-`DatePickerPlusTheme` is the root theme object:
+`DatePickerPlusTheme` is a `ThemeExtension`.
 
 ```text
 DatePickerPlusTheme
@@ -160,15 +160,16 @@ DatePickerPlusTheme
   +-- yearsPickerTheme
   +-- rangePickerTheme
   +-- isEnabled
+  +-- locale
 ```
 
 Picker theme resolution is merged in this order:
 
-1. Internal defaults: `DatePickerPlusTheme.defaults(context)`
+1. Internal defaults: `DatePickerPlusTheme.defaults(context)` (Material `ColorScheme` / `TextTheme`, `intl` first day of week, optional Material page labels)
 2. App-level extension from `ThemeData.extensions`
 3. Per-widget `theme:` argument
 
-### Set app-wide defaults once
+### Set app-wide overrides once
 
 ```dart
 MaterialApp(

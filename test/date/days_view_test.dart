@@ -1,8 +1,47 @@
 import 'package:date_picker_plus/src/date/days_view.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:date_picker_plus/src/shared/date_formatting.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart' as intl;
+
+class _ResolveDays extends StatelessWidget {
+  const _ResolveDays({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedMonth,
+    this.selectedDate,
+    this.disabledDayPredicate,
+    this.theme,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime displayedMonth;
+  final DateTime? selectedDate;
+  final DatePredicate? disabledDayPredicate;
+  final DaysPickerTheme? theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return DaysView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedMonth: displayedMonth,
+      selectedDate: selectedDate,
+      disabledDayPredicate: disabledDayPredicate,
+      theme: t.daysPickerTheme!.merge(theme),
+      locale: t.locale!,
+    );
+  }
+}
 
 void main() {
   group('DaysView', () {
@@ -12,7 +51,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -40,7 +79,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -81,7 +120,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -132,7 +171,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: DateTime(currentDate.year - 2, currentDate.month, currentDate.day),
@@ -184,6 +223,8 @@ void main() {
                 minDate: minDate,
                 maxDate: maxDate,
                 displayedMonth: currentDate,
+                theme: const DaysPickerTheme(),
+                locale: const Locale('en'),
               ),
             ),
           ),
@@ -199,7 +240,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -234,7 +275,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               minDate: minDate,
@@ -270,7 +311,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (DateTime date) {},
               disabledDayPredicate: (date) {
@@ -311,7 +352,7 @@ void main() {
 
       final List<String> weekdayNames = intl.DateFormat('', 'en').dateSymbols.SHORTWEEKDAYS;
 
-      late final MaterialLocalizations localizations;
+      late final Locale locale;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -323,8 +364,8 @@ void main() {
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           home: Material(
             child: Builder(builder: (context) {
-              localizations = MaterialLocalizations.of(context);
-              return DaysView(
+              locale = Localizations.localeOf(context);
+              return _ResolveDays(
                 currentDate: currentDate,
                 onChanged: (DateTime date) {},
                 minDate: minDate,
@@ -336,7 +377,8 @@ void main() {
         ),
       );
 
-      final int firstDayOfWeekIndex = localizations.firstDayOfWeekIndex;
+      final int startOfWeek = isoStartOfWeek(locale);
+      final int firstDayOfWeekIndex = startOfWeek == 7 ? 0 : startOfWeek;
       final String expectedFirstDayOfWeek = weekdayNames[firstDayOfWeekIndex].toUpperCase();
 
       final disabledDayFinder = find.byWidgetPredicate((widget) {
@@ -358,7 +400,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime.now(),
               onChanged: (DateTime date) {},
               minDate: DateTime(2024),
@@ -397,7 +439,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime(2020, 1, 1),
               onChanged: (DateTime date) {},
               minDate: DateTime(2019, 1, 1),
@@ -432,7 +474,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime(2020, 1, 11),
               onChanged: (DateTime date) {},
               minDate: DateTime(2020, 1, 10),
@@ -466,7 +508,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (DateTime date) {},
               minDate: DateTime(2020, 1, 1),
@@ -509,7 +551,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (DateTime date) {},
               minDate: DateTime(2020, 1, 1),
@@ -548,7 +590,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (DateTime date) {
                 selectedDate = date;
@@ -590,7 +632,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _ResolveDays(
               currentDate: currentDate,
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),

@@ -5,10 +5,12 @@ import 'package:material_ui/material_ui.dart';
 import '../shared/cell_state.dart';
 import 'ink_response_theme.dart';
 
+/// Formats a range-edge semantic label from an already formatted day string.
+typedef DateRangeSemanticLabel = String Function(String formattedDate);
+
 /// A theme that controls the visual appearance of the grid of days in a range picker.
 @immutable
-class RangePickerTheme extends ThemeExtension<RangePickerTheme>
-    with DiagnosticableTreeMixin {
+class RangePickerTheme with DiagnosticableTreeMixin {
   /// Creates a [RangePickerTheme].
   const RangePickerTheme({
     this.enabledCellsTextStyle,
@@ -25,6 +27,8 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
     this.padding,
     this.inkResponseTheme,
     this.resolvePainter,
+    this.dateRangeStartDateSemanticLabel,
+    this.dateRangeEndDateSemanticLabel,
   });
 
   /// The text style of cells which are selectable.
@@ -129,12 +133,26 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
   /// to correctly resolve and paint the background color.
   final ResolvePainter? resolvePainter;
 
+  /// Semantics wrapper for the start date of a range.
+  ///
+  /// Defaults to [MaterialLocalizations.dateRangeStartDateSemanticLabel]
+  /// when Material localizations are present, otherwise `'Start date $formattedDate'`.
+  final DateRangeSemanticLabel? dateRangeStartDateSemanticLabel;
+
+  /// Semantics wrapper for the end date of a range.
+  ///
+  /// Defaults to [MaterialLocalizations.dateRangeEndDateSemanticLabel]
+  /// when Material localizations are present, otherwise `'End date $formattedDate'`.
+  final DateRangeSemanticLabel? dateRangeEndDateSemanticLabel;
+
   /// Returns a [RangePickerTheme] populated with default values.
   static RangePickerTheme defaults(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
     final titleLarge = textTheme.titleLarge;
+    final materialLocalizations =
+        Localizations.of<MaterialLocalizations>(context, MaterialLocalizations);
 
     return RangePickerTheme(
       enabledCellsTextStyle: titleLarge?.copyWith(
@@ -181,6 +199,12 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
           start: start,
         );
       },
+      dateRangeStartDateSemanticLabel: materialLocalizations != null
+          ? materialLocalizations.dateRangeStartDateSemanticLabel
+          : (formattedDate) => 'Start date $formattedDate',
+      dateRangeEndDateSemanticLabel: materialLocalizations != null
+          ? materialLocalizations.dateRangeEndDateSemanticLabel
+          : (formattedDate) => 'End date $formattedDate',
     );
   }
 
@@ -220,7 +244,6 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
     }
   }
 
-  @override
   RangePickerTheme copyWith({
     TextStyle? enabledCellsTextStyle,
     Decoration? enabledCellsDecoration,
@@ -236,6 +259,8 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
     EdgeInsetsGeometry? padding,
     InkResponseTheme? inkResponseTheme,
     ResolvePainter? resolvePainter,
+    DateRangeSemanticLabel? dateRangeStartDateSemanticLabel,
+    DateRangeSemanticLabel? dateRangeEndDateSemanticLabel,
   }) {
     return RangePickerTheme(
       enabledCellsTextStyle:
@@ -261,6 +286,10 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
       padding: padding ?? this.padding,
       inkResponseTheme: inkResponseTheme ?? this.inkResponseTheme,
       resolvePainter: resolvePainter ?? this.resolvePainter,
+      dateRangeStartDateSemanticLabel: dateRangeStartDateSemanticLabel ??
+          this.dateRangeStartDateSemanticLabel,
+      dateRangeEndDateSemanticLabel:
+          dateRangeEndDateSemanticLabel ?? this.dateRangeEndDateSemanticLabel,
     );
   }
 
@@ -293,13 +322,13 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
       inkResponseTheme: inkResponseTheme?.merge(other.inkResponseTheme) ??
           other.inkResponseTheme,
       resolvePainter: other.resolvePainter,
+      dateRangeStartDateSemanticLabel: other.dateRangeStartDateSemanticLabel,
+      dateRangeEndDateSemanticLabel: other.dateRangeEndDateSemanticLabel,
     );
   }
 
-  @override
-  RangePickerTheme lerp(
-      covariant ThemeExtension<RangePickerTheme>? other, double t) {
-    if (other is! RangePickerTheme) return this;
+  RangePickerTheme lerp(RangePickerTheme? other, double t) {
+    if (other == null) return this;
 
     return RangePickerTheme(
       enabledCellsTextStyle:
@@ -327,6 +356,12 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       inkResponseTheme: inkResponseTheme?.lerp(other.inkResponseTheme, t),
       resolvePainter: t < 0.5 ? resolvePainter : other.resolvePainter,
+      dateRangeStartDateSemanticLabel: t < 0.5
+          ? dateRangeStartDateSemanticLabel
+          : other.dateRangeStartDateSemanticLabel,
+      dateRangeEndDateSemanticLabel: t < 0.5
+          ? dateRangeEndDateSemanticLabel
+          : other.dateRangeEndDateSemanticLabel,
     );
   }
 
@@ -361,5 +396,15 @@ class RangePickerTheme extends ThemeExtension<RangePickerTheme>
         'inkResponseTheme', inkResponseTheme));
     properties.add(
         DiagnosticsProperty<ResolvePainter?>('resolvePainter', resolvePainter));
+    properties.add(FlagProperty(
+      'dateRangeStartDateSemanticLabel',
+      value: dateRangeStartDateSemanticLabel != null,
+      ifTrue: 'specified',
+    ));
+    properties.add(FlagProperty(
+      'dateRangeEndDateSemanticLabel',
+      value: dateRangeEndDateSemanticLabel != null,
+      ifTrue: 'specified',
+    ));
   }
 }

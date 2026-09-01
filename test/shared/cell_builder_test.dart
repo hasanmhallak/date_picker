@@ -6,16 +6,164 @@ import 'package:date_picker_plus/src/shared/year_view.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class _Days extends StatelessWidget {
+  const _Days({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedMonth,
+    this.selectedDate,
+    this.cellBuilder,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime displayedMonth;
+  final DateTime? selectedDate;
+  final CellBuilder? cellBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return DaysView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedMonth: displayedMonth,
+      selectedDate: selectedDate,
+      cellBuilder: cellBuilder,
+      theme: t.daysPickerTheme!,
+      locale: t.locale!,
+    );
+  }
+}
+
+class _Months extends StatelessWidget {
+  const _Months({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedDate,
+    this.selectedDate,
+    this.cellBuilder,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime displayedDate;
+  final DateTime? selectedDate;
+  final CellBuilder? cellBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return MonthView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedDate: displayedDate,
+      selectedDate: selectedDate,
+      cellBuilder: cellBuilder,
+      theme: t.monthsPickerTheme!,
+      locale: t.locale!,
+    );
+  }
+}
+
+class _Years extends StatelessWidget {
+  const _Years({
+    required this.currentDate,
+    required this.onChanged,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedYearRange,
+    this.selectedDate,
+    this.cellBuilder,
+  });
+
+  final DateTime currentDate;
+  final ValueChanged<DateTime> onChanged;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTimeRange displayedYearRange;
+  final DateTime? selectedDate;
+  final CellBuilder? cellBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return YearView(
+      currentDate: currentDate,
+      onChanged: onChanged,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedYearRange: displayedYearRange,
+      selectedDate: selectedDate,
+      cellBuilder: cellBuilder,
+      theme: t.yearsPickerTheme!,
+    );
+  }
+}
+
+class _RangeDays extends StatelessWidget {
+  const _RangeDays({
+    required this.currentDate,
+    required this.minDate,
+    required this.maxDate,
+    required this.displayedMonth,
+    required this.selectedStartDate,
+    required this.selectedEndDate,
+    required this.onStartDateChanged,
+    required this.onEndDateChanged,
+    this.cellBuilder,
+  });
+
+  final DateTime currentDate;
+  final DateTime minDate;
+  final DateTime maxDate;
+  final DateTime displayedMonth;
+  final DateTime? selectedStartDate;
+  final DateTime? selectedEndDate;
+  final ValueChanged<DateTime> onStartDateChanged;
+  final ValueChanged<DateTime> onEndDateChanged;
+  final CellBuilder? cellBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = DatePickerPlusTheme.of(context);
+    return RangeDaysView(
+      currentDate: currentDate,
+      minDate: minDate,
+      maxDate: maxDate,
+      displayedMonth: displayedMonth,
+      selectedStartDate: selectedStartDate,
+      selectedEndDate: selectedEndDate,
+      onStartDateChanged: onStartDateChanged,
+      onEndDateChanged: onEndDateChanged,
+      cellBuilder: cellBuilder,
+      theme: t,
+      locale: t.locale!,
+    );
+  }
+}
+
 void main() {
   group('DaysView cellBuilder', () {
-    testWidgets('receives DayCell with correct date, state, and bare widget',
-        (WidgetTester tester) async {
+    testWidgets('receives DayCell with correct date, state, and bare widget', (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -24,12 +172,7 @@ void main() {
               selectedDate: DateTime(2020, 1, 15),
               cellBuilder: (context, data) {
                 recorded.add(data);
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -49,14 +192,13 @@ void main() {
       expect(day1.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)',
-        (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -78,26 +220,20 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided',
-        (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (date) => selected = date,
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),
               displayedMonth: DateTime(2020, 1, 1),
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -111,12 +247,11 @@ void main() {
       expect(selected, DateTime(2020, 1, 4));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree',
-        (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -124,12 +259,7 @@ void main() {
               displayedMonth: DateTime(2020, 1, 1),
               cellBuilder: (context, data) {
                 if (data is! DayCell) return data.child;
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -139,15 +269,14 @@ void main() {
       expect(find.byIcon(Icons.star), findsNWidgets(31));
     });
 
-    testWidgets('disabled day still receives correct state and is not tappable',
-        (WidgetTester tester) async {
+    testWidgets('disabled day still receives correct state and is not tappable', (WidgetTester tester) async {
       CellState? disabledState;
       bool tapped = false;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (_) => tapped = true,
               minDate: DateTime(2020, 1, 5),
@@ -176,14 +305,13 @@ void main() {
   });
 
   group('DaysView weekday headers cellBuilder', () {
-    testWidgets('receives WeekDayCell with correct weekDay values',
-        (WidgetTester tester) async {
+    testWidgets('receives WeekDayCell with correct weekDay values', (WidgetTester tester) async {
       final List<WeekDayCell> weekDayCells = [];
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: DaysView(
+            child: _Days(
               currentDate: DateTime(2020, 1, 10),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -213,14 +341,13 @@ void main() {
   });
 
   group('MonthView cellBuilder', () {
-    testWidgets('receives MonthCell with correct month, year, and state',
-        (WidgetTester tester) async {
+    testWidgets('receives MonthCell with correct month, year, and state', (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _Months(
               currentDate: DateTime(2020, 5, 1),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -250,14 +377,13 @@ void main() {
       expect(june.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)',
-        (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _Months(
               currentDate: DateTime(2020, 5, 1),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
@@ -279,26 +405,20 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided',
-        (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _Months(
               currentDate: DateTime(2020, 5, 1),
               onChanged: (date) => selected = date,
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 12, 1),
               displayedDate: DateTime(2020, 1, 1),
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -312,24 +432,18 @@ void main() {
       expect(selected, DateTime(2020, 2));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree',
-        (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: MonthView(
+            child: _Months(
               currentDate: DateTime(2020, 5, 1),
               onChanged: (_) {},
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 12, 1),
               displayedDate: DateTime(2020, 1, 1),
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -341,20 +455,18 @@ void main() {
   });
 
   group('YearView cellBuilder', () {
-    testWidgets('receives YearCell with correct year and state',
-        (WidgetTester tester) async {
+    testWidgets('receives YearCell with correct year and state', (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _Years(
               currentDate: DateTime(2020),
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange:
-                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               selectedDate: DateTime(2022),
               cellBuilder: (context, data) {
                 recorded.add(data);
@@ -378,20 +490,18 @@ void main() {
       expect(year2021.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)',
-        (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _Years(
               currentDate: DateTime(2020),
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange:
-                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
                 if (data is YearCell && data.year == 2021) {
                   capturedChild = data.child;
@@ -408,27 +518,20 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets('tapping still fires onChanged when cellBuilder is provided',
-        (WidgetTester tester) async {
+    testWidgets('tapping still fires onChanged when cellBuilder is provided', (WidgetTester tester) async {
       DateTime? selected;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _Years(
               currentDate: DateTime(2020),
               onChanged: (date) => selected = date,
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange:
-                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -442,25 +545,18 @@ void main() {
       expect(selected, DateTime(2021));
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree',
-        (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: YearView(
+            child: _Years(
               currentDate: DateTime(2020),
               onChanged: (_) {},
               minDate: DateTime(2017),
               maxDate: DateTime(2028),
-              displayedYearRange:
-                  DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
+              displayedYearRange: DateTimeRange(start: DateTime(2017), end: DateTime(2028)),
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -472,14 +568,13 @@ void main() {
   });
 
   group('RangeDaysView cellBuilder', () {
-    testWidgets('receives DayCell with correct date and state',
-        (WidgetTester tester) async {
+    testWidgets('receives DayCell with correct date and state', (WidgetTester tester) async {
       final List<CellData> recorded = [];
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _RangeDays(
               currentDate: DateTime(2020, 1, 10),
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),
@@ -513,14 +608,13 @@ void main() {
       expect(day20.state, CellState.enabled);
     });
 
-    testWidgets('child widget is bare (no InkResponse or Semantics)',
-        (WidgetTester tester) async {
+    testWidgets('child widget is bare (no InkResponse or Semantics)', (WidgetTester tester) async {
       late Widget capturedChild;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _RangeDays(
               currentDate: DateTime(2020, 1, 10),
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),
@@ -545,16 +639,16 @@ void main() {
       expect(capturedChild, isNot(isA<Semantics>()));
     });
 
-    testWidgets(
-        'tapping still fires start/end date callbacks when cellBuilder is provided',
-        (WidgetTester tester) async {
+    testWidgets('tapping still fires start/end date callbacks when cellBuilder is provided', (
+      WidgetTester tester,
+    ) async {
       DateTime? startDate;
       DateTime? endDate;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _RangeDays(
               currentDate: DateTime(2020, 1, 10),
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),
@@ -564,12 +658,7 @@ void main() {
               onStartDateChanged: (date) => startDate = date,
               onEndDateChanged: (date) => endDate = date,
               cellBuilder: (context, data) {
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
@@ -584,12 +673,11 @@ void main() {
       expect(endDate, isNull);
     });
 
-    testWidgets('marker widget from cellBuilder is present in the tree',
-        (WidgetTester tester) async {
+    testWidgets('marker widget from cellBuilder is present in the tree', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Material(
-            child: RangeDaysView(
+            child: _RangeDays(
               currentDate: DateTime(2020, 1, 10),
               minDate: DateTime(2020, 1, 1),
               maxDate: DateTime(2020, 1, 31),
@@ -600,12 +688,7 @@ void main() {
               onEndDateChanged: (_) {},
               cellBuilder: (context, data) {
                 if (data is! DayCell) return data.child;
-                return Stack(
-                  children: [
-                    data.child,
-                    const Icon(Icons.star),
-                  ],
-                );
+                return Stack(children: [data.child, const Icon(Icons.star)]);
               },
             ),
           ),
